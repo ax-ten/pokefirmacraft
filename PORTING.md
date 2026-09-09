@@ -38,6 +38,14 @@ Cobblemon 1.5. Destinazione: NeoForge 1.21.1 + TFC 4.2.10 + Cobblemon 1.8.0.
 - corretti dieci `species_additions` che per copia-incolla puntavano al pokemon
   sbagliato, piu' il refuso "gyrados"
 
+**Biomi e id**
+- i tag di bioma (`tfc:all`, `tfc:common`, ...) ora poggiano sui tag che TFC 4
+  popola da solo: prima elencavano trenta biomi su 125 e gran parte del mondo
+  restava senza spawn
+- corretti gli id finiti fuori posto: `minecraft:scute` -> `turtle_scute`,
+  `minecraft:rotten_compost` -> `tfc:rotten_compost`, `tfc:gran_feline` ->
+  `tfc:food/gran_feline`, i native copper sotto `tfc:ore/`
+
 ## Da verificare in gioco
 
 - **Script KubeJS**: `entity.fullNBT.Pokemon.Species` e `EntityEvents.death` su
@@ -52,9 +60,11 @@ Cobblemon 1.5. Destinazione: NeoForge 1.21.1 + TFC 4.2.10 + Cobblemon 1.8.0.
   (serve anche la texture).
 - **Ninfea**: `tfc:plant/water_lily` ora e' divisa per colore; ho scelto la
   bianca per lotad/lombre/ludicolo, ma e' una scelta arbitraria.
-- **Biomi**: gli spawn usano i tag `tfc:*`. Con Gregnautics Continued va
-  controllato che i biomi del pack finiscano davvero in quei tag, altrimenti
-  restano zone senza pokemon (vedi sezione 2 del design doc).
+- **Biomi**: i gruppi di altitudine (`low/mid/high_altitude`) sono stati
+  ricondotti a `#c:is_plains`, `#c:is_hill`, `#c:is_plateau` e `#c:is_mountain`,
+  ma quale dei 125 biomi di TFC 4 debba stare in quale fascia e' una scelta di
+  design da rivedere. Con Gregnautics Continued va poi controllato che i biomi
+  del pack finiscano davvero in quei tag (vedi sezione 2 del design doc).
 
 ## Non ancora iniziato
 
