@@ -1,7 +1,7 @@
 {
   "replace": false,
   "values": [
-      "tfc:volcanic_mountains",
-      "tfc:volcanic_oceanic_mountains"
+    "#c:is_volcanic",
+    "#tfc:is_volcanic_mountains"
   ]
 }

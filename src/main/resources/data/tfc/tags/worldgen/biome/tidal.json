@@ -1,7 +1,7 @@
 {
   "replace": false,
   "values": [
-    "tfc:salt_marsh",
+    "#tfc:is_salt_marsh",
     "tfc:tidal_flats"
   ]
 }

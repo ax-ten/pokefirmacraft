@@ -1,7 +1,6 @@
 {
   "replace": false,
   "values": [
-      "tfc:badlands",
-      "tfc:inverted_badlands"
+    "#c:is_badlands"
   ]
 }

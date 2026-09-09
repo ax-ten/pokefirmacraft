@@ -1,7 +1,6 @@
 {
   "replace": false,
   "values": [
-    "tfc:shore",
-    "#tfc:tidal"
+    "#c:is_beach"
   ]
 }

@@ -1,11 +1,7 @@
 {
   "replace": false,
   "values": [
-    "tfc:river",
-    "tfc:lake",
-    "tfc:mountain_lake",
-    "tfc:old_mountain_lake",
-    "tfc:plateau_lake",
-    "tfc:volcanic_mountain_lake"
+    "#c:is_lake",
+    "#c:is_river"
   ]
 }

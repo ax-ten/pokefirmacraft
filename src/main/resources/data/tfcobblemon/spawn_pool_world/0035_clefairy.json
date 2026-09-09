@@ -37,7 +37,7 @@
                 "minSkyLight": 0,
                 "maxSkyLight": 7,
                 "biomes": [
-                    "#tfc:highlands"
+                    "tfc:highlands"
                 ]
             },
             "spawnablePositionType": "grounded"

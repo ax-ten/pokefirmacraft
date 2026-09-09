@@ -1,10 +1,9 @@
 {
   "replace": false,
   "values": [
-      "tfc:highlands",
-      "tfc:mountains",
-      "tfc:old_mountains",
-      "tfc:mountain_lake",
-      "tfc:old_mountain_lake"
+    "#c:is_mountain",
+    "tfc:highlands",
+    "tfc:mountain_lake",
+    "tfc:old_mountain_lake"
   ]
 }

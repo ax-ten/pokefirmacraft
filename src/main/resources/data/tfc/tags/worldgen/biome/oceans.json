@@ -1,9 +1,6 @@
 {
   "replace": false,
   "values": [
-    "tfc:ocean", 
-    "tfc:ocean_reef", 
-    "tfc:deep_ocean", 
-    "tfc:deep_ocean_trench"
+    "#c:is_ocean"
   ]
 }
