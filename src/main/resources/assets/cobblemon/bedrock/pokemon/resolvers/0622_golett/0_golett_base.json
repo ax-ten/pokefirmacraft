@@ -1,5 +1,4 @@
 {
-  "replace": true,
   "species": "cobblemon:golett",
   "order": 0,
   "variations": [
@@ -17,7 +16,9 @@
       ]
     },
     {
-      "aspects": ["shiny"],
+      "aspects": [
+        "shiny"
+      ],
       "layers": [
         {
           "name": "color",
@@ -27,7 +28,9 @@
       ]
     },
     {
-      "aspects": ["original"],
+      "aspects": [
+        "original"
+      ],
       "texture": "cobblemon:textures/pokemon/0622_golett/golett.png",
       "layers": [
         {
@@ -38,7 +41,10 @@
       ]
     },
     {
-      "aspects": ["original", "shiny"],
+      "aspects": [
+        "original",
+        "shiny"
+      ],
       "texture": "cobblemon:textures/pokemon/0622_golett/golett_shiny.png",
       "layers": [
         {
@@ -49,60 +55,100 @@
       ]
     },
     {
-      "aspects": ["dye-black"],
+      "aspects": [
+        "dye-black"
+      ],
       "texture": "cobblemon:textures/pokemon/0622_golett/golett_black.png"
     },
     {
-      "aspects": ["dye-blue"],
+      "aspects": [
+        "dye-blue"
+      ],
       "texture": "cobblemon:textures/pokemon/0622_golett/golett_blue.png"
     },
     {
-      "aspects": ["dye-cyan"],
+      "aspects": [
+        "dye-cyan"
+      ],
       "texture": "cobblemon:textures/pokemon/0622_golett/golett_cyan.png"
     },
     {
-      "aspects": ["dye-gray"],
+      "aspects": [
+        "dye-gray"
+      ],
       "texture": "cobblemon:textures/pokemon/0622_golett/golett_gray.png"
     },
     {
-      "aspects": ["dye-green"],
+      "aspects": [
+        "dye-green"
+      ],
       "texture": "cobblemon:textures/pokemon/0622_golett/golett_green.png"
     },
     {
-      "aspects": ["dye-lightblue"],
+      "aspects": [
+        "dye-lightblue"
+      ],
       "texture": "cobblemon:textures/pokemon/0622_golett/golett_lightblue.png"
     },
     {
-      "aspects": ["dye-lime"],
+      "aspects": [
+        "dye-lime"
+      ],
       "texture": "cobblemon:textures/pokemon/0622_golett/golett_lime.png"
     },
     {
-      "aspects": ["dye-magenta"],
+      "aspects": [
+        "dye-magenta"
+      ],
       "texture": "cobblemon:textures/pokemon/0622_golett/golett_magenta.png"
     },
     {
-      "aspects": ["dye-orange"],
+      "aspects": [
+        "dye-orange"
+      ],
       "texture": "cobblemon:textures/pokemon/0622_golett/golett_orange.png"
     },
     {
-      "aspects": ["dye-pink"],
+      "aspects": [
+        "dye-pink"
+      ],
       "texture": "cobblemon:textures/pokemon/0622_golett/golett_pink.png"
     },
     {
-      "aspects": ["dye-purple"],
+      "aspects": [
+        "dye-purple"
+      ],
       "texture": "cobblemon:textures/pokemon/0622_golett/golett_purple.png"
     },
     {
-      "aspects": ["dye-red"],
+      "aspects": [
+        "dye-red"
+      ],
       "texture": "cobblemon:textures/pokemon/0622_golett/golett_red.png"
     },
     {
-      "aspects": ["dye-white"],
+      "aspects": [
+        "dye-white"
+      ],
       "texture": "cobblemon:textures/pokemon/0622_golett/golett_white.png"
     },
     {
-      "aspects": ["dye-yellow"],
+      "aspects": [
+        "dye-yellow"
+      ],
       "texture": "cobblemon:textures/pokemon/0622_golett/golett_yellow.png"
-    } 
+    },
+    {
+      "aspects": [
+        "alpha_eyes"
+      ],
+      "layers": [
+        {
+          "name": "alpha_eyes",
+          "texture": "cobblemon:textures/pokemon/0622_golett/golett_alpha.png",
+          "emissive": true
+        }
+      ]
+    }
   ]
 }

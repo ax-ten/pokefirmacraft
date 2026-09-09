@@ -1,5 +1,4 @@
 {
-  "replace": true,
   "species": "cobblemon:golurk",
   "order": 0,
   "variations": [
@@ -17,7 +16,9 @@
       ]
     },
     {
-      "aspects": ["shiny"],
+      "aspects": [
+        "shiny"
+      ],
       "layers": [
         {
           "name": "color",
@@ -27,7 +28,9 @@
       ]
     },
     {
-      "aspects": ["original"],
+      "aspects": [
+        "original"
+      ],
       "texture": "cobblemon:textures/pokemon/0623_golurk/golurk.png",
       "layers": [
         {
@@ -38,7 +41,10 @@
       ]
     },
     {
-      "aspects": ["original", "shiny"],
+      "aspects": [
+        "original",
+        "shiny"
+      ],
       "texture": "cobblemon:textures/pokemon/0623_golurk/golurk_shiny.png",
       "layers": [
         {
@@ -49,60 +55,100 @@
       ]
     },
     {
-      "aspects": ["dye-black"],
+      "aspects": [
+        "dye-black"
+      ],
       "texture": "cobblemon:textures/pokemon/0623_golurk/golurk_black.png"
     },
     {
-      "aspects": ["dye-blue"],
+      "aspects": [
+        "dye-blue"
+      ],
       "texture": "cobblemon:textures/pokemon/0623_golurk/golurk_blue.png"
     },
     {
-      "aspects": ["dye-cyan"],
+      "aspects": [
+        "dye-cyan"
+      ],
       "texture": "cobblemon:textures/pokemon/0623_golurk/golurk_cyan.png"
     },
     {
-      "aspects": ["dye-gray"],
+      "aspects": [
+        "dye-gray"
+      ],
       "texture": "cobblemon:textures/pokemon/0623_golurk/golurk_gray.png"
     },
     {
-      "aspects": ["dye-green"],
+      "aspects": [
+        "dye-green"
+      ],
       "texture": "cobblemon:textures/pokemon/0623_golurk/golurk_green.png"
     },
     {
-      "aspects": ["dye-lightblue"],
+      "aspects": [
+        "dye-lightblue"
+      ],
       "texture": "cobblemon:textures/pokemon/0623_golurk/golurk_lightblue.png"
     },
     {
-      "aspects": ["dye-lime"],
+      "aspects": [
+        "dye-lime"
+      ],
       "texture": "cobblemon:textures/pokemon/0623_golurk/golurk_lime.png"
     },
     {
-      "aspects": ["dye-magenta"],
+      "aspects": [
+        "dye-magenta"
+      ],
       "texture": "cobblemon:textures/pokemon/0623_golurk/golurk_magenta.png"
     },
     {
-      "aspects": ["dye-orange"],
+      "aspects": [
+        "dye-orange"
+      ],
       "texture": "cobblemon:textures/pokemon/0623_golurk/golurk_orange.png"
     },
     {
-      "aspects": ["dye-pink"],
+      "aspects": [
+        "dye-pink"
+      ],
       "texture": "cobblemon:textures/pokemon/0623_golurk/golurk_pink.png"
     },
     {
-      "aspects": ["dye-purple"],
+      "aspects": [
+        "dye-purple"
+      ],
       "texture": "cobblemon:textures/pokemon/0623_golurk/golurk_purple.png"
     },
     {
-      "aspects": ["dye-red"],
+      "aspects": [
+        "dye-red"
+      ],
       "texture": "cobblemon:textures/pokemon/0623_golurk/golurk_red.png"
     },
     {
-      "aspects": ["dye-white"],
+      "aspects": [
+        "dye-white"
+      ],
       "texture": "cobblemon:textures/pokemon/0623_golurk/golurk_white.png"
     },
     {
-      "aspects": ["dye-yellow"],
+      "aspects": [
+        "dye-yellow"
+      ],
       "texture": "cobblemon:textures/pokemon/0623_golurk/golurk_yellow.png"
-    } 
+    },
+    {
+      "aspects": [
+        "alpha_eyes"
+      ],
+      "layers": [
+        {
+          "name": "alpha_eyes",
+          "texture": "cobblemon:textures/pokemon/0623_golurk/golurk_alpha.png",
+          "emissive": true
+        }
+      ]
+    }
   ]
 }
