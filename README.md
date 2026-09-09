@@ -37,7 +37,11 @@ Il jar finisce in `build/libs/`. Per provare in gioco:
 ```
 
 Cobblemon, TerraFirmaCraft e Kotlin for Forge vengono scaricati automaticamente
-dai maven dichiarati in `build.gradle`.
+dai maven dichiarati in `build.gradle`. Il jar di Cobblemon sta su
+maven.impactdev.net, pesa 143 MB e su connessioni lente il download va in
+timeout: in quel caso conviene scaricarlo a mano (`curl -L -C -`, che riprende
+da dove si era fermato) e metterlo in `~/.m2`, poi lanciare Gradle con un init
+script che aggiunge `mavenLocal()`.
 
 ## Stato del porting
 
