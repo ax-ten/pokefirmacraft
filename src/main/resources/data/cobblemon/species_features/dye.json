@@ -1,8 +1,11 @@
 {
   "type": "choice",
-  "keys": ["dye"],
+  "keys": [
+    "dye"
+  ],
   "default": "none",
   "choices": [
+    "none",
     "white",
     "orange",
     "magenta",
