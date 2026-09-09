@@ -1,22 +1,14 @@
 {
-  "type": "minecraft:crafting_shaped",
+  "type": "minecraft:crafting_shapeless",
   "category": "misc",
-  "pattern": [
-    "a",
-    "m",
-    "b"
-  ],
-  "key": {
-    "a": {
+  "ingredients": [
+    {
       "item": "tfcobblemon:half_black_apricorn"
     },
-    "m": {
-      "item": "tfcobblemon:copper_rustic_mechanism"
-    },
-    "b": {
-      "item": "tfcobblemon:rustic_ball_base"
+    {
+      "item": "tfcobblemon:base_rustic_mechanism"
     }
-  },
+  ],
   "result": {
     "id": "cobblemon:ancient_slate_ball",
     "count": 1
