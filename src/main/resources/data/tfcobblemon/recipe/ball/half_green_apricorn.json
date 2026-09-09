@@ -4,6 +4,9 @@
   "ingredients": [
     {
       "item": "cobblemon:green_apricorn"
+    },
+    {
+      "tag": "c:tools/knife"
     }
   ],
   "result": {

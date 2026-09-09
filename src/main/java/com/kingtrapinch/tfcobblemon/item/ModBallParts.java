@@ -31,6 +31,14 @@ public final class ModBallParts {
     public static final DeferredItem<Item> COPPER_RUSTIC_MECHANISM =
             ITEMS.registerSimpleItem("copper_rustic_mechanism");
 
+    /** Tumblestone scheggiata al knapping: e' la molla di scatto della ball. */
+    public static final DeferredItem<Item> CUT_TUMBLESTONE =
+            ITEMS.registerSimpleItem("cut_tumblestone");
+
+    /** Ciotola piu' tumblestone scheggiata: il cuore di ogni ball rustic. */
+    public static final DeferredItem<Item> BASE_RUSTIC_MECHANISM =
+            ITEMS.registerSimpleItem("base_rustic_mechanism");
+
     /**
      * TFC macina solo minerali, mai leghe, quindi la polvere di black bronze non
      * esiste: serve a colorare il vetro delle ball leggere di tier alto.

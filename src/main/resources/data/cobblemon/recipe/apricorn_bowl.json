@@ -1,19 +1,7 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "XYX",
-    " X "
-  ],
-  "key": {
-    "X": {
-      "tag": "cobblemon:apricorns"
-    },
-    "Y": {
-      "item": "tfc:glue"
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:false"
     }
-  },
-  "result": {
-    "id": "minecraft:bowl",
-    "count": 3
-  }
+  ]
 }

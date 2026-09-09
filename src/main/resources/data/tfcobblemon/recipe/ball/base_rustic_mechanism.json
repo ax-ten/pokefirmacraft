@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "minecraft:bowl"
+    },
+    {
+      "item": "tfcobblemon:cut_tumblestone"
+    }
+  ],
+  "result": {
+    "id": "tfcobblemon:base_rustic_mechanism",
+    "count": 1
+  }
+}

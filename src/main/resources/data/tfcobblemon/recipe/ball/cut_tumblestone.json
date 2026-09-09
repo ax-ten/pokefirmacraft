@@ -1,0 +1,18 @@
+{
+  "type": "tfc:knapping",
+  "knapping_type": "tfc:rock",
+  "pattern": [
+    "  #  ",
+    " ### ",
+    "#####",
+    " ### ",
+    "  #  "
+  ],
+  "ingredient": {
+    "item": "cobblemon:tumblestone"
+  },
+  "result": {
+    "id": "tfcobblemon:cut_tumblestone",
+    "count": 1
+  }
+}
