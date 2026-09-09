@@ -1,15 +1,15 @@
 # TFCobblemon
 
-Mod di integrazione di **Cobblemon** nella progressione di **TerraFirmaCraft** e
-GregTech, pensata per girare dentro Gregnautics Continued (MC 1.21.1, NeoForge).
+Mod di integrazione di **Cobblemon** nella progressione di **TerraFirmaCraft**,
+portata a MC 1.21.1 / NeoForge.
 
-Il progetto nasce come porting di
-[TFCobblemon](https://github.com/kingtrapinch/tfcobblemon) di KingTrapinch, che
-copriva TFC 3 + Cobblemon 1.5 su Forge 1.20.1. La storia git parte dal suo
-repository, e la licenza resta la GPL-3.0 dell'originale.
+E' un fork della [TFCobblemon](https://github.com/kingtrapinch/tfcobblemon) di
+KingTrapinch, che si fermava a TFC 3 + Cobblemon 1.5 su Forge 1.20.1. Nome,
+modid e package restano i suoi; la storia git parte dal suo repository e la
+licenza resta la GPL-3.0 dell'originale.
 
-Il documento di design del progetto e' in
-[`pokefirmacraft-design-doc.md`](pokefirmacraft-design-doc.md).
+Da qui parte Pokefirmacraft, l'integrazione con Gregnautics Continued descritta
+in [`pokefirmacraft-design-doc.md`](pokefirmacraft-design-doc.md).
 
 ## Cosa c'e' dentro (ereditato da TFCobblemon)
 
@@ -23,7 +23,8 @@ Il documento di design del progetto e' in
 
 ## Compilare
 
-Serve un **JDK 21** (NeoForge 1.21.1 non gira su versioni piu' recenti):
+NeoForge 1.21.1 vuole Java 21. Non serve averlo installato: Gradle se lo
+procura da solo grazie a `gradle/gradle-daemon-jvm.properties`.
 
 ```
 ./gradlew build

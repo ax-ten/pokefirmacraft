@@ -1,14 +1,13 @@
 modLoader = "javafml"
 loaderVersion = "${loader_version_range}"
 license = "${mod_license}"
-issueTrackerURL = "https://github.com/ax-ten/tfcobblemon/issues"
 
 [[mods]]
     modId = "${mod_id}"
     version = "${mod_version}"
     displayName = "${mod_name}"
     authors = "${mod_authors}"
-    credits = "Fork di TFCobblemon di KingTrapinch (GPL-3.0)"
+    credits = "Mod originale di KingTrapinch, porting a 1.21.1 di Axten"
     description = '''${mod_description}'''
 
 [[mixins]]
