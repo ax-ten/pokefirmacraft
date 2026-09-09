@@ -48,6 +48,8 @@ Mod di integrazione di **Cobblemon** dentro **Gregnautics Continued** (porting 1
 - Vincolo di cattura Pasture Block/PC (non presente in TFCobblemon originale) —
   vedi sezione 6: **TFCobblemon lo contraddice attivamente**, non basta aggiungerlo
 - Addon leggendari (Myths and Legends)
+- **"Siediti e aspetta"**: Pokémon tenuti nel mondo fuori dal party, riusando il
+  tethering del Pasture Block (vedi sezione 6.2)
 - **Redesign delle ricette Poké Ball in chiave Greg** (vedi sezione 5): quelle
   ereditate da TFCobblemon sono crafting manuale a passo singolo e non rispettano
   il principio di profondità della sezione 1
@@ -215,6 +217,34 @@ crediti, sorgente disponibile — ma le due basi di codice non convergono più.
 Da rivedere di conseguenza: la ricetta del PC (ricollocata in Electrical Age), quella
 del Pasture Block (Bronze Age), e il comportamento quando il giocatore non ha né
 l'uno né l'altro.
+
+### 6.2 Tenere i Pokémon senza catturarli — "siediti e aspetta"
+
+Idea: trattare il Pokémon più come il cane di Minecraft che come un oggetto in tasca.
+Gli si dice di sedersi e aspettare, e questo lo **toglie temporaneamente dalla squadra**
+lasciandolo nel mondo, dove lo si ritrova.
+
+Non va inventato da zero: `PokemonEntity` ha già un campo **`tethering`**, il legame che
+usa il Pasture Block per tenere un Pokémon nel mondo fuori dal party. Il "siediti" è lo
+stesso meccanismo legato a una posizione invece che a un blocco.
+
+Perché si incastra col vincolo della sezione 6: se il primo Pokémon si ottiene e si
+mantiene *senza* catturarlo, il gate su Pasture Block e PC smette di essere una
+punizione nell'early game e diventa la porta d'accesso alla cattura vera.
+
+Da decidere e da fare:
+
+- **Starter senza Poké Ball**: in Cobblemon ogni Pokémon porta una `caughtBall`, ma è un
+  dato di provenienza, non un oggetto nell'inventario. Da verificare in gioco che la
+  schermata iniziale non regali ball utilizzabili. Esteticamente la **Rustic Origin Ball**
+  è la provenienza più adatta per lo starter — è solo visivo, ma racconta la cosa giusta
+- **Interfaccia**: nascondere gli slot vuoti della squadra finché le ball non sono
+  sbloccate, così è evidente che ancora non si cattura invece di sembrare un bug
+- **Persistenza**: cosa succede al legame se il chunk si scarica, se il Pokémon muore, se
+  il giocatore è lontano
+
+Costo: **codice Java**, non datapack. È il pezzo che cambia di più il rapporto fra
+giocatore e Pokémon, quindi vale la pena prototiparlo presto.
 
 ## 7. Alpha Pokémon e leggendari
 
