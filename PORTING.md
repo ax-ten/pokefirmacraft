@@ -46,6 +46,27 @@ Cobblemon 1.5. Destinazione: NeoForge 1.21.1 + TFC 4.2.10 + Cobblemon 1.8.0.
   `minecraft:rotten_compost` -> `tfc:rotten_compost`, `tfc:gran_feline` ->
   `tfc:food/gran_feline`, i native copper sotto `tfc:ore/`
 
+## Gli script KubeJS non sono mai stati eseguiti
+
+Provando con KubeJS 7 e Rhino nel runtime di sviluppo, il log dice
+`Loaded 1/1 KubeJS server scripts` — il suo esempio. I tre script che la mod si
+portava in `data/tfcobblemon/kubejs/server_scripts/` non venivano nemmeno
+letti: KubeJS risolve i percorsi con `KubeJSPaths`, che punta alla cartella
+`kubejs/` dell'istanza, non dentro i jar. Erano codice morto gia' in
+TFCobblemon, e con essi 16 dei 18 item della mod erano inottenibili.
+
+Ora quella roba e' dove deve stare:
+
+- le 17 ricette vaso smaltato + Life Orb -> vaso Golett sono normali ricette
+  shapeless in `data/tfcobblemon/recipe/golett/`
+- il click destro sul vaso, la carica della Life Orb sui Pokemon abbattuti e il
+  respiro in acqua salata sono codice Java su eventi NeoForge
+- la mod non dipende piu' da KubeJS per niente
+
+Resta una stranezza ereditata: solo i vasi smaltati restituiscono il Blank Orb
+e fanno il rumore di ceramica rotta, quello liscio no. Sembra una svista
+dell'originale, l'ho lasciata com'era.
+
 ## Verificato
 
 `./gradlew runServer` arriva a `Done`: 8074 ricette caricate, nessun errore di
@@ -59,8 +80,6 @@ tag `#tfc:rock/*`, `#tfc:farmland`, `#tfc:fruit_tree_branch`.
 
 ## Da verificare in gioco
 
-- **Script KubeJS**: `entity.fullNBT.Pokemon.Species` e `EntityEvents.death` su
-  `cobblemon:pokemon` non sono stati provati contro KubeJS 7 e Cobblemon 1.8.
 - **Deposit**: in TFC 4 sluice e battea condividono lo stesso sistema, quindi
   rooted dirt e muddy roots ora si possono anche setacciare a mano, non solo
   nella sluice come prima.

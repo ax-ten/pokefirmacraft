@@ -1,7 +1,15 @@
 package com.kingtrapinch.tfcobblemon.item.custom;
 
 import com.kingtrapinch.tfcobblemon.TFCobblemon;
+import com.kingtrapinch.tfcobblemon.util.ModSounds;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -38,6 +46,24 @@ public class LifeOrbItem extends Item {
     @Override
     public boolean isFoil(ItemStack stack) {
         return true;
+    }
+
+    @Override
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+        final ItemStack held = player.getItemInHand(hand);
+        if (level.isClientSide || held.getDamageValue() > 0) {
+            return InteractionResultHolder.pass(held);
+        }
+
+        final Item lifeOrb = BuiltInRegistries.ITEM.get(ResourceLocation.parse("cobblemon:life_orb"));
+        if (lifeOrb == Items.AIR) {
+            return InteractionResultHolder.pass(held);
+        }
+
+        final ItemStack finished = new ItemStack(lifeOrb);
+        player.setItemInHand(hand, finished);
+        ModSounds.playAt(level, player, "minecraft:entity.allay.ambient_without_item");
+        return InteractionResultHolder.consume(finished);
     }
 
     public static final DeferredItem<Item> LIFE_ORB_CHARGING = ITEMS.register("life_orb_charging", LifeOrbItem::new);

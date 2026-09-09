@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "tfc:ceramic/brown_glazed_vessel"
+    },
+    {
+      "item": "cobblemon:life_orb"
+    }
+  ],
+  "result": {
+    "id": "tfcobblemon:golett",
+    "count": 1
+  }
+}
