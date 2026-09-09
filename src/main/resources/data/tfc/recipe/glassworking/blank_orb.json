@@ -1,10 +1,10 @@
 {
   "type": "tfc:glassworking",
   "operations": [
-    "amethyst",
-    "blow",
-    "roll",
-    "pinch"
+    "tfc:amethyst",
+    "tfc:blow",
+    "tfc:roll",
+    "tfc:pinch"
   ],
   "batch": {
     "tag": "tfc:glass_batches"

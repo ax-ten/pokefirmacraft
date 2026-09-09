@@ -85,6 +85,7 @@ dependencies {
     runtimeOnly "com.cobblemon:neoforge:${cobblemon_version}"
     runtimeOnly "maven.modrinth:terrafirmacraft:${tfc_version}"
     runtimeOnly "thedarkcolour:kotlinforforge-neoforge:${kff_version}"
+    runtimeOnly "maven.modrinth:patchouli:${patchouli_version}"
 }
 
 tasks.named('processResources', ProcessResources).configure {

@@ -1,9 +1,9 @@
 {
   "replace": false,
   "values": [
-    "#tfc:rock/raw",
-    "#tfc:rock/hardened",
-    "#tfc:rock/ores",
+    "#c:stones/raw",
+    "#c:stones/hardened",
+    "#c:ores",
     "tfc:rock/cobble/granite",
     "tfc:rock/gravel/granite",
     "tfc:rock/mossy_cobble/granite",
