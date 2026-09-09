@@ -1,31 +1,32 @@
 {
-  "creativetab.tfcobblemon_tab" : "TFC-Cobblemon Items",
-
-  "item.tfcobblemon.blank_orb" : "Blank Orb",
-  "tooltip.tfcobblemon.blank_orb":"A smooth glass orb. Right-click in hand to begin charging into Life Orb",
-
+  "creativetab.tfcobblemon_tab": "TFC-Cobblemon Items",
+  "item.tfcobblemon.blank_orb": "Blank Orb",
+  "tooltip.tfcobblemon.blank_orb": "A smooth glass orb. Right-click in hand to begin charging into Life Orb",
   "item.tfcobblemon.life_orb_charging": "Blank Orb (Charging)",
   "tooltip.tfcobblemon.life_orb_charging": "Kill 100 Pokemon to charge up orb. Once fully charged, right-click in hand to activate into Life Orb",
-
   "item.tfcobblemon.raw_protector": "Raw Protector",
-
-  "tooltip.tfcobblemon.golett" : "A suspiciously life-like vessel... Did it just move?",
-
-  "item.tfcobblemon.golett" : "Suspicious Vessel",
-  "item.tfcobblemon.golett_black" : "Suspicious Black Vessel",
-  "item.tfcobblemon.golett_blue" : "Suspicious Blue Vessel",
-  "item.tfcobblemon.golett_cyan" : "Suspicious Cyan Vessel",
-  "item.tfcobblemon.golett_gray" : "Suspicious Gray Vessel",
-  "item.tfcobblemon.golett_green" : "Suspicious Green Vessel",
-  "item.tfcobblemon.golett_lightblue" : "Suspicious Light Blue Vessel",
-  "item.tfcobblemon.golett_lime" : "Suspicious Lime Vessel",
-  "item.tfcobblemon.golett_magenta" : "Suspicious Magenta Vessel",
-  "item.tfcobblemon.golett_orange" : "Suspicious Orange Vessel",
-  "item.tfcobblemon.golett_pink" : "Suspicious Pink Vessel",
-  "item.tfcobblemon.golett_purple" : "Suspicious Purple Vessel",
-  "item.tfcobblemon.golett_red" : "Suspicious Red Vessel",
-  "item.tfcobblemon.golett_white" : "Suspicious White Vessel",
-  "item.tfcobblemon.golett_yellow" : "Suspicious Yellow Vessel"
-
-
+  "tooltip.tfcobblemon.golett": "A suspiciously life-like vessel... Did it just move?",
+  "item.tfcobblemon.golett": "Suspicious Vessel",
+  "item.tfcobblemon.golett_black": "Suspicious Black Vessel",
+  "item.tfcobblemon.golett_blue": "Suspicious Blue Vessel",
+  "item.tfcobblemon.golett_cyan": "Suspicious Cyan Vessel",
+  "item.tfcobblemon.golett_gray": "Suspicious Gray Vessel",
+  "item.tfcobblemon.golett_green": "Suspicious Green Vessel",
+  "item.tfcobblemon.golett_lightblue": "Suspicious Light Blue Vessel",
+  "item.tfcobblemon.golett_lime": "Suspicious Lime Vessel",
+  "item.tfcobblemon.golett_magenta": "Suspicious Magenta Vessel",
+  "item.tfcobblemon.golett_orange": "Suspicious Orange Vessel",
+  "item.tfcobblemon.golett_pink": "Suspicious Pink Vessel",
+  "item.tfcobblemon.golett_purple": "Suspicious Purple Vessel",
+  "item.tfcobblemon.golett_red": "Suspicious Red Vessel",
+  "item.tfcobblemon.golett_white": "Suspicious White Vessel",
+  "item.tfcobblemon.golett_yellow": "Suspicious Yellow Vessel",
+  "tag.item.tfcobblemon.gemstones": "Gemstones",
+  "tag.item.tfcobblemon.copper_powder": "Copper Powders",
+  "tag.item.cobblemon.bismuth_bronze_poke_ball_materials": "Bismuth Bronze Poké Ball Materials",
+  "tag.item.cobblemon.black_bronze_poke_ball_materials": "Black Bronze Poké Ball Materials",
+  "tag.item.cobblemon.gold_poke_ball_materials": "Gold Poké Ball Materials",
+  "tag.item.cobblemon.silver_poke_ball_materials": "Silver Poké Ball Materials",
+  "tag.item.cobblemon.tier_2_ancient_ball_materials": "Tier 2 Ancient Ball Materials",
+  "tag.item.cobblemon.tier_3_ancient_ball_materials": "Tier 3 Ancient Ball Materials"
 }
