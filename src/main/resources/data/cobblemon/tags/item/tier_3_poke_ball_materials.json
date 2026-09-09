@@ -1,6 +1,10 @@
 {
   "replace": true,
   "values": [
-    "tfc:metal/sheet/wrought_iron"
+    "tfc:metal/sheet/wrought_iron",
+    {
+      "id": "#c:plates/wrought_iron",
+      "required": false
+    }
   ]
 }

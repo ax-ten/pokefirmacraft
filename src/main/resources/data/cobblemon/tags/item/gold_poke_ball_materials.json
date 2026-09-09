@@ -2,6 +2,14 @@
   "replace": true,
   "values": [
     "tfc:metal/sheet/gold",
-    "tfc:metal/sheet/rose_gold"
+    "tfc:metal/sheet/rose_gold",
+    {
+      "id": "#c:plates/gold",
+      "required": false
+    },
+    {
+      "id": "#c:plates/rose_gold",
+      "required": false
+    }
   ]
 }

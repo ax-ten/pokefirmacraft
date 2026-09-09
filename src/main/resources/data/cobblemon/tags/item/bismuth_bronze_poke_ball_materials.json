@@ -1,6 +1,10 @@
 {
   "replace": true,
   "values": [
-    "tfc:metal/sheet/bismuth_bronze"
+    "tfc:metal/sheet/bismuth_bronze",
+    {
+      "id": "#c:plates/bismuth_bronze",
+      "required": false
+    }
   ]
 }

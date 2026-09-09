@@ -3,6 +3,18 @@
   "values": [
     "tfc:metal/sheet/bronze",
     "tfc:metal/sheet/bismuth_bronze",
-    "tfc:metal/sheet/black_bronze"
+    "tfc:metal/sheet/black_bronze",
+    {
+      "id": "#c:plates/bronze",
+      "required": false
+    },
+    {
+      "id": "#c:plates/bismuth_bronze",
+      "required": false
+    },
+    {
+      "id": "#c:plates/black_bronze",
+      "required": false
+    }
   ]
 }

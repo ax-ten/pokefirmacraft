@@ -1,6 +1,10 @@
 {
   "replace": true,
   "values": [
-    "tfc:metal/sheet/black_bronze"
+    "tfc:metal/sheet/black_bronze",
+    {
+      "id": "#c:plates/black_bronze",
+      "required": false
+    }
   ]
 }

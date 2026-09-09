@@ -2,6 +2,14 @@
   "replace": true,
   "values": [
     "tfc:metal/sheet/silver",
-    "tfc:metal/sheet/sterling_silver"
+    "tfc:metal/sheet/sterling_silver",
+    {
+      "id": "#c:plates/silver",
+      "required": false
+    },
+    {
+      "id": "#c:plates/sterling_silver",
+      "required": false
+    }
   ]
 }

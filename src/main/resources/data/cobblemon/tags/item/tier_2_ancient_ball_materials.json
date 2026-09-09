@@ -4,6 +4,22 @@
     "tfc:metal/ingot/copper",
     "tfc:metal/ingot/bronze",
     "tfc:metal/ingot/bismuth_bronze",
-    "tfc:metal/ingot/black_bronze"
+    "tfc:metal/ingot/black_bronze",
+    {
+      "id": "#c:ingots/copper",
+      "required": false
+    },
+    {
+      "id": "#c:ingots/bronze",
+      "required": false
+    },
+    {
+      "id": "#c:ingots/bismuth_bronze",
+      "required": false
+    },
+    {
+      "id": "#c:ingots/black_bronze",
+      "required": false
+    }
   ]
 }

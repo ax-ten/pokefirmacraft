@@ -1,6 +1,10 @@
 {
   "replace": true,
   "values": [
-    "tfc:metal/ingot/cast_iron"
+    "tfc:metal/ingot/cast_iron",
+    {
+      "id": "#c:ingots/cast_iron",
+      "required": false
+    }
   ]
 }
