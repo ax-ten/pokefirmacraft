@@ -10,7 +10,6 @@
                 "natural"
             ],
             "type": "pokemon",
-            "context": "grounded",
             "bucket": "common",
             "level": "5-20",
             "weight": 10.0,
@@ -21,7 +20,8 @@
                 "biomes": [
                     "#tfc:high_altitude"
                 ]
-            }
+            },
+            "spawnablePositionType": "grounded"
         },
         {
             "id": "clefairy-tfc-2",
@@ -30,17 +30,17 @@
                 "rocky"
             ],
             "type": "pokemon",
-            "context": "grounded",
             "bucket": "common",
             "level": "25-45",
             "weight": 30.0,
-            "condition": {                
+            "condition": {
                 "minSkyLight": 0,
                 "maxSkyLight": 7,
                 "biomes": [
                     "#tfc:highlands"
                 ]
-            }
+            },
+            "spawnablePositionType": "grounded"
         }
     ]
 }

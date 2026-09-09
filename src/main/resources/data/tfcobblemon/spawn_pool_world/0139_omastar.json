@@ -7,20 +7,20 @@
             "id": "omastar-tfc-1",
             "pokemon": "omastar",
             "presets": [
-                "underwater"
+                "water"
             ],
             "type": "pokemon",
-            "context": "grounded",
             "bucket": "uncommon",
             "level": "35-55",
             "weight": 10.0,
-            "condition": {                
+            "condition": {
                 "minSkyLight": 8,
                 "maxSkyLight": 15,
                 "biomes": [
                     "#tfc:tidal"
                 ]
-            }
+            },
+            "spawnablePositionType": "grounded"
         }
     ]
 }

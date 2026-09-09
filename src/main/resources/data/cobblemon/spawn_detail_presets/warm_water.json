@@ -1,11 +1,11 @@
 {
-  "context": "surface",
   "condition": {
     "fluid": "#minecraft:water"
   },
   "anticondition": {
     "neededNearbyBlocks": [
-        "#cobblemon:cold"
+      "#cobblemon:cold"
     ]
-}
+  },
+  "spawnablePositionType": "surface"
 }

@@ -10,34 +10,34 @@
                 "seasonal"
             ],
             "type": "pokemon",
-            "context": "grounded",
             "bucket": "uncommon",
             "level": "30-55",
             "weight": 10.0,
-            "condition": {                
+            "condition": {
                 "minSkyLight": 8,
                 "maxSkyLight": 15,
                 "biomes": [
                     "#tfc:tidal"
                 ]
-            }
+            },
+            "spawnablePositionType": "grounded"
         },
         {
             "id": "cradily-tfc-2",
             "pokemon": "cradily",
             "presets": [
-                "underwater"
+                "water"
             ],
             "type": "pokemon",
-            "context": "submerged",
             "bucket": "common",
             "level": "45-60",
             "weight": 10.0,
-            "condition": {                
+            "condition": {
                 "biomes": [
                     "tfc:ocean_reef"
                 ]
-            }
+            },
+            "spawnablePositionType": "submerged"
         }
     ]
 }

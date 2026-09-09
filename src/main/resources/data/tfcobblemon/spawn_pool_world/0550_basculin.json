@@ -7,20 +7,20 @@
             "id": "basculin-tfc-1",
             "pokemon": "basculin striped=white",
             "presets": [
-                "underwater"
+                "water"
             ],
             "type": "pokemon",
-            "context": "submerged",
             "bucket": "common",
             "level": "25-35",
             "weight": 10.0,
-            "condition": {                
+            "condition": {
                 "canSeeSky": true,
                 "biomes": [
                     "#tfc:oceans",
                     "#tfc:freshwater"
                 ]
-            }
+            },
+            "spawnablePositionType": "submerged"
         }
     ]
 }

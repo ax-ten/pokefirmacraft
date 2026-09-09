@@ -10,17 +10,17 @@
                 "ice"
             ],
             "type": "pokemon",
-            "context": "grounded",
             "bucket": "uncommon",
             "level": "50-75",
             "weight": 100.0,
-            "condition": {                
+            "condition": {
                 "minSkyLight": 8,
                 "maxSkyLight": 15,
                 "biomes": [
                     "#tfc:oceans"
                 ]
-            }
+            },
+            "spawnablePositionType": "grounded"
         },
         {
             "id": "avalugg-tfc-2",
@@ -29,17 +29,17 @@
                 "cold_water"
             ],
             "type": "pokemon",
-            "context": "grounded",
             "bucket": "uncommon",
             "level": "50-75",
             "weight": 100.0,
-            "condition": {                
+            "condition": {
                 "minSkyLight": 8,
                 "maxSkyLight": 15,
                 "biomes": [
                     "#tfc:oceans"
                 ]
-            }
+            },
+            "spawnablePositionType": "grounded"
         },
         {
             "id": "avalugg-tfc-3",
@@ -48,17 +48,17 @@
                 "cold"
             ],
             "type": "pokemon",
-            "context": "grounded",
             "bucket": "uncommon",
             "level": "20-40",
             "weight": 50.0,
-            "condition": {                
+            "condition": {
                 "minSkyLight": 8,
                 "maxSkyLight": 15,
                 "biomes": [
                     "#tfc:shores"
                 ]
-            }
+            },
+            "spawnablePositionType": "grounded"
         }
     ]
 }

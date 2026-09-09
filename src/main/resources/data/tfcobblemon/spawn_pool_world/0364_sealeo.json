@@ -10,7 +10,6 @@
                 "seasonal"
             ],
             "type": "pokemon",
-            "context": "grounded",
             "bucket": "common",
             "level": "25-50",
             "weight": 10.0,
@@ -20,7 +19,8 @@
                 "biomes": [
                     "tfc:shore"
                 ]
-            }
+            },
+            "spawnablePositionType": "grounded"
         },
         {
             "id": "sealeo-tfc-2",
@@ -29,7 +29,6 @@
                 "ice"
             ],
             "type": "pokemon",
-            "context": "grounded",
             "bucket": "common",
             "level": "35-50",
             "weight": 50.0,
@@ -39,7 +38,8 @@
                 "biomes": [
                     "#tfc:oceans"
                 ]
-            }
+            },
+            "spawnablePositionType": "grounded"
         }
     ]
 }

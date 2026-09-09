@@ -10,7 +10,6 @@
                 "cold"
             ],
             "type": "pokemon",
-            "context": "grounded",
             "bucket": "uncommon",
             "level": "40-60",
             "weight": 50.0,
@@ -22,7 +21,8 @@
                     "#tfc:common",
                     "tfc:badlands"
                 ]
-            }
+            },
+            "spawnablePositionType": "grounded"
         }
     ]
 }

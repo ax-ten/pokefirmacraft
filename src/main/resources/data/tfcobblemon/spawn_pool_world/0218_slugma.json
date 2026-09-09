@@ -7,10 +7,9 @@
             "id": "slugma-tfc-1",
             "pokemon": "slugma",
             "presets": [
-                "lava_surface"
+                "lava"
             ],
             "type": "pokemon",
-            "context": "grounded",
             "bucket": "common",
             "level": "15-30",
             "weight": 10.0,
@@ -18,7 +17,8 @@
                 "biomes": [
                     "#tfc:all"
                 ]
-            }
+            },
+            "spawnablePositionType": "surface"
         }
     ]
 }

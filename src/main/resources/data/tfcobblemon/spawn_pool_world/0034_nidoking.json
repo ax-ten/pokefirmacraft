@@ -10,7 +10,6 @@
                 "seasonal"
             ],
             "type": "pokemon",
-            "context": "grounded",
             "bucket": "uncommon",
             "level": "40-60",
             "weight": 10.0,
@@ -20,7 +19,8 @@
                 "biomes": [
                     "#tfc:mid_altitude"
                 ]
-            }
+            },
+            "spawnablePositionType": "grounded"
         }
     ]
 }

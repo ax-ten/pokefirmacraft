@@ -7,21 +7,21 @@
             "id": "wailord-tfc-1",
             "pokemon": "wailord",
             "presets": [
-                "underwater"
+                "water"
             ],
             "type": "pokemon",
-            "context": "submerged",
             "bucket": "uncommon",
             "level": "40-65",
             "weight": 10.0,
-            "condition": {                
+            "condition": {
                 "canSeeSky": true,
                 "biomes": [
-                    "tfc:ocean", 
-                    "tfc:deep_ocean", 
+                    "tfc:ocean",
+                    "tfc:deep_ocean",
                     "tfc:deep_ocean_trench"
                 ]
-            }
+            },
+            "spawnablePositionType": "submerged"
         }
     ]
 }

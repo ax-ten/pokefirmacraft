@@ -7,18 +7,18 @@
             "id": "corsola-tfc-2",
             "pokemon": "corsola",
             "presets": [
-                "underwater"
+                "water"
             ],
             "type": "pokemon",
-            "context": "grounded",
             "bucket": "common",
             "level": "5-35",
             "weight": 30.0,
-            "condition": {                
+            "condition": {
                 "biomes": [
                     "tfc:ocean_reef"
                 ]
-            }
+            },
+            "spawnablePositionType": "grounded"
         }
     ]
 }

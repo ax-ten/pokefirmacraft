@@ -10,15 +10,15 @@
                 "ice"
             ],
             "type": "pokemon",
-            "context": "grounded",
             "bucket": "common",
             "level": "20-40",
             "weight": 100.0,
-            "condition": {                
+            "condition": {
                 "biomes": [
                     "#tfc:all"
                 ]
-            }
+            },
+            "spawnablePositionType": "grounded"
         },
         {
             "id": "bergmite-tfc-2",
@@ -27,17 +27,17 @@
                 "cold_water"
             ],
             "type": "pokemon",
-            "context": "grounded",
             "bucket": "common",
             "level": "20-40",
             "weight": 100.0,
-            "condition": {                
+            "condition": {
                 "minSkyLight": 8,
                 "maxSkyLight": 15,
                 "biomes": [
                     "#tfc:all"
                 ]
-            }
+            },
+            "spawnablePositionType": "grounded"
         },
         {
             "id": "bergmite-tfc-3",
@@ -46,17 +46,17 @@
                 "cold"
             ],
             "type": "pokemon",
-            "context": "grounded",
             "bucket": "common",
             "level": "20-40",
             "weight": 30.0,
-            "condition": {                
+            "condition": {
                 "minSkyLight": 8,
                 "maxSkyLight": 15,
                 "biomes": [
                     "#tfc:shores"
                 ]
-            }
+            },
+            "spawnablePositionType": "grounded"
         },
         {
             "id": "bergmite-tfc-4",
@@ -65,17 +65,17 @@
                 "cold"
             ],
             "type": "pokemon",
-            "context": "grounded",
             "bucket": "common",
             "level": "20-40",
             "weight": 100.0,
-            "condition": {                
+            "condition": {
                 "minSkyLight": 8,
                 "maxSkyLight": 15,
                 "biomes": [
                     "#tfc:freshwater"
                 ]
-            }
+            },
+            "spawnablePositionType": "grounded"
         }
     ]
 }

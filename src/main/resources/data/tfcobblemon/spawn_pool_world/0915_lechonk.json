@@ -10,7 +10,6 @@
                 "natural"
             ],
             "type": "pokemon",
-            "context": "grounded",
             "bucket": "common",
             "level": "5-20",
             "weight": 10.0,
@@ -21,7 +20,8 @@
                 "biomes": [
                     "#tfc:common"
                 ]
-            }
+            },
+            "spawnablePositionType": "grounded"
         }
     ]
 }

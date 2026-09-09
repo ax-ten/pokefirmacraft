@@ -10,17 +10,17 @@
                 "cold"
             ],
             "type": "pokemon",
-            "context": "grounded",
             "bucket": "common",
             "level": "20-50",
             "weight": 50.0,
-            "condition": {                
+            "condition": {
                 "minSkyLight": 8,
                 "maxSkyLight": 15,
                 "biomes": [
                     "#tfc:shores"
                 ]
-            }
+            },
+            "spawnablePositionType": "grounded"
         },
         {
             "id": "eiscue-tfc-2",
@@ -29,17 +29,17 @@
                 "ice"
             ],
             "type": "pokemon",
-            "context": "grounded",
             "bucket": "common",
             "level": "20-50",
             "weight": 50.0,
-            "condition": {                
+            "condition": {
                 "minSkyLight": 8,
                 "maxSkyLight": 15,
                 "biomes": [
                     "#tfc:shores"
                 ]
-            }
+            },
+            "spawnablePositionType": "grounded"
         },
         {
             "id": "eiscue-tfc-3",
@@ -48,17 +48,17 @@
                 "cold_water"
             ],
             "type": "pokemon",
-            "context": "grounded",
             "bucket": "common",
             "level": "20-50",
             "weight": 50.0,
-            "condition": {                
+            "condition": {
                 "minSkyLight": 8,
                 "maxSkyLight": 15,
                 "biomes": [
                     "#tfc:shores"
                 ]
-            }
+            },
+            "spawnablePositionType": "grounded"
         }
     ]
 }

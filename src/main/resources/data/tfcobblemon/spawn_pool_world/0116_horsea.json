@@ -7,19 +7,19 @@
             "id": "horsea-tfc-1",
             "pokemon": "horsea",
             "presets": [
-                "underwater"
+                "water"
             ],
             "type": "pokemon",
-            "context": "submerged",
             "bucket": "common",
             "level": "25-35",
             "weight": 10.0,
-            "condition": {                
+            "condition": {
                 "canSeeSky": true,
                 "biomes": [
                     "#tfc:oceans"
                 ]
-            }
+            },
+            "spawnablePositionType": "submerged"
         }
     ]
 }

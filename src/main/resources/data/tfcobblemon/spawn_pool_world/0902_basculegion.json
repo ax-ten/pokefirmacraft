@@ -7,10 +7,9 @@
             "id": "basculegion-tfc-1",
             "pokemon": "basculegion",
             "presets": [
-                "underwater"
+                "water"
             ],
             "type": "pokemon",
-            "context": "submerged",
             "bucket": "common",
             "level": "44-55",
             "weight": 10.0,
@@ -19,7 +18,8 @@
                 "biomes": [
                     "#tfc:oceans"
                 ]
-            }
+            },
+            "spawnablePositionType": "submerged"
         }
     ]
 }

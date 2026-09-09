@@ -10,7 +10,6 @@
                 "rocky"
             ],
             "type": "pokemon",
-            "context": "grounded",
             "bucket": "uncommon",
             "level": "15-30",
             "weight": 10.0,
@@ -19,7 +18,8 @@
                 "biomes": [
                     "#tfc:common"
                 ]
-            }
+            },
+            "spawnablePositionType": "grounded"
         },
         {
             "id": "sableye-tfc-2",
@@ -28,17 +28,17 @@
                 "rocky"
             ],
             "type": "pokemon",
-            "context": "grounded",
             "bucket": "common",
             "level": "25-45",
             "weight": 10.0,
-            "condition": {                
+            "condition": {
                 "minSkyLight": 0,
                 "maxSkyLight": 7,
                 "biomes": [
                     "#tfc:all"
                 ]
-            }
+            },
+            "spawnablePositionType": "grounded"
         }
     ]
 }

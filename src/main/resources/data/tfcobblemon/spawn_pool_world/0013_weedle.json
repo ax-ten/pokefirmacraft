@@ -10,7 +10,6 @@
                 "seasonal"
             ],
             "type": "pokemon",
-            "context": "grounded",
             "bucket": "common",
             "level": "5-20",
             "weight": 10.0,
@@ -22,7 +21,8 @@
                     "#tfc:common",
                     "#tfc:badlands"
                 ]
-            }
+            },
+            "spawnablePositionType": "grounded"
         }
     ]
 }

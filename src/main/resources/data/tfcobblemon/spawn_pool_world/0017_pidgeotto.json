@@ -10,7 +10,6 @@
                 "central-seasonal"
             ],
             "type": "pokemon",
-            "context": "grounded",
             "bucket": "common",
             "level": "20-40",
             "weight": 10.0,
@@ -21,7 +20,8 @@
                 "biomes": [
                     "#tfc:common"
                 ]
-            }
+            },
+            "spawnablePositionType": "grounded"
         }
     ]
 }

@@ -10,7 +10,6 @@
                 "natural"
             ],
             "type": "pokemon",
-            "context": "grounded",
             "bucket": "uncommon",
             "level": "1-10",
             "weight": 10.0,
@@ -19,7 +18,8 @@
                 "biomes": [
                     "#tfc:high_altitude"
                 ]
-            }
+            },
+            "spawnablePositionType": "grounded"
         }
     ]
 }

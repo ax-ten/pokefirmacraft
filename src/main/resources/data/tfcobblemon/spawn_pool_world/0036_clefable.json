@@ -10,7 +10,6 @@
                 "natural"
             ],
             "type": "pokemon",
-            "context": "grounded",
             "bucket": "rare",
             "level": "40-60",
             "weight": 10.0,
@@ -21,7 +20,8 @@
                 "biomes": [
                     "#tfc:high_altitude"
                 ]
-            }
+            },
+            "spawnablePositionType": "grounded"
         },
         {
             "id": "clefable-tfc-2",
@@ -30,17 +30,17 @@
                 "rocky"
             ],
             "type": "pokemon",
-            "context": "grounded",
             "bucket": "common",
             "level": "45-55",
             "weight": 10.0,
-            "condition": {                
+            "condition": {
                 "minSkyLight": 0,
                 "maxSkyLight": 7,
                 "biomes": [
                     "#tfc:highlands"
                 ]
-            }
+            },
+            "spawnablePositionType": "grounded"
         }
     ]
 }

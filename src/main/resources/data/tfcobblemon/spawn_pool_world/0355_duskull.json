@@ -10,7 +10,6 @@
                 "natural"
             ],
             "type": "pokemon",
-            "context": "grounded",
             "bucket": "common",
             "level": "5-35",
             "weight": 30.0,
@@ -20,7 +19,8 @@
                     "#tfc:common",
                     "#tfc:badlands"
                 ]
-            }
+            },
+            "spawnablePositionType": "grounded"
         }
     ]
 }

@@ -11,18 +11,18 @@
                 "sandy"
             ],
             "type": "pokemon",
-            "context": "grounded",
             "bucket": "uncommon",
             "level": "20-45",
             "weight": 10.0,
-            "condition": {                
+            "condition": {
                 "minSkyLight": 8,
                 "maxSkyLight": 15,
                 "biomes": [
                     "#tfc:common",
                     "#tfc:badlands"
                 ]
-            }
+            },
+            "spawnablePositionType": "grounded"
         },
         {
             "id": "graveler-tfc-2",
@@ -31,17 +31,17 @@
                 "rocky"
             ],
             "type": "pokemon",
-            "context": "grounded",
             "bucket": "common",
             "level": "25-45",
             "weight": 10.0,
-            "condition": {                
+            "condition": {
                 "minSkyLight": 0,
                 "maxSkyLight": 7,
                 "biomes": [
                     "#tfc:all"
                 ]
-            }
+            },
+            "spawnablePositionType": "grounded"
         }
     ]
 }

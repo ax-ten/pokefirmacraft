@@ -10,18 +10,18 @@
                 "warm_water"
             ],
             "type": "pokemon",
-            "context": "submerged",
             "bucket": "uncommon",
             "level": "30-55",
             "weight": 10.0,
-            "condition": {                
+            "condition": {
                 "minSkyLight": 8,
                 "maxSkyLight": 15,
                 "biomes": [
                     "tfc:lowlands",
                     "#tfc:freshwater"
                 ]
-            }
+            },
+            "spawnablePositionType": "submerged"
         }
     ]
 }
