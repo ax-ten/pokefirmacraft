@@ -2,12 +2,13 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "pattern": [
-    "w w",
-    " w "
+    "l l",
+    "l l",
+    " l "
   ],
   "key": {
-    "w": {
-      "tag": "minecraft:planks"
+    "l": {
+      "tag": "tfc:lumber"
     }
   },
   "result": {
