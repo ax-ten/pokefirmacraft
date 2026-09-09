@@ -5,7 +5,7 @@
     "amount": 9,
     "entries": [
       {
-        "item": "minecraft:scute"
+        "item": "minecraft:turtle_scute"
       },
       {
         "item": "minecraft:gunpowder",

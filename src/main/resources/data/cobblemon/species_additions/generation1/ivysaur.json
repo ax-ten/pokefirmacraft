@@ -5,7 +5,7 @@
     "amount": 5,
     "entries": [
       {
-        "item": "minecraft:rotten_compost",
+        "item": "tfc:rotten_compost",
         "quantityRange": "1-2"
       },
       {
