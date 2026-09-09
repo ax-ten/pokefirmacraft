@@ -87,6 +87,8 @@ dependencies {
     runtimeOnly "thedarkcolour:kotlinforforge-neoforge:${kff_version}"
     runtimeOnly "maven.modrinth:patchouli:${patchouli_version}"
     runtimeOnly "maven.modrinth:emi:${emi_version}"
+    runtimeOnly "maven.modrinth:kubejs:${kubejs_version}"
+    runtimeOnly "maven.modrinth:rhino:${rhino_version}"
 }
 
 tasks.named('processResources', ProcessResources).configure {
