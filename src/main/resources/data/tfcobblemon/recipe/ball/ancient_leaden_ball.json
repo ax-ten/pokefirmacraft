@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "tfcobblemon:half_black_apricorn"
+    },
+    {
+      "item": "tfcobblemon:leaden_ball_mechanism"
+    }
+  ],
+  "result": {
+    "id": "cobblemon:ancient_leaden_ball",
+    "count": 1
+  }
+}

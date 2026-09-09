@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "tfcobblemon:half_black_apricorn"
+    },
+    {
+      "item": "tfcobblemon:black_tumblestone_cast"
+    }
+  ],
+  "result": {
+    "id": "cobblemon:ancient_heavy_ball",
+    "count": 1
+  }
+}

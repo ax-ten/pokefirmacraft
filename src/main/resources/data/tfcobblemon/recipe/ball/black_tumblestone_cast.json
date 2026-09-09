@@ -1,0 +1,18 @@
+{
+  "type": "tfc:knapping",
+  "knapping_type": "tfc:rock",
+  "pattern": [
+    "#####",
+    "#   #",
+    "#   #",
+    "#   #",
+    "#####"
+  ],
+  "ingredient": {
+    "item": "cobblemon:black_tumblestone"
+  },
+  "result": {
+    "id": "tfcobblemon:black_tumblestone_cast",
+    "count": 1
+  }
+}

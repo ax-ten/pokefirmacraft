@@ -1,0 +1,14 @@
+{
+  "type": "tfc:casting",
+  "mold": {
+    "item": "tfcobblemon:black_tumblestone_cast"
+  },
+  "fluid": {
+    "amount": 100,
+    "fluid": "tfc:metal/copper"
+  },
+  "result": {
+    "id": "tfcobblemon:leaden_ball_mechanism",
+    "count": 1
+  }
+}

@@ -1,15 +1,7 @@
 {
-  "type": "minecraft:crafting_shapeless",
-  "ingredients": [
+  "neoforge:conditions": [
     {
-      "tag": "cobblemon:apricorns"
-    },
-    {
-      "item": "cobblemon:black_tumblestone"
+      "type": "neoforge:false"
     }
-  ],
-  "result": {
-    "id": "cobblemon:ancient_heavy_ball",
-    "count": 1
-  }
+  ]
 }

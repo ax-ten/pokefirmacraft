@@ -40,5 +40,8 @@
   "glass_operation.tfcobblemon.black_bronze": "Black Bronze",
   "item.tfcobblemon.black_bronze_powder": "Black Bronze Powder",
   "item.tfcobblemon.cut_tumblestone": "Cut Tumblestone",
-  "item.tfcobblemon.base_rustic_mechanism": "Base Rustic Mechanism"
+  "item.tfcobblemon.base_rustic_mechanism": "Base Rustic Mechanism",
+  "item.tfcobblemon.black_tumblestone_cast": "Black Tumblestone Cast",
+  "item.tfcobblemon.leaden_ball_mechanism": "Leaden Ball Mechanism",
+  "item.tfcobblemon.gigaton_ball_mechanism": "Gigaton Ball Mechanism"
 }
