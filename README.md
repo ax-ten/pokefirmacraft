@@ -43,6 +43,11 @@ timeout: in quel caso conviene scaricarlo a mano (`curl -L -C -`, che riprende
 da dove si era fermato) e metterlo in `~/.m2`, poi lanciare Gradle con un init
 script che aggiunge `mavenLocal()`.
 
+## Crediti e licenze
+
+Vedi [`CREDITS.md`](CREDITS.md): il codice viene da TFCobblemon (GPL-3.0), le texture
+dei componenti delle ball da Create: Cobblemon Balls Overhaul (MIT).
+
 ## Stato del porting
 
 Vedi [`PORTING.md`](PORTING.md) per cosa e' gia' stato convertito e cosa resta

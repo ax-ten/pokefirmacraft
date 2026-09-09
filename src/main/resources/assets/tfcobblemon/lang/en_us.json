@@ -28,5 +28,15 @@
   "tag.item.cobblemon.gold_poke_ball_materials": "Gold Poké Ball Materials",
   "tag.item.cobblemon.silver_poke_ball_materials": "Silver Poké Ball Materials",
   "tag.item.cobblemon.tier_2_ancient_ball_materials": "Tier 2 Ancient Ball Materials",
-  "tag.item.cobblemon.tier_3_ancient_ball_materials": "Tier 3 Ancient Ball Materials"
+  "tag.item.cobblemon.tier_3_ancient_ball_materials": "Tier 3 Ancient Ball Materials",
+  "item.tfcobblemon.copper_ball_base": "Copper Ball Base",
+  "item.tfcobblemon.unfinished_copper_rustic_mechanism": "Unfinished Copper Rustic Mechanism",
+  "item.tfcobblemon.copper_rustic_mechanism": "Copper Rustic Mechanism",
+  "item.tfcobblemon.half_black_apricorn": "Half Black Apricorn",
+  "item.tfcobblemon.half_blue_apricorn": "Half Blue Apricorn",
+  "item.tfcobblemon.half_green_apricorn": "Half Green Apricorn",
+  "item.tfcobblemon.half_pink_apricorn": "Half Pink Apricorn",
+  "item.tfcobblemon.half_red_apricorn": "Half Red Apricorn",
+  "item.tfcobblemon.half_white_apricorn": "Half White Apricorn",
+  "item.tfcobblemon.half_yellow_apricorn": "Half Yellow Apricorn"
 }

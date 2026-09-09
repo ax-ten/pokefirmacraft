@@ -1,15 +1,16 @@
 {
   "type": "minecraft:crafting_shapeless",
+  "category": "misc",
   "ingredients": [
     {
-      "item": "cobblemon:green_apricorn"
+      "item": "tfcobblemon:unfinished_copper_rustic_mechanism"
     },
     {
       "item": "cobblemon:tumblestone"
     }
   ],
   "result": {
-    "id": "cobblemon:ancient_verdant_ball",
+    "id": "tfcobblemon:copper_rustic_mechanism",
     "count": 1
   }
 }

@@ -1,15 +1,13 @@
 {
   "type": "minecraft:crafting_shapeless",
+  "category": "misc",
   "ingredients": [
     {
       "item": "cobblemon:yellow_apricorn"
-    },
-    {
-      "item": "cobblemon:tumblestone"
     }
   ],
   "result": {
-    "id": "cobblemon:ancient_citrine_ball",
-    "count": 1
+    "id": "tfcobblemon:half_yellow_apricorn",
+    "count": 2
   }
 }

@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " t ",
+    "mcm"
+  ],
+  "key": {
+    "t": {
+      "item": "cobblemon:tumblestone"
+    },
+    "m": {
+      "tag": "cobblemon:tier_1_poke_ball_materials"
+    },
+    "c": {
+      "tag": "cobblemon:tier_2_ancient_ball_materials"
+    }
+  },
+  "result": {
+    "id": "tfcobblemon:unfinished_copper_rustic_mechanism",
+    "count": 1
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "cobblemon:green_apricorn"
+    }
+  ],
+  "result": {
+    "id": "tfcobblemon:half_green_apricorn",
+    "count": 2
+  }
+}

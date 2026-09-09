@@ -21,5 +21,6 @@ public class ModItems {
         GolettItem.registerAll(eventBus);
         LifeOrbItem.registerAll(eventBus);
         BlankOrbItem.registerAll(eventBus);
+        ModBallParts.register(eventBus);
     }
 }

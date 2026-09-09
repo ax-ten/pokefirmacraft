@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " a ",
+    "ama",
+    " b "
+  ],
+  "key": {
+    "a": {
+      "item": "tfcobblemon:half_red_apricorn"
+    },
+    "m": {
+      "item": "tfcobblemon:copper_rustic_mechanism"
+    },
+    "b": {
+      "item": "tfcobblemon:copper_ball_base"
+    }
+  },
+  "result": {
+    "id": "cobblemon:ancient_poke_ball",
+    "count": 1
+  }
+}
