@@ -124,8 +124,7 @@ LICENSE.txt
 
 # Working directory dei run di sviluppo
 runs/
-run-data/logs/
-run-data/crash-reports/
 
 # Cache locale di ModDevGradle
 repo/
+run-data/
