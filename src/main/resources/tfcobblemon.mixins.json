@@ -1,15 +1,13 @@
 {
   "required": true,
-  "minVersion": "0.8",
+  "minVersion": "0.8.5",
   "package": "com.kingtrapinch.tfcobblemon.mixin",
-  "compatibilityLevel": "JAVA_8",
-  "refmap": "tfcobblemon.refmap.json",
+  "compatibilityLevel": "JAVA_21",
   "mixins": [
     "RevivalHerbMixin",
     "VivichokeMixin"
   ],
-  "client": [
-  ],
+  "client": [],
   "injectors": {
     "defaultRequire": 1
   }
