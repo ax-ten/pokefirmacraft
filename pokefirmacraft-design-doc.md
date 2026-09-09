@@ -152,9 +152,41 @@ Il redesign è **da progettare da zero**, e va deciso almeno:
   non passino da una macchina — mentre solo quelle "moderne" diventano industriali
 - come si aggancia ai materiali *unificati* del pack invece che ai lingotti TFC puri
 
-Nota pratica: **questo lavoro non è testabile nell'ambiente di sviluppo attuale**,
-che non monta GregTech. O si aggiunge GTCEu al runtime, o si lavora nell'istanza del
-pack.
+Nota pratica: GregTech è stato aggiunto al runtime di sviluppo (bastano `gtceu` e
+`ldlib2`, il resto è jarjar), quindi il lavoro è verificabile senza avviare l'istanza
+completa del pack.
+
+### 5.2 Struttura della catena — proposta
+
+Le ball si smontano in tre pezzi, e ogni pezzo diventa un passaggio:
+
+1. **Il guscio** — la parte metallica, che porta il tier del materiale
+2. **Il nucleo** — l'apricorn, che porta il colore e quindi l'identità della ball
+3. **L'assemblaggio** — a mano nelle ere pretecnologiche, in assembler dalla Steam Age
+
+**Rustic** (ex "Ancient", Copper Age): guscio di tumblestone + rame → assemblato con
+l'apricorn del colore giusto. Restano artigianali: sono di apricorn, non ha senso
+industrializzarle. Ma due passaggi invece di uno.
+
+**Ball moderne** (Bronze → Iron): guscio dalle lamiere del tier (i tag già
+predisposti), assemblaggio con apricorn e tumblestone. La resa scende da **16 a 1**:
+oggi quattro apricorn e una lamiera danno sedici ball, che è l'opposto di quanto
+chiede la sezione 1.
+
+**Dalla Steam Age**: gli stessi gusci escono da bender/estrusore e l'assemblaggio passa
+in assembler — l'automazione della sezione 5, senza inventare macchine nuove.
+
+**Costo da mettere in conto**: la catena richiede almeno un item intermedio per tier
+(il guscio), quindi **nuove texture**. Senza quelle non è implementabile: è l'unico
+motivo per cui questa sezione è ancora una proposta e non codice.
+
+### 5.3 Dove vivono le ricette delle macchine Greg
+
+GregTech **non spedisce ricette come file**: le genera a runtime dal registro dei
+materiali. Il pack ci lavora sopra solo con KubeJS (569 chiamate a
+`event.recipes.gtceu.assembler`). Per la mod restano tre strade — JSON datapack nel
+formato di GTRecipe, KubeJS lato pack, o l'API di GTCEu da Java — e la scelta vincola
+tutte le ere da Steam in poi. Vedi sezione 9.
 
 ## 6. Vincolo di cattura (Pasture Block / PC)
 
