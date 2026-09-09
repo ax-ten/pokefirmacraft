@@ -10,31 +10,18 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Pseudo;
 
+/**
+ * Il Vivichoke si pianta solo sulla terra arata di TFC, non su quella vanilla.
+ */
 @Pseudo
 @Mixin(VivichokeBlock.class)
 public abstract class VivichokeMixin extends CropBlock {
-    public VivichokeMixin(Properties p_51021_) {
-        super(p_51021_);
+    public VivichokeMixin(Properties properties) {
+        super(properties);
     }
 
-@Override
-protected boolean mayPlaceOn(BlockState state, BlockGetter level, BlockPos pos)
-{
-    return Helpers.isBlock(level.getBlockState(pos), TFCTags.Blocks.FARMLAND);
+    @Override
+    protected boolean mayPlaceOn(BlockState state, BlockGetter level, BlockPos pos) {
+        return Helpers.isBlock(state, TFCTags.Blocks.FARMLANDS);
+    }
 }
-
-
-}
-
-//@Override
-//protected boolean mayPlaceOn(BlockState state, BlockGetter level, BlockPos pos)
-//{
-//    return Helpers.isBlock(level.getBlockState(pos), TFCTags.Blocks.BUSH_PLANTABLE_ON);
-//}
-
-
-//    @Override
-//    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
-//        return Helpers.isBlock(level.getBlockState(pos.below()), ;
-//    }
-//}

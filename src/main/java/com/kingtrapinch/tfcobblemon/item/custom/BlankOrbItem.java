@@ -5,17 +5,15 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.level.Level;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
-import org.jetbrains.annotations.Nullable;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.registries.DeferredItem;
+import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.List;
 
 public class BlankOrbItem extends Item {
-    public static final DeferredRegister<Item> ITEMS =
-            DeferredRegister.create(ForgeRegistries.ITEMS, TFCobblemon.MODID);
+    public static final DeferredRegister.Items ITEMS =
+            DeferredRegister.createItems(TFCobblemon.MODID);
 
     private static final Properties ORB_PROPERTIES = new Properties()
             .stacksTo(1)
@@ -26,15 +24,14 @@ public class BlankOrbItem extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
-        pTooltipComponents.add(Component.translatable("tooltip.tfcobblemon.blank_orb"));
-        super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
+    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
+        tooltip.add(Component.translatable("tooltip.tfcobblemon.blank_orb"));
+        super.appendHoverText(stack, context, tooltip, flag);
     }
 
-    public static final RegistryObject<Item> BLANK_ORB = ITEMS.register("blank_orb", BlankOrbItem::new);
+    public static final DeferredItem<Item> BLANK_ORB = ITEMS.register("blank_orb", BlankOrbItem::new);
 
-    // Method to register the items with the event bus
-    public static void registerAll(net.minecraftforge.eventbus.api.IEventBus eventBus) {
+    public static void registerAll(IEventBus eventBus) {
         ITEMS.register(eventBus);
     }
 }
