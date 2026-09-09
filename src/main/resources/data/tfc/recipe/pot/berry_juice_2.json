@@ -2,27 +2,37 @@
   "type": "tfc:pot",
   "ingredients": [
     {
-      "type": "tfc:not_rotten",
-      "ingredient": {
-        "tag": "cobblemon:berries"
-      }
+      "type": "tfc:and",
+      "children": [
+        {
+          "tag": "cobblemon:berries"
+        },
+        {
+          "type": "tfc:not_rotten"
+        }
+      ]
     },
     {
-      "type": "tfc:not_rotten",
-      "ingredient": {
-        "tag": "cobblemon:berries"
-      }
+      "type": "tfc:and",
+      "children": [
+        {
+          "tag": "cobblemon:berries"
+        },
+        {
+          "type": "tfc:not_rotten"
+        }
+      ]
     }
   ],
   "fluid_ingredient": {
-    "ingredient": "minecraft:water",
-    "amount": 100
+    "amount": 100,
+    "fluid": "minecraft:water"
   },
   "duration": 1000,
   "temperature": 300,
   "item_output": [
     {
-      "item": "cobblemon:berry_juice"
+      "id": "cobblemon:berry_juice"
     }
   ]
 }

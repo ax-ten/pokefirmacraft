@@ -1,17 +1,24 @@
 {
   "type": "tfc:heating",
   "ingredient": {
-    "type": "tfc:not_rotten",
-    "ingredient": {
-      "item": "cobblemon:vivichoke"
-    }
+    "type": "tfc:and",
+    "children": [
+      {
+        "item": "cobblemon:vivichoke"
+      },
+      {
+        "type": "tfc:not_rotten"
+      }
+    ]
   },
   "result_item": {
     "stack": {
-      "item": "cobblemon:braised_vivichoke"
+      "id": "cobblemon:braised_vivichoke"
     },
     "modifiers": [
-      "tfc:copy_food"
+      {
+        "type": "tfc:copy_food"
+      }
     ]
   },
   "temperature": 200

@@ -1,29 +1,29 @@
 {
-    "type": "minecraft:crafting_shaped",
-    "pattern": [
-        "CGC",
-        "IRI",
-        "IDI"
-    ],
-    "key": {
-        "C": {
-            "item": "tfc:metal/sheet/copper"
-        },
-        "I": {
-            "item": "tfc:metal/sheet/wrought_iron"
-        },
-        "G": {
-            "item": "minecraft:ghast_tear"
-        },
-        "D": {
-            "tag": "tfcobblemon:gemstones"
-        },
-        "R": {
-            "item": "cobblemon:revive"
-        }
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "CGC",
+    "IRI",
+    "IDI"
+  ],
+  "key": {
+    "C": {
+      "item": "tfc:metal/sheet/copper"
     },
-    "result": {
-        "item": "cobblemon:healing_machine",
-        "count": 1
+    "I": {
+      "item": "tfc:metal/sheet/wrought_iron"
+    },
+    "G": {
+      "item": "minecraft:ghast_tear"
+    },
+    "D": {
+      "tag": "tfcobblemon:gemstones"
+    },
+    "R": {
+      "item": "cobblemon:revive"
     }
+  },
+  "result": {
+    "id": "cobblemon:healing_machine",
+    "count": 1
+  }
 }

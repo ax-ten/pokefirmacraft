@@ -1,18 +1,18 @@
 {
-    "type": "minecraft:crafting_shaped",
-    "pattern": [
-      "X",
-      "Y"
-    ],
-    "key": {
-      "X": {
-        "item": "cobblemon:black_augurite"
-      },
-      "Y": {
-        "tag": "forge:rods/wooden"
-      }
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "X",
+    "Y"
+  ],
+  "key": {
+    "X": {
+      "item": "cobblemon:black_augurite"
     },
-    "result": {
-      "item": "tfc:stone/axe/igneous_extrusive"
+    "Y": {
+      "tag": "c:rods/wooden"
     }
+  },
+  "result": {
+    "id": "tfc:stone/axe/igneous_extrusive"
   }
+}

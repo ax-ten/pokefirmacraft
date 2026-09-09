@@ -1,5 +1,4 @@
 {
-  "replace": true,
   "type": "minecraft:block",
   "pools": [
     {
@@ -19,20 +18,22 @@
                     {
                       "condition": "minecraft:match_tool",
                       "predicate": {
-                        "tag": "forge:shears"
+                        "items": "#c:tools/shear"
                       }
                     },
                     {
                       "condition": "minecraft:match_tool",
                       "predicate": {
-                        "enchantments": [
-                          {
-                            "enchantment": "minecraft:silk_touch",
-                            "levels": {
-                              "min": 1
+                        "predicates": {
+                          "minecraft:enchantments": [
+                            {
+                              "enchantments": "minecraft:silk_touch",
+                              "levels": {
+                                "min": 1
+                              }
                             }
-                          }
-                        ]
+                          ]
+                        }
                       }
                     }
                   ]
@@ -75,7 +76,7 @@
                 {
                   "condition": "minecraft:match_tool",
                   "predicate": {
-                    "tag": "tfc:sharp_tools"
+                    "items": "#tfc:tools/sharp"
                   }
                 },
                 {
@@ -121,7 +122,7 @@
                 {
                   "condition": "minecraft:match_tool",
                   "predicate": {
-                    "tag": "tfc:sharp_tools"
+                    "items": "#tfc:tools/sharp"
                   }
                 },
                 {
@@ -150,20 +151,22 @@
                   {
                     "condition": "minecraft:match_tool",
                     "predicate": {
-                      "tag": "forge:shears"
+                      "items": "#c:tools/shear"
                     }
                   },
                   {
                     "condition": "minecraft:match_tool",
                     "predicate": {
-                      "enchantments": [
-                        {
-                          "enchantment": "minecraft:silk_touch",
-                          "levels": {
-                            "min": 1
+                      "predicates": {
+                        "minecraft:enchantments": [
+                          {
+                            "enchantments": "minecraft:silk_touch",
+                            "levels": {
+                              "min": 1
+                            }
                           }
-                        }
-                      ]
+                        ]
+                      }
                     }
                   }
                 ]

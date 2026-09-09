@@ -1,26 +1,26 @@
 {
-    "type": "minecraft:crafting_shaped",
-    "pattern": [
-        "PPP",
-        "PCP",
-        "THT"
-    ],
-    "key": {
-        "P": {
-            "tag": "minecraft:planks"
-        },
-        "C": {
-            "item": "cobblemon:pc"
-        },
-        "T": {
-            "item": "tfc:thatch"
-        },
-        "H": {
-            "item": "minecraft:hopper"
-        }
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "PPP",
+    "PCP",
+    "THT"
+  ],
+  "key": {
+    "P": {
+      "tag": "minecraft:planks"
     },
-    "result": {
-        "item": "cobblemon:pasture",
-        "count": 1
+    "C": {
+      "item": "cobblemon:pc"
+    },
+    "T": {
+      "item": "tfc:thatch"
+    },
+    "H": {
+      "item": "minecraft:hopper"
     }
+  },
+  "result": {
+    "id": "cobblemon:pasture",
+    "count": 1
+  }
 }

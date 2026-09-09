@@ -4,7 +4,7 @@
     "item": "cobblemon:big_root"
   },
   "result": {
-    "item": "cobblemon:remedy",
+    "id": "cobblemon:remedy",
     "count": 3
   }
 }

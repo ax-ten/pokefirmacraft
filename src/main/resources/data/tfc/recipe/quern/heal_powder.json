@@ -4,7 +4,7 @@
     "item": "cobblemon:revival_herb"
   },
   "result": {
-    "item": "cobblemon:heal_powder",
+    "id": "cobblemon:heal_powder",
     "count": 3
   }
 }

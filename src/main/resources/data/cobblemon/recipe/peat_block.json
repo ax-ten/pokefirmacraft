@@ -1,20 +1,20 @@
 {
-    "type": "minecraft:crafting_shapeless",
-    "ingredients": [
-        {
-            "item": "tfc:peat"
-        },
-        {
-            "item": "tfc:peat"
-        },
-        {
-            "item": "tfc:peat"
-        },
-        {
-            "item": "tfc:peat"
-        }
-    ],
-    "result": {
-        "item": "cobblemon:peat_block"
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "tfc:peat"
+    },
+    {
+      "item": "tfc:peat"
+    },
+    {
+      "item": "tfc:peat"
+    },
+    {
+      "item": "tfc:peat"
     }
+  ],
+  "result": {
+    "id": "cobblemon:peat_block"
+  }
 }

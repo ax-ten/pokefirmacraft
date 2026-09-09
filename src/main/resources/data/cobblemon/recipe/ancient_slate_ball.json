@@ -1,17 +1,15 @@
 {
-    "replace": true,
-    "type": "minecraft:crafting_shapeless",
-    "ingredients": [
-        {
-            "item": "cobblemon:black_apricorn"
-        },
-        {
-            "item": "cobblemon:tumblestone"
-}
-    ],
-    "result": {
-        "item": "cobblemon:ancient_slate_ball",
-        "count": 1
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "cobblemon:black_apricorn"
+    },
+    {
+      "item": "cobblemon:tumblestone"
     }
+  ],
+  "result": {
+    "id": "cobblemon:ancient_slate_ball",
+    "count": 1
+  }
 }
-

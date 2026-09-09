@@ -1,21 +1,20 @@
 {
-    "replace": true,
-    "type": "minecraft:crafting_shapeless",
-    "ingredients": [
-        {
-            "item": "cobblemon:remedy"
-        },
-        {
-            "tag": "tfc:foods/fruits"
-        },
-        {
-            "tag": "tfc:foods/fruits"
-        },
-		{
-			"item": "cobblemon:pep_up_flower"
-		}
-    ],
-    "result": {
-        "item": "cobblemon:fine_remedy"
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "cobblemon:remedy"
+    },
+    {
+      "tag": "c:foods/fruit"
+    },
+    {
+      "tag": "c:foods/fruit"
+    },
+    {
+      "item": "cobblemon:pep_up_flower"
     }
+  ],
+  "result": {
+    "id": "cobblemon:fine_remedy"
+  }
 }

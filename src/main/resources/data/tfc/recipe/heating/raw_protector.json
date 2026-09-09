@@ -5,7 +5,7 @@
     "item": "tfcobblemon:raw_protector"
   },
   "result_item": {
-    "item": "cobblemon:protector"
+    "id": "cobblemon:protector"
   },
   "temperature": 1399
 }

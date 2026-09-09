@@ -1,23 +1,23 @@
 {
-    "type": "minecraft:crafting_shaped",
-    "pattern": [
-        "  M",
-        "PCP",
-		"M  "
-    ],
-    "key": {
-        "M": {
-            "item": "tfc:powder/magnetite"
-        },
-        "C": {
-            "item": "tfc:metal/rod/copper"
-        },
-        "P": {
-            "item": "minecraft:purple_dye"
-        }
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "  M",
+    "PCP",
+    "M  "
+  ],
+  "key": {
+    "M": {
+      "item": "tfc:powder/magnetite"
     },
-    "result": {
-        "item": "cobblemon:link_cable",
-        "count": 1
+    "C": {
+      "item": "tfc:metal/rod/copper"
+    },
+    "P": {
+      "item": "minecraft:purple_dye"
     }
+  },
+  "result": {
+    "id": "cobblemon:link_cable",
+    "count": 1
+  }
 }

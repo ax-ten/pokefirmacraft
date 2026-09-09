@@ -2,7 +2,6 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:knapping",
   "knapping_type": "tfc:rock",
-  "outside_slot_required": false,
   "pattern": [
     "  X  ",
     "X X X",
@@ -11,9 +10,9 @@
     " XXX "
   ],
   "ingredient": {
-    "tag": "tfc:igneous_extrusive_rock"
+    "tag": "tfc:stones/loose/igneous_extrusive"
   },
   "result": {
-    "item": "cobblemon:kings_rock"
+    "id": "cobblemon:kings_rock"
   }
 }

@@ -1,5 +1,7 @@
 {
   "type": "tfc:landslide",
-  "ingredient": "cobblemon:black_tumblestone_block",
+  "ingredient": [
+    "cobblemon:black_tumblestone_block"
+  ],
   "result": "cobblemon:black_tumblestone_block"
 }

@@ -4,7 +4,7 @@
     "item": "cobblemon:dragon_scale"
   },
   "result": {
-    "item": "tfc:powder/flux",
+    "id": "tfc:powder/flux",
     "count": 5
   }
 }
