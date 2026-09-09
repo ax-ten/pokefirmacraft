@@ -1,5 +1,5 @@
 {
-  "target": "cobblemon:luxio",
+  "target": "cobblemon:luxray",
   "implemented": true,
   "drops": {
     "amount": 5,
@@ -9,7 +9,7 @@
         "quantityRange": "1-2"
       },
       {
-        "item": "tfc:gran_feline",
+        "item": "tfc:food/gran_feline",
         "quantityRange": "2-3"
       }
     ]

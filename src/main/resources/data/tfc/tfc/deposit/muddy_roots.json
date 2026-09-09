@@ -1,0 +1,29 @@
+{
+  "ingredient": [
+    {
+      "item": "tfc:muddy_roots/entisol"
+    },
+    {
+      "item": "tfc:muddy_roots/aridisol"
+    },
+    {
+      "item": "tfc:muddy_roots/oxisol"
+    },
+    {
+      "item": "tfc:muddy_roots/fluvisol"
+    },
+    {
+      "item": "tfc:muddy_roots/andisol"
+    },
+    {
+      "item": "tfc:muddy_roots/podzol"
+    },
+    {
+      "item": "tfc:muddy_roots/alfisol"
+    },
+    {
+      "item": "tfc:muddy_roots/mollisol"
+    }
+  ],
+  "loot_table": "tfc:panning/muddy_roots"
+}

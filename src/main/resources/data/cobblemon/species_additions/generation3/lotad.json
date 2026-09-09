@@ -5,7 +5,7 @@
     "amount": 4,
     "entries": [
       {
-        "item": "tfc:plant/water_lily",
+        "item": "tfc:plant/white_water_lily",
         "quantityRange": "0-1"
       },
       {

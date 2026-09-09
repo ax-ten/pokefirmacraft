@@ -9,7 +9,7 @@
         "quantityRange": "0-1"
       },
       {
-        "item": "tfc:gran_feline",
+        "item": "tfc:food/gran_feline",
         "quantityRange": "1-2"
       },
       {

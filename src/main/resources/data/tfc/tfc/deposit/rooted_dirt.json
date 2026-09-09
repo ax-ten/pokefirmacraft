@@ -1,0 +1,29 @@
+{
+  "ingredient": [
+    {
+      "item": "tfc:rooted_dirt/entisol"
+    },
+    {
+      "item": "tfc:rooted_dirt/aridisol"
+    },
+    {
+      "item": "tfc:rooted_dirt/oxisol"
+    },
+    {
+      "item": "tfc:rooted_dirt/fluvisol"
+    },
+    {
+      "item": "tfc:rooted_dirt/andisol"
+    },
+    {
+      "item": "tfc:rooted_dirt/podzol"
+    },
+    {
+      "item": "tfc:rooted_dirt/alfisol"
+    },
+    {
+      "item": "tfc:rooted_dirt/mollisol"
+    }
+  ],
+  "loot_table": "tfc:panning/rooted_dirt"
+}
