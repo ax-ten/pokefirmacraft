@@ -23,8 +23,9 @@ public final class ModBallParts {
     public static final List<String> APRICORN_COLOURS =
             List.of("black", "blue", "green", "pink", "red", "white", "yellow");
 
-    public static final DeferredItem<Item> COPPER_BALL_BASE =
-            ITEMS.registerSimpleItem("copper_ball_base");
+    /** Il fondo delle rustic e' di legno: sono ball primitive e deboli. */
+    public static final DeferredItem<Item> RUSTIC_BALL_BASE =
+            ITEMS.registerSimpleItem("rustic_ball_base");
     public static final DeferredItem<Item> UNFINISHED_COPPER_RUSTIC_MECHANISM =
             ITEMS.registerSimpleItem("unfinished_copper_rustic_mechanism");
     public static final DeferredItem<Item> COPPER_RUSTIC_MECHANISM =

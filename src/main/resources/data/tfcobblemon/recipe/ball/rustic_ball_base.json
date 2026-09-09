@@ -2,16 +2,16 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "pattern": [
-    "m m",
-    " m "
+    "w w",
+    " w "
   ],
   "key": {
-    "m": {
-      "tag": "cobblemon:tier_1_poke_ball_materials"
+    "w": {
+      "tag": "minecraft:planks"
     }
   },
   "result": {
-    "id": "tfcobblemon:copper_ball_base",
+    "id": "tfcobblemon:rustic_ball_base",
     "count": 1
   }
 }
