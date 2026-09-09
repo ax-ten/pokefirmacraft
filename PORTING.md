@@ -75,6 +75,21 @@ tag `#tfc:rock/*`, `#tfc:farmland`, `#tfc:fruit_tree_branch`.
   design da rivedere. Con Gregnautics Continued va poi controllato che i biomi
   del pack finiscano davvero in quei tag (vedi sezione 2 del design doc).
 
+## Scelte da riportare al pack
+
+**Visualizzatore ricette: EMI, non JEI.** La mod non spedisce integrazioni con
+nessuno dei due, quindi in dev e' solo una riga in `build.gradle`. Gregnautics
+Continued monta pero' JEI piu' `kubejei`, e ci appoggia
+`kubejs/client_scripts/gregnautics_jei_material_hide.js`, che nasconde i
+duplicati dei 35 materiali unificati fra TFC e GregTech. Quello script parla
+con `KubeJEIEvents` e sotto EMI non fa piu' niente: EMI nasconde gli stack
+dalla propria API, e un equivalente di `kubejei` non risulta esistere.
+
+Chi passa a EMI si porta dietro quel lavoro. A favore: GTCEu ha integrazione
+EMI nativa (`integration/recipeviewer/emi`) e EMI include JEMI, che legge i
+plugin scritti per JEI. Da verificare invece se FTB Quests sappia aprire le
+ricette tramite EMI, visto quanto conta nel pack.
+
 ## Non ancora iniziato
 
 Dal design doc, tutto quello che va oltre il porting 1:1:
