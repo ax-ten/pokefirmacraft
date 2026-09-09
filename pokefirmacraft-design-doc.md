@@ -48,8 +48,8 @@ Mod di integrazione di **Cobblemon** dentro **Gregnautics Continued** (porting 1
 - Vincolo di cattura Pasture Block/PC (non presente in TFCobblemon originale) —
   vedi sezione 6: **TFCobblemon lo contraddice attivamente**, non basta aggiungerlo
 - Addon leggendari (Myths and Legends)
-- **"Siediti e aspetta"**: Pokémon tenuti nel mondo fuori dal party, riusando il
-  tethering del Pasture Block (vedi sezione 6.2)
+- **Trainer Belt, "siediti e aspetta" e borsa a categorie** (tutta la sezione 6):
+  sostituiscono il vincolo Pasture Block/PC della prima stesura
 - **Redesign delle ricette Poké Ball in chiave Greg** (vedi sezione 5): quelle
   ereditate da TFCobblemon sono crafting manuale a passo singolo e non rispettano
   il principio di profondità della sezione 1
@@ -190,61 +190,94 @@ materiali. Il pack ci lavora sopra solo con KubeJS (569 chiamate a
 formato di GTRecipe, KubeJS lato pack, o l'API di GTCEu da Java — e la scelta vincola
 tutte le ere da Steam in poi. Vedi sezione 9.
 
-## 6. Vincolo di cattura (Pasture Block / PC)
+## 6. Trasporto, cattura e inventario
 
-- Se il giocatore prova a catturare senza avere un Pasture Block attivo (con posti liberi) o un PC, **la Poké Ball si rifiuta di essere lanciata** — nessuno spreco di materiali, nessun lancio "a vuoto"
-- Il **party attivo di 6 Pokémon non è soggetto al vincolo** — sono sempre con il giocatore
-- Il limite di accesso alle Poké Ball stesso (vedi progressione per era) è già considerato un freno sufficiente per l'early game: non serve un secondo limite artificiale
+Questa sezione sostituisce il vincolo "niente Pasture Block, niente lancio" della
+prima stesura. Quel gate era **negativo**: il gioco ti negava un'azione con un
+messaggio. Quello che segue è **positivo** — hai una cintura, e la cintura ha dei
+posti. Il giocatore capisce da sé perché non può ancora catturare, senza che
+glielo si debba dire.
 
-### 6.1 Conflitto con TFCobblemon — il motivo per separare il fork
+### 6.1 Trainer Belt
 
-TFCobblemon rende il **PC craftabile nella fase pretecnologica**. Questo rompe due
-cose insieme:
+Un oggetto in un singolo slot **Curios** (presente nel pack: `curios-neoforge 9.5.1`),
+che è ciò che permette di portarsi dietro le ball.
 
-- la **tabella della sezione 4**, che colloca il PC in Electrical Age
-- il **vincolo di questa sezione**, perché il PC è una delle due condizioni che
-  abilitano la cattura: se lo si ottiene presto, il Pasture Block smette di essere il
-  passaggio obbligato dell'early game e il vincolo perde senso
+- **Senza cintura**: una ball sola, quella dello starter
+- **Prima cintura**: 2 ball
+- **Un solo gradino intermedio**: 4 ball
+- **Fino all'Iron Age**: 6 ball
 
-Non è un bug del porting: è una **divergenza di design**. TFCobblemon vuole che tu
-possa avere Pokémon senza costruire un Pasture Block, Pokefirmacraft vuole
-esattamente il contrario.
+La prima versione si fa **conciando la pelle**, che in TFC è già una catena vera:
+pelle grezza, ammollo nella calce in botte, raschiatura sul tronco, secondo ammollo,
+essiccazione. Cinque passaggi che non dobbiamo inventare.
 
-Ne segue che il progetto **smette di essere un fork di TFCobblemon** e diventa una mod
-a sé che da quel codice è partita. Restano gli obblighi della GPL-3.0 — licenza,
-crediti, sorgente disponibile — ma le due basi di codice non convergono più.
+Sulla tumblestone: TFC ha già `tfc:glue`, che è la colla del pack, quindi usare la
+tumblestone *come resina* duplicherebbe una funzione esistente. Meglio come **fibbia**
+— un cristallo incastonato, visibile, lo stesso materiale che poi si ritrova nei
+meccanismi delle ball. Se invece si vuole la resina, si macina al quern e si mescola
+alla colla.
 
-Da rivedere di conseguenza: la ricetta del PC (ricollocata in Electrical Age), quella
-del Pasture Block (Bronze Age), e il comportamento quando il giocatore non ha né
-l'uno né l'altro.
+Gli aggiornamenti di capienza salgono col metallo, in linea con le ere.
 
-### 6.2 Tenere i Pokémon senza catturarli — "siediti e aspetta"
+### 6.2 "Siediti e aspetta"
 
-Idea: trattare il Pokémon più come il cane di Minecraft che come un oggetto in tasca.
-Gli si dice di sedersi e aspettare, e questo lo **toglie temporaneamente dalla squadra**
-lasciandolo nel mondo, dove lo si ritrova.
+Trattare il Pokémon più come il cane di Minecraft che come un oggetto in tasca: gli si
+dice di sedersi, e questo lo **toglie temporaneamente dalla squadra** lasciandolo nel
+mondo.
 
-Non va inventato da zero: `PokemonEntity` ha già un campo **`tethering`**, il legame che
-usa il Pasture Block per tenere un Pokémon nel mondo fuori dal party. Il "siediti" è lo
-stesso meccanismo legato a una posizione invece che a un blocco.
+Non va inventato: `PokemonEntity` ha già il campo **`tethering`**, il legame che usa il
+Pasture Block per tenere un Pokémon fuori dal party. Il "siediti" è lo stesso
+meccanismo legato a una posizione invece che a un blocco.
 
-Perché si incastra col vincolo della sezione 6: se il primo Pokémon si ottiene e si
-mantiene *senza* catturarlo, il gate su Pasture Block e PC smette di essere una
-punizione nell'early game e diventa la porta d'accesso alla cattura vera.
+Da risolvere: persistenza del legame se il chunk si scarica, se il Pokémon muore, se il
+giocatore va lontano.
 
-Da decidere e da fare:
+### 6.3 Lo starter
 
-- **Starter senza Poké Ball**: in Cobblemon ogni Pokémon porta una `caughtBall`, ma è un
-  dato di provenienza, non un oggetto nell'inventario. Da verificare in gioco che la
-  schermata iniziale non regali ball utilizzabili. Esteticamente la **Rustic Origin Ball**
-  è la provenienza più adatta per lo starter — è solo visivo, ma racconta la cosa giusta
-- **Interfaccia**: nascondere gli slot vuoti della squadra finché le ball non sono
-  sbloccate, così è evidente che ancora non si cattura invece di sembrare un bug
-- **Persistenza**: cosa succede al legame se il chunk si scarica, se il Pokémon muore, se
-  il giocatore è lontano
+Niente ball utilizzabili all'inizio. In Cobblemon ogni Pokémon porta una `caughtBall`,
+ma è un dato di provenienza, non un oggetto nell'inventario — da verificare in gioco che
+la schermata iniziale non ne regali una vera.
 
-Costo: **codice Java**, non datapack. È il pezzo che cambia di più il rapporto fra
-giocatore e Pokémon, quindi vale la pena prototiparlo presto.
+Esteticamente la **Rustic Origin Ball** è la provenienza giusta per lo starter: è solo
+visivo, ma racconta che quel Pokémon non l'hai preso con una ball che ti sei costruito.
+
+**Interfaccia**: nascondere gli slot vuoti della squadra finché la cintura non li
+sblocca, così è evidente che ancora non si cattura invece di sembrare un bug.
+
+### 6.4 La borsa
+
+Una borsa in stile Pokémon — **categorie e limite duro di stack per categoria** — in un
+secondo slot Curios. Non uno zaino generico: il punto è il limite, non la capienza.
+
+Non esiste niente da integrare: su 1.21.1 nessuna mod fa una borsa così per Cobblemon
+(Loot Bag è un contenitore di bottino, gli zaini del pack non hanno categorie).
+Cobblemon offre però il registro **`bag_items`**, che definisce gli oggetti usabili in
+battaglia ed è estendibile da datapack: il vocabolario per la categoria "medicine" c'è
+già.
+
+Le categorie possono aprirsi con le ere — medicine da subito, MT in Electrical Age, key
+item alla fine — così la borsa diventa un altro modo di leggere la progressione.
+
+**Costo**: è il pezzo di codice più grosso del progetto. `MenuType`, storage con filtri
+per slot, schermata client con linguette, sincronizzazione, persistenza sull'oggetto
+Curios, più la grafica dell'interfaccia. Il limite per categoria, che è ciò che la rende
+una borsa Pokémon, è invece la parte facile.
+
+**Ordine**: dopo la cintura e dopo il rifacimento della cattura. Una borsa che organizza
+per categorie oggetti che ancora non esistono è un contenitore vuoto con delle etichette.
+
+### 6.5 Cosa resta del vincolo originale, e perché il fork si è separato
+
+Del gate "Pasture Block o PC" non resta quasi nulla: il limite è la cintura, e il
+Pasture Block torna a essere ciò che è — un posto dove *lasciare* i Pokémon, non un
+lasciapassare per catturarli.
+
+Resta però il motivo per cui questo progetto ha smesso di essere un fork di TFCobblemon:
+là il **PC è craftabile nella fase pretecnologica**, il che rompe la tabella della
+sezione 4 (che lo colloca in Electrical Age) e svuota qualunque limite all'accumulo di
+Pokémon. Non è un bug del porting, è una divergenza di design — e con la cintura la
+distanza fra i due progetti si allarga ancora.
 
 ## 7. Alpha Pokémon e leggendari
 
@@ -272,6 +305,8 @@ TerraFirmaGreg – New Horizons usa FTB Quests come sistema di quest. Le quest P
 
 - Redesign completo delle ricette Poké Ball in chiave Greg (sezione 5.1)
 - Ricollocazione di PC e Pasture Block secondo la sezione 4
+- Capienza e materiali degli aggiornamenti della Trainer Belt (sezione 6.1)
+- Quali categorie ha la borsa e con che era si aprono (sezione 6.4)
 - Struttura dettagliata del capitolo di quest FTB (nomi, ordine, traguardi di sblocco)
 - Held item non ancora assegnati singolarmente su tutti i 101 esistenti in Cobblemon (la sezione 4 copre le categorie principali per rappresentanza, non ogni singolo item)
 - Dettaglio tecnico dei processi Greg di intaglio/taglio gemme da riusare per le Evolution Stone Ore (va verificato quale macchina/processo Greg esatto si applica)

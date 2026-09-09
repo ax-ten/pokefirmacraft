@@ -31,6 +31,17 @@ public final class ModBallParts {
     public static final DeferredItem<Item> COPPER_RUSTIC_MECHANISM =
             ITEMS.registerSimpleItem("copper_rustic_mechanism");
 
+    /**
+     * TFC macina solo minerali, mai leghe, quindi la polvere di black bronze non
+     * esiste: serve a colorare il vetro delle ball leggere di tier alto.
+     */
+    public static final DeferredItem<Item> BLACK_BRONZE_POWDER =
+            ITEMS.registerSimpleItem("black_bronze_powder");
+
+    /** La sky tumblestone fusa: un batch di vetro di terzo livello. */
+    public static final DeferredItem<Item> SKY_GLASS_BATCH =
+            ITEMS.registerSimpleItem("sky_glass_batch");
+
     /** Una meta' di apricorn per colore, indicizzata per poterle scorrere. */
     public static final Map<String, DeferredItem<Item>> APRICORN_HALVES = new LinkedHashMap<>();
 

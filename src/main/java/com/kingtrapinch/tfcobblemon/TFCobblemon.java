@@ -1,5 +1,6 @@
 package com.kingtrapinch.tfcobblemon;
 
+import com.kingtrapinch.tfcobblemon.glass.ModGlassOperations;
 import com.kingtrapinch.tfcobblemon.item.ModCreativeModTabs;
 import com.kingtrapinch.tfcobblemon.item.ModItems;
 import com.kingtrapinch.tfcobblemon.item.custom.GolettItem;
@@ -19,6 +20,7 @@ public class TFCobblemon {
     public TFCobblemon(IEventBus modEventBus, ModContainer modContainer) {
         ModItems.register(modEventBus);
         ModCreativeModTabs.register(modEventBus);
+        ModGlassOperations.register(modEventBus);
 
         modEventBus.addListener(this::addCreative);
     }

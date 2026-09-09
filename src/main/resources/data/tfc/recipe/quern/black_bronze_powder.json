@@ -1,0 +1,10 @@
+{
+  "type": "tfc:quern",
+  "ingredient": {
+    "tag": "c:ingots/black_bronze"
+  },
+  "result": {
+    "id": "tfcobblemon:black_bronze_powder",
+    "count": 1
+  }
+}
