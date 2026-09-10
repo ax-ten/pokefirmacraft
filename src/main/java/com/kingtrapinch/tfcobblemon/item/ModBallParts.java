@@ -106,6 +106,16 @@ public final class ModBallParts {
             ITEMS.registerSimpleItem("tin_ball_base");
     public static final DeferredItem<Item> WROUGHT_IRON_BALL_BASE =
             ITEMS.registerSimpleItem("wrought_iron_ball_base");
+    public static final DeferredItem<Item> STEEL_BALL_BASE =
+            ITEMS.registerSimpleItem("steel_ball_base");
+
+    /**
+     * Il guscio a mezza costruzione che gira sul nastro. Uno solo per tutte le
+     * ball: Create si scrive dentro quale ricetta sta seguendo, quindi non
+     * serve un mezzo-guscio per tipo.
+     */
+    public static final DeferredItem<Item> INCOMPLETE_BALL =
+            ITEMS.registerSimpleItem("incomplete_ball");
 
     /** La sky tumblestone macinata alla mola, da mescolare alla sabbia. */
     public static final DeferredItem<Item> SKY_TUMBLESTONE_POWDER =
@@ -129,7 +139,8 @@ public final class ModBallParts {
      * coperchio e' la mezza apricorn e basta.
      */
     public static final List<String> MODERN_LIDS = List.of("net", "heavy", "lure",
-            "safari", "park", "level", "friend", "dive", "nest", "heal");
+            "safari", "park", "level", "friend", "dive", "nest", "heal",
+            "timer", "repeat", "moon", "fast");
 
     public static final Map<String, DeferredItem<Item>> LIDS = new LinkedHashMap<>();
 

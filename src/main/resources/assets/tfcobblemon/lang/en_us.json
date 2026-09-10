@@ -130,5 +130,11 @@
   "item.tfcobblemon.friend_ball_lid": "Friend Ball Lid",
   "item.tfcobblemon.dive_ball_lid": "Dive Ball Lid",
   "item.tfcobblemon.nest_ball_lid": "Nest Ball Lid",
-  "item.tfcobblemon.heal_ball_lid": "Heal Ball Lid"
+  "item.tfcobblemon.heal_ball_lid": "Heal Ball Lid",
+  "item.tfcobblemon.steel_ball_base": "Steel Ball Base",
+  "item.tfcobblemon.incomplete_ball": "Incomplete Poké Ball",
+  "item.tfcobblemon.timer_ball_lid": "Timer Ball Lid",
+  "item.tfcobblemon.repeat_ball_lid": "Repeat Ball Lid",
+  "item.tfcobblemon.moon_ball_lid": "Moon Ball Lid",
+  "item.tfcobblemon.fast_ball_lid": "Fast Ball Lid"
 }

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "tfcobblemon:half_yellow_apricorn"
+    },
+    {
+      "tag": "c:sheets/silver"
+    }
+  ],
+  "result": {
+    "id": "tfcobblemon:moon_ball_lid",
+    "count": 2
+  }
+}

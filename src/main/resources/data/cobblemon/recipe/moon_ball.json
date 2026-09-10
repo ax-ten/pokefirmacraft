@@ -1,29 +1,7 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "pattern": [
-    " t ",
-    "lcr",
-    " b "
-  ],
-  "key": {
-    "t": {
-      "item": "cobblemon:yellow_apricorn"
-    },
-    "l": {
-      "item": "cobblemon:blue_apricorn"
-    },
-    "c": {
-      "tag": "cobblemon:black_bronze_poke_ball_materials"
-    },
-    "r": {
-      "item": "cobblemon:black_apricorn"
-    },
-    "b": {
-      "item": "cobblemon:white_apricorn"
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:false"
     }
-  },
-  "result": {
-    "id": "cobblemon:moon_ball",
-    "count": 8
-  }
+  ]
 }

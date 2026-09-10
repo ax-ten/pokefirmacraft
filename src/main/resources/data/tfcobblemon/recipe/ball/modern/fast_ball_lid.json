@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "tfcobblemon:half_red_apricorn"
+    },
+    {
+      "item": "create:speedometer"
+    }
+  ],
+  "result": {
+    "id": "tfcobblemon:fast_ball_lid",
+    "count": 2
+  }
+}

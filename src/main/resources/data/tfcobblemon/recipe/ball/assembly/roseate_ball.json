@@ -1,0 +1,65 @@
+{
+  "type": "create:sequenced_assembly",
+  "ingredient": {
+    "item": "tfcobblemon:tin_ball_base"
+  },
+  "transitional_item": {
+    "id": "tfcobblemon:incomplete_ball"
+  },
+  "loops": 1,
+  "results": [
+    {
+      "id": "cobblemon:roseate_ball",
+      "count": 2
+    }
+  ],
+  "sequence": [
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "tfcobblemon:incomplete_ball"
+        },
+        {
+          "item": "tfcobblemon:half_pink_apricorn"
+        }
+      ],
+      "results": [
+        {
+          "id": "tfcobblemon:incomplete_ball"
+        }
+      ]
+    },
+    {
+      "type": "create:filling",
+      "ingredients": [
+        {
+          "item": "tfcobblemon:incomplete_ball"
+        },
+        {
+          "type": "neoforge:single",
+          "amount": 40,
+          "fluid": "tfcobblemon:molten_ender_tumblestone"
+        }
+      ],
+      "results": [
+        {
+          "id": "tfcobblemon:incomplete_ball"
+        }
+      ]
+    },
+    {
+      "type": "create:pressing",
+      "ingredients": [
+        {
+          "item": "tfcobblemon:incomplete_ball"
+        }
+      ],
+      "results": [
+        {
+          "id": "tfcobblemon:incomplete_ball"
+        }
+      ]
+    }
+  ]
+}

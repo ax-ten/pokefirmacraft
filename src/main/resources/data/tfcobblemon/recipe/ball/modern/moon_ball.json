@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "L",
+    "C",
+    "B"
+  ],
+  "key": {
+    "L": {
+      "item": "tfcobblemon:moon_ball_lid"
+    },
+    "C": {
+      "item": "tfcobblemon:capture_core"
+    },
+    "B": {
+      "item": "tfcobblemon:steel_ball_base"
+    }
+  },
+  "result": {
+    "id": "cobblemon:moon_ball",
+    "count": 2
+  }
+}
