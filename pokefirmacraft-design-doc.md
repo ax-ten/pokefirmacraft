@@ -415,10 +415,10 @@ andare male.
 
 Il minigioco funziona, i numeri sono messi a caso e vanno provati con le mani.
 
-- [ ] `DigSite.DURABILITY` = 100. Con la griglia 8x8 e il martello a 7 un sito
-      pieno di roccia costa fra i 40 e i 50, quindi 100 e' larghissimo.
-- [ ] `DigSiteBlockEntity.TREASURES` = 4 tesori per sito, pescati quattro volte
-      dalla stessa loot table.
+- [ ] `DigSite.DURABILITY` = 60. Con la griglia 9x9 e il martello a 7 non si
+      arriva a ripulire tutto: e' voluto, il sito va letto e non arato.
+- [ ] `DigSiteBlockEntity.TREASURES` = 2 tesori per sito, pescati due volte
+      dalla stessa loot table. Tirato fuori l'ultimo, il sito si sfalda.
 - [ ] `DigSiteBlockEntity.DEFAULT_LOOT`: una tabella sola per tutti i siti.
       Va scelta dalla struttura che piazza il blocco, che ne ha diciotto fra
       common, uncommon e rare.

@@ -19,8 +19,8 @@ public final class DigSite {
      */
     public static final int SIZE = 9;
     public static final int CELLS = SIZE * SIZE;
-    /** TODO testing: 100 e' un numero messo a caso, va tarato in gioco. */
-    public static final int DURABILITY = 100;
+    /** TODO testing: quanto regge un sito prima di sfaldarsi. */
+    public static final int DURABILITY = 60;
 
     /** Quanto e' stata scavata ogni cella. Il materiale lo dice il tipo di sito. */
     private final byte[] depth = new byte[CELLS];

@@ -36,7 +36,7 @@ public class DigSiteBlockEntity extends BlockEntity {
     public static final ResourceLocation CRYSTAL_LOOT =
             ResourceLocation.fromNamespaceAndPath("tfcobblemon", "dig/crystal");
     /** TODO testing: quanti tesori per sito. */
-    public static final int TREASURES = 4;
+    public static final int TREASURES = 2;
     /** Il lato del quadrato che occupa un tesoro. */
     public static final int TREASURE_SIZE = 2;
 
@@ -154,6 +154,16 @@ public class DigSiteBlockEntity extends BlockEntity {
 
     public SimpleContainer contents() {
         return contents;
+    }
+
+    /** Se non e' rimasto niente da tirare fuori, il sito non ha piu' motivo di stare in piedi. */
+    public boolean emptied() {
+        for (int i = 0; i < contents.getContainerSize(); i++) {
+            if (!contents.getItem(i).isEmpty()) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /** Se almeno una delle quattro celle sopra il tesoro e' pulita. */

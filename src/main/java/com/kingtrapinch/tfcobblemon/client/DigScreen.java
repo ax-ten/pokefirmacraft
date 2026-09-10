@@ -285,7 +285,27 @@ public class DigScreen extends AbstractContainerScreen<DigMenu> {
         greyOut(graphics);
         preview(graphics, mouseX, mouseY);
         dust.render(graphics);
+        cursorTool(graphics, mouseX, mouseY);
         renderTooltip(graphics, mouseX, mouseY);
+    }
+
+    /**
+     * L'attrezzo scelto segue il cursore, cosi' si sa con cosa si sta
+     * picchiando senza andare a guardare l'inventario. Se il giocatore ha
+     * qualcosa in mano lascia stare: al cursore ci pensa vanilla.
+     */
+    private void cursorTool(GuiGraphics graphics, int mouseX, int mouseY) {
+        if (chosen < 0 || !menu.getCarried().isEmpty()) {
+            return;
+        }
+        final ItemStack stack = minecraft.player.getInventory().getItem(chosen);
+        if (toolOf(stack) == null) {
+            return;
+        }
+        graphics.pose().pushPose();
+        graphics.pose().translate(0, 0, 300);
+        graphics.renderItem(stack, mouseX + 2, mouseY + 2);
+        graphics.pose().popPose();
     }
 
     @Override

@@ -63,7 +63,8 @@ public class DigMenu extends AbstractContainerMenu {
                     ? unused -> clearAround(spot, true)
                     : unused -> site != null && site.exposed(index);
             addSlot(new TreasureSlot(contents, i,
-                    DigLayout.treasureX(spot.x()), DigLayout.treasureY(spot.y()), glimpsed, freed));
+                    DigLayout.treasureX(spot.x()), DigLayout.treasureY(spot.y()),
+                    glimpsed, freed, site));
         }
 
         for (int row = 0; row < 3; row++) {
@@ -95,12 +96,16 @@ public class DigMenu extends AbstractContainerMenu {
     public static class TreasureSlot extends Slot {
         private final IntPredicate glimpsed;
         private final IntPredicate freed;
+        @Nullable
+        private final DigSiteBlockEntity owner;
 
         TreasureSlot(Container container, int index, int x, int y,
-                     IntPredicate glimpsed, IntPredicate freed) {
+                     IntPredicate glimpsed, IntPredicate freed,
+                     @Nullable DigSiteBlockEntity owner) {
             super(container, index, x, y);
             this.glimpsed = glimpsed;
             this.freed = freed;
+            this.owner = owner;
         }
 
         @Override
@@ -121,6 +126,20 @@ public class DigMenu extends AbstractContainerMenu {
         @Override
         public boolean mayPlace(ItemStack stack) {
             return false;
+        }
+
+        /**
+         * Tirato fuori l'ultimo tesoro il sito e' finito: non resta niente da
+         * cercare, quindi si sfalda da solo invece di restare li' vuoto.
+         */
+        @Override
+        public void onTake(Player player, ItemStack stack) {
+            super.onTake(player, stack);
+            if (player.level() instanceof net.minecraft.server.level.ServerLevel level
+                    && owner != null && owner.emptied()) {
+                owner.collapse(level);
+                player.closeContainer();
+            }
         }
     }
 
