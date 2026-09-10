@@ -358,10 +358,24 @@ della squadra, e sono quelle che compaiono nell'elenco a sinistra. Non c'e' una
 "squadra" separata da gestire: se la ball non e' sulla cintura, il Pokemon non
 e' a portata.
 
-**Usare una ball equivale a premere R** sul Pokemon selezionato nell'elenco: e'
-la stessa azione, non una scorciatoia diversa. Da cui segue che in combattimento
-**le ball dell'inventario non si possono usare** — solo quelle sulla cintura.
-Chi si e' preparato male resta con quello che ha addosso.
+**Usare una ball evoca il Pokemon che ha dentro.** Non e' "seleziona nella
+lista, poi premi R": la ball stessa e' la maniglia del suo Pokemon, e il tasto
+destro su di essa fa quello che farebbe R su quel Pokemon nell'elenco. Da cui
+segue che in combattimento **le ball dell'inventario non si possono usare** —
+solo quelle sulla cintura. Chi si e' preparato male resta con quello che ha
+addosso.
+
+**Ma la ball non deve contenere il Pokemon: deve puntarlo.** Se il Pokemon vive
+dentro l'item, perdere l'item e' perderlo — in lava, in una morte in un posto
+irraggiungibile, in una mod che cancella oggetti — ed e' esattamente il motivo
+per cui Cobblemon tiene party e PC fuori dal mondo. La stessa esperienza si
+ottiene senza il rischio facendo portare alla ball **l'UUID** del Pokemon: il
+tasto destro evoca quello puntato, l'elenco a sinistra mostra le ball della
+cintura nell'ordine, e il Pokemon continua a vivere nel deposito del giocatore.
+Se la ball si perde, si perde una ball.
+
+Per i Pokemon in eccesso, quelli che oggi finiscono nel PC, vale lo stesso: la
+ball in tasca punta a un deposito personale in overflow, non se lo porta dentro.
 
 **Portarsi un Pokemon in tasca invece che nel PC.** Oggi, a squadra piena, il
 Pokemon catturato finisce nel PC. Con la cintura piena vorremmo che restasse
@@ -390,12 +404,12 @@ li spedisci da qualunque posto.
   rifiuto in combattimento va messo sull'uso dell'item controllando se il
   giocatore e' in battaglia e da dove viene lo stack.
 
-**Il rischio da tenere presente.** Far vivere un Pokemon dentro un item
-dell'inventario significa che **perdere l'item e' perdere il Pokemon** — in
-lava, in una morte in un posto irraggiungibile, in una mesh di mod che cancella
-oggetti. Cobblemon non lo fa proprio per questo: party e PC sono due depositi
-che non passano mai dal mondo. Se lo facciamo, la ball piena va almeno resa
-indistruttibile dal fuoco e non lanciabile.
+**La scritta "Slot: belt" sotto ogni ball si puo' togliere.** Curios la
+aggiunge da se' a qualunque oggetto indossabile, e con cinquanta ball diventa
+rumore. `ICurio.getSlotsTooltip(List, TooltipContext)` e' un metodo default:
+restituendo la lista invariata la riga non compare. La capability si attacca
+agli item di Cobblemon con `CuriosCapability.ITEM`, che e' una `ItemCapability`
+di NeoForge, quindi si registra sui loro item senza toccare la loro mod.
 
 ### 6.2 "Siediti e aspetta"
 
