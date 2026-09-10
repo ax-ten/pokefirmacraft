@@ -185,13 +185,21 @@ public class DigScreen extends AbstractContainerScreen<DigMenu> {
             well(graphics, x + 7 + col * 18, y + DigLayout.HOTBAR_Y - 1, 18, 18);
         }
 
-        final int left = Math.max(0, ClientDigState.durability()) * DigLayout.GRID_SPAN
-                / DigSite.DURABILITY;
+        final int resta = Math.max(0, ClientDigState.durability());
+        final int left = resta * DigLayout.GRID_SPAN / DigSite.DURABILITY;
         final int by = y + DigLayout.BAR_Y;
         // la barra in una conca come gli slot, altrimenti galleggia sul pannello
         well(graphics, x + DigLayout.GRID_X - 1, by - 1, DigLayout.GRID_SPAN + 2, 7);
         graphics.fill(x + DigLayout.GRID_X, by, x + DigLayout.GRID_X + DigLayout.GRID_SPAN, by + 5, WELL_DARK);
         graphics.fill(x + DigLayout.GRID_X, by, x + DigLayout.GRID_X + left, by + 5, 0xFF6ABE30);
+        // quanto se ne mangerebbe il prossimo colpo, in coda alla parte piena:
+        // cosi' si vede se il sito regge un'altra martellata prima di darla
+        final int costo = previewCost();
+        if (costo > 0 && resta > 0) {
+            final int morso = Math.min(left, costo * DigLayout.GRID_SPAN / DigSite.DURABILITY);
+            graphics.fill(x + DigLayout.GRID_X + left - morso, by,
+                    x + DigLayout.GRID_X + left, by + 5, 0xFFD9552B);
+        }
     }
 
     /**
@@ -231,6 +239,24 @@ public class DigScreen extends AbstractContainerScreen<DigMenu> {
                 graphics.disableScissor();
             }
         }
+    }
+
+    /**
+     * Quanto sito costerebbe un colpo con l'attrezzo scelto: e' lo stesso conto
+     * che fa il server, tenuto qui per poterlo mostrare prima di picchiare.
+     * La spazzola consuma solo una volta su due, quindi si conta come uno.
+     */
+    private int previewCost() {
+        final DigTool tool = selected();
+        if (tool == null) {
+            return 0;
+        }
+        if (tool == DigTool.BRUSH) {
+            return 1;
+        }
+        final int base = tool.siteCost(minecraft.player.getInventory().getItem(chosen));
+        return tool == DigTool.HAMMER || tool == DigTool.PICKAXE
+                ? base * ClientDigState.kind().hammerPenalty : base;
     }
 
     /** Le celle che l'attrezzo colpirebbe da qui. */

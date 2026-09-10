@@ -35,6 +35,12 @@ public class DigSiteBlockEntity extends BlockEntity {
     /** Il cristallo ha la sua, ed e' quella che vale la pena aprire. */
     public static final ResourceLocation CRYSTAL_LOOT =
             ResourceLocation.fromNamespaceAndPath("tfcobblemon", "dig/crystal");
+    /**
+     * La tumblestone ne ha una a parte: e' li' che vive la origin ball, una
+     * volta su dieci. Nelle altre pietre non si trova affatto.
+     */
+    public static final ResourceLocation TUMBLESTONE_LOOT =
+            ResourceLocation.fromNamespaceAndPath("tfcobblemon", "dig/crystal_tumblestone");
     /** TODO testing: quanti tesori per sito. */
     public static final int TREASURES = 2;
     /** Il lato del quadrato che occupa un tesoro. */
@@ -86,7 +92,14 @@ public class DigSiteBlockEntity extends BlockEntity {
     }
 
     private void scatter(ServerLevel level) {
-        final ResourceLocation which = kind() == SiteKind.CRYSTAL ? CRYSTAL_LOOT : SEDIMENT_LOOT;
+        final ResourceLocation which;
+        if (kind() != SiteKind.CRYSTAL) {
+            which = SEDIMENT_LOOT;
+        } else {
+            final String variante = net.minecraft.core.registries.BuiltInRegistries.BLOCK
+                    .getKey(getBlockState().getBlock()).getPath();
+            which = variante.contains("tumblestone") ? TUMBLESTONE_LOOT : CRYSTAL_LOOT;
+        }
         final LootTable table = level.getServer().reloadableRegistries()
                 .getLootTable(ResourceKey.create(Registries.LOOT_TABLE, which));
         final LootParams params = new LootParams.Builder(level)
