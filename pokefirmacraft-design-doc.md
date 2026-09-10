@@ -429,6 +429,16 @@ Il minigioco funziona, i numeri sono messi a caso e vanno provati con le mani.
       lineari serve una tabella esplicita.
 - [ ] Il piccone: croce di cinque celle, tre di sito a colpo, e sui bracci
       sfonda sette volte su dieci.
+- [ ] **Rendere i tipi di sito data-driven.** Oggi `SiteKind` ha l'ordine degli
+      strati e la penalita' del martello scritti nell'enum, `DigSkin` ha i path
+      delle texture di TFC scritti a mano, e `ModDig` genera i cinquantaquattro
+      blocchi in un ciclo Java. Un data registry `site_type` — id, varianti,
+      tre texture di strato, ordine, penalita', loot table — li tirerebbe fuori
+      tutti. Serve a noi (aggiungere un sito smette di essere una modifica
+      Java) e rende banale, se un giorno lo vogliamo, staccare il minigioco
+      come addon a se': il pacchetto `dig` sono 1942 righe in sedici classi e
+      **non importa una sola classe di TFC o di Cobblemon**, l'accoppiamento e'
+      tutto nei dati. TFC diventerebbe un datapack e vanilla un altro.
 - [ ] Le soglie del rumore stanno su `SiteKind`: 0.55 / 0.78 per sedimento e
       pietra, 0.5 / 1.01 per il cristallo. Da vedere in mano.
 - [ ] L'ordine degli strati e' sul tipo di sito: sciolto va pulviscolo, calce,
