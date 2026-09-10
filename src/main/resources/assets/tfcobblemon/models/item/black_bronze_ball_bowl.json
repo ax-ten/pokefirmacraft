@@ -1,6 +1,6 @@
 {
-  "parent": "item/generated",
+  "parent": "tfcobblemon:item/ball_base",
   "textures": {
-    "layer0": "tfcobblemon:item/ball/black_bronze_ball_bowl"
+    "main": "cobblemon:item/poke_balls/models/ancient_ultra_ball"
   }
 }

@@ -1,6 +1,6 @@
 {
-  "parent": "item/generated",
+  "parent": "tfcobblemon:item/ball_lid",
   "textures": {
-    "layer0": "tfcobblemon:item/ball/half_yellow_apricorn"
+    "main": "cobblemon:item/poke_balls/models/ancient_citrine_ball"
   }
 }

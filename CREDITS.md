@@ -6,6 +6,20 @@ Questa mod nasce dal porting di [TFCobblemon](https://github.com/kingtrapinch/tf
 di **KingTrapinch**, rilasciata sotto **GPL-3.0**. La storia git parte dal suo
 repository e la licenza resta la sua.
 
+## Modelli 3D
+
+I componenti delle ball riusano la geometria delle Poké Ball di **Cobblemon**
+(`assets/tfcobblemon/models/item/ball_lid.json` e `ball_base.json`, derivati da
+`cobblemon:item/ancient_poke_ball_model`), rilasciata sotto **MPL-2.0**: la MPL
+consente di distribuire il file modificato dentro un'opera piu' grande sotto
+GPL-3.0, purche' resti indicata la sua provenienza.
+
+Le facce che chiudono la meta' tagliata (`north_inner`, `east_inner`,
+`south_inner`, `west_inner`) vengono da
+[Cobblemon: Creatified](https://modrinth.com/mod/cobblemon-creatified) di
+**Foresage**, rilasciata sotto **licenza MIT**; il testo della licenza sta in
+[`licenses/cobblemon-creatified-MIT.txt`](licenses/cobblemon-creatified-MIT.txt).
+
 ## Texture
 
 Le texture dei componenti delle Poké Ball — basi, meccanismi e metà di apricorn, in
