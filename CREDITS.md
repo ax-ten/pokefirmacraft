@@ -27,6 +27,12 @@ Le texture dei componenti delle Poké Ball — basi, meccanismi e metà di apric
 [Create: Cobblemon Balls Overhaul](https://modrinth.com/mod/create-cobblemon-balls-overhaul),
 rilasciata sotto **licenza MIT**, che ne consente il riuso mantenendo questa nota.
 
+La texture del `tumblestone_core` è la gemma del set `certus` di
+[GregTech CEu Modern](https://modrinth.com/mod/gregtechceu-modern), che il gioco
+tinge a runtime col colore del materiale: qui è stata ritinta a mano con la
+palette della tumblestone di Cobblemon. GregTech CEu è rilasciata sotto
+**LGPL-3.0-or-later**, compatibile con la GPL-3.0.
+
 La texture della polvere di black bronze è derivata da quella delle polveri di
 **TerraFirmaCraft**, desaturata e ritinta col colore medio del suo lingotto di black
 bronze. TFC è rilasciata sotto **EUPL-1.2**, che l'appendice della licenza stessa
