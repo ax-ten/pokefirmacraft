@@ -286,6 +286,40 @@ che regga lo stesso numero.
 
 Diciannove ball in Iron, cinque in Steam, sei in Electrical, due in Nuclear.
 
+### 5.5 Le tre vie per assemblare una ball, e cosa costano
+
+| Via | Fluido per ball | Cosa serve | Cosa da' |
+|---|---|---|---|
+| banco a mano | 12,5 mB (via stampo) | niente | 2 ball per craft |
+| catena di Create | **10 mB** | depot, deployer, spout, pressa | continua, e si vede cosa passa |
+| Assembler di GregTech | **8 mB** | Assembler + energia | scala col tier e col parallelo |
+
+La colata rende otto core da duecento millibucket, e ogni core fa due ball:
+dodici e mezzo per ball. Le due vie automatiche saltano il core e prendono il
+fuso direttamente, e costano meno perche' non passano dallo stampo.
+
+**Perche' nessuno sconto per lotto.** In GregTech la scala non viene dal
+rapporto della ricetta: viene dal **tier della macchina** — ogni tier sopra
+quello della ricetta raddoppia la velocita' per quadrupla energia, ed e' li'
+che vive il "due per quattro" — e dagli **hatch in parallelo** dei multiblocco,
+che macinano N ricette identiche in una volta con rapporto uno a uno. Un "tre
+dentro, quattro fuori" non e' un idioma di GregTech e romperebbe
+l'unificazione dei materiali che il pacchetto tiene in piedi con
+cinquecentosessantanove chiamate KubeJS. Quindi il rapporto item resta uno a
+due su tutte e tre le vie, e l'Assembler e' piu' economico solo sul fluido.
+
+### 5.6 Le ball che mancano
+
+Coperte: **ventitre**, cioe' tutta l'era del ferro tranne la sport, e tutta
+quella del vapore. Ognuna ha ricetta a mano, catena di Create e Assembler.
+
+Restano da progettare:
+
+- **Electrical**: dusk, quick, luxury, love, dream, beast — sei, e sono quelle
+  con gli effetti piu' astratti, quindi anche quelle con i reagenti meno ovvi
+- **Nuclear**: master
+- **mai craftabili**: cherish e sport, che si trovano
+
 ## 6. Trasporto, cattura e inventario
 
 Questa sezione sostituisce il vincolo "niente Pasture Block, niente lancio" della

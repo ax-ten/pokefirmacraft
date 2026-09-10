@@ -38,7 +38,7 @@
         },
         {
           "type": "neoforge:single",
-          "amount": 40,
+          "amount": 20,
           "fluid": "tfcobblemon:molten_ender_tumblestone"
         }
       ],
