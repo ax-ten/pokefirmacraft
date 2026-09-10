@@ -1,29 +1,7 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "pattern": [
-    " t ",
-    "lcr",
-    " b "
-  ],
-  "key": {
-    "t": {
-      "item": "minecraft:white_dye"
-    },
-    "l": {
-      "item": "cobblemon:red_apricorn"
-    },
-    "c": {
-      "tag": "cobblemon:tier_2_poke_ball_materials"
-    },
-    "r": {
-      "item": "cobblemon:red_apricorn"
-    },
-    "b": {
-      "item": "cobblemon:red_apricorn"
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:false"
     }
-  },
-  "result": {
-    "id": "cobblemon:sport_ball",
-    "count": 12
-  }
+  ]
 }

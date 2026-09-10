@@ -8,7 +8,7 @@
   ],
   "key": {
     "L": {
-      "item": "tfcobblemon:net_ball_lid"
+      "item": "tfcobblemon:half_red_apricorn"
     },
     "C": {
       "item": "tfcobblemon:capture_core"
@@ -18,7 +18,7 @@
     }
   },
   "result": {
-    "id": "cobblemon:net_ball",
+    "id": "cobblemon:great_ball",
     "count": 1
   }
 }

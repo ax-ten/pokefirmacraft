@@ -1,29 +1,7 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "pattern": [
-    " t ",
-    "lcr",
-    " b "
-  ],
-  "key": {
-    "t": {
-      "item": "cobblemon:white_apricorn"
-    },
-    "l": {
-      "item": "cobblemon:white_apricorn"
-    },
-    "c": {
-      "tag": "cobblemon:tier_1_poke_ball_materials"
-    },
-    "r": {
-      "item": "cobblemon:white_apricorn"
-    },
-    "b": {
-      "item": "cobblemon:white_apricorn"
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:false"
     }
-  },
-  "result": {
-    "id": "cobblemon:premier_ball",
-    "count": 17
-  }
+  ]
 }

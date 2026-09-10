@@ -8,17 +8,17 @@
   ],
   "key": {
     "L": {
-      "item": "tfcobblemon:net_ball_lid"
+      "item": "tfcobblemon:half_black_apricorn"
     },
     "C": {
       "item": "tfcobblemon:capture_core"
     },
     "B": {
-      "item": "tfcobblemon:wrought_iron_ball_base"
+      "item": "tfcobblemon:tin_ball_base"
     }
   },
   "result": {
-    "id": "cobblemon:net_ball",
+    "id": "cobblemon:slate_ball",
     "count": 1
   }
 }

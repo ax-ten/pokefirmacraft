@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "tfcobblemon:half_green_apricorn"
+    },
+    {
+      "tag": "tfcobblemon:beds"
+    }
+  ],
+  "result": {
+    "id": "tfcobblemon:friend_ball_lid",
+    "count": 1
+  }
+}

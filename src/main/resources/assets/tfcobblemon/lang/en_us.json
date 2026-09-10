@@ -123,5 +123,12 @@
   "block.tfcobblemon.suspicious_crystal.sky_tumblestone": "Suspicious Sky Tumblestone Cluster",
   "block.tfcobblemon.suspicious_crystal.black_tumblestone": "Suspicious Black Tumblestone Cluster",
   "block.tfcobblemon.suspicious_crystal.opal": "Suspicious Opal Cluster",
-  "item.tfcobblemon.wrought_iron_ball_base": "Wrought Iron Ball Base"
+  "item.tfcobblemon.wrought_iron_ball_base": "Wrought Iron Ball Base",
+  "item.tfcobblemon.net_ball_lid": "Net Ball Lid",
+  "item.tfcobblemon.heavy_ball_lid": "Heavy Ball Lid",
+  "item.tfcobblemon.lure_ball_lid": "Lure Ball Lid",
+  "item.tfcobblemon.safari_ball_lid": "Safari Ball Lid",
+  "item.tfcobblemon.park_ball_lid": "Park Ball Lid",
+  "item.tfcobblemon.level_ball_lid": "Level Ball Lid",
+  "item.tfcobblemon.friend_ball_lid": "Friend Ball Lid"
 }

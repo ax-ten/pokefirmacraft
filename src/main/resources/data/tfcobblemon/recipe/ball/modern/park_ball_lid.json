@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "tfcobblemon:half_green_apricorn"
+    },
+    {
+      "tag": "tfcobblemon:forest_growth"
+    },
+    {
+      "tag": "tfcobblemon:forest_growth"
+    }
+  ],
+  "result": {
+    "id": "tfcobblemon:park_ball_lid",
+    "count": 1
+  }
+}

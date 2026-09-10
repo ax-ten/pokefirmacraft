@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "tfcobblemon:half_black_apricorn"
+    },
+    {
+      "tag": "c:sheets/bismuth"
+    },
+    {
+      "tag": "c:sheets/bismuth"
+    }
+  ],
+  "result": {
+    "id": "tfcobblemon:heavy_ball_lid",
+    "count": 1
+  }
+}

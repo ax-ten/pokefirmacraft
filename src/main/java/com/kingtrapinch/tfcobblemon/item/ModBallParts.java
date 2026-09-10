@@ -123,6 +123,22 @@ public final class ModBallParts {
                             Component.translatable("tfcobblemon.tooltip.glass.sky")
                                     .withStyle(ChatFormatting.AQUA, ChatFormatting.ITALIC))))));
 
+    /**
+     * I coperchi delle ball moderne: uno per effetto, perche' e' il coperchio a
+     * portarlo. Le ball a moltiplicatore fisso non ce l'hanno — il loro
+     * coperchio e' la mezza apricorn e basta.
+     */
+    public static final List<String> MODERN_LIDS =
+            List.of("net", "heavy", "lure", "safari", "park", "level", "friend");
+
+    public static final Map<String, DeferredItem<Item>> LIDS = new LinkedHashMap<>();
+
+    static {
+        for (String ball : MODERN_LIDS) {
+            LIDS.put(ball, ITEMS.registerSimpleItem(ball + "_ball_lid"));
+        }
+    }
+
     /** Una meta' di apricorn per colore, indicizzata per poterle scorrere. */
     public static final Map<String, DeferredItem<Item>> APRICORN_HALVES = new LinkedHashMap<>();
 

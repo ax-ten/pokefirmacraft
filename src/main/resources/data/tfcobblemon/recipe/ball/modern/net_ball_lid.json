@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "tfcobblemon:half_blue_apricorn"
+    },
+    {
+      "tag": "tfcobblemon:fish_hooks"
+    },
+    {
+      "item": "tfc:jute_net"
+    }
+  ],
+  "result": {
+    "id": "tfcobblemon:net_ball_lid",
+    "count": 1
+  }
+}

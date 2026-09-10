@@ -8,7 +8,7 @@
   ],
   "key": {
     "L": {
-      "item": "tfcobblemon:net_ball_lid"
+      "item": "tfcobblemon:lure_ball_lid"
     },
     "C": {
       "item": "tfcobblemon:capture_core"
@@ -18,7 +18,7 @@
     }
   },
   "result": {
-    "id": "cobblemon:net_ball",
+    "id": "cobblemon:lure_ball",
     "count": 1
   }
 }
