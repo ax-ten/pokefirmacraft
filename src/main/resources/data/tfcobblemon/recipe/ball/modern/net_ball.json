@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "TAN",
+    " C ",
+    " B "
+  ],
+  "key": {
+    "T": {
+      "item": "minecraft:tripwire_hook"
+    },
+    "A": {
+      "item": "tfcobblemon:half_blue_apricorn"
+    },
+    "N": {
+      "item": "tfc:jute_net"
+    },
+    "C": {
+      "item": "tfcobblemon:capture_core"
+    },
+    "B": {
+      "item": "tfcobblemon:wrought_iron_ball_base"
+    }
+  },
+  "result": {
+    "id": "cobblemon:net_ball",
+    "count": 1
+  }
+}

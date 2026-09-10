@@ -95,12 +95,17 @@ public final class ModBallParts {
             ITEMS.registerSimpleItem("black_bronze_powder");
 
     /**
-     * Il guscio delle ball moderne. La lamiera di stagno ne rende quattro per
-     * volta: e' un guscio stampato sottile, non la semisfera piena delle
-     * rustic, e lo stagno e' di tier -1, quindi si batte sull'incudine di rame.
+     * Il guscio delle ball moderne. Una lamiera ne rende quattro: e' un guscio
+     * stampato sottile, non la semisfera piena delle rustic.
+     *
+     * <p>Il metallo e' la scala del tier, e basta lui: lo stagno per le ball
+     * di base, il ferro battuto per quelle di secondo grado. Non serve mettere
+     * il ferro sopra lo stagno — se il guscio e' di ferro, e' di ferro.
      */
     public static final DeferredItem<Item> TIN_BALL_BASE =
             ITEMS.registerSimpleItem("tin_ball_base");
+    public static final DeferredItem<Item> WROUGHT_IRON_BALL_BASE =
+            ITEMS.registerSimpleItem("wrought_iron_ball_base");
 
     /** La sky tumblestone macinata alla mola, da mescolare alla sabbia. */
     public static final DeferredItem<Item> SKY_TUMBLESTONE_POWDER =
