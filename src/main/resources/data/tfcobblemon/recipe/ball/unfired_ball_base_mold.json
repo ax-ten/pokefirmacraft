@@ -1,0 +1,15 @@
+{
+  "type": "tfc:knapping",
+  "knapping_type": "tfc:clay",
+  "pattern": [
+    "#####",
+    "#   #",
+    "#   #",
+    "#   #",
+    "#####"
+  ],
+  "result": {
+    "id": "tfcobblemon:unfired_ball_base_mold",
+    "count": 1
+  }
+}

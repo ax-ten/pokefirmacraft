@@ -2,17 +2,17 @@
   "type": "tfc:knapping",
   "knapping_type": "tfc:rock",
   "pattern": [
+    "  #  ",
+    " ### ",
     "#####",
-    "#   #",
-    "#   #",
-    "#   #",
-    "#####"
+    " ### ",
+    "  #  "
   ],
   "ingredient": {
-    "item": "cobblemon:black_tumblestone"
+    "item": "cobblemon:tumblestone"
   },
   "result": {
-    "id": "tfcobblemon:black_tumblestone_cast",
+    "id": "tfcobblemon:tumblestone_core",
     "count": 1
   }
 }

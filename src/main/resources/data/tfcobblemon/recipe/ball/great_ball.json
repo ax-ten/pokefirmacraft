@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "tfcobblemon:tumblestone_core"
+    },
+    {
+      "item": "tfcobblemon:copper_ball_bowl"
+    },
+    {
+      "item": "tfcobblemon:half_blue_apricorn"
+    }
+  ],
+  "result": {
+    "id": "cobblemon:great_ball",
+    "count": 1
+  }
+}

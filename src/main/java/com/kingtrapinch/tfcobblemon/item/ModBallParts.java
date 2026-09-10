@@ -24,21 +24,24 @@ public final class ModBallParts {
             List.of("black", "blue", "green", "pink", "red", "white", "yellow");
 
 
-    /** Tumblestone scheggiata al knapping: e' la molla di scatto della ball. */
-    public static final DeferredItem<Item> CUT_TUMBLESTONE =
-            ITEMS.registerSimpleItem("cut_tumblestone");
+    /** Tumblestone intagliata: il cuore di ogni ball, in tutte e tre le linee. */
+    public static final DeferredItem<Item> TUMBLESTONE_CORE =
+            ITEMS.registerSimpleItem("tumblestone_core");
 
-    /** Black tumblestone scheggiata a stampo: da sola e' il cuore della Heavy. */
-    public static final DeferredItem<Item> BLACK_TUMBLESTONE_CAST =
-            ITEMS.registerSimpleItem("black_tumblestone_cast");
+    /** Stampo a semisfera per le ciotole di metallo: argilla, poi cottura. */
+    public static final DeferredItem<Item> UNFIRED_BALL_BASE_MOLD =
+            ITEMS.registerSimpleItem("unfired_ball_base_mold");
+    public static final DeferredItem<Item> BALL_BASE_MOLD =
+            ITEMS.registerSimpleItem("ball_base_mold");
 
-    /** Lo stampo colato in rame. */
-    public static final DeferredItem<Item> LEADEN_BALL_MECHANISM =
-            ITEMS.registerSimpleItem("leaden_ball_mechanism");
+    /** Il metallo della ciotola fa il tier della ball. */
+    public static final DeferredItem<Item> COPPER_BALL_BOWL =
+            ITEMS.registerSimpleItem("copper_ball_bowl");
+    public static final DeferredItem<Item> BLACK_BRONZE_BALL_BOWL =
+            ITEMS.registerSimpleItem("black_bronze_ball_bowl");
 
-    /** Lo stampo colato in black bronze. */
-    public static final DeferredItem<Item> GIGATON_BALL_MECHANISM =
-            ITEMS.registerSimpleItem("gigaton_ball_mechanism");
+
+
 
     /** Ciotola piu' tumblestone scheggiata: il cuore di ogni ball rustic. */
     public static final DeferredItem<Item> BASE_RUSTIC_MECHANISM =
