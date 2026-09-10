@@ -78,6 +78,9 @@ repositories {
 
 dependencies {
     compileOnly "com.cobblemon:neoforge:${cobblemon_version}"
+    // Cobblemon e' in Kotlin: le sue lambda sono Function2, quindi serve la stdlib
+    // per compilare. A runtime la porta Kotlin for Forge.
+    compileOnly "org.jetbrains.kotlin:kotlin-stdlib:2.0.21"
     compileOnly "maven.modrinth:terrafirmacraft:${tfc_version}"
 
     // Le stesse mod servono anche a runtime per far partire client/server di sviluppo.
