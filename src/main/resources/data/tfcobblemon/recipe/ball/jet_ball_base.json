@@ -1,0 +1,17 @@
+{
+  "type": "tfc:glassworking",
+  "batch": {
+    "item": "tfcobblemon:sky_glass_batch"
+  },
+  "operations": [
+    "tfc:blow",
+    "tfc:stretch",
+    "tfcobblemon:black_bronze",
+    "tfc:saw",
+    "tfc:table_pour"
+  ],
+  "result": {
+    "id": "tfcobblemon:jet_ball_base",
+    "count": 2
+  }
+}

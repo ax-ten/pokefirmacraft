@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "tfcobblemon:tumblestone_core"
+    },
+    {
+      "item": "tfcobblemon:feather_ball_base"
+    },
+    {
+      "item": "tfcobblemon:half_white_apricorn"
+    }
+  ],
+  "result": {
+    "id": "cobblemon:ancient_feather_ball",
+    "count": 1
+  }
+}

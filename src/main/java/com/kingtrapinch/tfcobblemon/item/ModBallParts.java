@@ -34,6 +34,14 @@ public final class ModBallParts {
     public static final DeferredItem<Item> BALL_BASE_MOLD =
             ITEMS.registerSimpleItem("ball_base_mold");
 
+    /** Le tre semisfere del ramo leggero: stessa bolla, polvere diversa. */
+    public static final DeferredItem<Item> FEATHER_BALL_BASE =
+            ITEMS.registerSimpleItem("feather_ball_base");
+    public static final DeferredItem<Item> WING_BALL_BASE =
+            ITEMS.registerSimpleItem("wing_ball_base");
+    public static final DeferredItem<Item> JET_BALL_BASE =
+            ITEMS.registerSimpleItem("jet_ball_base");
+
     /** Le tre basi del ramo pesante: stesso stampo, lega diversa. */
     public static final DeferredItem<Item> HEAVY_BALL_BASE =
             ITEMS.registerSimpleItem("heavy_ball_base");

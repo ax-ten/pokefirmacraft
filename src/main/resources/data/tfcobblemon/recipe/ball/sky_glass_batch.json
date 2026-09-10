@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "cobblemon:sky_tumblestone"
+    },
+    {
+      "item": "cobblemon:sky_tumblestone"
+    }
+  ],
+  "result": {
+    "id": "tfcobblemon:sky_glass_batch",
+    "count": 1
+  }
+}
