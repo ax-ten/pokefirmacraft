@@ -200,6 +200,20 @@ tasks.register('installToPack', Copy) {
     description = 'Costruisce il jar e lo copia nell\'istanza Prism del pacchetto'
     group = 'pokefirmacraft'
     dependsOn tasks.named('build')
+    // sostituire il jar mentre il gioco lo tiene aperto lo fa leggere a meta':
+    // la JVM prende uno ZipException e NeoForge, provando a segnalarlo, crasha
+    doFirst {
+        def running = new ByteArrayOutputStream()
+        exec {
+            commandLine 'pgrep', '-f', 'instances/Pokefirmacraft'
+            standardOutput = running
+            ignoreExitValue = true
+        }
+        if (running.toString().trim()) {
+            throw new GradleException(
+                    'Pokefirmacraft e\' in esecuzione: chiudi il gioco prima di sostituire il jar')
+        }
+    }
     from(tasks.named('jar').map { it.archiveFile })
     into prismInstance
     rename { "tfcobblemon-dev.jar" }
