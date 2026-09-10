@@ -13,11 +13,8 @@ public final class DigLayout {
     public static final int CELL = 18;
     public static final int WIDTH = 176;
 
-    public static final int TOOLS_X = 8;
-    public static final int TOOLS_Y = 18;
-
     public static final int GRID_X = 8;
-    public static final int GRID_Y = 40;
+    public static final int GRID_Y = 18;
     public static final int GRID_SPAN = DigSite.SIZE * CELL;
 
     public static final int BAR_Y = GRID_Y + GRID_SPAN + 5;

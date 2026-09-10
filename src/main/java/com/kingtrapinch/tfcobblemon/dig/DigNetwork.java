@@ -41,20 +41,19 @@ public final class DigNetwork {
                 return;
             }
 
+            // quali tesori si vedevano prima del colpo, per capire se ne esce uno
+            final boolean[] visti = new boolean[be.buried().size()];
+            for (int i = 0; i < visti.length; i++) {
+                visti[i] = be.glimpsed(i);
+            }
+
             final int cx = payload.cell() % DigSite.SIZE;
             final int cy = payload.cell() / DigSite.SIZE;
-            // dispari centrato sulla cella, pari ancorato in alto a sinistra
-            final int offset = tool.size % 2 == 0 ? 0 : tool.size / 2;
-            boolean bit = false;
-            for (int dy = 0; dy < tool.size; dy++) {
-                for (int dx = 0; dx < tool.size; dx++) {
-                    final int x = cx - offset + dx;
-                    final int y = cy - offset + dy;
-                    if (x >= 0 && x < DigSite.SIZE && y >= 0 && y < DigSite.SIZE) {
-                        bit |= site.strip(x, y, tool);
-                    }
-                }
-            }
+            final boolean bit = switch (tool) {
+                case HAMMER -> hammer(site, level, cx, cy);
+                case CHISEL -> chisel(site, level, cx, cy);
+                case BRUSH -> brush(site, cx, cy);
+            };
 
             // l'attrezzo si consuma anche a vuoto: la spazzola sulla roccia non
             // combina niente ma le setole si rovinano comunque
@@ -71,7 +70,75 @@ public final class DigNetwork {
             }
 
             be.setChanged();
-            player.connection.send(new DigSyncPayload(site.snapshot(), site.durability()));
+            int trovato = -1;
+            for (int i = 0; i < visti.length; i++) {
+                if (!visti[i] && be.glimpsed(i)) {
+                    trovato = i;
+                    break;
+                }
+            }
+            if (trovato >= 0) {
+                player.playNotifySound(net.minecraft.sounds.SoundEvents.AMETHYST_BLOCK_CHIME,
+                        net.minecraft.sounds.SoundSource.PLAYERS, 0.8F, 1.2F);
+            }
+            player.connection.send(new DigSyncPayload(site.snapshot(), site.durability(), trovato));
+
+            // finito il sito si sbriciola, e quello che non hai tirato fuori
+            // resta sotto: non cade niente
+            if (site.exhausted()) {
+                be.collapse(level);
+                player.closeContainer();
+            }
         });
+    }
+
+    /**
+     * Il martello prende un diamante di raggio due. Al centro sfonda sempre;
+     * intorno, nel quadrato, otto volte su dieci lascia solo le crepe; sulle
+     * quattro punte cede sei volte su dieci, altrimenti niente.
+     */
+    private static boolean hammer(DigSite site, ServerLevel level, int cx, int cy) {
+        boolean any = site.hit(cx, cy, DigTool.HAMMER, true);
+        for (int dy = -1; dy <= 1; dy++) {
+            for (int dx = -1; dx <= 1; dx++) {
+                if (dx == 0 && dy == 0) {
+                    continue;
+                }
+                any |= at(site, cx + dx, cy + dy, DigTool.HAMMER,
+                        level.random.nextFloat() < 0.20F);
+            }
+        }
+        for (int[] tip : new int[][] {{2, 0}, {-2, 0}, {0, 2}, {0, -2}}) {
+            if (level.random.nextFloat() < 0.60F) {
+                any |= at(site, cx + tip[0], cy + tip[1], DigTool.HAMMER, true);
+            }
+        }
+        return any;
+    }
+
+    /** Lo scalpello prende la cella, e tre volte su dieci anche quella sotto. */
+    private static boolean chisel(DigSite site, ServerLevel level, int cx, int cy) {
+        boolean any = site.hit(cx, cy, DigTool.CHISEL, true);
+        if (any && level.random.nextFloat() < 0.30F) {
+            any |= site.hit(cx, cy, DigTool.CHISEL, true);
+        }
+        return any;
+    }
+
+    private static boolean brush(DigSite site, int cx, int cy) {
+        boolean any = false;
+        for (int dy = 0; dy < DigTool.BRUSH.size; dy++) {
+            for (int dx = 0; dx < DigTool.BRUSH.size; dx++) {
+                any |= at(site, cx + dx, cy + dy, DigTool.BRUSH, true);
+            }
+        }
+        return any;
+    }
+
+    private static boolean at(DigSite site, int x, int y, DigTool tool, boolean full) {
+        if (x < 0 || x >= DigSite.SIZE || y < 0 || y >= DigSite.SIZE) {
+            return false;
+        }
+        return site.hit(x, y, tool, full);
     }
 }

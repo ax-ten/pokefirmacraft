@@ -24,6 +24,8 @@ public final class DigSite {
 
     /** Quanto e' stata scavata ogni cella. Il materiale lo dice il tipo di sito. */
     private final byte[] depth = new byte[CELLS];
+    /** Se lo strato in cima a una cella e' incrinato: un altro colpo e va. */
+    private final boolean[] cracked = new boolean[CELLS];
     private int durability;
     private SiteKind kind = SiteKind.SEDIMENT;
 
@@ -84,14 +86,26 @@ public final class DigSite {
         return durability <= 0;
     }
 
-    /** Toglie uno strato dalla cella, se l'attrezzo ci arriva. Dice se ha morso. */
-    public boolean strip(int x, int y, DigTool tool) {
+    /**
+     * Un colpo su una cella. Se {@code full} lo strato va via subito; se no si
+     * incrina, e al colpo dopo cede. Dice se ha cambiato qualcosa.
+     */
+    public boolean hit(int x, int y, DigTool tool, boolean full) {
         final int i = index(x, y);
         if (!tool.bites(kind.materialAt(depth[i]))) {
             return false;
         }
-        depth[i]++;
+        if (full || cracked[i]) {
+            depth[i]++;
+            cracked[i] = false;
+        } else {
+            cracked[i] = true;
+        }
         return true;
+    }
+
+    public boolean isCracked(int x, int y) {
+        return cracked[index(x, y)];
     }
 
     public boolean cleared(int x, int y) {
@@ -106,14 +120,22 @@ public final class DigSite {
         durability = Math.max(0, durability - amount);
     }
 
-    /** Le profondita' appiattite, per mandarle al client. */
+    /**
+     * Lo stato appiattito: profondita' nei bit bassi, l'incrinatura nel quinto.
+     * Sono ottantuno byte, tanto vale mandarli tutti dopo ogni colpo.
+     */
     public byte[] snapshot() {
-        return depth.clone();
+        final byte[] flat = new byte[CELLS];
+        for (int i = 0; i < CELLS; i++) {
+            flat[i] = (byte) (depth[i] | (cracked[i] ? 0x10 : 0));
+        }
+        return flat;
     }
 
     public CompoundTag save() {
         final CompoundTag tag = new CompoundTag();
         tag.putByteArray("depth", depth);
+        tag.putByteArray("cracked", snapshot());
         tag.putInt("durability", durability);
         tag.putString("kind", kind.name());
         return tag;
@@ -123,6 +145,10 @@ public final class DigSite {
         final DigSite site = new DigSite();
         final byte[] flat = tag.getByteArray("depth");
         System.arraycopy(flat, 0, site.depth, 0, Math.min(flat.length, CELLS));
+        final byte[] crepe = tag.getByteArray("cracked");
+        for (int i = 0; i < Math.min(crepe.length, CELLS); i++) {
+            site.cracked[i] = (crepe[i] & 0x10) != 0;
+        }
         site.durability = tag.getInt("durability");
         site.kind = tag.contains("kind")
                 ? SiteKind.valueOf(tag.getString("kind")) : SiteKind.SEDIMENT;

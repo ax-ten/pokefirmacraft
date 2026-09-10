@@ -54,11 +54,16 @@ public class DigMenu extends AbstractContainerMenu {
         for (int i = 0; i < this.spots.size(); i++) {
             final Spot spot = this.spots.get(i);
             final int index = i;
-            final IntPredicate exposed = client
-                    ? unused -> clearAround(spot)
+            // si intravede appena una cella e' pulita, ma si prende solo quando
+            // il quadrato e' libero del tutto
+            final IntPredicate glimpsed = client
+                    ? unused -> clearAround(spot, false)
+                    : unused -> site != null && site.glimpsed(index);
+            final IntPredicate freed = client
+                    ? unused -> clearAround(spot, true)
                     : unused -> site != null && site.exposed(index);
             addSlot(new TreasureSlot(contents, i,
-                    DigLayout.treasureX(spot.x()), DigLayout.treasureY(spot.y()), exposed));
+                    DigLayout.treasureX(spot.x()), DigLayout.treasureY(spot.y()), glimpsed, freed));
         }
 
         for (int row = 0; row < 3; row++) {
@@ -73,34 +78,44 @@ public class DigMenu extends AbstractContainerMenu {
     }
 
     /** Sul client gli strati li sa {@link ClientDigState}, il block entity no. */
-    private static boolean clearAround(Spot spot) {
+    private static boolean clearAround(Spot spot, boolean all) {
+        int clean = 0;
+        final int cells = DigSiteBlockEntity.TREASURE_SIZE * DigSiteBlockEntity.TREASURE_SIZE;
         for (int dy = 0; dy < DigSiteBlockEntity.TREASURE_SIZE; dy++) {
             for (int dx = 0; dx < DigSiteBlockEntity.TREASURE_SIZE; dx++) {
-                if (ClientDigState.layer(spot.x() + dx, spot.y() + dy) != Layer.EMPTY) {
-                    return false;
+                if (ClientDigState.layer(spot.x() + dx, spot.y() + dy) == Layer.EMPTY) {
+                    clean++;
                 }
             }
         }
-        return true;
+        return all ? clean == cells : clean > 0;
     }
 
-    /** Uno slot che si vede solo quando il terreno sopra e' stato tolto. */
-    private static class TreasureSlot extends Slot {
-        private final IntPredicate exposed;
+    /** Uno slot che si intravede appena il terreno sopra comincia ad andare via. */
+    public static class TreasureSlot extends Slot {
+        private final IntPredicate glimpsed;
+        private final IntPredicate freed;
 
-        TreasureSlot(Container container, int index, int x, int y, IntPredicate exposed) {
+        TreasureSlot(Container container, int index, int x, int y,
+                     IntPredicate glimpsed, IntPredicate freed) {
             super(container, index, x, y);
-            this.exposed = exposed;
+            this.glimpsed = glimpsed;
+            this.freed = freed;
         }
 
         @Override
         public boolean isActive() {
-            return exposed.test(index);
+            return glimpsed.test(index);
+        }
+
+        /** Ancora mezzo sepolto: si vede ma non si tira via. */
+        public boolean stuck() {
+            return !freed.test(index);
         }
 
         @Override
         public boolean mayPickup(Player player) {
-            return exposed.test(index);
+            return freed.test(index);
         }
 
         @Override

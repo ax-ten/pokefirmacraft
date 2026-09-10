@@ -41,6 +41,36 @@ public enum DigTool {
         this.tag = tag;
     }
 
+    /**
+     * Le celle che un colpo tocca da qui: x, y, e se e' un colpo sicuro (1) o
+     * a probabilita' (0). Il martello fa un diamante di raggio due, non un
+     * quadrato: le quattro punte ortogonali sono in piu' rispetto al 3x3.
+     */
+    public java.util.List<int[]> area(int cx, int cy) {
+        final java.util.List<int[]> cells = new java.util.ArrayList<>();
+        switch (this) {
+            case HAMMER -> {
+                for (int dy = -1; dy <= 1; dy++) {
+                    for (int dx = -1; dx <= 1; dx++) {
+                        cells.add(new int[] {cx + dx, cy + dy, dx == 0 && dy == 0 ? 1 : 0});
+                    }
+                }
+                for (int[] tip : new int[][] {{2, 0}, {-2, 0}, {0, 2}, {0, -2}}) {
+                    cells.add(new int[] {cx + tip[0], cy + tip[1], 0});
+                }
+            }
+            case CHISEL -> cells.add(new int[] {cx, cy, 1});
+            case BRUSH -> {
+                for (int dy = 0; dy < size; dy++) {
+                    for (int dx = 0; dx < size; dx++) {
+                        cells.add(new int[] {cx + dx, cy + dy, 1});
+                    }
+                }
+            }
+        }
+        return cells;
+    }
+
     public boolean bites(Layer layer) {
         return reaches.contains(layer);
     }

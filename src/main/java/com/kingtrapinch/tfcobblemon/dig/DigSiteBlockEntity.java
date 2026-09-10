@@ -140,11 +140,36 @@ public class DigSiteBlockEntity extends BlockEntity {
         return ready;
     }
 
+    /**
+     * Il sito e' finito: il blocco si sbriciola e quello che non e' stato
+     * tirato fuori resta sotto. Non cade niente, nemmeno il blocco.
+     */
+    public void collapse(ServerLevel level) {
+        contents.clearContent();
+        level.destroyBlock(worldPosition, false);
+    }
+
     public SimpleContainer contents() {
         return contents;
     }
 
-    /** Se le quattro celle sopra il tesorto numero {@code slot} sono pulite. */
+    /** Se almeno una delle quattro celle sopra il tesoro e' pulita. */
+    public boolean glimpsed(int slot) {
+        if (site == null || slot < 0 || slot >= buried.size()) {
+            return false;
+        }
+        final Buried b = buried.get(slot);
+        for (int dy = 0; dy < TREASURE_SIZE; dy++) {
+            for (int dx = 0; dx < TREASURE_SIZE; dx++) {
+                if (site.cleared(b.x() + dx, b.y() + dy)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /** Se le quattro celle sopra il tesoro numero {@code slot} sono pulite. */
     public boolean exposed(int slot) {
         if (site == null || slot < 0 || slot >= buried.size()) {
             return false;

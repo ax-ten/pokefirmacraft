@@ -45,7 +45,7 @@ public class DigSiteBlock extends Block implements EntityBlock {
                 }
             });
             if (player instanceof net.minecraft.server.level.ServerPlayer sp) {
-                sp.connection.send(new DigSyncPayload(scavo.snapshot(), scavo.durability()));
+                sp.connection.send(new DigSyncPayload(scavo.snapshot(), scavo.durability(), -1));
             }
         }
         return ItemInteractionResult.sidedSuccess(level.isClientSide);

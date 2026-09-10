@@ -14,6 +14,11 @@ public record DigSkin(ResourceLocation rock, ResourceLocation lime, ResourceLoca
                       ResourceLocation crystalOuter, ResourceLocation crystalInner) {
     private static final ResourceLocation EMPTY = ours("empty");
 
+    /** Il fondo dello scavo: la roccia del posto, che non si scava piu'. */
+    public ResourceLocation floor() {
+        return rock;
+    }
+
     private static ResourceLocation tfc(String path) {
         return ResourceLocation.fromNamespaceAndPath("tfc", "textures/block/" + path + ".png");
     }
@@ -28,11 +33,13 @@ public record DigSkin(ResourceLocation rock, ResourceLocation lime, ResourceLoca
         final int slash = path.indexOf('/');
         final String variant = slash < 0 ? "" : path.substring(slash + 1);
         if (path.startsWith("suspicious_crystal")) {
-            return new DigSkin(EMPTY, EMPTY, EMPTY,
-                    ours("crystal/" + variant + "_outer"), ours("crystal/" + variant + "_inner"));
+            // il fondo di un geode e' pietra come tutti gli altri
+            return new DigSkin(tfc("rock/raw/granite"), EMPTY, EMPTY,
+                    crystalBlock(variant), ours("crystal/" + variant + "_inner"));
         }
         if (path.startsWith("suspicious_sand")) {
-            return new DigSkin(tfc("sandstone/cut/" + variant),
+            // le facce lisce dell'arenaria, non quella intagliata
+            return new DigSkin(tfc("sandstone/bottom/" + variant),
                     tfc("sandstone/side/" + variant),
                     tfc("sand/" + variant), EMPTY, EMPTY);
         }
@@ -46,13 +53,31 @@ public record DigSkin(ResourceLocation rock, ResourceLocation lime, ResourceLoca
      * Il materiale dice quale faccia, ma nel cristallo i due strati sono
      * entrambi cristallo: li distingue la profondita'.
      */
+    /**
+     * Lo strato esterno del cristallo e' la faccia del blocco vero — ametista,
+     * diamante, tumblestone — che esiste gia': non serve ridisegnarla.
+     */
+    private static ResourceLocation crystalBlock(String variant) {
+        final String path = switch (variant) {
+            case "amethyst" -> "minecraft:textures/block/amethyst_block.png";
+            case "diamond" -> "minecraft:textures/block/diamond_block.png";
+            case "emerald" -> "minecraft:textures/block/emerald_block.png";
+            case "lapis" -> "minecraft:textures/block/lapis_block.png";
+            case "tumblestone" -> "cobblemon:textures/block/tumblestone/tumblestone_block.png";
+            case "sky_tumblestone" -> "cobblemon:textures/block/tumblestone/sky_tumblestone_block.png";
+            case "black_tumblestone" -> "cobblemon:textures/block/tumblestone/black_tumblestone_block.png";
+            default -> "minecraft:textures/block/amethyst_block.png";
+        };
+        return ResourceLocation.parse(path);
+    }
+
     public ResourceLocation forCell(Layer layer, int depth) {
         return switch (layer) {
             case ROCK -> rock;
             case LIME -> lime;
             case DUST -> dust;
             case CRYSTAL -> depth == 0 ? crystalOuter : crystalInner;
-            case EMPTY -> EMPTY;
+            case EMPTY -> rock;
         };
     }
 }

@@ -407,9 +407,13 @@ Il minigioco funziona, i numeri sono messi a caso e vanno provati con le mani.
       roccia; la pietra viva al contrario; il cristallo sono due strati di
       cristallo e basta, per cui la spazzola non ci trova niente da fare per
       costruzione e non per una regola scritta a parte.
-- [ ] Sei tipi di cristallo (ametista, opale, rubino, zaffiro, topazio,
+- [ ] Sette tipi di cristallo (ametista, diamante, smeraldo, lapis, e le tre
       tumblestone) con la stessa loot table. Se vale la pena differenziarle,
       basta una tabella per tipo.
+- [ ] Le probabilita' dei colpi: martello 20% di sfondare le otto celle
+      intorno (80% le incrina), 60% sulle quattro punte del diamante;
+      scalpello 30% di prendere anche la cella sotto.
+- [ ] Il titolo della finestra e' "Test Pit". Alternative in fondo alla lista.
 - [ ] `SiteKind.CRYSTAL.hammerPenalty` = 4: il martello consuma quattro volte
       tanto, quindi nel cristallo si lavora di scalpello.
 - [ ] `SiteKind.rollCrystal` = 4% — quanto raro e' un sito di cristallo, quando

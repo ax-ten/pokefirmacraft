@@ -5,22 +5,24 @@ import com.kingtrapinch.tfcobblemon.dig.DigLayout;
 import com.kingtrapinch.tfcobblemon.dig.DigMenu;
 import com.kingtrapinch.tfcobblemon.dig.DigPayload;
 import com.kingtrapinch.tfcobblemon.dig.DigSite;
+import com.kingtrapinch.tfcobblemon.dig.DigSiteBlockEntity;
 import com.kingtrapinch.tfcobblemon.dig.DigTool;
 import com.kingtrapinch.tfcobblemon.dig.Layer;
+import com.kingtrapinch.tfcobblemon.dig.SiteKind;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Lo scavo. La griglia e' disegnata a mano — sono celle di terreno, non slot —
- * e i tesori compaiono dentro la griglia quando il terreno sopra e' via.
+ * e l'attrezzo si scegle direttamente nell'inventario, dove tutto quello che
+ * non serve a scavare resta ingrigito.
  */
 public class DigScreen extends AbstractContainerScreen<DigMenu> {
     private static final int BODY = 0xFFC6C6C6;
@@ -28,14 +30,16 @@ public class DigScreen extends AbstractContainerScreen<DigMenu> {
     private static final int SHADE = 0xFF555555;
     private static final int WELL = 0xFF8B8B8B;
     private static final int WELL_DARK = 0xFF373737;
+    /** Il velo su quello che non si puo' usare per scavare. */
+    private static final int GREYED = 0xB0202020;
 
-    /** Un attrezzo trovato in inventario: quale tipo, e in che slot sta. */
-    private record Handy(DigTool tool, int slot, ItemStack stack) {}
+    private static final ResourceLocation CRACKS =
+            ResourceLocation.withDefaultNamespace("textures/block/destroy_stage_5.png");
 
-    private final List<Handy> handy = new ArrayList<>();
-    private DigSkin skin = DigSkin.of(net.minecraft.resources.ResourceLocation
+    private final DigDust dust = new DigDust();
+    private DigSkin skin = DigSkin.of(ResourceLocation
             .fromNamespaceAndPath("tfcobblemon", "suspicious_gravel/granite"));
-    /** Nessun attrezzo scelto: sulla griglia non si combina niente. */
+    /** Lo slot dell'inventario da cui viene l'attrezzo scelto, o -1. */
     private int chosen = -1;
 
     public DigScreen(DigMenu menu, Inventory inventory, Component title) {
@@ -48,31 +52,27 @@ public class DigScreen extends AbstractContainerScreen<DigMenu> {
     @Override
     protected void init() {
         super.init();
-        final var block = minecraft.level.getBlockState(menu.pos()).getBlock();
-        final var id = BuiltInRegistries.BLOCK.getKey(block);
+        final var id = BuiltInRegistries.BLOCK.getKey(minecraft.level.getBlockState(menu.pos()).getBlock());
         skin = DigSkin.of(id);
-        ClientDigState.kind(com.kingtrapinch.tfcobblemon.dig.SiteKind.of(id.getPath()));
-        refresh();
+        ClientDigState.kind(SiteKind.of(id.getPath()));
     }
 
-    private void refresh() {
-        handy.clear();
-        final Inventory inv = minecraft.player.getInventory();
+    private static DigTool toolOf(ItemStack stack) {
         for (DigTool tool : DigTool.values()) {
-            for (int slot = 0; slot < inv.getContainerSize(); slot++) {
-                final ItemStack stack = inv.getItem(slot);
-                if (tool.matches(stack)) {
-                    handy.add(new Handy(tool, slot, stack));
-                    break;
-                }
+            if (tool.matches(stack)) {
+                return tool;
             }
         }
-        if (chosen >= handy.size()) {
-            chosen = -1;
-        }
+        return null;
     }
 
-    /** Il pannello alla maniera vanilla: corpo chiaro, luce sopra, ombra sotto. */
+    private DigTool selected() {
+        if (chosen < 0) {
+            return null;
+        }
+        return toolOf(minecraft.player.getInventory().getItem(chosen));
+    }
+
     private static void panel(GuiGraphics g, int x, int y, int w, int h) {
         g.fill(x, y, x + w, y + h, BODY);
         g.fill(x, y, x + w - 1, y + 1, LIGHT);
@@ -81,7 +81,6 @@ public class DigScreen extends AbstractContainerScreen<DigMenu> {
         g.fill(x + w - 1, y + 1, x + w, y + h, SHADE);
     }
 
-    /** Una conca da slot: scura sopra a sinistra, chiara sotto a destra. */
     private static void well(GuiGraphics g, int x, int y, int w, int h) {
         g.fill(x, y, x + w, y + h, WELL);
         g.fill(x, y, x + w - 1, y + 1, WELL_DARK);
@@ -90,32 +89,61 @@ public class DigScreen extends AbstractContainerScreen<DigMenu> {
         g.fill(x + w - 1, y + 1, x + w, y + h, LIGHT);
     }
 
+    /**
+     * L'ombra sui lati dove la zolla si affaccia su una cella piu' scavata.
+     * E' il trucco delle connected texture ridotto all'osso: non servono
+     * quarantasette tasselli, basta sapere quali vicini sono piu' bassi perche'
+     * il bordo dell'isola venga irregolare da solo.
+     */
+    private void edges(GuiGraphics g, int gx, int gy, int px, int py) {
+        final int mine = ClientDigState.depthAt(gx, gy);
+        final int c = DigLayout.CELL;
+        for (int[] d : new int[][] {{0, -1}, {0, 1}, {-1, 0}, {1, 0}}) {
+            final int nx = gx + d[0];
+            final int ny = gy + d[1];
+            final boolean lower = nx < 0 || nx >= DigSite.SIZE || ny < 0 || ny >= DigSite.SIZE
+                    ? false : ClientDigState.depthAt(nx, ny) > mine;
+            if (!lower) {
+                continue;
+            }
+            // il lato in ombra e' quello verso il basso e verso destra
+            final int alpha = d[0] > 0 || d[1] > 0 ? 0x66000000 : 0x33000000;
+            if (d[1] < 0) {
+                g.fill(px, py, px + c, py + 2, alpha);
+            } else if (d[1] > 0) {
+                g.fill(px, py + c - 2, px + c, py + c, alpha);
+            } else if (d[0] < 0) {
+                g.fill(px, py, px + 2, py + c, alpha);
+            } else {
+                g.fill(px + c - 2, py, px + c, py + c, alpha);
+            }
+        }
+    }
+
     @Override
     protected void renderBg(GuiGraphics graphics, float partialTick, int mouseX, int mouseY) {
         final int x = leftPos;
         final int y = topPos;
         panel(graphics, x, y, imageWidth, imageHeight);
 
-        // le celle, attaccate: nessuna griglia di separazione in mezzo
         for (int gy = 0; gy < DigSite.SIZE; gy++) {
             for (int gx = 0; gx < DigSite.SIZE; gx++) {
-                graphics.blit(skin.forCell(ClientDigState.layer(gx, gy), ClientDigState.depthAt(gx, gy)),
-                        x + DigLayout.cellX(gx), y + DigLayout.cellY(gy),
-                        0, 0, DigLayout.CELL, DigLayout.CELL, 16, 16);
+                final int px = x + DigLayout.cellX(gx);
+                final int py = y + DigLayout.cellY(gy);
+                final Layer layer = ClientDigState.layer(gx, gy);
+                graphics.blit(skin.forCell(layer, ClientDigState.depthAt(gx, gy)),
+                        px, py, 0, 0, DigLayout.CELL, DigLayout.CELL, 16, 16);
+                if (layer == Layer.EMPTY) {
+                    // il fondo e' la stessa roccia, ma in ombra: si vede che non si scava
+                    graphics.fill(px, py, px + DigLayout.CELL, py + DigLayout.CELL, 0xA0101014);
+                }
+                if (ClientDigState.isCracked(gx, gy)) {
+                    graphics.blit(CRACKS, px, py, 0, 0, DigLayout.CELL, DigLayout.CELL, 16, 16);
+                }
+                edges(graphics, gx, gy, px, py);
             }
         }
 
-        // gli attrezzi che il giocatore ha addosso
-        for (int i = 0; i < handy.size(); i++) {
-            final int tx = x + DigLayout.TOOLS_X + i * 20;
-            final int ty = y + DigLayout.TOOLS_Y;
-            well(graphics, tx, ty, 18, 18);
-            if (i == chosen) {
-                graphics.renderOutline(tx - 1, ty - 1, 20, 20, 0xFFFFF0A0);
-            }
-        }
-
-        // le conche dell'inventario
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 9; col++) {
                 well(graphics, x + 7 + col * 18, y + DigLayout.INV_Y - 1 + row * 18, 18, 18);
@@ -125,7 +153,6 @@ public class DigScreen extends AbstractContainerScreen<DigMenu> {
             well(graphics, x + 7 + col * 18, y + DigLayout.HOTBAR_Y - 1, 18, 18);
         }
 
-        // la barra del sito
         final int left = Math.max(0, ClientDigState.durability()) * DigLayout.GRID_SPAN
                 / DigSite.DURABILITY;
         final int by = y + DigLayout.BAR_Y;
@@ -133,9 +160,33 @@ public class DigScreen extends AbstractContainerScreen<DigMenu> {
         graphics.fill(x + DigLayout.GRID_X, by, x + DigLayout.GRID_X + left, by + 5, 0xFF6ABE30);
     }
 
-    /** Le celle che l'attrezzo scelto colpirebbe da qui. */
+    /** I tesori nella buca si vedono in grande, e appena presi tornano normali. */
+    @Override
+    protected void renderSlot(GuiGraphics graphics, Slot slot) {
+        if (slot.index >= menu.spots().size() || !(slot.container instanceof net.minecraft.world.SimpleContainer)) {
+            super.renderSlot(graphics, slot);
+            return;
+        }
+        final ItemStack stack = slot.getItem();
+        if (stack.isEmpty()) {
+            return;
+        }
+        graphics.pose().pushPose();
+        graphics.pose().translate(slot.x + 8, slot.y + 8, 0);
+        graphics.pose().scale(1.5F, 1.5F, 1.0F);
+        graphics.pose().translate(-8, -8, 0);
+        graphics.renderItem(stack, 0, 0);
+        graphics.pose().popPose();
+        // mezzo sepolto: si vede, ma sotto un velo, e non si tira via
+        if (slot instanceof DigMenu.TreasureSlot t && t.stuck()) {
+            graphics.fill(slot.x - 4, slot.y - 4, slot.x + 20, slot.y + 20, 0x50101010);
+        }
+    }
+
+    /** Le celle che l'attrezzo colpirebbe da qui. */
     private void preview(GuiGraphics graphics, int mouseX, int mouseY) {
-        if (chosen < 0 || chosen >= handy.size()) {
+        final DigTool tool = selected();
+        if (tool == null) {
             return;
         }
         final int gx = (int) ((mouseX - leftPos - DigLayout.GRID_X) / (double) DigLayout.CELL);
@@ -143,57 +194,76 @@ public class DigScreen extends AbstractContainerScreen<DigMenu> {
         if (gx < 0 || gx >= DigSite.SIZE || gy < 0 || gy >= DigSite.SIZE) {
             return;
         }
-        final DigTool tool = handy.get(chosen).tool();
-        final int offset = tool.size % 2 == 0 ? 0 : tool.size / 2;
-        for (int dy = 0; dy < tool.size; dy++) {
-            for (int dx = 0; dx < tool.size; dx++) {
-                final int cx = gx - offset + dx;
-                final int cy = gy - offset + dy;
-                if (cx < 0 || cx >= DigSite.SIZE || cy < 0 || cy >= DigSite.SIZE) {
-                    continue;
-                }
-                final boolean bites = tool.bites(ClientDigState.layer(cx, cy));
-                graphics.fill(leftPos + DigLayout.cellX(cx), topPos + DigLayout.cellY(cy),
-                        leftPos + DigLayout.cellX(cx) + DigLayout.CELL,
-                        topPos + DigLayout.cellY(cy) + DigLayout.CELL,
-                        bites ? 0x60FFFFFF : 0x50FF4040);
+        for (int[] cell : tool.area(gx, gy)) {
+            final int cx = cell[0];
+            final int cy = cell[1];
+            if (cx < 0 || cx >= DigSite.SIZE || cy < 0 || cy >= DigSite.SIZE) {
+                continue;
+            }
+            final boolean bites = tool.bites(ClientDigState.layer(cx, cy));
+            final boolean sure = cell[2] == 1;
+            graphics.fill(leftPos + DigLayout.cellX(cx), topPos + DigLayout.cellY(cy),
+                    leftPos + DigLayout.cellX(cx) + DigLayout.CELL,
+                    topPos + DigLayout.cellY(cy) + DigLayout.CELL,
+                    !bites ? 0x50FF4040 : sure ? 0x70FFFFFF : 0x40FFFFFF);
+        }
+    }
+
+    /** Il velo su tutto quello che non e' un attrezzo da scavo. */
+    private void greyOut(GuiGraphics graphics) {
+        for (Slot slot : menu.slots) {
+            if (!(slot.container instanceof Inventory)) {
+                continue;
+            }
+            final DigTool tool = toolOf(slot.getItem());
+            if (tool == null) {
+                graphics.fill(leftPos + slot.x, topPos + slot.y,
+                        leftPos + slot.x + 16, topPos + slot.y + 16, GREYED);
+            } else if (slot.getContainerSlot() == chosen) {
+                graphics.renderOutline(leftPos + slot.x - 1, topPos + slot.y - 1, 18, 18, 0xFFFFF0A0);
             }
         }
     }
 
     @Override
     public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
-        super.render(graphics, mouseX, mouseY, partialTick);
-        preview(graphics, mouseX, mouseY);
-        for (int i = 0; i < handy.size(); i++) {
-            final int tx = leftPos + DigLayout.TOOLS_X + i * 20 + 1;
-            final int ty = topPos + DigLayout.TOOLS_Y + 1;
-            graphics.renderItem(handy.get(i).stack(), tx, ty);
-            graphics.renderItemDecorations(font, handy.get(i).stack(), tx, ty);
+        for (int[] cell : ClientDigState.drainBroken()) {
+            dust.burst(leftPos + DigLayout.cellX(cell[0]) + DigLayout.CELL / 2,
+                    topPos + DigLayout.cellY(cell[1]) + DigLayout.CELL / 2, 0xC8B090);
         }
+        // un tesoro appena venuto fuori: scintille chiare sopra il punto giusto
+        final int trovato = ClientDigState.drainFound();
+        if (trovato >= 0 && trovato < menu.spots().size()) {
+            final DigMenu.Spot spot = menu.spots().get(trovato);
+            for (int i = 0; i < 3; i++) {
+                dust.burst(leftPos + DigLayout.treasureX(spot.x()) + 8,
+                        topPos + DigLayout.treasureY(spot.y()) + 8, 0xFFF0A0);
+            }
+        }
+        super.render(graphics, mouseX, mouseY, partialTick);
+        greyOut(graphics);
+        preview(graphics, mouseX, mouseY);
+        dust.render(graphics);
         renderTooltip(graphics, mouseX, mouseY);
     }
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        refresh();
-        for (int i = 0; i < handy.size(); i++) {
-            final int tx = leftPos + DigLayout.TOOLS_X + i * 20;
-            final int ty = topPos + DigLayout.TOOLS_Y;
-            if (mouseX >= tx && mouseX < tx + 18 && mouseY >= ty && mouseY < ty + 18) {
-                chosen = i;
-                return true;
-            }
+        final Slot under = getSlotUnderMouse();
+        if (under != null && under.container instanceof Inventory && toolOf(under.getItem()) != null) {
+            chosen = under.getContainerSlot();
+            return true;
         }
-        // uno slot col tesoro dentro vince sulla cella: si trascina, non si picchia
-        if (getSlotUnderMouse() == null || !getSlotUnderMouse().isActive()) {
+        // su un tesoro ancora mezzo sepolto si continua a scavare, non si trascina
+        final boolean daPrendere = under instanceof DigMenu.TreasureSlot t
+                && !t.stuck() && under.hasItem();
+        if (!daPrendere) {
             final int gx = (int) ((mouseX - leftPos - DigLayout.GRID_X) / DigLayout.CELL);
             final int gy = (int) ((mouseY - topPos - DigLayout.GRID_Y) / DigLayout.CELL);
-            if (gx >= 0 && gx < DigSite.SIZE && gy >= 0 && gy < DigSite.SIZE
-                    && chosen >= 0 && chosen < handy.size()) {
-                final Handy pick = handy.get(chosen);
+            final DigTool tool = selected();
+            if (tool != null && gx >= 0 && gx < DigSite.SIZE && gy >= 0 && gy < DigSite.SIZE) {
                 PacketDistributor.sendToServer(new DigPayload(
-                        DigSite.index(gx, gy), pick.tool().ordinal(), pick.slot()));
+                        DigSite.index(gx, gy), tool.ordinal(), chosen));
                 return true;
             }
         }
@@ -203,6 +273,7 @@ public class DigScreen extends AbstractContainerScreen<DigMenu> {
     @Override
     public void onClose() {
         ClientDigState.reset();
+        dust.clear();
         super.onClose();
     }
 }
