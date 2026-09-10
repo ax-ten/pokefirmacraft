@@ -190,6 +190,62 @@ materiali. Il pack ci lavora sopra solo con KubeJS (569 chiamate a
 formato di GTRecipe, KubeJS lato pack, o l'API di GTCEu da Java — e la scelta vincola
 tutte le ere da Steam in poi. Vedi sezione 9.
 
+### 5.4 Le ball moderne — ripartizione per effetto
+
+Cobblemon ha gia' una scala a cinque tier (`tier_N_poke_balls` e
+`tier_N_poke_ball_materials`, agganciati a copper / iron / gold / diamond). La
+struttura ci serve, i contenuti no: il materiale lo rimappiamo su TFC e Greg, e
+il tier di Cobblemon mette insieme effetti di natura molto diversa — la moon
+ball, che legge una fase lunare, sta nello stesso scaglione della dive ball, che
+sente solo se il bersaglio e' sott'acqua.
+
+Il criterio qui e' un altro: **cosa deve sapere la ball per funzionare.** Un
+colore non e' un effetto, quindi i dye escono dalla catena; l'unico posto dove
+il colore conta e' il coperchio delle sei ball-ricolore, e li' arriva
+dall'apricorn, che e' una pianta, non un pigmento.
+
+**I tre pezzi restano gli stessi delle rustic, ma cambiano provenienza:**
+
+| Pezzo | Rustic | Moderne |
+|---|---|---|
+| Base | colata a semisfera, una per volta | **tin sheet** battuta sull'incudine, piu' basi per foglio |
+| Core | tumblestone scartavetrata, una per volta | **tumblestone + ender pearl** nel pentolone, piu' core per cottura |
+| Coperchio | mezza apricorn | il reagente che porta l'effetto |
+
+La tin sheet e' la scelta giusta per la produzione in serie: lo stagno e' un
+metallo di tier -1 in TFC (si salda e si batte sull'incudine di rame, la prima
+disponibile) e la lamiera e' l'unica forma da cui abbia senso ricavare piu'
+gusci in un colpo. Il core in serie usa il pentolone (`tfc:pot`), che accetta
+cinque ingredienti e restituisce cinque oggetti: una ender pearl semina quattro
+tumblestone.
+
+**Il coperchio porta l'effetto.** Ogni ball prende un reagente caratteristico
+oltre alla lamiera — il peso di piombo per la heavy, la lenza per la lure, la
+rete per la net, l'argento per la moon, lo scappamento per la timer. Cosi' la
+ricetta si legge da sola e non serve nessun dye. La lista reagente-per-ball e'
+il prossimo punto da fissare, una ball per volta.
+
+**Ripartizione per era:**
+
+| Era | Cosa deve sapere la ball | Ball |
+|---|---|---|
+| **Iron** | niente, moltiplicatore fisso | poke, citrine, verdant, azure, roseate, slate, premier, great |
+| **Iron** | una proprieta' fisica del bersaglio o del posto | heavy (peso), dive (sommerso), lure (durante la pesca), net (Acqua/Coleottero), nest (livello basso), safari, park, sport |
+| **Iron** | un numero da confrontare, con una scala o un almanacco | level, fast, friend, moon |
+| **Iron** | erboristeria | heal |
+| **Steam** | moltiplicatore fisso, lega migliore | ultra |
+| **Steam** | tempo e memoria | timer (conta i turni), quick (primo istante), repeat (specie gia' catturata) |
+| **Steam** | un sensore | dusk (livello di luce) |
+| **Steam** | manifattura fine | luxury, love |
+| **Electrical** | stati di coscienza e altre dimensioni | dream, beast |
+| **Nuclear** | — | master, rustic origin |
+| mai craftabile | dono | cherish |
+
+Ventuno ball in Iron, sette in Steam, due in Electrical, due in Nuclear.
+Timer, repeat, quick, ultra e dusk sono in Steam per decisione presa; luxury e
+love le ho messe li' perche' sono le due che non leggono niente del mondo ma
+chiedono una lavorazione fine del guscio, che a mano non viene.
+
 ## 6. Trasporto, cattura e inventario
 
 Questa sezione sostituisce il vincolo "niente Pasture Block, niente lancio" della
