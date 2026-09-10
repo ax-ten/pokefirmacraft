@@ -43,5 +43,14 @@
   "item.tfcobblemon.unfired_ball_base_mold": "Unfired Ball Base Mold",
   "item.tfcobblemon.ball_base_mold": "Ball Base Mold",
   "item.tfcobblemon.copper_ball_bowl": "Copper Ball Bowl",
-  "item.tfcobblemon.black_bronze_ball_bowl": "Black Bronze Ball Bowl"
+  "item.tfcobblemon.black_bronze_ball_bowl": "Black Bronze Ball Bowl",
+  "item.tfcobblemon.heavy_ball_base": "Heavy Ball Base",
+  "item.tfcobblemon.leaden_ball_base": "Leaden Ball Base",
+  "item.tfcobblemon.gigaton_ball_base": "Gigaton Ball Base",
+  "fluid_type.tfcobblemon.molten_black_tumblestone": "Molten Black Tumblestone",
+  "block.tfcobblemon.molten_black_tumblestone": "Molten Black Tumblestone",
+  "fluid_type.tfcobblemon.molten_leaden_alloy": "Molten Leaden Alloy",
+  "block.tfcobblemon.molten_leaden_alloy": "Molten Leaden Alloy",
+  "fluid_type.tfcobblemon.molten_gigaton_alloy": "Molten Gigaton Alloy",
+  "block.tfcobblemon.molten_gigaton_alloy": "Molten Gigaton Alloy"
 }

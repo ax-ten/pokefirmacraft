@@ -1,0 +1,14 @@
+{
+  "type": "tfc:casting",
+  "mold": {
+    "item": "tfcobblemon:ball_base_mold"
+  },
+  "fluid": {
+    "amount": 100,
+    "fluid": "tfcobblemon:molten_leaden_alloy"
+  },
+  "result": {
+    "id": "tfcobblemon:leaden_ball_base",
+    "count": 1
+  }
+}

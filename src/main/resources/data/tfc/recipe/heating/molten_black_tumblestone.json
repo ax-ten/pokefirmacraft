@@ -1,0 +1,11 @@
+{
+  "type": "tfc:heating",
+  "ingredient": {
+    "item": "cobblemon:black_tumblestone"
+  },
+  "result_fluid": {
+    "amount": 100,
+    "id": "tfcobblemon:molten_black_tumblestone"
+  },
+  "temperature": 1200.0
+}

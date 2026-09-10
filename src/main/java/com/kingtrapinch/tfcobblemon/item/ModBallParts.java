@@ -34,6 +34,14 @@ public final class ModBallParts {
     public static final DeferredItem<Item> BALL_BASE_MOLD =
             ITEMS.registerSimpleItem("ball_base_mold");
 
+    /** Le tre basi del ramo pesante: stesso stampo, lega diversa. */
+    public static final DeferredItem<Item> HEAVY_BALL_BASE =
+            ITEMS.registerSimpleItem("heavy_ball_base");
+    public static final DeferredItem<Item> LEADEN_BALL_BASE =
+            ITEMS.registerSimpleItem("leaden_ball_base");
+    public static final DeferredItem<Item> GIGATON_BALL_BASE =
+            ITEMS.registerSimpleItem("gigaton_ball_base");
+
     /** Il metallo della ciotola fa il tier della ball. */
     public static final DeferredItem<Item> COPPER_BALL_BOWL =
             ITEMS.registerSimpleItem("copper_ball_bowl");
