@@ -18,7 +18,7 @@ public enum SiteKind {
     /** Pietra viva: crosta dura sopra, e sotto si sfarina. */
     STONE(List.of(Layer.ROCK, Layer.LIME, Layer.DUST), 1, 0.55F, 0.78F),
     /** Cristallo, due strati: quello esterno piu' chiaro. Fragile. */
-    CRYSTAL(List.of(Layer.CRYSTAL, Layer.CRYSTAL), 4, 0.5F, 1.01F);
+    CRYSTAL(List.of(Layer.CRYSTAL, Layer.CRYSTAL), 2, 0.5F, 1.01F);
 
     /** Gli strati dall'esterno verso il fondo. */
     public final List<Layer> stack;

@@ -440,8 +440,9 @@ Il minigioco funziona, i numeri sono messi a caso e vanno provati con le mani.
       non fa presa: il martello dimezza, lo scalpello riesce solo a incrinare,
       e per la sabbia c'e' la spazzola.
 - [ ] Il titolo della finestra e' "Test Pit". Alternative in fondo alla lista.
-- [ ] `SiteKind.CRYSTAL.hammerPenalty` = 4: il martello consuma quattro volte
-      tanto, quindi nel cristallo si lavora di scalpello.
+- [ ] `SiteKind.CRYSTAL.hammerPenalty` = 2: nel cristallo il martello consuma
+      il doppio, quattordici a colpo, quindi conviene lo scalpello ma il
+      martello resta usabile.
 - [ ] `SiteKind.rollCrystal` = 4% — quanto raro e' un sito di cristallo, quando
       la worldgen li piazzera'.
 - [ ] La griglia e' 9x9 in una costante sola (`DigSite.SIZE`), quindi cambiarla
