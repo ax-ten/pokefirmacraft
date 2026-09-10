@@ -131,3 +131,5 @@ run-data/
 
 # init script locale per il maven di cobblemon
 local.init.gradle
+local-mods/
+run-pack/

@@ -16,6 +16,20 @@ java {
     toolchain.languageVersion = JavaLanguageVersion.of(21)
 }
 
+/**
+ * Due dev, uno snello e uno col pacchetto.
+ *
+ * <p>Senza flag partono solo TFC, Cobblemon e il minimo per provare le ricette:
+ * venti secondi e sei in gioco. Con {@code -Pcreate} si aggiunge Create — preso
+ * dal pacchetto sul disco, coi suoi tre jar annidati tirati fuori a mano perche'
+ * in dev il jar-in-jar non viene aperto. Con {@code -Ppack} entrano tutte le mod
+ * di Gregnautics, e il mondo va in una cartella sua per non mescolare i salvataggi.
+ */
+def packMods = file("${System.getProperty('user.home')}/Code/Gregnautics-Continued/mods")
+def withCreate = project.hasProperty('create')
+def withPack = project.hasProperty('pack')
+def runDirectory = withPack ? 'run-pack' : 'run'
+
 neoForge {
     version = project.neo_version
 
@@ -32,11 +46,13 @@ neoForge {
 
         client {
             client()
+            gameDirectory = project.file(runDirectory)
         }
 
         server {
             server()
             programArgument '--nogui'
+            gameDirectory = project.file(runDirectory)
         }
 
         data {
@@ -89,9 +105,43 @@ dependencies {
     runtimeOnly "maven.modrinth:terrafirmacraft:${tfc_version}"
     runtimeOnly "thedarkcolour:kotlinforforge-neoforge:${kff_version}"
     runtimeOnly "maven.modrinth:patchouli:${patchouli_version}"
-    runtimeOnly "maven.modrinth:emi:${emi_version}"
+    // il pacchetto ha JEI, quindi in dev completo EMI resta fuori
+    if (!withPack) {
+        runtimeOnly "maven.modrinth:emi:${emi_version}"
+    }
     runtimeOnly "maven.modrinth:gtceu:${gtceu_version}"
     runtimeOnly "maven.modrinth:ldlib2:${ldlib_version}"
+
+    // Create dal pacchetto, coi tre jar che si porta dentro
+    if (withCreate && !withPack) {
+        runtimeOnly fileTree(dir: 'local-mods', include: '*.jar')
+    }
+
+    // tutto Gregnautics: le mod che gia' dichiariamo sopra vengono escluse per
+    // non caricarle due volte con due versioni diverse
+    if (withPack) {
+        if (!packMods.exists()) {
+            throw new GradleException("-Ppack vuole il pacchetto in ${packMods}")
+        }
+        // i nomi sono quelli veri del pacchetto: quelle che dichiariamo sopra le
+        // teniamo dai maven, altrimenti la stessa mod entra due volte
+        runtimeOnly fileTree(dir: packMods, include: '*.jar',
+                exclude: ['TerraFirmaCraft-NeoForge-*.jar', 'gtceu-*.jar',
+                          'ldlib2-*.jar', 'Patchouli-*.jar',
+                          'kotlinforforge-*.jar',
+                          // lo stack grafico non serve a provare le catene e in
+                          // dev e' quello che rompe: sodium non viene visto da
+                          // FML e tutto quello che dipende da lui cade con lui
+                          'sodium-*.jar', 'reeses-sodium-options-*.jar',
+                          'sodiumdynamiclights-*.jar', 'iris-*.jar',
+                          'DistantHorizons-*.jar', 'distanthorizons-*.jar',
+                          'create-dyn-light-*.jar', 'embeddium*.jar',
+                          'oculus*.jar', 'nvidium*.jar',
+                          // dev-ostili: leggono il proprio jar a runtime e in
+                          // dev, dove stanno sul classpath, non si trovano
+                          'CrashAssistant-*.jar', 'entityculling-*.jar',
+                          'ferritecore-*.jar', 'modernfix-*.jar'])
+    }
 }
 
 tasks.named('processResources', ProcessResources).configure {
@@ -133,4 +183,27 @@ tasks.named('jar', Jar).configure {
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
+}
+
+/**
+ * Il dev completo per davvero: invece di caricare le duecentotrentasette mod
+ * sul classpath — dove diverse si comportano male, perche' leggono il proprio
+ * jar o applicano i mixin prima di quando FML se li aspetta — si costruisce il
+ * jar e lo si mette nella cartella mod del pacchetto, e si gioca da Prism.
+ *
+ * <p>Si perde il ricarica-a-caldo e il debugger, ma il pacchetto e' quello vero
+ * senza una sola esclusione. Per iterare sulle ricette resta il dev snello.
+ */
+tasks.register('installToPack', Copy) {
+    description = 'Costruisce il jar e lo copia nelle mod di Gregnautics'
+    group = 'pokefirmacraft'
+    dependsOn tasks.named('build')
+    from(tasks.named('jar').map { it.archiveFile })
+    into packMods
+    rename { "tfcobblemon-dev.jar" }
+    doLast {
+        logger.lifecycle("jar copiato in ${packMods}")
+        logger.lifecycle("servono ancora, dentro quella cartella:")
+        logger.lifecycle("  Cobblemon ${cobblemon_version} e Kotlin for Forge ${kff_version}")
+    }
 }

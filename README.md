@@ -36,6 +36,24 @@ Il jar finisce in `build/libs/`. Per provare in gioco:
 ./gradlew runClient
 ```
 
+### I tre modi di provare
+
+```
+./gradlew runClient              # snello: TFC, Cobblemon, Greg, EMI. Venti secondi.
+./gradlew runClient -Pcreate     # snello piu' Create, per le catene di assemblaggio
+./gradlew installToPack          # jar nelle mod di Gregnautics, poi si gioca da Prism
+```
+
+Il dev snello e' quello per iterare sulle ricette. Con `-Pcreate` entra Create
+preso dal pacchetto, coi suoi tre jar annidati estratti a mano in `local-mods/`
+perche' in dev il jar-in-jar non viene aperto.
+
+C'e' anche `-Ppack`, che mette tutte le mod di Gregnautics sul classpath, ma non
+arriva ad avviarsi: diverse mod si comportano diversamente quando stanno sul
+classpath invece che in una cartella `mods` — leggono il proprio jar, o applicano
+i mixin prima di quando FML se li aspetta — e si finisce a escluderle una per
+una. Per provare col pacchetto intero conviene `installToPack` e Prism.
+
 Cobblemon, TerraFirmaCraft e Kotlin for Forge vengono scaricati automaticamente
 dai maven dichiarati in `build.gradle`. Il jar di Cobblemon sta su
 maven.impactdev.net, pesa 143 MB e su connessioni lente il download va in
