@@ -1,5 +1,6 @@
 package com.kingtrapinch.tfcobblemon;
 
+import com.kingtrapinch.tfcobblemon.dig.ModDig;
 import com.kingtrapinch.tfcobblemon.fluid.ModFluids;
 import com.kingtrapinch.tfcobblemon.glass.ModGlassOperations;
 import com.kingtrapinch.tfcobblemon.item.ModCreativeModTabs;
@@ -22,6 +23,7 @@ public class TFCobblemon {
         ModItems.register(modEventBus);
         ModCreativeModTabs.register(modEventBus);
         ModGlassOperations.register(modEventBus);
+        ModDig.register(modEventBus);
         ModFluids.register(modEventBus);
 
         modEventBus.addListener(this::addCreative);

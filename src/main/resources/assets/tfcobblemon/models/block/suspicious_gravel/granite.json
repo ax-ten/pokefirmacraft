@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "tfcobblemon:block/suspicious_gravel/granite"
+  }
+}

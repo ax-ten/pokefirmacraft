@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    { "item": "minecraft:leather" },
+    { "item": "minecraft:brush" },
+    { "tag": "c:tools/chisel" },
+    { "tag": "c:tools/hammer" }
+  ],
+  "result": {
+    "id": "tfcobblemon:archaeologist_kit",
+    "count": 1
+  }
+}
