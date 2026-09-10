@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "tfcobblemon:lid_blank/white"
+    },
+    {
+      "item": "gtceu:uv_field_generator"
+    },
+    {
+      "item": "minecraft:nether_star"
+    }
+  ],
+  "result": {
+    "id": "tfcobblemon:master_ball_lid",
+    "count": 2
+  }
+}

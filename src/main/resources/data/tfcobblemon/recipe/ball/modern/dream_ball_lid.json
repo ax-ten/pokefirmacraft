@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "tfcobblemon:lid_blank/pink"
+    },
+    {
+      "tag": "tfcobblemon:beds"
+    }
+  ],
+  "result": {
+    "id": "tfcobblemon:dream_ball_lid",
+    "count": 2
+  }
+}

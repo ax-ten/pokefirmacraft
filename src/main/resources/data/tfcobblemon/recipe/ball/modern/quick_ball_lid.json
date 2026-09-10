@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "tfcobblemon:lid_blank/yellow"
+    },
+    {
+      "item": "gtceu:capacitor"
+    }
+  ],
+  "result": {
+    "id": "tfcobblemon:quick_ball_lid",
+    "count": 2
+  }
+}

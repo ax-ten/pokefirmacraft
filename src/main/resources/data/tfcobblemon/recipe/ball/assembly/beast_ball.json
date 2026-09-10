@@ -1,0 +1,65 @@
+{
+  "type": "create:sequenced_assembly",
+  "ingredient": {
+    "item": "tfcobblemon:stainless_steel_ball_base"
+  },
+  "transitional_item": {
+    "id": "tfcobblemon:incomplete_beast_ball"
+  },
+  "loops": 1,
+  "results": [
+    {
+      "id": "cobblemon:beast_ball",
+      "count": 2
+    }
+  ],
+  "sequence": [
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "tfcobblemon:incomplete_beast_ball"
+        },
+        {
+          "item": "tfcobblemon:beast_ball_lid"
+        }
+      ],
+      "results": [
+        {
+          "id": "tfcobblemon:incomplete_beast_ball"
+        }
+      ]
+    },
+    {
+      "type": "create:filling",
+      "ingredients": [
+        {
+          "item": "tfcobblemon:incomplete_beast_ball"
+        },
+        {
+          "type": "neoforge:single",
+          "amount": 20,
+          "fluid": "tfcobblemon:molten_ender_tumblestone"
+        }
+      ],
+      "results": [
+        {
+          "id": "tfcobblemon:incomplete_beast_ball"
+        }
+      ]
+    },
+    {
+      "type": "create:pressing",
+      "ingredients": [
+        {
+          "item": "tfcobblemon:incomplete_beast_ball"
+        }
+      ],
+      "results": [
+        {
+          "id": "tfcobblemon:incomplete_beast_ball"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "tfcobblemon:lid_blank/blue"
+    },
+    {
+      "item": "gtceu:hv_field_generator"
+    }
+  ],
+  "result": {
+    "id": "tfcobblemon:beast_ball_lid",
+    "count": 2
+  }
+}

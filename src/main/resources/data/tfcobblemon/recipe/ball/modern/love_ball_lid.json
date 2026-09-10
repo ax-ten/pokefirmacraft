@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "tfcobblemon:lid_blank/pink"
+    },
+    {
+      "item": "cobblemon:destiny_knot"
+    }
+  ],
+  "result": {
+    "id": "tfcobblemon:love_ball_lid",
+    "count": 2
+  }
+}

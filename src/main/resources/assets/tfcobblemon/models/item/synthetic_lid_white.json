@@ -1,0 +1,6 @@
+{
+  "parent": "tfcobblemon:item/ball_lid_modern",
+  "textures": {
+    "main": "tfcobblemon:item/ball/synthetic/white"
+  }
+}

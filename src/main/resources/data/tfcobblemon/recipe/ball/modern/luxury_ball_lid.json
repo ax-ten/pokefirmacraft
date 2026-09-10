@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "tfcobblemon:lid_blank/black"
+    },
+    {
+      "tag": "create:seats"
+    }
+  ],
+  "result": {
+    "id": "tfcobblemon:luxury_ball_lid",
+    "count": 2
+  }
+}

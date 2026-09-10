@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "L",
+    "C",
+    "B"
+  ],
+  "key": {
+    "L": {
+      "item": "tfcobblemon:master_ball_lid"
+    },
+    "C": {
+      "item": "tfcobblemon:capture_core"
+    },
+    "B": {
+      "item": "tfcobblemon:titanium_ball_base"
+    }
+  },
+  "result": {
+    "id": "cobblemon:master_ball",
+    "count": 2
+  }
+}

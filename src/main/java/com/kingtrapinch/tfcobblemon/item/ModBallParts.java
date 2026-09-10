@@ -115,7 +115,8 @@ public final class ModBallParts {
      * ricetta sta seguendo, ma su un nastro con tre linee in parallelo vedere
      * quale ball sta passando vale i ventitre item.
      */
-    public static final List<String> ASSEMBLED_BALLS = List.of("poke", "citrine", "verdant", "azure", "roseate", "slate", "premier", "safari", "heal", "great", "net", "heavy", "lure", "park", "level", "friend", "dive", "nest", "ultra", "timer", "repeat", "moon", "fast");
+    public static final List<String> ASSEMBLED_BALLS = List.of("poke", "citrine", "verdant", "azure", "roseate", "slate", "premier", "safari", "heal", "great", "net", "heavy", "lure", "park", "level", "friend", "dive", "nest", "ultra", "timer", "repeat", "moon", "fast",
+            "dusk", "quick", "love", "dream", "luxury", "beast", "master");
 
     public static final Map<String, DeferredItem<Item>> INCOMPLETE = new LinkedHashMap<>();
 
@@ -148,7 +149,8 @@ public final class ModBallParts {
      */
     public static final List<String> MODERN_LIDS = List.of("net", "heavy", "lure",
             "safari", "park", "level", "friend", "dive", "nest", "heal",
-            "timer", "repeat", "moon", "fast");
+            "timer", "repeat", "moon", "fast",
+            "dusk", "quick", "love", "dream", "luxury", "beast", "master");
 
     public static final Map<String, DeferredItem<Item>> LIDS = new LinkedHashMap<>();
 
@@ -157,6 +159,26 @@ public final class ModBallParts {
             LIDS.put(ball, ITEMS.registerSimpleItem(ball + "_ball_lid"));
         }
     }
+
+    /**
+     * Il coperchio stampato: dall'era elettrica in poi il polietilene sostituisce
+     * la ghicocca, cosi' non si e' costretti a coltivare apricorn per sempre.
+     * Le ricette dei coperchi prendono un tag che contiene entrambi, quindi le
+     * due strade convivono e nessuna delle diciotto ricette vecchie cambia.
+     */
+    public static final Map<String, DeferredItem<Item>> SYNTHETIC_LIDS = new LinkedHashMap<>();
+
+    static {
+        for (String colour : APRICORN_COLOURS) {
+            SYNTHETIC_LIDS.put(colour, ITEMS.registerSimpleItem("synthetic_lid_" + colour));
+        }
+    }
+
+    /** I gusci delle ere in cui il metallo non si batte piu' a mano. */
+    public static final DeferredItem<Item> STAINLESS_STEEL_BALL_BASE =
+            ITEMS.registerSimpleItem("stainless_steel_ball_base");
+    public static final DeferredItem<Item> TITANIUM_BALL_BASE =
+            ITEMS.registerSimpleItem("titanium_ball_base");
 
     /** Una meta' di apricorn per colore, indicizzata per poterle scorrere. */
     public static final Map<String, DeferredItem<Item>> APRICORN_HALVES = new LinkedHashMap<>();

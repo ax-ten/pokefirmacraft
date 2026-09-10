@@ -1,0 +1,65 @@
+{
+  "type": "create:sequenced_assembly",
+  "ingredient": {
+    "item": "tfcobblemon:stainless_steel_ball_base"
+  },
+  "transitional_item": {
+    "id": "tfcobblemon:incomplete_dream_ball"
+  },
+  "loops": 1,
+  "results": [
+    {
+      "id": "cobblemon:dream_ball",
+      "count": 2
+    }
+  ],
+  "sequence": [
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "tfcobblemon:incomplete_dream_ball"
+        },
+        {
+          "item": "tfcobblemon:dream_ball_lid"
+        }
+      ],
+      "results": [
+        {
+          "id": "tfcobblemon:incomplete_dream_ball"
+        }
+      ]
+    },
+    {
+      "type": "create:filling",
+      "ingredients": [
+        {
+          "item": "tfcobblemon:incomplete_dream_ball"
+        },
+        {
+          "type": "neoforge:single",
+          "amount": 20,
+          "fluid": "tfcobblemon:molten_ender_tumblestone"
+        }
+      ],
+      "results": [
+        {
+          "id": "tfcobblemon:incomplete_dream_ball"
+        }
+      ]
+    },
+    {
+      "type": "create:pressing",
+      "ingredients": [
+        {
+          "item": "tfcobblemon:incomplete_dream_ball"
+        }
+      ],
+      "results": [
+        {
+          "id": "tfcobblemon:incomplete_dream_ball"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "tfcobblemon:lid_blank/black"
+    },
+    {
+      "item": "minecraft:sculk_sensor"
+    }
+  ],
+  "result": {
+    "id": "tfcobblemon:dusk_ball_lid",
+    "count": 2
+  }
+}

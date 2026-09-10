@@ -1,0 +1,9 @@
+{
+  "values": [
+    {
+      "id": "cobblemon:soothe_bell",
+      "required": false
+    },
+    "tfc:wool_cloth"
+  ]
+}

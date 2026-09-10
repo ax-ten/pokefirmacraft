@@ -3,7 +3,7 @@
   "category": "misc",
   "ingredients": [
     {
-      "item": "tfcobblemon:half_red_apricorn"
+      "tag": "tfcobblemon:lid_blank/red"
     },
     {
       "item": "create:electron_tube"
