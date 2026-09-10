@@ -1,0 +1,11 @@
+{
+  "type": "tfc:heating",
+  "ingredient": {
+    "item": "tfcobblemon:ender_tumblestone_mix"
+  },
+  "result_fluid": {
+    "amount": 200,
+    "id": "tfcobblemon:molten_ender_tumblestone"
+  },
+  "temperature": 1200.0
+}

@@ -47,6 +47,7 @@ public final class ModFluids {
     public static final Molten BLACK_TUMBLESTONE = molten("molten_black_tumblestone", 0xFF485C53);
     public static final Molten LEADEN_ALLOY = molten("molten_leaden_alloy", 0xFF7E5C42);
     public static final Molten GIGATON_ALLOY = molten("molten_gigaton_alloy", 0xFF5A405D);
+    public static final Molten ENDER_TUMBLESTONE = molten("molten_ender_tumblestone", 0xFF2E7D63);
 
     private static Molten molten(String nome, int tint) {
         final DeferredHolder<FluidType, FluidType> type = TYPES.register(nome, () -> new TintedMolten(

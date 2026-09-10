@@ -209,15 +209,28 @@ dall'apricorn, che e' una pianta, non un pigmento.
 | Pezzo | Rustic | Moderne |
 |---|---|---|
 | Base | colata a semisfera, una per volta | **tin sheet** battuta sull'incudine, piu' basi per foglio |
-| Core | tumblestone scartavetrata, una per volta | **tumblestone + ender pearl** nel pentolone, piu' core per cottura |
+| Core | tumblestone + carta vetrata, uno per volta | **impasto di ender e tumblestone** colato in teglia, otto per volta |
 | Coperchio | mezza apricorn | il reagente che porta l'effetto |
 
 La tin sheet e' la scelta giusta per la produzione in serie: lo stagno e' un
 metallo di tier -1 in TFC (si salda e si batte sull'incudine di rame, la prima
 disponibile) e la lamiera e' l'unica forma da cui abbia senso ricavare piu'
-gusci in un colpo. Il core in serie usa il pentolone (`tfc:pot`), che accetta
-cinque ingredienti e restituisce cinque oggetti: una ender pearl semina quattro
-tumblestone.
+gusci in un colpo — quattro basi per foglio, cinquanta millibucket di stagno
+l'una contro i cento della colata rustic, perche' e' un guscio stampato
+sottile e non una semisfera piena.
+
+Il core in serie passa dal fuso. Una ender pearl macinata alla mola piu'
+quattro tumblestone grezze fanno un impasto; l'impasto fonde a **1200 gradi**,
+che la legna non raggiunge (arriva a 757) mentre la carbonella si (1350), e
+rende duecento millibucket di fuso; il fuso si cola in una teglia di ceramica
+da otto cavita' e da' otto capture core in una volta. Lo stampo si knappa
+dall'argilla e si cuoce come tutte le ceramiche di TFC.
+
+Il core singolo invece si fa con la **carta vetrata**, esattamente come TFC
+lucida le gemme grezze (`tfc:advanced_shapeless_crafting` con
+`tfc:damage_crafting_remainder`, la carta torna consumata): una ricetta da
+banco normale, che si legge in EMI, al posto dello scraping di prima che
+finiva sotto World Interaction e non si trovava.
 
 **Il coperchio porta l'effetto.** Ogni ball prende un reagente caratteristico
 oltre alla lamiera — il peso di piombo per la heavy, la lenza per la lure, la
@@ -234,17 +247,14 @@ il prossimo punto da fissare, una ball per volta.
 | **Iron** | un numero da confrontare, con una scala o un almanacco | level, fast, friend, moon |
 | **Iron** | erboristeria | heal |
 | **Steam** | moltiplicatore fisso, lega migliore | ultra |
-| **Steam** | tempo e memoria | timer (conta i turni), quick (primo istante), repeat (specie gia' catturata) |
-| **Steam** | un sensore | dusk (livello di luce) |
-| **Steam** | manifattura fine | luxury, love |
+| **Steam** | tempo e memoria | timer (conta i turni), repeat (specie gia' catturata) |
+| **Electrical** | fra le piu' forti | dusk, quick |
+| **Electrical** | puro comfort | luxury, love |
 | **Electrical** | stati di coscienza e altre dimensioni | dream, beast |
 | **Nuclear** | — | master, rustic origin |
 | mai craftabile | dono | cherish |
 
-Ventuno ball in Iron, sette in Steam, due in Electrical, due in Nuclear.
-Timer, repeat, quick, ultra e dusk sono in Steam per decisione presa; luxury e
-love le ho messe li' perche' sono le due che non leggono niente del mondo ma
-chiedono una lavorazione fine del guscio, che a mano non viene.
+Ventuno ball in Iron, tre in Steam, sei in Electrical, due in Nuclear.
 
 ## 6. Trasporto, cattura e inventario
 
