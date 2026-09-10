@@ -1,0 +1,16 @@
+{
+  "type": "tfc:knapping",
+  "knapping_type": "tfc:clay",
+  "default_on": true,
+  "pattern": [
+    " ### ",
+    "#####",
+    "#####",
+    "#####",
+    " ### "
+  ],
+  "result": {
+    "id": "tfcobblemon:unfired_core_mold",
+    "count": 2
+  }
+}

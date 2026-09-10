@@ -39,9 +39,9 @@
   "item.tfcobblemon.sky_glass_batch": "Sky Glass Batch",
   "glass_operation.tfcobblemon.black_bronze": "Black Bronze",
   "item.tfcobblemon.black_bronze_powder": "Black Bronze Powder",
-  "item.tfcobblemon.tumblestone_core": "Tumblestone Core",
-  "item.tfcobblemon.copper_ball_bowl": "Copper Ball Bowl",
-  "item.tfcobblemon.black_bronze_ball_bowl": "Black Bronze Ball Bowl",
+  "item.tfcobblemon.capture_core": "Capture Core",
+  "item.tfcobblemon.copper_ball_base": "Copper Ball Base",
+  "item.tfcobblemon.black_bronze_ball_base": "Black Bronze Ball Base",
   "item.tfcobblemon.heavy_ball_base": "Heavy Ball Base",
   "item.tfcobblemon.leaden_ball_base": "Leaden Ball Base",
   "item.tfcobblemon.gigaton_ball_base": "Gigaton Ball Base",
@@ -55,5 +55,12 @@
   "item.tfcobblemon.wing_ball_base": "Wing Ball Base",
   "item.tfcobblemon.jet_ball_base": "Jet Ball Base",
   "item.tfcobblemon.sky_tumblestone_powder": "Sky Tumblestone Powder",
-  "tfcobblemon.tooltip.glass.sky": "Sky Glass"
+  "tfcobblemon.tooltip.glass.sky": "Sky Glass",
+  "item.tfcobblemon.tin_ball_base": "Tin Ball Base",
+  "item.tfcobblemon.ender_powder": "Ender Powder",
+  "item.tfcobblemon.ender_tumblestone_mix": "Ender Tumblestone Mix",
+  "item.tfcobblemon.unfired_core_mold": "Unfired Core Mold",
+  "item.tfcobblemon.core_mold": "Core Mold",
+  "fluid_type.tfcobblemon.molten_ender_tumblestone": "Molten Ender Tumblestone",
+  "block.tfcobblemon.molten_ender_tumblestone": "Molten Ender Tumblestone"
 }

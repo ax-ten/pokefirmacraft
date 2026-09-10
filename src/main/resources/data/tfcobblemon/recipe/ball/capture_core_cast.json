@@ -1,0 +1,15 @@
+{
+  "type": "tfc:casting",
+  "break_chance": 0.1,
+  "mold": {
+    "item": "tfcobblemon:core_mold"
+  },
+  "fluid": {
+    "amount": 200,
+    "fluid": "tfcobblemon:molten_ender_tumblestone"
+  },
+  "result": {
+    "id": "tfcobblemon:capture_core",
+    "count": 8
+  }
+}

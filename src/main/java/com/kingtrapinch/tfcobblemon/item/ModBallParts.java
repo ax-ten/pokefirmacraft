@@ -1,7 +1,12 @@
 package com.kingtrapinch.tfcobblemon.item;
 
 import com.kingtrapinch.tfcobblemon.TFCobblemon;
+import net.dries007.tfc.common.items.MoldItem;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
@@ -28,9 +33,32 @@ public final class ModBallParts {
             List.of("black", "blue", "green", "pink", "red", "white", "yellow");
 
 
-    /** Tumblestone intagliata: il cuore di ogni ball, in tutte e tre le linee. */
-    public static final DeferredItem<Item> TUMBLESTONE_CORE =
-            ITEMS.registerSimpleItem("tumblestone_core");
+    /** Quello che lo stampo dei core accetta: solo il nostro fuso. */
+    public static final TagKey<Fluid> CORE_MOLD_FLUIDS = TagKey.create(Registries.FLUID,
+            ResourceLocation.fromNamespaceAndPath(TFCobblemon.MODID, "usable_in_core_mold"));
+
+    /**
+     * La ender pearl macinata, e l'impasto che ne esce con quattro tumblestone.
+     * L'impasto fonde a 1200 gradi: il legno arriva a 757, serve la carbonella.
+     */
+    public static final DeferredItem<Item> ENDER_POWDER =
+            ITEMS.registerSimpleItem("ender_powder");
+    public static final DeferredItem<Item> ENDER_TUMBLESTONE_MIX =
+            ITEMS.registerSimpleItem("ender_tumblestone_mix");
+
+    /**
+     * Lo stampo dei core, una teglia da otto: si versa una volta e si estraggono
+     * otto core, invece di colarli uno per uno come le basi rustic.
+     */
+    public static final DeferredItem<Item> UNFIRED_CORE_MOLD =
+            ITEMS.registerSimpleItem("unfired_core_mold");
+    public static final DeferredItem<Item> CORE_MOLD =
+            ITEMS.register("core_mold", () -> new MoldItem(() -> 200, CORE_MOLD_FLUIDS,
+                    new Item.Properties()));
+
+    /** Tumblestone lucidata a carta vetrata: il cuore di ogni ball. */
+    public static final DeferredItem<Item> CAPTURE_CORE =
+            ITEMS.registerSimpleItem("capture_core");
 
 
     /** Le tre semisfere del ramo leggero: stessa bolla, polvere diversa. */
@@ -49,11 +77,11 @@ public final class ModBallParts {
     public static final DeferredItem<Item> GIGATON_BALL_BASE =
             ITEMS.registerSimpleItem("gigaton_ball_base");
 
-    /** Il metallo della ciotola fa il tier della ball. */
-    public static final DeferredItem<Item> COPPER_BALL_BOWL =
-            ITEMS.registerSimpleItem("copper_ball_bowl");
-    public static final DeferredItem<Item> BLACK_BRONZE_BALL_BOWL =
-            ITEMS.registerSimpleItem("black_bronze_ball_bowl");
+    /** Il metallo della base fa il tier della ball. */
+    public static final DeferredItem<Item> COPPER_BALL_BASE =
+            ITEMS.registerSimpleItem("copper_ball_base");
+    public static final DeferredItem<Item> BLACK_BRONZE_BALL_BASE =
+            ITEMS.registerSimpleItem("black_bronze_ball_base");
 
 
 
@@ -65,6 +93,14 @@ public final class ModBallParts {
      */
     public static final DeferredItem<Item> BLACK_BRONZE_POWDER =
             ITEMS.registerSimpleItem("black_bronze_powder");
+
+    /**
+     * Il guscio delle ball moderne. La lamiera di stagno ne rende quattro per
+     * volta: e' un guscio stampato sottile, non la semisfera piena delle
+     * rustic, e lo stagno e' di tier -1, quindi si batte sull'incudine di rame.
+     */
+    public static final DeferredItem<Item> TIN_BALL_BASE =
+            ITEMS.registerSimpleItem("tin_ball_base");
 
     /** La sky tumblestone macinata alla mola, da mescolare alla sabbia. */
     public static final DeferredItem<Item> SKY_TUMBLESTONE_POWDER =
