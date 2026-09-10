@@ -51,8 +51,11 @@ public final class ModDig {
      * Il sito raro: due strati di cristallo, la spazzola non ci fa niente e il
      * martello lo sbriciola in quattro colpi. Dentro c'e' la roba buona.
      */
+    public static final List<String> CRYSTALS =
+            List.of("amethyst", "opal", "ruby", "sapphire", "topaz", "tumblestone");
+
     public static final Map<String, DeferredBlock<DigSiteBlock>> SUSPICIOUS_CRYSTAL =
-            siti("suspicious_crystal", List.of("amethyst"), MapColor.COLOR_PURPLE, SoundType.AMETHYST);
+            siti("suspicious_crystal", CRYSTALS, MapColor.COLOR_PURPLE, SoundType.AMETHYST);
 
     /**
      * Un sito per variante: la texture e' quella di TFC con sopra il pulviscolo

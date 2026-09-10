@@ -2,41 +2,63 @@ package com.kingtrapinch.tfcobblemon.dig;
 
 import net.minecraft.util.RandomSource;
 
+import java.util.List;
+
 /**
- * Che roba e' un sito. Cambia gli strati che ci sono dentro, e quindi anche
- * quali attrezzi servono: nel cristallo non c'e' pulviscolo, per cui la
- * spazzola non trova mai niente da spazzolare.
+ * Che roba e' un sito, cioe' in che ordine sono impilati gli strati.
+ *
+ * <p>Un sito di sabbia o ghiaia ha il pulviscolo fuori e la pietra dentro; uno
+ * di pietra viva e' il contrario, la crosta dura sopra e il molle sotto. Nel
+ * cristallo ci sono due strati di cristallo e basta, per cui la spazzola —
+ * che porta via solo pulviscolo — non trova mai niente da fare.
  */
 public enum SiteKind {
-    /** Sabbia, ghiaia, pietra: roccia, calce e pulviscolo. */
-    SEDIMENT(1, 0.55F, 0.78F),
-    /**
-     * Due soli strati di cristallo, il piu' esterno chiaro. Fragile: il martello
-     * ci va giu' come un macigno e finisce il sito in pochi colpi.
-     */
-    CRYSTAL(4, 0.45F, 1.01F);
+    /** Sciolto: pulviscolo, calce, roccia. */
+    SEDIMENT(List.of(Layer.DUST, Layer.LIME, Layer.ROCK), 1, 0.55F, 0.78F),
+    /** Pietra viva: crosta dura sopra, e sotto si sfarina. */
+    STONE(List.of(Layer.ROCK, Layer.LIME, Layer.DUST), 1, 0.55F, 0.78F),
+    /** Cristallo, due strati: quello esterno piu' chiaro. Fragile. */
+    CRYSTAL(List.of(Layer.CRYSTAL, Layer.CRYSTAL), 4, 0.5F, 1.01F);
 
+    /** Gli strati dall'esterno verso il fondo. */
+    public final List<Layer> stack;
     /** Quanto moltiplica il consumo di sito del martello. */
     public final int hammerPenalty;
-    private final float rockBelow;
-    private final float limeBelow;
+    private final float firstBelow;
+    private final float secondBelow;
 
-    SiteKind(int hammerPenalty, float rockBelow, float limeBelow) {
+    SiteKind(List<Layer> stack, int hammerPenalty, float firstBelow, float secondBelow) {
+        this.stack = stack;
         this.hammerPenalty = hammerPenalty;
-        this.rockBelow = rockBelow;
-        this.limeBelow = limeBelow;
+        this.firstBelow = firstBelow;
+        this.secondBelow = secondBelow;
     }
 
-    /** Lo strato di una cella, dato il rumore. Sopra limeBelow c'e' il pulviscolo. */
-    public Layer layerFor(float noise) {
-        if (noise < rockBelow) {
-            return Layer.ROCK;
+    public int depth() {
+        return stack.size();
+    }
+
+    /** Il materiale a una certa profondita'. Oltre il fondo non c'e' piu' niente. */
+    public Layer materialAt(int depth) {
+        return depth >= 0 && depth < stack.size() ? stack.get(depth) : Layer.EMPTY;
+    }
+
+    /**
+     * A che profondita' parte una cella. Il rumore fa le chiazze: piu' e' basso
+     * piu' la cella e' intatta, cosi' i siti vengono a macchie e non piatti.
+     */
+    public int startDepth(float noise) {
+        if (noise < firstBelow) {
+            return 0;
         }
-        return noise < limeBelow ? Layer.LIME : Layer.DUST;
+        return noise < secondBelow ? Math.min(1, stack.size() - 1) : Math.min(2, stack.size() - 1);
     }
 
     public static SiteKind of(String blockPath) {
-        return blockPath.contains("crystal") ? CRYSTAL : SEDIMENT;
+        if (blockPath.startsWith("suspicious_crystal")) {
+            return CRYSTAL;
+        }
+        return blockPath.startsWith("suspicious_stone") ? STONE : SEDIMENT;
     }
 
     /** TODO testing: quanto spesso un sito e' di cristallo, se lo piazza la worldgen. */

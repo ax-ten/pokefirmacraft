@@ -115,5 +115,10 @@
   "block.tfcobblemon.suspicious_stone.shale": "Suspicious Shale",
   "block.tfcobblemon.suspicious_stone.slate": "Suspicious Slate",
   "block.tfcobblemon.suspicious_stone.tuff": "Suspicious Tuff",
-  "block.tfcobblemon.suspicious_crystal.amethyst": "Suspicious Amethyst Cluster"
+  "block.tfcobblemon.suspicious_crystal.amethyst": "Suspicious Amethyst Cluster",
+  "block.tfcobblemon.suspicious_crystal.opal": "Suspicious Opal Cluster",
+  "block.tfcobblemon.suspicious_crystal.ruby": "Suspicious Ruby Cluster",
+  "block.tfcobblemon.suspicious_crystal.sapphire": "Suspicious Sapphire Cluster",
+  "block.tfcobblemon.suspicious_crystal.topaz": "Suspicious Topaz Cluster",
+  "block.tfcobblemon.suspicious_crystal.tumblestone": "Suspicious Tumblestone Cluster"
 }

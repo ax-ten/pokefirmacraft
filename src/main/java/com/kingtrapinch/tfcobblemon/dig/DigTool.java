@@ -5,6 +5,10 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+
+import java.util.EnumSet;
+import java.util.Set;
 
 /**
  * I tre modi di scavare. Gli attrezzi non stanno in un kit: si prendono
@@ -12,32 +16,38 @@ import net.minecraft.world.item.ItemStack;
  * dell'attrezzo di TFC e non serve inventare niente.
  */
 public enum DigTool {
-    /** Sfonda la roccia in area, ma spreca sito. */
-    HAMMER(3, Layer.ROCK, 7, ItemTags.create(ResourceLocation.fromNamespaceAndPath("c", "tools/hammer"))),
-    /** Un colpo per volta, il piu' parsimonioso. */
-    CHISEL(1, Layer.ROCK, 1, ItemTags.create(ResourceLocation.fromNamespaceAndPath("c", "tools/chisel"))),
-    /** Tocca solo il pulviscolo: sulla roccia si consuma e non combina niente. */
-    BRUSH(2, Layer.DUST, 1, null);
+    /** Sfonda qualunque cosa in area, ma spreca sito. */
+    HAMMER(3, EnumSet.of(Layer.ROCK, Layer.LIME, Layer.DUST, Layer.CRYSTAL), 7,
+            ItemTags.create(ResourceLocation.fromNamespaceAndPath("c", "tools/hammer"))),
+    /** Un colpo per volta, il piu' parsimonioso, e l'unico buono nel cristallo. */
+    CHISEL(1, EnumSet.of(Layer.ROCK, Layer.LIME, Layer.DUST, Layer.CRYSTAL), 1,
+            ItemTags.create(ResourceLocation.fromNamespaceAndPath("c", "tools/chisel"))),
+    /** Solo pulviscolo: nel cristallo non ce n'e', quindi non serve a niente. */
+    BRUSH(2, EnumSet.of(Layer.DUST), 1, null);
 
     /** Il lato dell'area, in celle. */
     public final int size;
-    /** Lo strato piu' duro che riesce a togliere. */
-    public final Layer reaches;
+    /** Cosa riesce a portare via. */
+    public final Set<Layer> reaches;
     /** Quanto sito consuma un colpo, prima dello sconto del tier. */
     public final int baseSiteCost;
 
     private final TagKey<Item> tag;
 
-    DigTool(int size, Layer reaches, int baseSiteCost, TagKey<Item> tag) {
+    DigTool(int size, Set<Layer> reaches, int baseSiteCost, TagKey<Item> tag) {
         this.size = size;
         this.reaches = reaches;
         this.baseSiteCost = baseSiteCost;
         this.tag = tag;
     }
 
+    public boolean bites(Layer layer) {
+        return reaches.contains(layer);
+    }
+
     public boolean matches(ItemStack stack) {
         if (this == BRUSH) {
-            return stack.is(net.minecraft.world.item.Items.BRUSH);
+            return stack.is(Items.BRUSH);
         }
         return !stack.isEmpty() && stack.is(tag);
     }

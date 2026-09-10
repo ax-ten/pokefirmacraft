@@ -49,7 +49,9 @@ public class DigScreen extends AbstractContainerScreen<DigMenu> {
     protected void init() {
         super.init();
         final var block = minecraft.level.getBlockState(menu.pos()).getBlock();
-        skin = DigSkin.of(BuiltInRegistries.BLOCK.getKey(block));
+        final var id = BuiltInRegistries.BLOCK.getKey(block);
+        skin = DigSkin.of(id);
+        ClientDigState.kind(com.kingtrapinch.tfcobblemon.dig.SiteKind.of(id.getPath()));
         refresh();
     }
 
@@ -97,7 +99,7 @@ public class DigScreen extends AbstractContainerScreen<DigMenu> {
         // le celle, attaccate: nessuna griglia di separazione in mezzo
         for (int gy = 0; gy < DigSite.SIZE; gy++) {
             for (int gx = 0; gx < DigSite.SIZE; gx++) {
-                graphics.blit(skin.forLayer(ClientDigState.layer(gx, gy)),
+                graphics.blit(skin.forCell(ClientDigState.layer(gx, gy), ClientDigState.depthAt(gx, gy)),
                         x + DigLayout.cellX(gx), y + DigLayout.cellY(gy),
                         0, 0, DigLayout.CELL, DigLayout.CELL, 16, 16);
             }
@@ -150,8 +152,7 @@ public class DigScreen extends AbstractContainerScreen<DigMenu> {
                 if (cx < 0 || cx >= DigSite.SIZE || cy < 0 || cy >= DigSite.SIZE) {
                     continue;
                 }
-                final boolean bites = !ClientDigState.layer(cx, cy).harderThan(tool.reaches)
-                        && ClientDigState.layer(cx, cy) != Layer.EMPTY;
+                final boolean bites = tool.bites(ClientDigState.layer(cx, cy));
                 graphics.fill(leftPos + DigLayout.cellX(cx), topPos + DigLayout.cellY(cy),
                         leftPos + DigLayout.cellX(cx) + DigLayout.CELL,
                         topPos + DigLayout.cellY(cy) + DigLayout.CELL,

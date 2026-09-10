@@ -22,7 +22,8 @@ public final class DigSite {
     /** TODO testing: 100 e' un numero messo a caso, va tarato in gioco. */
     public static final int DURABILITY = 100;
 
-    private final Layer[] layers = new Layer[CELLS];
+    /** Quanto e' stata scavata ogni cella. Il materiale lo dice il tipo di sito. */
+    private final byte[] depth = new byte[CELLS];
     private int durability;
     private SiteKind kind = SiteKind.SEDIMENT;
 
@@ -57,7 +58,7 @@ public final class DigSite {
             System.arraycopy(next, 0, noise, 0, CELLS);
         }
         for (int i = 0; i < CELLS; i++) {
-            site.layers[i] = kind.layerFor(noise[i]);
+            site.depth[i] = (byte) kind.startDepth(noise[i]);
         }
         site.durability = DURABILITY;
         return site;
@@ -68,7 +69,7 @@ public final class DigSite {
     }
 
     public Layer layer(int x, int y) {
-        return layers[index(x, y)];
+        return kind.materialAt(depth[index(x, y)]);
     }
 
     public int durability() {
@@ -85,34 +86,34 @@ public final class DigSite {
 
     /** Toglie uno strato dalla cella, se l'attrezzo ci arriva. Dice se ha morso. */
     public boolean strip(int x, int y, DigTool tool) {
-        final Layer here = layers[index(x, y)];
-        if (here == Layer.EMPTY || here.harderThan(tool.reaches)) {
+        final int i = index(x, y);
+        if (!tool.bites(kind.materialAt(depth[i]))) {
             return false;
         }
-        layers[index(x, y)] = here.below();
+        depth[i]++;
         return true;
+    }
+
+    public boolean cleared(int x, int y) {
+        return kind.materialAt(depth[index(x, y)]) == Layer.EMPTY;
+    }
+
+    public int depthAt(int x, int y) {
+        return depth[index(x, y)];
     }
 
     public void spend(int amount) {
         durability = Math.max(0, durability - amount);
     }
 
-    /** Gli strati appiattiti, per mandarli al client. */
+    /** Le profondita' appiattite, per mandarle al client. */
     public byte[] snapshot() {
-        final byte[] flat = new byte[CELLS];
-        for (int i = 0; i < CELLS; i++) {
-            flat[i] = (byte) layers[i].ordinal();
-        }
-        return flat;
+        return depth.clone();
     }
 
     public CompoundTag save() {
         final CompoundTag tag = new CompoundTag();
-        final byte[] flat = new byte[CELLS];
-        for (int i = 0; i < CELLS; i++) {
-            flat[i] = (byte) layers[i].ordinal();
-        }
-        tag.putByteArray("layers", flat);
+        tag.putByteArray("depth", depth);
         tag.putInt("durability", durability);
         tag.putString("kind", kind.name());
         return tag;
@@ -120,10 +121,8 @@ public final class DigSite {
 
     public static DigSite load(CompoundTag tag) {
         final DigSite site = new DigSite();
-        final byte[] flat = tag.getByteArray("layers");
-        for (int i = 0; i < CELLS; i++) {
-            site.layers[i] = Layer.values()[i < flat.length ? flat[i] : Layer.DUST.ordinal()];
-        }
+        final byte[] flat = tag.getByteArray("depth");
+        System.arraycopy(flat, 0, site.depth, 0, Math.min(flat.length, CELLS));
         site.durability = tag.getInt("durability");
         site.kind = tag.contains("kind")
                 ? SiteKind.valueOf(tag.getString("kind")) : SiteKind.SEDIMENT;

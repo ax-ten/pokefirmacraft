@@ -1,20 +1,15 @@
 package com.kingtrapinch.tfcobblemon.dig;
 
 /**
- * I tre strati sovrapposti di un sito, dal piu' duro al piu' friabile. Ogni
- * cella della griglia sta su uno di questi, e si scende togliendo quello sopra.
+ * Di che materiale e' fatto uno strato. Non e' una scala di durezza: l'ordine
+ * in cui gli strati si susseguono lo decide {@link SiteKind}, perche' in un
+ * sito di sabbia il pulviscolo sta fuori e la pietra sotto, in uno di pietra e'
+ * il contrario.
  */
 public enum Layer {
     ROCK,
     LIME,
     DUST,
-    EMPTY;
-
-    public Layer below() {
-        return this == EMPTY ? EMPTY : values()[ordinal() + 1];
-    }
-
-    public boolean harderThan(Layer other) {
-        return ordinal() < other.ordinal();
-    }
+    CRYSTAL,
+    EMPTY
 }

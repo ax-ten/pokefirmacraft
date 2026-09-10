@@ -127,7 +127,7 @@ public class DigSiteBlockEntity extends BlockEntity {
             boolean clean = true;
             for (int dy = 0; dy < TREASURE_SIZE && clean; dy++) {
                 for (int dx = 0; dx < TREASURE_SIZE; dx++) {
-                    if (site.layer(b.x() + dx, b.y() + dy) != Layer.EMPTY) {
+                    if (!site.cleared(b.x() + dx, b.y() + dy)) {
                         clean = false;
                         break;
                     }
@@ -152,7 +152,7 @@ public class DigSiteBlockEntity extends BlockEntity {
         final Buried b = buried.get(slot);
         for (int dy = 0; dy < TREASURE_SIZE; dy++) {
             for (int dx = 0; dx < TREASURE_SIZE; dx++) {
-                if (site.layer(b.x() + dx, b.y() + dy) != Layer.EMPTY) {
+                if (!site.cleared(b.x() + dx, b.y() + dy)) {
                     return false;
                 }
             }

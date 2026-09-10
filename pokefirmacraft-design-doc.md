@@ -401,9 +401,15 @@ Il minigioco funziona, i numeri sono messi a caso e vanno provati con le mani.
 - [ ] Lo sconto del tier: `DigTool.siteCost` legge la durabilita' massima
       dell'attrezzo e la divide per 250. Funziona ma e' un proxy: se i metalli
       di TFC non scalano linearmente conviene una tabella esplicita.
-- [ ] Le soglie del rumore stanno su `SiteKind`: sedimento 0.55 / 0.78,
-      cristallo 0.45 / 1.01 (che vuol dire nessun pulviscolo, quindi la
-      spazzola non ci trova mai niente). Da vedere in mano.
+- [ ] Le soglie del rumore stanno su `SiteKind`: 0.55 / 0.78 per sedimento e
+      pietra, 0.5 / 1.01 per il cristallo. Da vedere in mano.
+- [ ] L'ordine degli strati e' sul tipo di sito: sciolto va pulviscolo, calce,
+      roccia; la pietra viva al contrario; il cristallo sono due strati di
+      cristallo e basta, per cui la spazzola non ci trova niente da fare per
+      costruzione e non per una regola scritta a parte.
+- [ ] Sei tipi di cristallo (ametista, opale, rubino, zaffiro, topazio,
+      tumblestone) con la stessa loot table. Se vale la pena differenziarle,
+      basta una tabella per tipo.
 - [ ] `SiteKind.CRYSTAL.hammerPenalty` = 4: il martello consuma quattro volte
       tanto, quindi nel cristallo si lavora di scalpello.
 - [ ] `SiteKind.rollCrystal` = 4% — quanto raro e' un sito di cristallo, quando
