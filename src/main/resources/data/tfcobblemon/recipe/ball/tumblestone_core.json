@@ -1,16 +1,10 @@
 {
-  "type": "tfc:knapping",
-  "knapping_type": "tfc:rock",
-  "pattern": [
-    "  #  ",
-    " ### ",
-    "#####",
-    " ### ",
-    "  #  "
-  ],
+  "type": "tfc:scraping",
   "ingredient": {
     "item": "cobblemon:tumblestone"
   },
+  "input_texture": "cobblemon:item/tumblestone",
+  "output_texture": "tfcobblemon:item/ball/tumblestone_core",
   "result": {
     "id": "tfcobblemon:tumblestone_core",
     "count": 1
