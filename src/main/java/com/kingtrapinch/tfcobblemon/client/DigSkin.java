@@ -66,6 +66,7 @@ public record DigSkin(ResourceLocation rock, ResourceLocation lime, ResourceLoca
             case "tumblestone" -> "cobblemon:textures/block/tumblestone/tumblestone_block.png";
             case "sky_tumblestone" -> "cobblemon:textures/block/tumblestone/sky_tumblestone_block.png";
             case "black_tumblestone" -> "cobblemon:textures/block/tumblestone/black_tumblestone_block.png";
+            case "opal" -> "tfcobblemon:textures/gui/dig/crystal/opal_outer.png";
             default -> "minecraft:textures/block/amethyst_block.png";
         };
         return ResourceLocation.parse(path);

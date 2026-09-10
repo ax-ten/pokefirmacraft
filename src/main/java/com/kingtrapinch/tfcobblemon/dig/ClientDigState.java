@@ -23,12 +23,20 @@ public final class ClientDigState {
         return v;
     }
 
+    /** Il primo pacchetto e' la fotografia d'apertura: non ha rotto niente. */
+    private static boolean primo = true;
+
     public static void accept(DigSyncPayload payload) {
         final byte[] prima = depth;
         found = payload.found();
         depth = payload.layers();
         durability = payload.durability();
         broken.clear();
+        if (primo) {
+            primo = false;
+            found = -1;
+            return;
+        }
         for (int i = 0; i < Math.min(prima.length, depth.length); i++) {
             if ((depth[i] & 0x0F) > (prima[i] & 0x0F)) {
                 broken.add(new int[] {i % DigSite.SIZE, i / DigSite.SIZE});

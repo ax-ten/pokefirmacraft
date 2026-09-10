@@ -146,6 +146,9 @@ public class DigSiteBlockEntity extends BlockEntity {
      */
     public void collapse(ServerLevel level) {
         contents.clearContent();
+        // come i blocchi sospetti di vanilla: si sfalda con un tintinnio di vetro
+        level.playSound(null, worldPosition, net.minecraft.sounds.SoundEvents.GLASS_BREAK,
+                net.minecraft.sounds.SoundSource.BLOCKS, 0.9F, 0.9F);
         level.destroyBlock(worldPosition, false);
     }
 

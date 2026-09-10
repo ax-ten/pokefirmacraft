@@ -104,6 +104,11 @@ public final class DigSite {
         return true;
     }
 
+    /** Il materiale in cima a una cella, per decidere come reagisce al colpo. */
+    public Layer layerAt(int x, int y) {
+        return kind.materialAt(depth[index(x, y)]);
+    }
+
     public boolean isCracked(int x, int y) {
         return cracked[index(x, y)];
     }

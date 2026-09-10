@@ -41,9 +41,9 @@ public final class ModDig {
     public static final List<String> GRAVELS = List.of("andesite", "basalt", "chalk", "chert", "claystone", "conglomerate", "dacite", "diorite", "dolomite", "gabbro", "gneiss", "granite", "limestone", "marble", "phyllite", "quartzite", "rhyolite", "schist", "shale", "slate", "tuff");
 
     public static final Map<String, DeferredBlock<DigSiteBlock>> SUSPICIOUS_SAND =
-            siti("suspicious_sand", SANDS, MapColor.SAND, SoundType.SAND);
+            siti("suspicious_sand", SANDS, MapColor.SAND, SoundType.SUSPICIOUS_SAND);
     public static final Map<String, DeferredBlock<DigSiteBlock>> SUSPICIOUS_GRAVEL =
-            siti("suspicious_gravel", GRAVELS, MapColor.STONE, SoundType.GRAVEL);
+            siti("suspicious_gravel", GRAVELS, MapColor.STONE, SoundType.SUSPICIOUS_GRAVEL);
     /** Anche la pietra viva puo' essere sospetta, non solo lo sciolto. */
     public static final Map<String, DeferredBlock<DigSiteBlock>> SUSPICIOUS_STONE =
             siti("suspicious_stone", GRAVELS, MapColor.STONE, SoundType.STONE);
@@ -51,8 +51,8 @@ public final class ModDig {
      * Il sito raro: due strati di cristallo, la spazzola non ci fa niente e il
      * martello lo sbriciola in quattro colpi. Dentro c'e' la roba buona.
      */
-    public static final List<String> CRYSTALS = List.of("amethyst", "diamond", "emerald",
-            "lapis", "tumblestone", "sky_tumblestone", "black_tumblestone");
+    public static final List<String> CRYSTALS = List.of("amethyst", "opal", "diamond",
+            "emerald", "lapis", "tumblestone", "sky_tumblestone", "black_tumblestone");
 
     public static final Map<String, DeferredBlock<DigSiteBlock>> SUSPICIOUS_CRYSTAL =
             siti("suspicious_crystal", CRYSTALS, MapColor.COLOR_PURPLE, SoundType.AMETHYST);

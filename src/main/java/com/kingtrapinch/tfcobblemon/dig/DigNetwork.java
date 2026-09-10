@@ -93,24 +93,32 @@ public final class DigNetwork {
     }
 
     /**
-     * Il martello prende un diamante di raggio due. Al centro sfonda sempre;
-     * intorno, nel quadrato, otto volte su dieci lascia solo le crepe; sulle
-     * quattro punte cede sei volte su dieci, altrimenti niente.
+     * Sul pulviscolo il ferro non fa presa: il martello dimezza le probabilita'
+     * di portare via lo strato, lo scalpello riesce solo a incrinarlo. Per la
+     * sabbia c'e' la spazzola.
+     */
+    private static boolean loose(DigSite site, int x, int y) {
+        return site.layerAt(x, y) == Layer.DUST;
+    }
+
+    /**
+     * Il martello prende un diamante di raggio due. Al centro sfonda; intorno,
+     * nel quadrato, due volte su dieci resta solo incrinato; sulle quattro
+     * punte cede sei volte su dieci, altrimenti niente.
      */
     private static boolean hammer(DigSite site, ServerLevel level, int cx, int cy) {
-        boolean any = site.hit(cx, cy, DigTool.HAMMER, true);
+        boolean any = colpo(site, level, cx, cy, DigTool.HAMMER, 1.0F);
         for (int dy = -1; dy <= 1; dy++) {
             for (int dx = -1; dx <= 1; dx++) {
                 if (dx == 0 && dy == 0) {
                     continue;
                 }
-                any |= at(site, cx + dx, cy + dy, DigTool.HAMMER,
-                        level.random.nextFloat() < 0.20F);
+                any |= colpo(site, level, cx + dx, cy + dy, DigTool.HAMMER, 0.80F);
             }
         }
         for (int[] tip : new int[][] {{2, 0}, {-2, 0}, {0, 2}, {0, -2}}) {
             if (level.random.nextFloat() < 0.60F) {
-                any |= at(site, cx + tip[0], cy + tip[1], DigTool.HAMMER, true);
+                any |= colpo(site, level, cx + tip[0], cy + tip[1], DigTool.HAMMER, 1.0F);
             }
         }
         return any;
@@ -118,11 +126,29 @@ public final class DigNetwork {
 
     /** Lo scalpello prende la cella, e tre volte su dieci anche quella sotto. */
     private static boolean chisel(DigSite site, ServerLevel level, int cx, int cy) {
-        boolean any = site.hit(cx, cy, DigTool.CHISEL, true);
+        boolean any = colpo(site, level, cx, cy, DigTool.CHISEL, 1.0F);
         if (any && level.random.nextFloat() < 0.30F) {
-            any |= site.hit(cx, cy, DigTool.CHISEL, true);
+            any |= colpo(site, level, cx, cy, DigTool.CHISEL, 1.0F);
         }
         return any;
+    }
+
+    /**
+     * Un colpo che cede con probabilita' {@code chance}, dimezzata sul
+     * pulviscolo; lo scalpello sul pulviscolo si limita a incrinare.
+     */
+    private static boolean colpo(DigSite site, ServerLevel level, int x, int y,
+                                 DigTool tool, float chance) {
+        if (x < 0 || x >= DigSite.SIZE || y < 0 || y >= DigSite.SIZE) {
+            return false;
+        }
+        if (loose(site, x, y)) {
+            if (tool == DigTool.CHISEL) {
+                return site.hit(x, y, tool, false);
+            }
+            chance *= 0.5F;
+        }
+        return site.hit(x, y, tool, chance >= 1.0F || level.random.nextFloat() < chance);
     }
 
     private static boolean brush(DigSite site, int cx, int cy) {

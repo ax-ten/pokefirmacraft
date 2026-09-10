@@ -33,8 +33,21 @@ public class DigScreen extends AbstractContainerScreen<DigMenu> {
     /** Il velo su quello che non si puo' usare per scavare. */
     private static final int GREYED = 0xB0202020;
 
-    private static final ResourceLocation CRACKS =
-            ResourceLocation.withDefaultNamespace("textures/block/destroy_stage_5.png");
+    /** I dieci stadi di rottura di vanilla: ne pesco uno per cella, stabile. */
+    private static final ResourceLocation[] CRACKS = new ResourceLocation[10];
+
+    static {
+        for (int i = 0; i < CRACKS.length; i++) {
+            CRACKS[i] = ResourceLocation.withDefaultNamespace("textures/block/destroy_stage_" + i + ".png");
+        }
+    }
+
+    /** Un numero stabile per cella, per non far ballare crepe e bordi. */
+    private static int scramble(int x, int y) {
+        int h = x * 374761393 + y * 668265263;
+        h = (h ^ (h >>> 13)) * 1274126177;
+        return (h ^ (h >>> 16)) & 0x7FFFFFFF;
+    }
 
     private final DigDust dust = new DigDust();
     private DigSkin skin = DigSkin.of(ResourceLocation
@@ -108,14 +121,20 @@ public class DigScreen extends AbstractContainerScreen<DigMenu> {
             }
             // il lato in ombra e' quello verso il basso e verso destra
             final int alpha = d[0] > 0 || d[1] > 0 ? 0x66000000 : 0x33000000;
-            if (d[1] < 0) {
-                g.fill(px, py, px + c, py + 2, alpha);
-            } else if (d[1] > 0) {
-                g.fill(px, py + c - 2, px + c, py + c, alpha);
-            } else if (d[0] < 0) {
-                g.fill(px, py, px + 2, py + c, alpha);
-            } else {
-                g.fill(px + c - 2, py, px + c, py + c, alpha);
+            // lo spessore cambia pixel per pixel: il bordo viene sinuoso invece
+            // che una riga dritta, e resta stabile perche' dipende dalla cella
+            final int seme = scramble(gx * 4 + d[0], gy * 4 + d[1]);
+            for (int i = 0; i < c; i++) {
+                final int spessore = 1 + ((seme >>> (i % 24)) & 1) + ((seme >>> ((i * 3) % 24)) & 1);
+                if (d[1] < 0) {
+                    g.fill(px + i, py, px + i + 1, py + spessore, alpha);
+                } else if (d[1] > 0) {
+                    g.fill(px + i, py + c - spessore, px + i + 1, py + c, alpha);
+                } else if (d[0] < 0) {
+                    g.fill(px, py + i, px + spessore, py + i + 1, alpha);
+                } else {
+                    g.fill(px + c - spessore, py + i, px + c, py + i + 1, alpha);
+                }
             }
         }
     }
@@ -138,7 +157,11 @@ public class DigScreen extends AbstractContainerScreen<DigMenu> {
                     graphics.fill(px, py, px + DigLayout.CELL, py + DigLayout.CELL, 0xA0101014);
                 }
                 if (ClientDigState.isCracked(gx, gy)) {
-                    graphics.blit(CRACKS, px, py, 0, 0, DigLayout.CELL, DigLayout.CELL, 16, 16);
+                    // le crepe sono in trasparenza: senza blend coprono la zolla
+                    com.mojang.blaze3d.systems.RenderSystem.enableBlend();
+                    graphics.blit(CRACKS[4 + scramble(gx, gy) % 6], px, py,
+                            0, 0, DigLayout.CELL, DigLayout.CELL, 16, 16);
+                    com.mojang.blaze3d.systems.RenderSystem.disableBlend();
                 }
                 edges(graphics, gx, gy, px, py);
             }
@@ -160,10 +183,17 @@ public class DigScreen extends AbstractContainerScreen<DigMenu> {
         graphics.fill(x + DigLayout.GRID_X, by, x + DigLayout.GRID_X + left, by + 5, 0xFF6ABE30);
     }
 
-    /** I tesori nella buca si vedono in grande, e appena presi tornano normali. */
+    /**
+     * I tesori nella buca si vedono in grande, ma solo dove il terreno e' stato
+     * tolto: l'oggetto si disegna una volta per cella pulita, ritagliato su
+     * quella cella. Quello che sta ancora sotto la zolla resta nascosto, cosi'
+     * si capisce da guardarlo che c'e' altro da scavare. Presi, tornano
+     * normali, perche' li disegna lo slot dell'inventario.
+     */
     @Override
     protected void renderSlot(GuiGraphics graphics, Slot slot) {
-        if (slot.index >= menu.spots().size() || !(slot.container instanceof net.minecraft.world.SimpleContainer)) {
+        if (slot.index >= menu.spots().size()
+                || !(slot.container instanceof net.minecraft.world.SimpleContainer)) {
             super.renderSlot(graphics, slot);
             return;
         }
@@ -171,15 +201,24 @@ public class DigScreen extends AbstractContainerScreen<DigMenu> {
         if (stack.isEmpty()) {
             return;
         }
-        graphics.pose().pushPose();
-        graphics.pose().translate(slot.x + 8, slot.y + 8, 0);
-        graphics.pose().scale(1.5F, 1.5F, 1.0F);
-        graphics.pose().translate(-8, -8, 0);
-        graphics.renderItem(stack, 0, 0);
-        graphics.pose().popPose();
-        // mezzo sepolto: si vede, ma sotto un velo, e non si tira via
-        if (slot instanceof DigMenu.TreasureSlot t && t.stuck()) {
-            graphics.fill(slot.x - 4, slot.y - 4, slot.x + 20, slot.y + 20, 0x50101010);
+        final DigMenu.Spot spot = menu.spots().get(slot.index);
+        final int side = DigSiteBlockEntity.TREASURE_SIZE;
+        for (int dy = 0; dy < side; dy++) {
+            for (int dx = 0; dx < side; dx++) {
+                if (ClientDigState.layer(spot.x() + dx, spot.y() + dy) != Layer.EMPTY) {
+                    continue;
+                }
+                final int cx = leftPos + DigLayout.cellX(spot.x() + dx);
+                final int cy = topPos + DigLayout.cellY(spot.y() + dy);
+                graphics.enableScissor(cx, cy, cx + DigLayout.CELL, cy + DigLayout.CELL);
+                graphics.pose().pushPose();
+                graphics.pose().translate(slot.x + 8, slot.y + 8, 0);
+                graphics.pose().scale(1.5F, 1.5F, 1.0F);
+                graphics.pose().translate(-8, -8, 0);
+                graphics.renderItem(stack, 0, 0);
+                graphics.pose().popPose();
+                graphics.disableScissor();
+            }
         }
     }
 
@@ -200,12 +239,12 @@ public class DigScreen extends AbstractContainerScreen<DigMenu> {
             if (cx < 0 || cx >= DigSite.SIZE || cy < 0 || cy >= DigSite.SIZE) {
                 continue;
             }
-            final boolean bites = tool.bites(ClientDigState.layer(cx, cy));
-            final boolean sure = cell[2] == 1;
+            if (!tool.bites(ClientDigState.layer(cx, cy))) {
+                continue;
+            }
             graphics.fill(leftPos + DigLayout.cellX(cx), topPos + DigLayout.cellY(cy),
                     leftPos + DigLayout.cellX(cx) + DigLayout.CELL,
-                    topPos + DigLayout.cellY(cy) + DigLayout.CELL,
-                    !bites ? 0x50FF4040 : sure ? 0x70FFFFFF : 0x40FFFFFF);
+                    topPos + DigLayout.cellY(cy) + DigLayout.CELL, 0x38FFFFFF);
         }
     }
 
@@ -219,6 +258,8 @@ public class DigScreen extends AbstractContainerScreen<DigMenu> {
             if (tool == null) {
                 graphics.fill(leftPos + slot.x, topPos + slot.y,
                         leftPos + slot.x + 16, topPos + slot.y + 16, GREYED);
+                graphics.fill(leftPos + slot.x, topPos + slot.y,
+                        leftPos + slot.x + 16, topPos + slot.y + 16, 0x50808080);
             } else if (slot.getContainerSlot() == chosen) {
                 graphics.renderOutline(leftPos + slot.x - 1, topPos + slot.y - 1, 18, 18, 0xFFFFF0A0);
             }

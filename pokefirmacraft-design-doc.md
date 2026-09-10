@@ -387,6 +387,30 @@ TerraFirmaGreg – New Horizons usa FTB Quests come sistema di quest. Le quest P
 
 **Struttura del capitolo: non ancora definita — da progettare in una fase successiva.**
 
+## 8.0 Megapietre — appunti per quando ci arriveremo
+
+Niente di implementato, sono note da non perdere.
+
+**I geodi si fanno con un file.** TFC non ha una sua feature: usa
+`minecraft:geode` di vanilla con i provider tutti aperti — guscio, strato
+intermedio, strato interno, quello alternativo, i riempimenti. Il suo geode e'
+basalto indurito fuori, quarzite dentro e ametista come strato alternativo.
+Quindi un geode di megapietre e' un `configured_feature` e un `placed_feature`,
+zero codice: strato interno il minerale di megapietre, guscio la roccia
+indurita del posto.
+
+**Il minerale di megapietre non ha tier.** Un blocco rende **tre o quattro
+megapietre pescate a caso fra tutte**, senza distinzione: la scarsita' e' il
+gate, non la profondita' o il metallo del piccone. Cosi' una megapietra non si
+"punta", si trova.
+
+**L'Arma Suprema di AZ, era nucleare.** L'idea e' trattarla come un reattore:
+la si carica, si innesca la reazione e ne esce **ogni singola megapietra** in
+una volta. E' il modo di chiudere il capitolo megapietre senza farne un
+grinding infinito, e sta bene nell'era nucleare perche' e' letteralmente la
+stessa meccanica di un reattore — combustibile, innesco, e qualcosa che puo'
+andare male.
+
 ## 8.1 Scavo archeologico — numeri da tarare in gioco
 
 Il minigioco funziona, i numeri sono messi a caso e vanno provati con le mani.
@@ -410,9 +434,11 @@ Il minigioco funziona, i numeri sono messi a caso e vanno provati con le mani.
 - [ ] Sette tipi di cristallo (ametista, diamante, smeraldo, lapis, e le tre
       tumblestone) con la stessa loot table. Se vale la pena differenziarle,
       basta una tabella per tipo.
-- [ ] Le probabilita' dei colpi: martello 20% di sfondare le otto celle
-      intorno (80% le incrina), 60% sulle quattro punte del diamante;
-      scalpello 30% di prendere anche la cella sotto.
+- [ ] Le probabilita' dei colpi: martello 80% di sfondare le otto celle
+      intorno (20% le incrina), 60% sulle quattro punte del diamante;
+      scalpello 30% di prendere anche la cella sotto. Sul pulviscolo il ferro
+      non fa presa: il martello dimezza, lo scalpello riesce solo a incrinare,
+      e per la sabbia c'e' la spazzola.
 - [ ] Il titolo della finestra e' "Test Pit". Alternative in fondo alla lista.
 - [ ] `SiteKind.CRYSTAL.hammerPenalty` = 4: il martello consuma quattro volte
       tanto, quindi nel cristallo si lavora di scalpello.

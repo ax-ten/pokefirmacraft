@@ -92,7 +92,7 @@
   "block.tfcobblemon.suspicious_gravel.shale": "Suspicious Shale Gravel",
   "block.tfcobblemon.suspicious_gravel.slate": "Suspicious Slate Gravel",
   "block.tfcobblemon.suspicious_gravel.tuff": "Suspicious Tuff Gravel",
-  "container.tfcobblemon.dig_site": "Test Pit",
+  "container.tfcobblemon.dig_site": "Excavation",
   "tfcobblemon.dig.site": "Site: %s / %s",
   "block.tfcobblemon.suspicious_stone.andesite": "Suspicious Andesite",
   "block.tfcobblemon.suspicious_stone.basalt": "Suspicious Basalt",
@@ -121,5 +121,6 @@
   "block.tfcobblemon.suspicious_crystal.lapis": "Suspicious Lapis Cluster",
   "block.tfcobblemon.suspicious_crystal.tumblestone": "Suspicious Tumblestone Cluster",
   "block.tfcobblemon.suspicious_crystal.sky_tumblestone": "Suspicious Sky Tumblestone Cluster",
-  "block.tfcobblemon.suspicious_crystal.black_tumblestone": "Suspicious Black Tumblestone Cluster"
+  "block.tfcobblemon.suspicious_crystal.black_tumblestone": "Suspicious Black Tumblestone Cluster",
+  "block.tfcobblemon.suspicious_crystal.opal": "Suspicious Opal Cluster"
 }
