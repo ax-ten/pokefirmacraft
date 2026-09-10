@@ -179,6 +179,8 @@ public class DigScreen extends AbstractContainerScreen<DigMenu> {
         final int left = Math.max(0, ClientDigState.durability()) * DigLayout.GRID_SPAN
                 / DigSite.DURABILITY;
         final int by = y + DigLayout.BAR_Y;
+        // la barra in una conca come gli slot, altrimenti galleggia sul pannello
+        well(graphics, x + DigLayout.GRID_X - 1, by - 1, DigLayout.GRID_SPAN + 2, 7);
         graphics.fill(x + DigLayout.GRID_X, by, x + DigLayout.GRID_X + DigLayout.GRID_SPAN, by + 5, WELL_DARK);
         graphics.fill(x + DigLayout.GRID_X, by, x + DigLayout.GRID_X + left, by + 5, 0xFF6ABE30);
     }
