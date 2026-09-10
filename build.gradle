@@ -194,16 +194,17 @@ tasks.withType(JavaCompile).configureEach {
  * <p>Si perde il ricarica-a-caldo e il debugger, ma il pacchetto e' quello vero
  * senza una sola esclusione. Per iterare sulle ricette resta il dev snello.
  */
+def prismInstance = file("${System.getProperty('user.home')}/.local/share/PrismLauncher/instances/Pokefirmacraft/minecraft/mods")
+
 tasks.register('installToPack', Copy) {
-    description = 'Costruisce il jar e lo copia nelle mod di Gregnautics'
+    description = 'Costruisce il jar e lo copia nell\'istanza Prism del pacchetto'
     group = 'pokefirmacraft'
     dependsOn tasks.named('build')
     from(tasks.named('jar').map { it.archiveFile })
-    into packMods
+    into prismInstance
     rename { "tfcobblemon-dev.jar" }
     doLast {
-        logger.lifecycle("jar copiato in ${packMods}")
-        logger.lifecycle("servono ancora, dentro quella cartella:")
-        logger.lifecycle("  Cobblemon ${cobblemon_version} e Kotlin for Forge ${kff_version}")
+        logger.lifecycle("jar aggiornato in ${prismInstance}")
+        logger.lifecycle("l'istanza si chiama Pokefirmacraft: prismlauncher -l Pokefirmacraft")
     }
 }
