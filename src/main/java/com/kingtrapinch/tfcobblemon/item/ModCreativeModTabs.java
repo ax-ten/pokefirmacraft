@@ -41,6 +41,9 @@ public class ModCreativeModTabs {
                                 output.accept(GolettItem.GOLETT_RED.get());
                                 output.accept(GolettItem.GOLETT_WHITE.get());
                                 output.accept(GolettItem.GOLETT_YELLOW.get());
+
+                                com.kingtrapinch.tfcobblemon.dig.ModDig.allSites()
+                                        .forEach(sito -> output.accept(sito.get()));
                             })
                             .build());
 

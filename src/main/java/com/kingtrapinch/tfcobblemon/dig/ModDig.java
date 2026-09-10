@@ -3,12 +3,15 @@ package com.kingtrapinch.tfcobblemon.dig;
 import com.kingtrapinch.tfcobblemon.TFCobblemon;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -27,6 +30,7 @@ public final class ModDig {
     private ModDig() {}
 
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(TFCobblemon.MODID);
+    public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(TFCobblemon.MODID);
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES =
             DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, TFCobblemon.MODID);
     public static final DeferredRegister<MenuType<?>> MENUS =
@@ -36,9 +40,9 @@ public final class ModDig {
     public static final List<String> SANDS = List.of("black", "brown", "green", "pink", "red", "white", "yellow");
     public static final List<String> GRAVELS = List.of("andesite", "basalt", "chalk", "chert", "claystone", "conglomerate", "dacite", "diorite", "dolomite", "gabbro", "gneiss", "granite", "limestone", "marble", "phyllite", "quartzite", "rhyolite", "schist", "shale", "slate", "tuff");
 
-    public static final Map<String, DeferredHolder<Block, Block>> SUSPICIOUS_SAND =
+    public static final Map<String, DeferredBlock<DigSiteBlock>> SUSPICIOUS_SAND =
             siti("suspicious_sand", SANDS, MapColor.SAND, SoundType.SAND);
-    public static final Map<String, DeferredHolder<Block, Block>> SUSPICIOUS_GRAVEL =
+    public static final Map<String, DeferredBlock<DigSiteBlock>> SUSPICIOUS_GRAVEL =
             siti("suspicious_gravel", GRAVELS, MapColor.STONE, SoundType.GRAVEL);
 
     /**
@@ -46,16 +50,20 @@ public final class ModDig {
      * dei suspicious vanilla, cosi' lo scavo si nota ma non stona col terreno.
      * Non si raccolgono e non droppano niente: si aprono e si scavano.
      */
-    private static Map<String, DeferredHolder<Block, Block>> siti(
+    private static Map<String, DeferredBlock<DigSiteBlock>> siti(
             String prefisso, List<String> varianti, MapColor colore, SoundType suono) {
-        final Map<String, DeferredHolder<Block, Block>> mappa = new LinkedHashMap<>();
+        final Map<String, DeferredBlock<DigSiteBlock>> mappa = new LinkedHashMap<>();
         for (String variante : varianti) {
-            mappa.put(variante, BLOCKS.register(prefisso + "/" + variante,
+            final var blocco = BLOCKS.register(prefisso + "/" + variante,
                     () -> new DigSiteBlock(BlockBehaviour.Properties.of()
                             .mapColor(colore)
                             .strength(0.5F)
                             .sound(suono)
-                            .noLootTable())));
+                            .noLootTable()));
+            mappa.put(variante, blocco);
+            // rotto non da' niente, ma un item serve per piazzarlo a mano
+            ITEMS.register(prefisso + "/" + variante,
+                    () -> new BlockItem(blocco.get(), new Item.Properties()));
         }
         return mappa;
     }
@@ -68,7 +76,7 @@ public final class ModDig {
     private static Block[] siti() {
         return java.util.stream.Stream
                 .concat(SUSPICIOUS_SAND.values().stream(), SUSPICIOUS_GRAVEL.values().stream())
-                .map(DeferredHolder::get)
+                .map(DeferredBlock::get)
                 .toArray(Block[]::new);
     }
 
@@ -76,8 +84,15 @@ public final class ModDig {
             MENUS.register("dig_site", () -> net.neoforged.neoforge.common.extensions.IMenuTypeExtension
                     .create((id, inventory, buf) -> new DigMenu(id, inventory, buf.readBlockPos())));
 
+    /** Tutti i siti, per elencarli nella scheda creativa. */
+    public static java.util.stream.Stream<DeferredBlock<DigSiteBlock>> allSites() {
+        return java.util.stream.Stream.concat(
+                SUSPICIOUS_SAND.values().stream(), SUSPICIOUS_GRAVEL.values().stream());
+    }
+
     public static void register(IEventBus eventBus) {
         BLOCKS.register(eventBus);
+        ITEMS.register(eventBus);
         BLOCK_ENTITIES.register(eventBus);
         MENUS.register(eventBus);
     }
