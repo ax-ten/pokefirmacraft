@@ -17,6 +17,13 @@ public record DigMenuProvider(BlockPos pos) implements MenuProvider {
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
-        return new DigMenu(id, inventory, pos);
+        final var be = player.level().getBlockEntity(pos);
+        final java.util.List<DigMenu.Spot> spots = new java.util.ArrayList<>();
+        if (be instanceof DigSiteBlockEntity site) {
+            for (DigSiteBlockEntity.Buried b : site.buried()) {
+                spots.add(new DigMenu.Spot(b.x(), b.y()));
+            }
+        }
+        return new DigMenu(id, inventory, pos, spots);
     }
 }

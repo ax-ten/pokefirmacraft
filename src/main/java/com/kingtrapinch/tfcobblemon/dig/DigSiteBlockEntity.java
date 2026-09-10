@@ -29,9 +29,12 @@ import java.util.List;
  * rarita' e' quella che ha scritto lui e non ce ne inventiamo un'altra.
  */
 public class DigSiteBlockEntity extends BlockEntity {
-    /** TODO testing: una tabella sola per tutti i siti, va scelta dalla struttura. */
-    public static final ResourceLocation DEFAULT_LOOT =
+    /** TODO testing: una tabella sola per i siti normali, va scelta dalla struttura. */
+    public static final ResourceLocation SEDIMENT_LOOT =
             ResourceLocation.fromNamespaceAndPath("cobblemon", "fossils/common/prehistoric_mud_pit");
+    /** Il cristallo ha la sua, ed e' quella che vale la pena aprire. */
+    public static final ResourceLocation CRYSTAL_LOOT =
+            ResourceLocation.fromNamespaceAndPath("tfcobblemon", "dig/crystal");
     /** TODO testing: quanti tesori per sito. */
     public static final int TREASURES = 4;
     /** Il lato del quadrato che occupa un tesoro. */
@@ -47,17 +50,26 @@ public class DigSiteBlockEntity extends BlockEntity {
     @Nullable
     private DigSite site;
     private final List<Buried> buried = new ArrayList<>();
-    /** I tesori tirati fuori, in attesa che il giocatore se li trascini via. */
-    private final SimpleContainer found = new SimpleContainer(TREASURES);
+    /**
+     * I tesori, uno per slot, nell'ordine in cui sono sepolti. Restano qui
+     * dentro anche da scoperti: lo slot li mostra dove stanno nella griglia e
+     * il giocatore se li trascina via da la'.
+     */
+    private final SimpleContainer contents = new SimpleContainer(TREASURES);
 
     public DigSiteBlockEntity(BlockPos pos, BlockState state) {
         super(ModDig.DIG_SITE.get(), pos, state);
     }
 
     /** Il sito si disegna al primo colpo d'occhio, non quando il mondo lo genera. */
+    public SiteKind kind() {
+        return SiteKind.of(net.minecraft.core.registries.BuiltInRegistries.BLOCK
+                .getKey(getBlockState().getBlock()).getPath());
+    }
+
     public DigSite site(ServerLevel level) {
         if (site == null) {
-            site = DigSite.generate(worldPosition, level.getSeed());
+            site = DigSite.generate(worldPosition, level.getSeed(), kind());
             scatter(level);
             setChanged();
         }
@@ -74,8 +86,9 @@ public class DigSiteBlockEntity extends BlockEntity {
     }
 
     private void scatter(ServerLevel level) {
+        final ResourceLocation which = kind() == SiteKind.CRYSTAL ? CRYSTAL_LOOT : SEDIMENT_LOOT;
         final LootTable table = level.getServer().reloadableRegistries()
-                .getLootTable(ResourceKey.create(Registries.LOOT_TABLE, DEFAULT_LOOT));
+                .getLootTable(ResourceKey.create(Registries.LOOT_TABLE, which));
         final LootParams params = new LootParams.Builder(level)
                 .withParameter(LootContextParams.ORIGIN, worldPosition.getCenter())
                 .create(LootContextParamSets.ARCHAEOLOGY);
@@ -89,6 +102,7 @@ public class DigSiteBlockEntity extends BlockEntity {
                 final int x = level.random.nextInt(slots);
                 final int y = level.random.nextInt(slots);
                 if (buried.stream().noneMatch(b -> overlaps(b, x, y))) {
+                    contents.setItem(buried.size(), rolled.getFirst().copy());
                     buried.add(new Buried(x, y, rolled.getFirst(), false));
                     break;
                 }
@@ -126,31 +140,24 @@ public class DigSiteBlockEntity extends BlockEntity {
         return ready;
     }
 
-    public SimpleContainer found() {
-        return found;
+    public SimpleContainer contents() {
+        return contents;
     }
 
-    /**
-     * Sposta nel cassetto i tesori che sono venuti fuori del tutto. Restano
-     * sul block entity, quindi chiudere la finestra non li perde.
-     */
-    public boolean harvest() {
-        boolean any = false;
-        for (Buried target : uncovered()) {
-            for (int slot = 0; slot < found.getContainerSize(); slot++) {
-                if (found.getItem(slot).isEmpty()) {
-                    found.setItem(slot, target.stack().copy());
-                    buried.replaceAll(b -> b == target
-                            ? new Buried(b.x(), b.y(), b.stack(), true) : b);
-                    any = true;
-                    break;
+    /** Se le quattro celle sopra il tesorto numero {@code slot} sono pulite. */
+    public boolean exposed(int slot) {
+        if (site == null || slot < 0 || slot >= buried.size()) {
+            return false;
+        }
+        final Buried b = buried.get(slot);
+        for (int dy = 0; dy < TREASURE_SIZE; dy++) {
+            for (int dx = 0; dx < TREASURE_SIZE; dx++) {
+                if (site.layer(b.x() + dx, b.y() + dy) != Layer.EMPTY) {
+                    return false;
                 }
             }
         }
-        if (any) {
-            setChanged();
-        }
-        return any;
+        return true;
     }
 
     @Override
@@ -169,7 +176,7 @@ public class DigSiteBlockEntity extends BlockEntity {
             list.add(entry);
         }
         tag.put("buried", list);
-        tag.put("found", found.createTag(registries));
+        tag.put("contents", contents.createTag(registries));
     }
 
     @Override
@@ -184,6 +191,6 @@ public class DigSiteBlockEntity extends BlockEntity {
                     ItemStack.parse(registries, entry.get("stack")).orElse(ItemStack.EMPTY),
                     entry.getBoolean("taken")));
         }
-        found.fromTag(tag.getList("found", 10), registries);
+        contents.fromTag(tag.getList("contents", 10), registries);
     }
 }

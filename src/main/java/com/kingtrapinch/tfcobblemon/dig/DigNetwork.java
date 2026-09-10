@@ -64,10 +64,12 @@ public final class DigNetwork {
                     site.spend(1);
                 }
             } else if (bit) {
-                site.spend(tool.siteCost(held));
+                final int cost = tool == DigTool.HAMMER
+                        ? tool.siteCost(held) * site.kind().hammerPenalty
+                        : tool.siteCost(held);
+                site.spend(cost);
             }
 
-            be.harvest();
             be.setChanged();
             player.connection.send(new DigSyncPayload(site.snapshot(), site.durability()));
         });

@@ -401,12 +401,15 @@ Il minigioco funziona, i numeri sono messi a caso e vanno provati con le mani.
 - [ ] Lo sconto del tier: `DigTool.siteCost` legge la durabilita' massima
       dell'attrezzo e la divide per 250. Funziona ma e' un proxy: se i metalli
       di TFC non scalano linearmente conviene una tabella esplicita.
-- [ ] La soglia del rumore (0.42 roccia, 0.56 calce) decide quanta roccia c'e'
-      in un sito. Da vedere se i siti vengono troppo duri o troppo molli.
-- [ ] Le texture delle celle sono granito, gesso e sabbia di TFC con il bordo
-      scurito. Reggono, ma non sono disegnate per stare in una GUI.
-- [ ] La griglia e' 8x8 in una costante sola (`DigSite.SIZE`), quindi cambiarla
-      e' una riga; la finestra pero' e' dimensionata a mano.
+- [ ] Le soglie del rumore stanno su `SiteKind`: sedimento 0.55 / 0.78,
+      cristallo 0.45 / 1.01 (che vuol dire nessun pulviscolo, quindi la
+      spazzola non ci trova mai niente). Da vedere in mano.
+- [ ] `SiteKind.CRYSTAL.hammerPenalty` = 4: il martello consuma quattro volte
+      tanto, quindi nel cristallo si lavora di scalpello.
+- [ ] `SiteKind.rollCrystal` = 4% — quanto raro e' un sito di cristallo, quando
+      la worldgen li piazzera'.
+- [ ] La griglia e' 9x9 in una costante sola (`DigSite.SIZE`), quindi cambiarla
+      e' una riga; la finestra pero' e' dimensionata a mano in `DigLayout`.
 
 ## 9. Punti aperti / da decidere durante lo sviluppo
 

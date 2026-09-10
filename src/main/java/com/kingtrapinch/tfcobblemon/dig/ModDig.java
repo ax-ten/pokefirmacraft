@@ -44,6 +44,15 @@ public final class ModDig {
             siti("suspicious_sand", SANDS, MapColor.SAND, SoundType.SAND);
     public static final Map<String, DeferredBlock<DigSiteBlock>> SUSPICIOUS_GRAVEL =
             siti("suspicious_gravel", GRAVELS, MapColor.STONE, SoundType.GRAVEL);
+    /** Anche la pietra viva puo' essere sospetta, non solo lo sciolto. */
+    public static final Map<String, DeferredBlock<DigSiteBlock>> SUSPICIOUS_STONE =
+            siti("suspicious_stone", GRAVELS, MapColor.STONE, SoundType.STONE);
+    /**
+     * Il sito raro: due strati di cristallo, la spazzola non ci fa niente e il
+     * martello lo sbriciola in quattro colpi. Dentro c'e' la roba buona.
+     */
+    public static final Map<String, DeferredBlock<DigSiteBlock>> SUSPICIOUS_CRYSTAL =
+            siti("suspicious_crystal", List.of("amethyst"), MapColor.COLOR_PURPLE, SoundType.AMETHYST);
 
     /**
      * Un sito per variante: la texture e' quella di TFC con sopra il pulviscolo
@@ -74,20 +83,18 @@ public final class ModDig {
                     DigSiteBlockEntity::new, siti()).build(null));
 
     private static Block[] siti() {
-        return java.util.stream.Stream
-                .concat(SUSPICIOUS_SAND.values().stream(), SUSPICIOUS_GRAVEL.values().stream())
-                .map(DeferredBlock::get)
-                .toArray(Block[]::new);
+        return allSites().map(DeferredBlock::get).toArray(Block[]::new);
     }
 
     public static final DeferredHolder<MenuType<?>, MenuType<DigMenu>> DIG_MENU =
             MENUS.register("dig_site", () -> net.neoforged.neoforge.common.extensions.IMenuTypeExtension
-                    .create((id, inventory, buf) -> new DigMenu(id, inventory, buf.readBlockPos())));
+                    .create(DigMenu::decode));
 
     /** Tutti i siti, per elencarli nella scheda creativa. */
     public static java.util.stream.Stream<DeferredBlock<DigSiteBlock>> allSites() {
-        return java.util.stream.Stream.concat(
-                SUSPICIOUS_SAND.values().stream(), SUSPICIOUS_GRAVEL.values().stream());
+        return java.util.stream.Stream.of(SUSPICIOUS_SAND, SUSPICIOUS_GRAVEL,
+                        SUSPICIOUS_STONE, SUSPICIOUS_CRYSTAL)
+                .flatMap(m -> m.values().stream());
     }
 
     public static void register(IEventBus eventBus) {

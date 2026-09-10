@@ -36,7 +36,14 @@ public class DigSiteBlock extends Block implements EntityBlock {
         if (level instanceof ServerLevel server
                 && level.getBlockEntity(pos) instanceof DigSiteBlockEntity site) {
             final DigSite scavo = site.site(server);
-            player.openMenu(new DigMenuProvider(pos), buf -> buf.writeBlockPos(pos));
+            player.openMenu(new DigMenuProvider(pos), buf -> {
+                buf.writeBlockPos(pos);
+                buf.writeByte(site.buried().size());
+                for (DigSiteBlockEntity.Buried b : site.buried()) {
+                    buf.writeByte(b.x());
+                    buf.writeByte(b.y());
+                }
+            });
             if (player instanceof net.minecraft.server.level.ServerPlayer sp) {
                 sp.connection.send(new DigSyncPayload(scavo.snapshot(), scavo.durability()));
             }

@@ -13,19 +13,24 @@ import net.minecraft.util.RandomSource;
  * roccia c'e' sempre qualcosa di piu' friabile.
  */
 public final class DigSite {
-    /** Lato della griglia. I giochi la fanno rettangolare perche' erano su DS. */
-    public static final int SIZE = 8;
+    /**
+     * Lato della griglia. Nove come le colonne dell'inventario, cosi' le due
+     * griglie si allineano; i giochi la fanno rettangolare perche' erano su DS.
+     */
+    public static final int SIZE = 9;
     public static final int CELLS = SIZE * SIZE;
     /** TODO testing: 100 e' un numero messo a caso, va tarato in gioco. */
     public static final int DURABILITY = 100;
 
     private final Layer[] layers = new Layer[CELLS];
     private int durability;
+    private SiteKind kind = SiteKind.SEDIMENT;
 
     private DigSite() {}
 
-    public static DigSite generate(BlockPos pos, long seed) {
+    public static DigSite generate(BlockPos pos, long seed, SiteKind kind) {
         final DigSite site = new DigSite();
+        site.kind = kind;
         final RandomSource random = RandomSource.create(seed ^ pos.asLong());
         final float[] noise = new float[CELLS];
         for (int i = 0; i < CELLS; i++) {
@@ -52,7 +57,7 @@ public final class DigSite {
             System.arraycopy(next, 0, noise, 0, CELLS);
         }
         for (int i = 0; i < CELLS; i++) {
-            site.layers[i] = noise[i] < 0.42F ? Layer.ROCK : noise[i] < 0.56F ? Layer.LIME : Layer.DUST;
+            site.layers[i] = kind.layerFor(noise[i]);
         }
         site.durability = DURABILITY;
         return site;
@@ -68,6 +73,10 @@ public final class DigSite {
 
     public int durability() {
         return durability;
+    }
+
+    public SiteKind kind() {
+        return kind;
     }
 
     public boolean exhausted() {
@@ -105,6 +114,7 @@ public final class DigSite {
         }
         tag.putByteArray("layers", flat);
         tag.putInt("durability", durability);
+        tag.putString("kind", kind.name());
         return tag;
     }
 
@@ -115,6 +125,8 @@ public final class DigSite {
             site.layers[i] = Layer.values()[i < flat.length ? flat[i] : Layer.DUST.ordinal()];
         }
         site.durability = tag.getInt("durability");
+        site.kind = tag.contains("kind")
+                ? SiteKind.valueOf(tag.getString("kind")) : SiteKind.SEDIMENT;
         return site;
     }
 }
