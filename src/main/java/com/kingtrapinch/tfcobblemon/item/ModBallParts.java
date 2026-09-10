@@ -128,8 +128,8 @@ public final class ModBallParts {
      * portarlo. Le ball a moltiplicatore fisso non ce l'hanno — il loro
      * coperchio e' la mezza apricorn e basta.
      */
-    public static final List<String> MODERN_LIDS =
-            List.of("net", "heavy", "lure", "safari", "park", "level", "friend");
+    public static final List<String> MODERN_LIDS = List.of("net", "heavy", "lure",
+            "safari", "park", "level", "friend", "dive", "nest", "heal");
 
     public static final Map<String, DeferredItem<Item>> LIDS = new LinkedHashMap<>();
 

@@ -1,0 +1,6 @@
+{
+  "parent": "tfcobblemon:item/ball_lid_modern",
+  "textures": {
+    "main": "cobblemon:item/poke_balls/models/nest_ball"
+  }
+}

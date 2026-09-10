@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "L",
+    "C",
+    "B"
+  ],
+  "key": {
+    "L": {
+      "item": "tfcobblemon:dive_ball_lid"
+    },
+    "C": {
+      "item": "tfcobblemon:capture_core"
+    },
+    "B": {
+      "item": "tfcobblemon:wrought_iron_ball_base"
+    }
+  },
+  "result": {
+    "id": "cobblemon:dive_ball",
+    "count": 1
+  }
+}

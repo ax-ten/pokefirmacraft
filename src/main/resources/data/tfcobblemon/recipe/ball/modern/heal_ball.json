@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "L",
+    "C",
+    "B"
+  ],
+  "key": {
+    "L": {
+      "item": "tfcobblemon:heal_ball_lid"
+    },
+    "C": {
+      "item": "tfcobblemon:capture_core"
+    },
+    "B": {
+      "item": "tfcobblemon:tin_ball_base"
+    }
+  },
+  "result": {
+    "id": "cobblemon:heal_ball",
+    "count": 1
+  }
+}

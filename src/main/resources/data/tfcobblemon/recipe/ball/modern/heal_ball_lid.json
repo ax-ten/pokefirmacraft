@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "tfcobblemon:half_pink_apricorn"
+    },
+    {
+      "item": "cobblemon:revival_herb"
+    }
+  ],
+  "result": {
+    "id": "tfcobblemon:heal_ball_lid",
+    "count": 1
+  }
+}

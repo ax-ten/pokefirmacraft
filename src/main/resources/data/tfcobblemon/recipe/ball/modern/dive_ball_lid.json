@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "tfcobblemon:half_blue_apricorn"
+    },
+    {
+      "type": "tfc:fluid_content",
+      "fluid": {
+        "amount": 1000,
+        "fluid": "minecraft:water"
+      }
+    }
+  ],
+  "result": {
+    "id": "tfcobblemon:dive_ball_lid",
+    "count": 1
+  }
+}
