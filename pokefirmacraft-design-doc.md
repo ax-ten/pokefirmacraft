@@ -238,23 +238,53 @@ rete per la net, l'argento per la moon, lo scappamento per la timer. Cosi' la
 ricetta si legge da sola e non serve nessun dye. La lista reagente-per-ball e'
 il prossimo punto da fissare, una ball per volta.
 
+**Le due scale non sono la stessa cosa.** Il metallo decide *cosa* si puo'
+fare, la macchina decide *quante*. In TFC lo si vede dal trip hammer, che
+`workRemotely` con `HIT_LIGHT` sull'incudine accanto: toglie i click, non
+cambia la resa. In Greg il moltiplicatore arriva dalla forming press con lo
+stampo, non da una lega migliore. Una lamiera di red steel sono gli stessi
+duecento millibucket di una di stagno, quindi non puo' rendere otto volte
+tanti gusci — se cambia qualcosa, ne rende meno, perche' il red steel costa.
+
+| Come si fa il guscio | Resa per lamiera | Era |
+|---|---|---|
+| colata a semisfera | 1 | rustic |
+| lamiera sull'incudine | 4 | Iron |
+| trip hammer su incudine, mosso da acqua o vento | 4, senza cliccare | Iron |
+| steam forge hammer | 8–16 | Steam |
+| forming press con stampo | 32–64 | Electrical |
+
+Il metallo invece fa il **grado** della ball, che e' la scala che Cobblemon ha
+gia' (i suoi `tier_N_poke_ball_materials` sono rame, ferro, oro, diamante):
+stagno per la base, wrought iron per la great, acciaio per la ultra, gli
+acciai esotici per le ultime. Cosi' le due scale restano ortogonali: il
+metallo da' il moltiplicatore fisso, il reagente del coperchio da' l'effetto.
+
+**Il collo di bottiglia si sposta.** Una ball e' core piu' base piu'
+coperchio: se la lamiera rende trentadue gusci ma i core e i coperchi vengono
+uno per volta, il moltiplicatore e' decorativo. Le tre linee devono salire
+insieme — la teglia dei core rende otto, quindi il passo naturale dell'era del
+ferro e' otto ball per ciclo, e il coperchio ha bisogno di una via in blocco
+che regga lo stesso numero.
+
 **Ripartizione per era:**
 
 | Era | Cosa deve sapere la ball | Ball |
 |---|---|---|
 | **Iron** | niente, moltiplicatore fisso | poke, citrine, verdant, azure, roseate, slate, premier, great |
 | **Iron** | una proprieta' fisica del bersaglio o del posto | heavy (peso), dive (sommerso), lure (durante la pesca), net (Acqua/Coleottero), nest (livello basso), safari, park, sport |
-| **Iron** | un numero da confrontare, con una scala o un almanacco | level, fast, friend, moon |
+| **Iron** | un numero da confrontare a occhio | level, friend |
 | **Iron** | erboristeria | heal |
 | **Steam** | moltiplicatore fisso, lega migliore | ultra |
 | **Steam** | tempo e memoria | timer (conta i turni), repeat (specie gia' catturata) |
+| **Steam** | un numero da leggere su un quadrante | moon (fase lunare), fast (velocita' base) |
 | **Electrical** | fra le piu' forti | dusk, quick |
 | **Electrical** | puro comfort | luxury, love |
 | **Electrical** | stati di coscienza e altre dimensioni | dream, beast |
 | **Nuclear** | — | master, rustic origin |
 | mai craftabile | dono | cherish |
 
-Ventuno ball in Iron, tre in Steam, sei in Electrical, due in Nuclear.
+Diciannove ball in Iron, cinque in Steam, sei in Electrical, due in Nuclear.
 
 ## 6. Trasporto, cattura e inventario
 
