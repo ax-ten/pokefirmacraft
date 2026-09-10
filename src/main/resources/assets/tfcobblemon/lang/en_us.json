@@ -91,5 +91,7 @@
   "block.tfcobblemon.suspicious_gravel.schist": "Suspicious Schist Gravel",
   "block.tfcobblemon.suspicious_gravel.shale": "Suspicious Shale Gravel",
   "block.tfcobblemon.suspicious_gravel.slate": "Suspicious Slate Gravel",
-  "block.tfcobblemon.suspicious_gravel.tuff": "Suspicious Tuff Gravel"
+  "block.tfcobblemon.suspicious_gravel.tuff": "Suspicious Tuff Gravel",
+  "container.tfcobblemon.dig_site": "Dig Site",
+  "tfcobblemon.dig.site": "Site: %s / %s"
 }

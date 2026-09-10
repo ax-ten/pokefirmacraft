@@ -387,6 +387,27 @@ TerraFirmaGreg – New Horizons usa FTB Quests come sistema di quest. Le quest P
 
 **Struttura del capitolo: non ancora definita — da progettare in una fase successiva.**
 
+## 8.1 Scavo archeologico — numeri da tarare in gioco
+
+Il minigioco funziona, i numeri sono messi a caso e vanno provati con le mani.
+
+- [ ] `DigSite.DURABILITY` = 100. Con la griglia 8x8 e il martello a 7 un sito
+      pieno di roccia costa fra i 40 e i 50, quindi 100 e' larghissimo.
+- [ ] `DigSiteBlockEntity.TREASURES` = 4 tesori per sito, pescati quattro volte
+      dalla stessa loot table.
+- [ ] `DigSiteBlockEntity.DEFAULT_LOOT`: una tabella sola per tutti i siti.
+      Va scelta dalla struttura che piazza il blocco, che ne ha diciotto fra
+      common, uncommon e rare.
+- [ ] Lo sconto del tier: `DigTool.siteCost` legge la durabilita' massima
+      dell'attrezzo e la divide per 250. Funziona ma e' un proxy: se i metalli
+      di TFC non scalano linearmente conviene una tabella esplicita.
+- [ ] La soglia del rumore (0.42 roccia, 0.56 calce) decide quanta roccia c'e'
+      in un sito. Da vedere se i siti vengono troppo duri o troppo molli.
+- [ ] Le texture delle celle sono granito, gesso e sabbia di TFC con il bordo
+      scurito. Reggono, ma non sono disegnate per stare in una GUI.
+- [ ] La griglia e' 8x8 in una costante sola (`DigSite.SIZE`), quindi cambiarla
+      e' una riga; la finestra pero' e' dimensionata a mano.
+
 ## 9. Punti aperti / da decidere durante lo sviluppo
 
 **Decisioni di fondo**
