@@ -28,11 +28,6 @@ public final class ModBallParts {
     public static final DeferredItem<Item> TUMBLESTONE_CORE =
             ITEMS.registerSimpleItem("tumblestone_core");
 
-    /** Stampo a semisfera per le ciotole di metallo: argilla, poi cottura. */
-    public static final DeferredItem<Item> UNFIRED_BALL_BASE_MOLD =
-            ITEMS.registerSimpleItem("unfired_ball_base_mold");
-    public static final DeferredItem<Item> BALL_BASE_MOLD =
-            ITEMS.registerSimpleItem("ball_base_mold");
 
     /** Le tre semisfere del ramo leggero: stessa bolla, polvere diversa. */
     public static final DeferredItem<Item> FEATHER_BALL_BASE =

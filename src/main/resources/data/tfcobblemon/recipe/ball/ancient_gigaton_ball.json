@@ -1,17 +1,18 @@
 {
-  "type": "minecraft:crafting_shapeless",
+  "type": "minecraft:crafting_shaped",
   "category": "misc",
-  "ingredients": [
-    {
-      "item": "tfcobblemon:tumblestone_core"
-    },
-    {
-      "item": "tfcobblemon:gigaton_ball_base"
-    },
-    {
-      "item": "tfcobblemon:half_black_apricorn"
-    }
+  "pattern": [
+    "l",
+    "b"
   ],
+  "key": {
+    "l": {
+      "item": "tfcobblemon:half_black_apricorn"
+    },
+    "b": {
+      "item": "tfcobblemon:gigaton_ball_base"
+    }
+  },
   "result": {
     "id": "cobblemon:ancient_gigaton_ball",
     "count": 1

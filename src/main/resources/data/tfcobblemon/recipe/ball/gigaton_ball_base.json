@@ -1,7 +1,7 @@
 {
   "type": "tfc:casting",
   "mold": {
-    "item": "tfcobblemon:ball_base_mold"
+    "item": "tfc:pan/empty"
   },
   "fluid": {
     "amount": 100,
