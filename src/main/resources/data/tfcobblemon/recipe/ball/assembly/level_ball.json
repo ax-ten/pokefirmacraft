@@ -4,7 +4,7 @@
     "item": "tfcobblemon:wrought_iron_ball_base"
   },
   "transitional_item": {
-    "id": "tfcobblemon:incomplete_ball"
+    "id": "tfcobblemon:incomplete_level_ball"
   },
   "loops": 1,
   "results": [
@@ -18,7 +18,7 @@
       "type": "create:deploying",
       "ingredients": [
         {
-          "item": "tfcobblemon:incomplete_ball"
+          "item": "tfcobblemon:incomplete_level_ball"
         },
         {
           "item": "tfcobblemon:level_ball_lid"
@@ -26,7 +26,7 @@
       ],
       "results": [
         {
-          "id": "tfcobblemon:incomplete_ball"
+          "id": "tfcobblemon:incomplete_level_ball"
         }
       ]
     },
@@ -34,7 +34,7 @@
       "type": "create:filling",
       "ingredients": [
         {
-          "item": "tfcobblemon:incomplete_ball"
+          "item": "tfcobblemon:incomplete_level_ball"
         },
         {
           "type": "neoforge:single",
@@ -44,7 +44,7 @@
       ],
       "results": [
         {
-          "id": "tfcobblemon:incomplete_ball"
+          "id": "tfcobblemon:incomplete_level_ball"
         }
       ]
     },
@@ -52,12 +52,12 @@
       "type": "create:pressing",
       "ingredients": [
         {
-          "item": "tfcobblemon:incomplete_ball"
+          "item": "tfcobblemon:incomplete_level_ball"
         }
       ],
       "results": [
         {
-          "id": "tfcobblemon:incomplete_ball"
+          "id": "tfcobblemon:incomplete_level_ball"
         }
       ]
     }

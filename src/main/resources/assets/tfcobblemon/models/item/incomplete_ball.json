@@ -1,6 +1,0 @@
-{
-  "parent": "tfcobblemon:item/ball_base_modern",
-  "textures": {
-    "main": "tfcobblemon:item/ball/tin_shell"
-  }
-}

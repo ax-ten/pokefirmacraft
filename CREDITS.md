@@ -15,7 +15,10 @@ consente di distribuire il file modificato dentro un'opera piu' grande sotto
 GPL-3.0, purche' resti indicata la sua provenienza.
 
 Le facce che chiudono la meta' tagliata (`north_inner`, `east_inner`,
-`south_inner`, `west_inner`) vengono da
+`south_inner`, `west_inner`), la geometria dei gusci moderni
+(`ball_base_modern`, `ball_lid_modern`) e quella del guscio a mezzo che gira
+sul nastro (`ball_incomplete`, il coperchio sollevato sulla base aperta)
+vengono da
 [Cobblemon: Creatified](https://modrinth.com/mod/cobblemon-creatified) di
 **Foresage**, rilasciata sotto **licenza MIT**; il testo della licenza sta in
 [`licenses/cobblemon-creatified-MIT.txt`](licenses/cobblemon-creatified-MIT.txt).

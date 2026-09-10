@@ -110,12 +110,20 @@ public final class ModBallParts {
             ITEMS.registerSimpleItem("steel_ball_base");
 
     /**
-     * Il guscio a mezza costruzione che gira sul nastro. Uno solo per tutte le
-     * ball: Create si scrive dentro quale ricetta sta seguendo, quindi non
-     * serve un mezzo-guscio per tipo.
+     * I gusci a mezza costruzione che girano sul nastro, uno per ball. Create
+     * se la caverebbe con uno solo, perche' si scrive dentro l'item quale
+     * ricetta sta seguendo, ma su un nastro con tre linee in parallelo vedere
+     * quale ball sta passando vale i ventitre item.
      */
-    public static final DeferredItem<Item> INCOMPLETE_BALL =
-            ITEMS.registerSimpleItem("incomplete_ball");
+    public static final List<String> ASSEMBLED_BALLS = List.of("poke", "citrine", "verdant", "azure", "roseate", "slate", "premier", "safari", "heal", "great", "net", "heavy", "lure", "park", "level", "friend", "dive", "nest", "ultra", "timer", "repeat", "moon", "fast");
+
+    public static final Map<String, DeferredItem<Item>> INCOMPLETE = new LinkedHashMap<>();
+
+    static {
+        for (String ball : ASSEMBLED_BALLS) {
+            INCOMPLETE.put(ball, ITEMS.registerSimpleItem("incomplete_" + ball + "_ball"));
+        }
+    }
 
     /** La sky tumblestone macinata alla mola, da mescolare alla sabbia. */
     public static final DeferredItem<Item> SKY_TUMBLESTONE_POWDER =
