@@ -3,10 +3,13 @@
   "category": "misc",
   "ingredients": [
     {
-      "item": "tfcobblemon:half_blue_apricorn"
+      "item": "tfcobblemon:tumblestone_core"
     },
     {
-      "item": "tfcobblemon:base_rustic_mechanism"
+      "item": "minecraft:bowl"
+    },
+    {
+      "item": "tfcobblemon:half_blue_apricorn"
     }
   ],
   "result": {

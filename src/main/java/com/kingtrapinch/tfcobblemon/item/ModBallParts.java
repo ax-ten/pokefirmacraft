@@ -43,9 +43,6 @@ public final class ModBallParts {
 
 
 
-    /** Ciotola piu' tumblestone scheggiata: il cuore di ogni ball rustic. */
-    public static final DeferredItem<Item> BASE_RUSTIC_MECHANISM =
-            ITEMS.registerSimpleItem("base_rustic_mechanism");
 
     /**
      * TFC macina solo minerali, mai leghe, quindi la polvere di black bronze non

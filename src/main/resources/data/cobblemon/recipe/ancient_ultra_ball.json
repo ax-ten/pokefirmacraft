@@ -1,18 +1,7 @@
 {
-  "type": "minecraft:crafting_shapeless",
-  "ingredients": [
+  "neoforge:conditions": [
     {
-      "tag": "cobblemon:apricorns"
-    },
-    {
-      "item": "cobblemon:tumblestone"
-    },
-    {
-      "tag": "cobblemon:tier_3_ancient_ball_materials"
+      "type": "neoforge:false"
     }
-  ],
-  "result": {
-    "id": "cobblemon:ancient_ultra_ball",
-    "count": 1
-  }
+  ]
 }

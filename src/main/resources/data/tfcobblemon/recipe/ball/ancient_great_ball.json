@@ -6,14 +6,14 @@
       "item": "tfcobblemon:tumblestone_core"
     },
     {
-      "item": "tfcobblemon:black_bronze_ball_bowl"
+      "item": "tfcobblemon:copper_ball_bowl"
     },
     {
-      "item": "tfcobblemon:half_black_apricorn"
+      "item": "tfcobblemon:half_blue_apricorn"
     }
   ],
   "result": {
-    "id": "cobblemon:ultra_ball",
+    "id": "cobblemon:ancient_great_ball",
     "count": 1
   }
 }
