@@ -335,25 +335,67 @@ glielo si debba dire.
 
 ### 6.1 Trainer Belt
 
-Un oggetto in un singolo slot **Curios** (presente nel pack: `curios-neoforge 9.5.1`),
-che è ciò che permette di portarsi dietro le ball.
+Lo slot **`belt`** esiste dentro Curios stessa (`data/curios/slots/belt.json`
+nel suo jar) e nel pacchetto lo usa anche ToolBelt: quindi non va dichiarato,
+va condiviso. E' di dimensione uno, e questo decide l'architettura.
 
-- **Senza cintura**: una ball sola, quella dello starter
-- **Prima cintura**: 2 ball
-- **Un solo gradino intermedio**: 4 ball
-- **Fino all'Iron Age**: 6 ball
+**Come si portano le ball.**
 
-La prima versione si fa **conciando la pelle**, che in TFC è già una catena vera:
-pelle grezza, ammollo nella calce in botte, raschiatura sul tronco, secondo ammollo,
-essiccazione. Cinque passaggi che non dobbiamo inventare.
+| Cosa indossi | Ball a portata |
+|---|---|
+| una ball, nuda nello slot belt | 1 |
+| Trainer Belt di cuoio | 2 |
+| Trainer Belt rinforzata | 4 |
+| Trainer Belt completa | 6 |
 
-Sulla tumblestone: TFC ha già `tfc:glue`, che è la colla del pack, quindi usare la
-tumblestone *come resina* duplicherebbe una funzione esistente. Meglio come **fibbia**
-— un cristallo incastonato, visibile, lo stesso materiale che poi si ritrova nei
-meccanismi delle ball. Se invece si vuole la resina, si macina al quern e si mescola
-alla colla.
+Lo slot e' uno, quindi la cintura non allarga lo slot: la cintura **e'**
+l'oggetto indossato, e tiene lei le ball in un contenitore suo. Allargare
+`belt` a sei darebbe sei slot anche a ToolBelt e a qualunque altra cosa lo usi,
+che non e' nostro diritto.
 
-Gli aggiornamenti di capienza salgono col metallo, in linea con le ere.
+**La squadra e' la cintura.** Le ball sulla cintura sono, nell'ordine, gli slot
+della squadra, e sono quelle che compaiono nell'elenco a sinistra. Non c'e' una
+"squadra" separata da gestire: se la ball non e' sulla cintura, il Pokemon non
+e' a portata.
+
+**Usare una ball equivale a premere R** sul Pokemon selezionato nell'elenco: e'
+la stessa azione, non una scorciatoia diversa. Da cui segue che in combattimento
+**le ball dell'inventario non si possono usare** — solo quelle sulla cintura.
+Chi si e' preparato male resta con quello che ha addosso.
+
+**Portarsi un Pokemon in tasca invece che nel PC.** Oggi, a squadra piena, il
+Pokemon catturato finisce nel PC. Con la cintura piena vorremmo che restasse
+**dentro la ball, nell'inventario**, e che il PC diventasse una scelta e non un
+automatismo.
+
+**Il collegamento remoto al PC**, era elettrica LV: un oggetto che indossato
+apre il PC con una scorciatoia, configurabile. E' anche la valvola di sfogo per
+il punto sopra: prima di averlo, i Pokemon in eccesso te li porti addosso; dopo,
+li spedisci da qualunque posto.
+
+**Cosa ho verificato essere agganciabile**
+
+- `PartyStore` tiene una lista fissa di slot con `size()`, `get(int)`,
+  `set(int, Pokemon)`, `occupied()` e `swap(int, int)`. **La dimensione non va
+  toccata**: resta sei internamente, altrimenti i salvataggi esistenti si
+  rompono. Il limite della cintura va messo come cancello su `add` e sul
+  disegno dell'overlay, non sulla struttura.
+- `PlayerPartyStore.add(Pokemon)` restituisce un booleano e c'e'
+  `getOverflowPC(RegistryAccess)`: **e' li' che vive l'automatismo del PC**, ed
+  e' il punto in cui inserirsi per far restare il Pokemon nella ball.
+- `PartyOverlay` e' la classe dell'elenco a sinistra, quindi e' quella da
+  mixinare per mostrare solo gli spazi che la cintura concede invece di sei
+  segnaposto da subito.
+- `PokeBallItem` non gestisce i tooltip ne' l'uso in battaglia da se': il
+  rifiuto in combattimento va messo sull'uso dell'item controllando se il
+  giocatore e' in battaglia e da dove viene lo stack.
+
+**Il rischio da tenere presente.** Far vivere un Pokemon dentro un item
+dell'inventario significa che **perdere l'item e' perdere il Pokemon** — in
+lava, in una morte in un posto irraggiungibile, in una mesh di mod che cancella
+oggetti. Cobblemon non lo fa proprio per questo: party e PC sono due depositi
+che non passano mai dal mondo. Se lo facciamo, la ball piena va almeno resa
+indistruttibile dal fuoco e non lanciabile.
 
 ### 6.2 "Siediti e aspetta"
 
