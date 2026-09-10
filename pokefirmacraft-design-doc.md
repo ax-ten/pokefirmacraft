@@ -292,7 +292,12 @@ Diciannove ball in Iron, cinque in Steam, sei in Electrical, due in Nuclear.
 |---|---|---|---|
 | banco a mano | 12,5 mB (via stampo) | niente | 2 ball per craft |
 | catena di Create | **10 mB** | depot, deployer, spout, pressa | continua, e si vede cosa passa |
-| Assembler di GregTech | **8 mB** | Assembler + energia | scala col tier e col parallelo |
+| Assembler di GregTech | **10 mB** | Assembler + energia | scala col tier e col parallelo |
+
+**Dieci millibucket sono il fondo**, e resta tale anche nelle ere successive:
+la macchina migliore da' velocita' e scala, non un fluido piu' economico.
+Altrimenti a fine gioco una ball costerebbe quasi niente, e il capture core —
+che e' il pezzo che rende una ball una ball — smetterebbe di pesare.
 
 La colata rende otto core da duecento millibucket, e ogni core fa due ball:
 dodici e mezzo per ball. Le due vie automatiche saltano il core e prendono il
