@@ -422,9 +422,13 @@ Il minigioco funziona, i numeri sono messi a caso e vanno provati con le mani.
 - [ ] `DigSiteBlockEntity.DEFAULT_LOOT`: una tabella sola per tutti i siti.
       Va scelta dalla struttura che piazza il blocco, che ne ha diciotto fra
       common, uncommon e rare.
-- [ ] Lo sconto del tier: `DigTool.siteCost` legge la durabilita' massima
-      dell'attrezzo e la divide per 250. Funziona ma e' un proxy: se i metalli
-      di TFC non scalano linearmente conviene una tabella esplicita.
+- [ ] Lo sconto del tier: `DigTool.siteCost` legge la durabilita' massima e la
+      divide per 700, fermandosi a due. Era proporzionale e senza tetto, e un
+      martello d'acciaio scendeva da sette a uno: apriva un geode in trenta
+      colpi invece di quattro. Resta un proxy, se i metalli di TFC non scalano
+      lineari serve una tabella esplicita.
+- [ ] Il piccone: croce di cinque celle, tre di sito a colpo, e sui bracci
+      sfonda sette volte su dieci.
 - [ ] Le soglie del rumore stanno su `SiteKind`: 0.55 / 0.78 per sedimento e
       pietra, 0.5 / 1.01 per il cristallo. Da vedere in mano.
 - [ ] L'ordine degli strati e' sul tipo di sito: sciolto va pulviscolo, calce,

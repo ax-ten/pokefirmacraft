@@ -51,6 +51,7 @@ public final class DigNetwork {
             final int cy = payload.cell() / DigSite.SIZE;
             final boolean bit = switch (tool) {
                 case HAMMER -> hammer(site, level, cx, cy);
+                case PICKAXE -> pickaxe(site, level, cx, cy);
                 case CHISEL -> chisel(site, level, cx, cy);
                 case BRUSH -> brush(site, cx, cy);
             };
@@ -63,7 +64,7 @@ public final class DigNetwork {
                     site.spend(1);
                 }
             } else if (bit) {
-                final int cost = tool == DigTool.HAMMER
+                final int cost = tool == DigTool.HAMMER || tool == DigTool.PICKAXE
                         ? tool.siteCost(held) * site.kind().hammerPenalty
                         : tool.siteCost(held);
                 site.spend(cost);
@@ -103,8 +104,8 @@ public final class DigNetwork {
 
     /**
      * Il martello prende un diamante di raggio due. Al centro sfonda; intorno,
-     * nel quadrato, due volte su dieci resta solo incrinato; sulle quattro
-     * punte cede sei volte su dieci, altrimenti niente.
+     * nel quadrato, tre volte su dieci resta solo incrinato; sulle quattro
+     * punte cede una volta su due, altrimenti niente.
      */
     private static boolean hammer(DigSite site, ServerLevel level, int cx, int cy) {
         boolean any = colpo(site, level, cx, cy, DigTool.HAMMER, 1.0F);
@@ -113,13 +114,22 @@ public final class DigNetwork {
                 if (dx == 0 && dy == 0) {
                     continue;
                 }
-                any |= colpo(site, level, cx + dx, cy + dy, DigTool.HAMMER, 0.80F);
+                any |= colpo(site, level, cx + dx, cy + dy, DigTool.HAMMER, 0.70F);
             }
         }
         for (int[] tip : new int[][] {{2, 0}, {-2, 0}, {0, 2}, {0, -2}}) {
-            if (level.random.nextFloat() < 0.60F) {
+            if (level.random.nextFloat() < 0.50F) {
                 any |= colpo(site, level, cx + tip[0], cy + tip[1], DigTool.HAMMER, 1.0F);
             }
+        }
+        return any;
+    }
+
+    /** Il piccone fa una croce: al centro sfonda, sui quattro bracci sette volte su dieci. */
+    private static boolean pickaxe(DigSite site, ServerLevel level, int cx, int cy) {
+        boolean any = colpo(site, level, cx, cy, DigTool.PICKAXE, 1.0F);
+        for (int[] arm : new int[][] {{1, 0}, {-1, 0}, {0, 1}, {0, -1}}) {
+            any |= colpo(site, level, cx + arm[0], cy + arm[1], DigTool.PICKAXE, 0.70F);
         }
         return any;
     }

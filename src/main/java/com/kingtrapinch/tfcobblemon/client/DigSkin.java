@@ -60,9 +60,6 @@ public record DigSkin(ResourceLocation rock, ResourceLocation lime, ResourceLoca
     private static ResourceLocation crystalBlock(String variant) {
         final String path = switch (variant) {
             case "amethyst" -> "minecraft:textures/block/amethyst_block.png";
-            case "diamond" -> "minecraft:textures/block/diamond_block.png";
-            case "emerald" -> "minecraft:textures/block/emerald_block.png";
-            case "lapis" -> "minecraft:textures/block/lapis_block.png";
             case "tumblestone" -> "cobblemon:textures/block/tumblestone/tumblestone_block.png";
             case "sky_tumblestone" -> "cobblemon:textures/block/tumblestone/sky_tumblestone_block.png";
             case "black_tumblestone" -> "cobblemon:textures/block/tumblestone/black_tumblestone_block.png";

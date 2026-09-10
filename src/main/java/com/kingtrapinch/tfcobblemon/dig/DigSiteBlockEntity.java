@@ -141,7 +141,7 @@ public class DigSiteBlockEntity extends BlockEntity {
     }
 
     /**
-     * Il sito e' finito: il blocco si sbriciola e quello che non e' stato
+     * La durabilita' e' finita: il blocco si sbriciola e quello che non e' stato
      * tirato fuori resta sotto. Non cade niente, nemmeno il blocco.
      */
     public void collapse(ServerLevel level) {
@@ -150,6 +150,15 @@ public class DigSiteBlockEntity extends BlockEntity {
         level.playSound(null, worldPosition, net.minecraft.sounds.SoundEvents.GLASS_BREAK,
                 net.minecraft.sounds.SoundSource.BLOCKS, 0.9F, 0.9F);
         level.destroyBlock(worldPosition, false);
+    }
+
+    /**
+     * Tirato fuori tutto: il sito non ha piu' niente da nascondere, quindi
+     * torna il blocco normale che era. Niente si rompe e niente si perde.
+     */
+    public void settle(ServerLevel level) {
+        contents.clearContent();
+        level.setBlockAndUpdate(worldPosition, PlainBlock.of(getBlockState().getBlock()));
     }
 
     public SimpleContainer contents() {

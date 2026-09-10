@@ -129,15 +129,15 @@ public class DigMenu extends AbstractContainerMenu {
         }
 
         /**
-         * Tirato fuori l'ultimo tesoro il sito e' finito: non resta niente da
-         * cercare, quindi si sfalda da solo invece di restare li' vuoto.
+         * Tirato fuori l'ultimo tesoro il sito non ha piu' niente da nascondere:
+         * si chiude la finestra e il blocco torna quello normale di prima.
          */
         @Override
         public void onTake(Player player, ItemStack stack) {
             super.onTake(player, stack);
             if (player.level() instanceof net.minecraft.server.level.ServerLevel level
                     && owner != null && owner.emptied()) {
-                owner.collapse(level);
+                owner.settle(level);
                 player.closeContainer();
             }
         }
@@ -176,6 +176,13 @@ public class DigMenu extends AbstractContainerMenu {
             slot.set(ItemStack.EMPTY);
         } else {
             slot.setChanged();
+        }
+        // lo spostamento rapido non passa da Slot.onTake, quindi il controllo
+        // "e' rimasto qualcosa?" va rifatto anche qui
+        if (index < tesori && player.level() instanceof net.minecraft.server.level.ServerLevel level
+                && site != null && site.emptied()) {
+            site.settle(level);
+            player.closeContainer();
         }
         return copy;
     }

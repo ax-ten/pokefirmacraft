@@ -22,6 +22,12 @@ public enum DigTool {
     /** Un colpo per volta, il piu' parsimonioso, e l'unico buono nel cristallo. */
     CHISEL(1, EnumSet.of(Layer.ROCK, Layer.LIME, Layer.DUST, Layer.CRYSTAL), 1,
             ItemTags.create(ResourceLocation.fromNamespaceAndPath("c", "tools/chisel"))),
+    /**
+     * Una croce di cinque celle: meno del martello ma piu' dello scalpello, e
+     * come il martello sui bracci non sempre sfonda.
+     */
+    PICKAXE(3, EnumSet.of(Layer.ROCK, Layer.LIME, Layer.DUST, Layer.CRYSTAL), 3,
+            ItemTags.create(ResourceLocation.fromNamespaceAndPath("c", "tools/pickaxe"))),
     /** Solo pulviscolo: nel cristallo non ce n'e', quindi non serve a niente. */
     BRUSH(2, EnumSet.of(Layer.DUST), 1, null);
 
@@ -60,6 +66,12 @@ public enum DigTool {
                 }
             }
             case CHISEL -> cells.add(new int[] {cx, cy, 1});
+            case PICKAXE -> {
+                cells.add(new int[] {cx, cy, 1});
+                for (int[] arm : new int[][] {{1, 0}, {-1, 0}, {0, 1}, {0, -1}}) {
+                    cells.add(new int[] {cx + arm[0], cy + arm[1], 0});
+                }
+            }
             case BRUSH -> {
                 for (int dy = 0; dy < size; dy++) {
                     for (int dx = 0; dx < size; dx++) {
@@ -86,9 +98,14 @@ public enum DigTool {
      * Un attrezzo migliore spreca meno sito, perche' stacca il pezzo invece di
      * sbriciolarlo. Il tier lo leggiamo dalla durabilita' massima, che in TFC
      * sale col metallo, cosi' non serve conoscere la tabella dei metalli.
+     *
+     * <p>Lo sconto e' fermo a due: prima era proporzionale e un martello
+     * d'acciaio scendeva a uno, cioe' apriva un geode in trenta colpi.
      */
+    public static final int MAX_TIER_DISCOUNT = 2;
+
     public int siteCost(ItemStack stack) {
-        final int sconto = Math.min(baseSiteCost - 1, stack.getMaxDamage() / 250);
+        final int sconto = Math.min(MAX_TIER_DISCOUNT, stack.getMaxDamage() / 700);
         return Math.max(1, baseSiteCost - sconto);
     }
 }

@@ -144,14 +144,23 @@ public class DigScreen extends AbstractContainerScreen<DigMenu> {
         final int x = leftPos;
         final int y = topPos;
         panel(graphics, x, y, imageWidth, imageHeight);
+        // la griglia va incassata, altrimenti galleggia sul pannello
+        well(graphics, x + DigLayout.GRID_X - 2, y + DigLayout.GRID_Y - 2,
+                DigLayout.GRID_SPAN + 4, DigLayout.GRID_SPAN + 4);
 
         for (int gy = 0; gy < DigSite.SIZE; gy++) {
             for (int gx = 0; gx < DigSite.SIZE; gx++) {
                 final int px = x + DigLayout.cellX(gx);
                 final int py = y + DigLayout.cellY(gy);
                 final Layer layer = ClientDigState.layer(gx, gy);
+                graphics.pose().pushPose();
+                final int giri = scramble(gx, gy) % 4;
+                graphics.pose().translate(px + DigLayout.CELL / 2.0, py + DigLayout.CELL / 2.0, 0);
+                graphics.pose().mulPose(com.mojang.math.Axis.ZP.rotationDegrees(giri * 90F));
+                graphics.pose().translate(-DigLayout.CELL / 2.0, -DigLayout.CELL / 2.0, 0);
                 graphics.blit(skin.forCell(layer, ClientDigState.depthAt(gx, gy)),
-                        px, py, 0, 0, DigLayout.CELL, DigLayout.CELL, 16, 16);
+                        0, 0, 0, 0, DigLayout.CELL, DigLayout.CELL, 16, 16);
+                graphics.pose().popPose();
                 if (layer == Layer.EMPTY) {
                     // il fondo e' la stessa roccia, ma in ombra: si vede che non si scava
                     graphics.fill(px, py, px + DigLayout.CELL, py + DigLayout.CELL, 0xA0101014);
@@ -314,7 +323,9 @@ public class DigScreen extends AbstractContainerScreen<DigMenu> {
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         final Slot under = getSlotUnderMouse();
         if (under != null && under.container instanceof Inventory && toolOf(under.getItem()) != null) {
-            chosen = under.getContainerSlot();
+            // riclicco sullo stesso e lo depongo: senza attrezzo in mano si
+            // guarda il sito senza rischiare di picchiarlo per sbaglio
+            chosen = under.getContainerSlot() == chosen ? -1 : under.getContainerSlot();
             return true;
         }
         // su un tesoro ancora mezzo sepolto si continua a scavare, non si trascina

@@ -51,8 +51,13 @@ public final class ModDig {
      * Il sito raro: due strati di cristallo, la spazzola non ci fa niente e il
      * martello lo sbriciola in quattro colpi. Dentro c'e' la roba buona.
      */
-    public static final List<String> CRYSTALS = List.of("amethyst", "opal", "diamond",
-            "emerald", "lapis", "tumblestone", "sky_tumblestone", "black_tumblestone");
+    /**
+     * Solo cristalli che in natura esistono davvero: l'ametista dei geodi,
+     * l'opale nel quarzite, e le tre tumblestone di Cobblemon. Niente blocchi
+     * di diamante o smeraldo, che nessuno ha mai trovato nel terreno.
+     */
+    public static final List<String> CRYSTALS = List.of("amethyst", "opal",
+            "tumblestone", "sky_tumblestone", "black_tumblestone");
 
     public static final Map<String, DeferredBlock<DigSiteBlock>> SUSPICIOUS_CRYSTAL =
             siti("suspicious_crystal", CRYSTALS, MapColor.COLOR_PURPLE, SoundType.AMETHYST);
