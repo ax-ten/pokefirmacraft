@@ -1,7 +1,11 @@
 package com.kingtrapinch.tfcobblemon.item;
 
 import com.kingtrapinch.tfcobblemon.TFCobblemon;
+import net.minecraft.ChatFormatting;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.component.ItemLore;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -62,9 +66,21 @@ public final class ModBallParts {
     public static final DeferredItem<Item> BLACK_BRONZE_POWDER =
             ITEMS.registerSimpleItem("black_bronze_powder");
 
-    /** La sky tumblestone fusa: un batch di vetro di terzo livello. */
+    /** La sky tumblestone macinata alla mola, da mescolare alla sabbia. */
+    public static final DeferredItem<Item> SKY_TUMBLESTONE_POWDER =
+            ITEMS.registerSimpleItem("sky_tumblestone_powder");
+
+    /**
+     * La sky tumblestone macinata e impastata con la sabbia: un batch di vetro
+     * di terzo livello. TFC scrive il tipo di vetro come lore fissa sull'item e
+     * ne conosce solo quattro, quindi la nostra la mettiamo a mano nello stesso
+     * formato, altrimenti la cannuccia non mostra di che vetro e' carica.
+     */
     public static final DeferredItem<Item> SKY_GLASS_BATCH =
-            ITEMS.registerSimpleItem("sky_glass_batch");
+            ITEMS.register("sky_glass_batch", () -> new Item(new Item.Properties()
+                    .component(DataComponents.LORE, new ItemLore(List.of(
+                            Component.translatable("tfcobblemon.tooltip.glass.sky")
+                                    .withStyle(ChatFormatting.AQUA, ChatFormatting.ITALIC))))));
 
     /** Una meta' di apricorn per colore, indicizzata per poterle scorrere. */
     public static final Map<String, DeferredItem<Item>> APRICORN_HALVES = new LinkedHashMap<>();

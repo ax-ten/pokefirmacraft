@@ -3,10 +3,19 @@
   "category": "misc",
   "ingredients": [
     {
-      "item": "cobblemon:sky_tumblestone"
+      "tag": "tfc:glass_potash"
     },
     {
-      "item": "cobblemon:sky_tumblestone"
+      "item": "tfc:powder/lime"
+    },
+    {
+      "item": "tfcobblemon:sky_tumblestone_powder"
+    },
+    {
+      "item": "tfcobblemon:sky_tumblestone_powder"
+    },
+    {
+      "tag": "c:sands/olivine"
     }
   ],
   "result": {

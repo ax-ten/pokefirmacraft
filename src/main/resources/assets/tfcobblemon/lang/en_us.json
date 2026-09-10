@@ -53,5 +53,7 @@
   "block.tfcobblemon.molten_gigaton_alloy": "Molten Gigaton Alloy",
   "item.tfcobblemon.feather_ball_base": "Feather Ball Base",
   "item.tfcobblemon.wing_ball_base": "Wing Ball Base",
-  "item.tfcobblemon.jet_ball_base": "Jet Ball Base"
+  "item.tfcobblemon.jet_ball_base": "Jet Ball Base",
+  "item.tfcobblemon.sky_tumblestone_powder": "Sky Tumblestone Powder",
+  "tfcobblemon.tooltip.glass.sky": "Sky Glass"
 }
