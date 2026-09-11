@@ -187,5 +187,6 @@
   "tooltip.tfcobblemon.trainer_belt": "%s/%s Poké Balls",
   "tfcobblemon.ball.lontano": "That Pokémon is neither in your party nor in your PC",
   "tfcobblemon.ball.non_risponde": "This Ball no longer answers",
-  "tfcobblemon.ball.in_combattimento": "In battle, send out from your belt — arrow keys and R"
+  "tfcobblemon.ball.in_combattimento": "An unfamiliar voice echoes in your mind: %s",
+  "tfcobblemon.ball.in_combattimento.voce": "You can't send out pokémons outside your team during combat!"
 }

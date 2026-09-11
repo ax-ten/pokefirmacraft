@@ -54,7 +54,11 @@ public final class BallUse {
         }
         event.setCanceled(true);
         event.setCancellationResult(InteractionResult.FAIL);
-        avvisa(player, "tfcobblemon.ball.in_combattimento");
+        // questa va in chat e non sulla barra: e' lunga, e una voce che parla
+        // nella testa vale la pena di poterla rileggere
+        player.sendSystemMessage(Component.translatable("tfcobblemon.ball.in_combattimento",
+                Component.translatable("tfcobblemon.ball.in_combattimento.voce")
+                        .withStyle(ChatFormatting.ITALIC)));
     }
 
     /**
