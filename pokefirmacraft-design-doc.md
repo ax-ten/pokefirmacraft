@@ -350,6 +350,54 @@ Restano da progettare:
 - **Nuclear**: master
 - **mai craftabili**: cherish e sport, che si trovano
 
+### 5.7 Il Pokemon Storage Component — la spina dorsale industriale
+
+Nell'era industriale avanzata le ball non si fanno piu' un pezzo alla volta: si
+fanno attorno a un componente, e quel componente e' lo stesso che regge il PC e
+i gradi alti della cintura. E' il pezzo che dice "adesso i Pokemon si gestiscono
+su scala".
+
+**Tre gradi, e sono tre perche' AE2 ne ha gia' tre.** Non stiamo inventando una
+scala: stiamo prendendo in prestito i pioli di una che il giocatore conosce
+gia', quella delle celle — 1k, 4k, 16k — dove **ogni piolo costa quattro del
+piolo sotto** piu' un processore migliore. La progressione viene gratis dalla
+forma della ricetta, senza che serva spiegarla.
+
+| Grado | Forma della ricetta (verificata in AE2 19.2.17) | A cosa serve |
+|---|---|---|
+| **PSC-1** | come `cell_component_1k`: polvere di redstone + **tumblestone** + il nostro processore su tumblestone | ball di tier 1 e 2, **e la cintura** |
+| **PSC-2** | come `cell_component_4k`: redstone + calculation processor + **4x PSC-1** + vetro al quarzo | tutte le altre ball, **tranne la master** |
+| **PSC-3** | come `cell_component_16k`: polvere di glowstone + calculation processor + **4x PSC-2** + vetro al quarzo | **il PC e la master ball** |
+
+Tre e non due: due pioli metterebbero la master ball e la cintura a due passi di
+distanza, e sono i due estremi della progressione. Se in gioco il terzo piolo
+risultasse aria, si fondono PSC-2 e PSC-3 e la master resta l'unica cosa che
+chiede quattro componenti invece di uno.
+
+**La tumblestone su scala industriale, con le macchine di AE2 e zero codice.**
+Il collo di bottiglia e' la tumblestone: la vuole il capture core, la vuole il
+fluido di cattura, e ora la vuole il componente. In AE2 il certus si moltiplica
+da se' e non si mina, e la stessa strada e' aperta a noi perche' i due tipi di
+ricetta che servono sono **data-driven**:
+
+- `ae2:charger` — tumblestone dentro il charger diventa **tumblestone carica**,
+  come `charged_certus_quartz_crystal`
+- `ae2:transform` — tumblestone carica **+ polvere di tumblestone** gettate in
+  acqua danno **due** tumblestone, esattamente come
+  `data/ae2/recipe/transform/certus_quartz_crystals.json`
+
+Da cui: la tumblestone raddoppia, e i growth accelerator di AE2 accelerano quello
+che cresce in acqua senza che noi tocchiamo niente. Ci manca solo la **polvere di
+tumblestone base**: oggi esiste solo `tfcobblemon:sky_tumblestone_powder`.
+
+**Cosa NON cambia, e va detto.** La catena pre-industriale resta valida per
+intero — il knapping, le tre linee rustiche, la base in stagno, i coperchi. Vale
+la convenzione del tubo a elettroni (sezione 5.5): la via industriale chiede
+**meno pezzi, migliori, e ne da' di piu'**, e quella vecchia continua a
+funzionare, semplicemente smette di convenire. Se invece il componente diventasse
+obbligatorio, l'intera eta' del ferro andrebbe buttata, e non e' quello che
+vogliamo.
+
 ## 6. Trasporto, cattura e inventario
 
 Questa sezione sostituisce il vincolo "niente Pasture Block, niente lancio" della
@@ -868,12 +916,10 @@ versione artigianale, molto prima.
   niente, e il PC non va rifatto meccanicamente.
 
   **Il cancello e' un pezzo nostro, fatto col vocabolario di AE2: il Pokemon
-  Storage Component.** In AE2 ogni processore nasce da un circuito stampato su
-  un materiale — il logic processor sull'oro, il calculation sul certus, l'engineering
-  sul diamante. Il nostro si stampa sulla **tumblestone base**, ed e' l'unico
-  pezzo che serve: lo vuole il PC e lo vuole il grado di cintura col collegamento
-  remoto. Tier di AE2 richiesto: **quello base**, perche' il cancello e' il
-  componente, non la tecnologia attorno.
+  Storage Component**, che nel frattempo e' diventato la spina dorsale di tutta
+  l'era industriale — tre gradi, e le ball si fanno attorno a lui. Il disegno
+  sta in **sezione 5.7**. Tier di AE2 richiesto: **quello base**, perche' il
+  cancello e' il componente, non la tecnologia attorno.
 - Ricollocazione di PC e Pasture Block secondo la sezione 4
 - Materiali delle due cinture (la capienza è decisa: 1 a mani nude, 3, 6)
 - ~~Quali categorie ha la borsa~~ — **decise.** Si rifanno a quelle di
