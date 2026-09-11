@@ -303,15 +303,34 @@ La colata rende otto core da duecento millibucket, e ogni core fa due ball:
 dodici e mezzo per ball. Le due vie automatiche saltano il core e prendono il
 fuso direttamente, e costano meno perche' non passano dallo stampo.
 
-**Perche' nessuno sconto per lotto.** In GregTech la scala non viene dal
-rapporto della ricetta: viene dal **tier della macchina** — ogni tier sopra
-quello della ricetta raddoppia la velocita' per quadrupla energia, ed e' li'
-che vive il "due per quattro" — e dagli **hatch in parallelo** dei multiblocco,
-che macinano N ricette identiche in una volta con rapporto uno a uno. Un "tre
-dentro, quattro fuori" non e' un idioma di GregTech e romperebbe
-l'unificazione dei materiali che il pacchetto tiene in piedi con
-cinquecentosessantanove chiamate KubeJS. Quindi il rapporto item resta uno a
-due su tutte e tre le vie, e l'Assembler e' piu' economico solo sul fluido.
+**Come cresce la resa, e dove mi ero sbagliato.** Avevo scritto che il rapporto
+della ricetta non cambia mai e che la scala viene solo dal tier della macchina.
+E' falso, e il pacchetto lo dimostra riga per riga. In
+`kubejs/server_scripts/tfg_port/tfg.server.machines.recipes.components.js` il
+tubo a elettroni ha **tre ricette da banco** che convivono:
+
+| Ricetta | Ingredienti | Resa |
+|---|---|---|
+| `electron_tube` | tubo di vetro, 2 bulloni d'acciaio, piastra di legno, 2 fili di lega rossa, lamiera di ferro battuto (+ cacciavite e tronchese) | **1** |
+| `electron_tube2` | tubo di vetro, **circuito stampato in plastica**, 2 fili di lega rossa | **4** |
+| `electron_tube3` | **chip NAND**, circuito stampato in plastica | **4** |
+
+Quindi la convenzione vera e' un **terzo asse**: avanzando di era non si
+raffina la stessa ricetta, se ne aggiunge una nuova con **meno pezzi, piu'
+avanzati, e resa maggiore**. La vecchia resta valida, semplicemente non
+conviene piu'. Gli stessi tre gradini ci sono anche sull'Assembler: 2, 4, 4.
+
+Quello che invece resta vero e' il perche' entro *una* ricetta non si fa "tre
+dentro quattro fuori": li' la scala e' il **tier della macchina** — ogni tier
+sopra raddoppia la velocita' per quadrupla energia — e gli **hatch in
+parallelo** dei multiblocco, che macinano N ricette identiche con rapporto uno
+a uno. Sono due cose diverse e le avevo messe nello stesso sacco.
+
+**Conseguenza per le nostre ball**: le ricette di un'era piu' avanzata non
+devono limitarsi ad andare piu' veloci, devono chiedere meno pezzi e migliori e
+darne di piu'. Il fondo di dieci millibucket di fluido per ball resta — quello
+e' una decisione, non una convenzione — ma la resta in item puo' e deve
+salire.
 
 ### 5.6 Le ball che mancano
 
