@@ -1,5 +1,6 @@
 package com.kingtrapinch.tfcobblemon.belt;
 
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.fml.ModList;
@@ -47,6 +48,12 @@ public final class Belts {
      * riduce di uno: quello che resta e' affare di chi chiama.
      */
     public static boolean insert(Player player, ItemStack ball) {
-        return curios() && CuriosBelt.insert(player, ball);
+        if (!curios() || !CuriosBelt.insert(player, ball)) {
+            return false;
+        }
+        if (player instanceof ServerPlayer chi) {
+            BeltParty.align(chi);
+        }
+        return true;
     }
 }

@@ -5,9 +5,12 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import top.theillusivec4.curios.api.CuriosApi;
+import top.theillusivec4.curios.api.event.CurioChangeEvent;
 import top.theillusivec4.curios.api.CuriosCapability;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.SlotResult;
@@ -25,6 +28,19 @@ final class CuriosBelt {
 
     static void hook(IEventBus eventBus) {
         eventBus.addListener(RegisterCapabilitiesEvent.class, CuriosBelt::zittisciLeBall);
+        NeoForge.EVENT_BUS.addListener(CurioChangeEvent.class, CuriosBelt::laCinturaCambiaMano);
+    }
+
+    /**
+     * Mettersi o togliersi la cintura cambia chi si ha a portata, quindi la
+     * squadra si allinea qui. E' il gesto piu' importante, ed e' anche l'unico
+     * che il giocatore non fa passando da una nostra riga di codice.
+     */
+    private static void laCinturaCambiaMano(CurioChangeEvent event) {
+        if ("belt".equals(event.getIdentifier())
+                && event.getEntity() instanceof ServerPlayer player) {
+            BeltParty.align(player);
+        }
     }
 
     /**

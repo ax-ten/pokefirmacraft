@@ -23,10 +23,16 @@ import java.util.UUID;
  * puo' stare — solo i Pokemon delle ball che il giocatore porta addosso — e
  * quanti posti si vedono nell'elenco a sinistra.
  *
- * <p>Il riallineamento si fa per intero e di tanto in tanto invece di inseguire
- * ogni singolo movimento di una ball: la cintura si puo' cambiare da mille
- * strade — trascinando nell'inventario, morendo, un'altra mod — e inseguirle
- * tutte significa dimenticarne una. Ricalcolare da zero non dimentica niente.
+ * <p>L'allineamento si fa nei momenti in cui qualcosa cambia davvero: quando la
+ * cintura si mette o si toglie, quando una ball entra o esce, quando si apre il
+ * PC. Non a tempo: un controllo al secondo su ogni giocatore e' il modo piu'
+ * sicuro di rovinare un server, e non c'e' niente da controllare fra un gesto e
+ * l'altro.
+ *
+ * <p><b>Un Pokemon fuori dalla sua ball non si tocca.</b> Se e' nel mondo ce
+ * l'hai messo tu, e spedirlo nel PC perche' la sua ball ha cambiato posto
+ * svuoterebbe di senso l'averlo fuori. Si fa ordine solo al PC, dove ordine
+ * serve: prima rientrano tutti, poi si allinea.
  */
 public final class BeltParty {
     private BeltParty() {}
@@ -52,10 +58,11 @@ public final class BeltParty {
 
     /**
      * Rimette la squadra d'accordo con la cintura: chi non ci sta va nel PC,
-     * chi ci sta torna al suo posto.
+     * chi ci sta torna al suo posto. Chi e' fuori dalla sua ball resta dov'e'.
      */
-    public static void reconcile(ServerPlayer player) {
-        // in combattimento la squadra e' in mano alla battaglia, non a noi
+    public static void align(ServerPlayer player) {
+        // in combattimento la squadra e' quella registrata all'inizio: togliersi
+        // la cintura a meta' scontro non cambia le carte in tavola
         if (BattleRegistry.getBattleByParticipatingPlayer(player) != null) {
             return;
         }
@@ -70,14 +77,12 @@ public final class BeltParty {
             }
         }
 
-        // chi non e' su una ball addosso non e' a portata
+        // chi non e' su una ball addosso non e' a portata — a meno che non sia
+        // fuori, e allora e' affare del giocatore, non nostro
         for (int i = 0; i < squadra.size(); i++) {
             final Pokemon mon = squadra.get(i);
-            if (mon == null || insieme.contains(mon.getUuid())) {
+            if (mon == null || insieme.contains(mon.getUuid()) || mon.getEntity() != null) {
                 continue;
-            }
-            if (mon.getEntity() != null) {
-                mon.recall();
             }
             squadra.remove(mon);
             pc.add(mon);
@@ -107,6 +112,25 @@ public final class BeltParty {
                 squadra.set(i, nelPc);
             }
         }
+    }
+
+    /**
+     * Al PC si fa ordine: tutti dentro le proprie ball, poi si allinea. E' il
+     * solo momento in cui si richiama d'ufficio, perche' e' il solo momento in
+     * cui serve sapere con certezza dove sta ciascuno.
+     */
+    public static void tidy(ServerPlayer player) {
+        if (BattleRegistry.getBattleByParticipatingPlayer(player) != null) {
+            return;
+        }
+        final PlayerPartyStore squadra = Cobblemon.INSTANCE.getStorage().getParty(player);
+        for (int i = 0; i < squadra.size(); i++) {
+            final Pokemon mon = squadra.get(i);
+            if (mon != null && mon.getEntity() != null) {
+                mon.recall();
+            }
+        }
+        align(player);
     }
 
     private static int indiceDi(PlayerPartyStore squadra, Pokemon mon) {

@@ -4,14 +4,14 @@
   "group": "trainer_belt",
   "pattern": [
     "LLL",
-    " R "
+    "HHH"
   ],
   "key": {
     "L": {
       "item": "minecraft:leather"
     },
-    "R": {
-      "tag": "c:rods/copper"
+    "H": {
+      "tag": "tfcobblemon:fish_hooks"
     }
   },
   "result": {

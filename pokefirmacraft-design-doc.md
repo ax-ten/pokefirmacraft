@@ -420,15 +420,25 @@ in piedi gli altri due.
    accorciata il riquadro si stringe da se' e resta centrato. Mai piu' corta di
    quanti Pokemon ci sono davvero: nel momento in cui ti togli la cintura e' il
    caso di vederli.
-3. **Il riallineamento, una volta al secondo.** La cintura si cambia da mille
-   strade — trascinando nell'inventario, morendo, un'altra mod che sposta
-   oggetti — e inseguirle tutte significa dimenticarne una. Quindi si ricalcola
-   da zero: chi non e' su una ball addosso torna nel PC (richiamato prima, se
-   era fuori), chi lo e' va al posto della sua ball. Non costa niente e non
-   dimentica niente.
+3. **L'allineamento, nei momenti in cui qualcosa cambia.** Chi non e' su una
+   ball addosso torna nel PC, chi lo e' va al posto della sua ball. E i momenti
+   sono tre: la cintura che si mette o si toglie (`CurioChangeEvent` sullo slot
+   `belt`), una ball che entra o esce, e l'apertura del PC. **Non a tempo**: un
+   controllo al secondo su ogni giocatore e' il modo piu' sicuro di rovinare un
+   server, e fra un gesto e l'altro non c'e' niente da controllare.
 
 Senza il punto 3 i primi due si contraddicono: il cancello manda nel PC, e
 niente riporterebbe indietro il Pokemon quando la ball torna sulla cintura.
+
+**Un Pokemon fuori dalla sua ball non si tocca.** Se sta nel mondo ce l'hai
+messo tu, e spedirlo nel PC perche' la sua ball ha cambiato posto svuoterebbe di
+senso l'averlo fuori. L'unico posto dove si richiama d'ufficio e' il PC: aprendo
+il deposito prima rientrano tutti nelle proprie ball, poi si allinea — ed e'
+anche il solo momento in cui serve sapere con certezza dove sta ciascuno.
+
+**In combattimento la squadra e' quella registrata all'inizio.** Togliersi la
+cintura a meta' scontro non cambia le carte in tavola: finche' la battaglia e'
+in corso l'allineamento non fa niente.
 
 **Quanti posti, esattamente.** Una cintura concede i suoi. Senza cintura si
 indossa la ball stessa, e allora ne vale uno — ma solo se dentro c'e' qualcuno:

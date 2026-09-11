@@ -1,5 +1,6 @@
 package com.kingtrapinch.tfcobblemon.belt;
 
+import com.cobblemon.mod.common.block.PCBlock;
 import com.kingtrapinch.tfcobblemon.TFCobblemon;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -13,7 +14,6 @@ import net.neoforged.neoforge.common.util.TriState;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.player.ItemEntityPickupEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
-import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 
 /** Le abitudini della cintura e delle ball piene. */
 @EventBusSubscriber(modid = TFCobblemon.MODID)
@@ -77,20 +77,16 @@ public final class BeltEvents {
         clic(player);
     }
 
-    /** Ogni quanti tick si guarda se la squadra e' ancora quella della cintura. */
-    private static final int RESPIRO = 20;
-
     /**
-     * La cintura si cambia da mille strade — trascinando nell'inventario,
-     * morendo, un'altra mod che sposta oggetti — e inseguirle tutte significa
-     * dimenticarne una. Una volta al secondo si ricalcola da zero, che non
-     * dimentica niente e costa sei confronti.
+     * Al PC si fa ordine: tutti dentro le proprie ball, poi si allinea. Aprire
+     * il deposito e trovarci dentro un Pokemon che sta pascolando nel prato
+     * sarebbe un modo eccellente di perderlo.
      */
     @SubscribeEvent
-    public static void laSquadraSeguaLaCintura(PlayerTickEvent.Post event) {
+    public static void alPcSiFaOrdine(PlayerInteractEvent.RightClickBlock event) {
         if (event.getEntity() instanceof ServerPlayer player
-                && player.tickCount % RESPIRO == 0) {
-            BeltParty.reconcile(player);
+                && event.getLevel().getBlockState(event.getPos()).getBlock() instanceof PCBlock) {
+            BeltParty.tidy(player);
         }
     }
 
