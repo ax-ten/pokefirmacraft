@@ -1,6 +1,7 @@
 package com.kingtrapinch.tfcobblemon.belt;
 
 import com.cobblemon.mod.common.Cobblemon;
+import com.cobblemon.mod.common.battles.BattleRegistry;
 import com.cobblemon.mod.common.pokemon.Pokemon;
 import com.kingtrapinch.tfcobblemon.TFCobblemon;
 import kotlin.Unit;
@@ -11,6 +12,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
@@ -29,6 +31,27 @@ public final class BallUse {
 
     /** Quanto avanti al giocatore compare il Pokemon evocato. */
     private static final double DAVANTI = 2.0D;
+
+    /**
+     * In combattimento le ball dell'inventario non si usano: valgono solo
+     * quelle che si hanno addosso. Chi si e' preparato male resta con quello che
+     * ha alla cintura.
+     *
+     * <p>Il blocco e' di parte server, che e' l'unica che sa delle battaglie: il
+     * client muove il braccio e non succede niente, che e' brutto ma innocuo —
+     * il lancio di una ball lo fa il server, non lui.
+     */
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    public static void nienteBallInCombattimento(PlayerInteractEvent.RightClickItem event) {
+        if (!TrainerBeltItem.isBall(event.getItemStack())
+                || !(event.getEntity() instanceof ServerPlayer player)
+                || BattleRegistry.getBattleByParticipatingPlayer(player) == null) {
+            return;
+        }
+        event.setCanceled(true);
+        event.setCancellationResult(InteractionResult.FAIL);
+        avvisa(player, "tfcobblemon.ball.in_combattimento");
+    }
 
     /**
      * Tasto destro su una ball piena: se il Pokemon e' fuori rientra, se e'

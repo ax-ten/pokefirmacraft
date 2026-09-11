@@ -357,12 +357,33 @@ della squadra, e sono quelle che compaiono nell'elenco a sinistra. Non c'e' una
 "squadra" separata da gestire: se la ball non e' sulla cintura, il Pokemon non
 e' a portata.
 
+**La cintura da sei aspetta la sua era.** La cintura di cuoio da tre si fa con
+tre ami, uno per posto, a cui appendere le ball. Quella da sei no: sei Pokemon
+addosso e' una cosa che va guadagnata, e il cancello naturale e' il **fluido di
+cattura** (perla dell'end + tumblestone fusa), che nel pacchetto e' la cosa piu'
+vicina al rimpicciolire che esista.
+
+Perche' altro non c'e': ho guardato, e prima dell'era elettrica nel pacchetto
+nessuno rimpicciolisce niente. TFC no, Create no, GregTech nemmeno — i suoi
+trucchi di densita' arrivano tutti dopo. L'unico vocabolario del "dentro ci sta
+piu' di quanto sembri" e' vanilla, ed e' lo **shulker**: guscio e box. Quindi le
+due strade sono il nostro fluido, che e' coerente e gia' nostro, oppure lo
+shulker, che e' evocativo ma vuole l'End — e l'End prima del vapore e' una
+forzatura. Il fluido e' la strada giusta.
+
 **Usare una ball evoca il Pokemon che ha dentro.** Non e' "seleziona nella
 lista, poi premi R": la ball stessa e' la maniglia del suo Pokemon, e il tasto
 destro su di essa fa quello che farebbe R su quel Pokemon nell'elenco. Da cui
 segue che in combattimento **le ball dell'inventario non si possono usare** —
 solo quelle sulla cintura. Chi si e' preparato male resta con quello che ha
 addosso.
+
+Il blocco e' di parte server, che e' l'unica a sapere delle battaglie: il client
+muove il braccio e non succede niente. Brutto ma innocuo, perche' il lancio di
+una ball lo fa il server. **E manca la meta' che serve:** le ball sulla cintura
+si "usano" senza tenerle in mano, quindi vogliono una scorciatoia o
+l'interazione con l'elenco a sinistra. Finche' quella non c'e', in combattimento
+non si usa nessuna ball — nemmeno per catturare.
 
 **Ma la ball non deve contenere il Pokemon: deve puntarlo.** Se il Pokemon vive
 dentro l'item, perdere l'item e' perderlo — in lava, in una morte in un posto
@@ -382,22 +403,27 @@ e non si richiama un Pokemon dentro una ball diversa. Quindi non esiste il
 gesto "ball vuota addosso al mio Pokemon": la ball giusta nasce alla cattura, e
 se la perdi la riprendi ritirandolo dal PC.
 
-**Appena catturato, il Pokemon e' un oggetto.** La sua ball compare come item —
-non c'e' il caso in cui un Pokemon esista solo dentro una struttura invisibile.
-Se la cintura ha un posto libero la ball ci finisce da se'; altrimenti sta
-nell'inventario, e la cintura se la prende quando un posto si libera. Lo stesso
-vale per una ball piena raccolta da terra: il posto di un Pokemon e' addosso,
-non in fondo allo zaino.
+**Appena catturato, il Pokemon e' un oggetto da raccogliere.** La ball cade dove
+e' caduto il lancio, ed e' il giocatore ad andarsela a prendere: e' il gesto dei
+giochi, e non c'e' fretta, perche' una ball piena non scade e non la intacca
+niente. Raccogliendola finisce sulla cintura da se' se c'e' posto, altrimenti
+nell'inventario. Non esiste il caso in cui un Pokemon viva solo dentro una
+struttura invisibile.
 
 **Portarsi un Pokemon in tasca invece che nel PC.** Oggi, a squadra piena, il
 Pokemon catturato finisce nel PC. Con la cintura piena vorremmo che restasse
 **dentro la ball, nell'inventario**, e che il PC diventasse una scelta e non un
 automatismo.
 
-**Il collegamento remoto al PC**, era elettrica LV: un oggetto che indossato
-apre il PC con una scorciatoia, configurabile. E' anche la valvola di sfogo per
-il punto sopra: prima di averlo, i Pokemon in eccesso te li porti addosso; dopo,
-li spedisci da qualunque posto.
+**Il collegamento remoto al PC**, era elettrica LV: la cintura avanzata apre il
+PC con una scorciatoia, configurabile, e da li' si fanno le stesse cose che si
+farebbero davanti al PC — depositare e ritirare passando dalla cintura. Niente
+di piu' esotico: e' il PC di Cobblemon, aperto da lontano. E' anche la valvola
+di sfogo per il punto sopra: prima di averla, i Pokemon in eccesso te li porti
+addosso; dopo, li spedisci da qualunque posto.
+
+Si costruisce coi componenti di Applied Energistics (sezione 9): un terminale
+senza fili e' esattamente quello che è.
 
 **Cosa ho verificato essere agganciabile**
 
