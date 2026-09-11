@@ -41,8 +41,29 @@ public final class ModBelt {
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
-        if (ModList.get().isLoaded("curios")) {
-            CuriosBelt.hook(eventBus);
+        // la capability sul bus della mod si registra da qui, perche' l'evento
+        // che la vuole arriva presto
+        if (curios()) {
+            CuriosBelt.hookMod(eventBus);
         }
+    }
+
+    /**
+     * Gli agganci al bus di gioco, da {@code FMLCommonSetupEvent} e non dal
+     * costruttore: {@code ModList.get()} nel costruttore non e' garantito, e se
+     * risponde male l'aggancio non avviene e non lo dice nessuno — la cintura
+     * continua a funzionare per tutto quello che passa dal nostro codice, e
+     * smette di accorgersi dell'unica cosa che non passa da noi, cioe' che il
+     * giocatore se l'e' messa o togliata.
+     */
+    public static void setup() {
+        TFCobblemon.LOGGER.info("cintura: Curios {}", curios() ? "c'e'" : "non c'e'");
+        if (curios()) {
+            CuriosBelt.hookGame();
+        }
+    }
+
+    private static boolean curios() {
+        return ModList.get() != null && ModList.get().isLoaded("curios");
     }
 }

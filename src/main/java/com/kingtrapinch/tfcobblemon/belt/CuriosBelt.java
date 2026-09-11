@@ -1,6 +1,7 @@
 package com.kingtrapinch.tfcobblemon.belt;
 
 import com.cobblemon.mod.common.battles.BattleRegistry;
+import com.kingtrapinch.tfcobblemon.TFCobblemon;
 import com.cobblemon.mod.common.item.PokeBallItem;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerPlayer;
@@ -36,8 +37,11 @@ final class CuriosBelt {
 
     private static final String SLOT = "belt";
 
-    static void hook(IEventBus eventBus) {
+    static void hookMod(IEventBus eventBus) {
         eventBus.addListener(RegisterCapabilitiesEvent.class, CuriosBelt::zittisciLeBall);
+    }
+
+    static void hookGame() {
         NeoForge.EVENT_BUS.addListener(CurioChangeEvent.class, CuriosBelt::laCinturaCambiaMano);
         NeoForge.EVENT_BUS.addListener(CurioCanUnequipEvent.class, CuriosBelt::nonInCombattimento);
     }
@@ -63,6 +67,8 @@ final class CuriosBelt {
      * che il giocatore non fa passando da una nostra riga di codice.
      */
     private static void laCinturaCambiaMano(CurioChangeEvent event) {
+        TFCobblemon.LOGGER.info("curio cambiato: slot {}, da {} a {}", event.getIdentifier(),
+                event.getFrom().getItem(), event.getTo().getItem());
         if (!SLOT.equals(event.getIdentifier())
                 || !(event.getEntity() instanceof ServerPlayer player)) {
             return;

@@ -39,6 +39,7 @@ public class TFCobblemon {
     private void setup(net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent event) {
         BallCapture.hook();
         BallFlight.hook();
+        ModBelt.setup();
     }
 
     private void addCreative(BuildCreativeModeTabContentsEvent event) {
