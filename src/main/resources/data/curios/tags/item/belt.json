@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    "tfcobblemon:leather_trainer_belt",
+    "tfcobblemon:reinforced_trainer_belt",
+    "tfcobblemon:trainer_belt",
+    "#cobblemon:tier_1_poke_balls",
+    "#cobblemon:tier_2_poke_balls",
+    "#cobblemon:tier_3_poke_balls",
+    "#cobblemon:tier_4_poke_balls",
+    "#cobblemon:tier_5_poke_balls"
+  ]
+}

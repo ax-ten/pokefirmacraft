@@ -98,6 +98,8 @@ dependencies {
     // per compilare. A runtime la porta Kotlin for Forge.
     compileOnly "org.jetbrains.kotlin:kotlin-stdlib:2.0.21"
     compileOnly "maven.modrinth:terrafirmacraft:${tfc_version}"
+    // Curios: serve solo per compilare la capability che zittisce il tooltip
+    compileOnly files("local-mods/curios-neoforge-9.5.1+1.21.1.jar")
 
     // Le stesse mod servono anche a runtime per far partire client/server di sviluppo.
     // Cobblemon e' scritta in Kotlin e richiede Kotlin for Forge.

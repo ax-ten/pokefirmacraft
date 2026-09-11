@@ -181,5 +181,9 @@
   "item.tfcobblemon.beast_ball_lid": "Beast Ball Lid",
   "item.tfcobblemon.incomplete_beast_ball": "Incomplete Beast Ball",
   "item.tfcobblemon.master_ball_lid": "Master Ball Lid",
-  "item.tfcobblemon.incomplete_master_ball": "Incomplete Master Ball"
+  "item.tfcobblemon.incomplete_master_ball": "Incomplete Master Ball",
+  "item.tfcobblemon.leather_trainer_belt": "Leather Trainer Belt",
+  "item.tfcobblemon.reinforced_trainer_belt": "Reinforced Trainer Belt",
+  "item.tfcobblemon.trainer_belt": "Trainer Belt",
+  "tooltip.tfcobblemon.trainer_belt": "%s/%s Poké Balls"
 }
