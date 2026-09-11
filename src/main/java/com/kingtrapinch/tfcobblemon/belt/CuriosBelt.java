@@ -72,6 +72,22 @@ final class CuriosBelt {
                 .orElse(ItemStack.EMPTY);
     }
 
+    /**
+     * Riscrive nel suo slot la cintura indossata. Va fatto dopo ogni modifica:
+     * Curios si accorge che un curio e' cambiato confrontando gli stack, e
+     * cambiare un componente dello stesso stack non gli basta a mandarlo al
+     * client.
+     */
+    static void store(Player player, ItemStack cintura) {
+        CuriosApi.getCuriosInventory(player).ifPresent(inventario ->
+                inventario.findFirstCurio(stack -> stack.getItem() instanceof TrainerBeltItem)
+                        .ifPresent(trovata -> {
+                            final SlotContext dove = trovata.slotContext();
+                            inventario.getStacksHandler(dove.identifier()).ifPresent(
+                                    handler -> handler.getStacks().setStackInSlot(dove.index(), cintura));
+                        }));
+    }
+
     /** La cintura che il giocatore ha addosso, o vuoto se non ne porta. */
     static ItemStack worn(Player player) {
         return CuriosApi.getCuriosInventory(player)

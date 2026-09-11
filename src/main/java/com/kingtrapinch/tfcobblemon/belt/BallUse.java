@@ -80,9 +80,9 @@ public final class BallUse {
             return;
         }
 
-        final Pokemon mon = trova(player, legame.pokemon());
+        final Pokemon mon = inSquadra(player, legame.pokemon());
         if (mon == null) {
-            avvisa(player, "tfcobblemon.ball.lontano");
+            avvisa(player, "tfcobblemon.ball.fuori_squadra");
             return;
         }
         if (!nostro(mon, legame)) {
@@ -98,11 +98,16 @@ public final class BallUse {
         mon.sendOutWithAnimation(player, level, dove, null, true, null, entity -> Unit.INSTANCE);
     }
 
-    /** Il Pokemon puntato, cercato dove vive: prima la squadra, poi il PC. */
-    static @Nullable Pokemon trova(ServerPlayer player, UUID pokemon) {
-        final var storage = Cobblemon.INSTANCE.getStorage();
-        final Pokemon inSquadra = storage.getParty(player).get(pokemon);
-        return inSquadra != null ? inSquadra : storage.getPC(player).get(pokemon);
+    /**
+     * Il Pokemon puntato, ma solo se e' in squadra.
+     *
+     * <p>Nel PC non lo si cerca di proposito: mandare in campo uno che sta nel
+     * deposito vorrebbe dire che la cintura non conta niente. La ball resta la
+     * sua maniglia — il tooltip la legge, il PC lo ritrova — ma per farlo uscire
+     * va rimesso a portata.
+     */
+    static @Nullable Pokemon inSquadra(ServerPlayer player, UUID pokemon) {
+        return Cobblemon.INSTANCE.getStorage().getParty(player).get(pokemon);
     }
 
     /** Se questa ball e' ancora quella che il Pokemon riconosce. */

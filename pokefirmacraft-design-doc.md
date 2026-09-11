@@ -450,6 +450,26 @@ Se la ball si perde, si perde una ball.
 Per i Pokemon in eccesso, quelli che oggi finiscono nel PC, vale lo stesso: la
 ball in tasca punta a un deposito personale in overflow, non se lo porta dentro.
 
+**Il passaggio di mano col PC.** Il PC tiene il Pokemon, la ball lo tiene in
+mano. Depositare vuol dire consegnarlo, quindi la sua ball sparisce — dalla
+cintura e dall'inventario, ogni copia. Ritirarlo vuol dire riprenderlo in mano,
+e la ball torna: quella vera, perche' Cobblemon ricorda con che ball l'hai
+preso. Sopra i posti disponibili si esce comunque, come oggetto, ed e' il modo
+di portarsi via piu' Pokemon di quanti se ne possano usare.
+
+Senza la seconda meta' la prima sarebbe una trappola: depositi, ritiri, e ti
+ritrovi un Pokemon in squadra che non hai modo di far uscire.
+
+Il gancio sta **sull'azione e non sullo stato**, e sono i tre handler di
+Cobblemon che portano l'UUID nel pacchetto: `MovePartyPokemonToPCHandler`,
+`MovePCPokemonToPartyHandler` e `SwapPCPartyPokemonHandler`. Cosi' un deposito
+voluto si distingue da un Pokemon che finisce nel PC per altre strade — una
+cattura a cintura piena, dove la ball invece te la tieni.
+
+Ritirando, il Pokemon riceve un **handle nuovo**: la ball vecchia e' stata
+distrutta col deposito, e se una sua copia girasse ancora non deve rispondere
+alla nuova.
+
 **La ball di un Pokemon e' la sua, e nessun'altra.** Cobblemon si ricorda con
 che ball l'hai preso (`Pokemon.getCaughtBall()`): quella e' la sua per sempre,
 e non si richiama un Pokemon dentro una ball diversa. Quindi non esiste il

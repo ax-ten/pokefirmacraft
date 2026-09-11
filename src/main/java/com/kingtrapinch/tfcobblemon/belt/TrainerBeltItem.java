@@ -69,7 +69,7 @@ public class TrainerBeltItem extends Item {
         return carried(belt).size() < slots;
     }
 
-    private void salva(ItemStack belt, List<ItemStack> posti) {
+    void salva(ItemStack belt, List<ItemStack> posti) {
         belt.set(DataComponents.CONTAINER, ItemContainerContents.fromItems(posti));
     }
 
@@ -187,8 +187,10 @@ public class TrainerBeltItem extends Item {
             final BallLink legame = BallLink.read(ball);
             final Component riga = legame == null
                     ? ball.getHoverName()
-                    : Component.empty().append(legame.label()).append(" ")
-                            .append(Component.literal("Lv. " + legame.level()).withStyle(ChatFormatting.DARK_GRAY));
+                    : Component.empty()
+                            .append(Component.literal("Lv. " + legame.level())
+                                    .withStyle(ChatFormatting.DARK_GRAY))
+                            .append(" ").append(legame.label());
             tooltip.add(Component.literal(" ").append(riga).withStyle(ChatFormatting.GRAY));
         }
     }

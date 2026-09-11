@@ -114,7 +114,13 @@ dependencies {
     runtimeOnly "maven.modrinth:gtceu:${gtceu_version}"
     runtimeOnly "maven.modrinth:ldlib2:${ldlib_version}"
 
-    // Create dal pacchetto, coi tre jar che si porta dentro
+    // Curios serve anche al dev snello: senza di lei lo slot belt non esiste e
+    // la cintura non si puo' provare, che e' meta' del lavoro in corso
+    if (!withCreate && !withPack) {
+        runtimeOnly files("local-mods/curios-neoforge-9.5.1+1.21.1.jar")
+    }
+
+    // Create dal pacchetto, coi tre jar che si porta dentro (Curios compresa)
     if (withCreate && !withPack) {
         runtimeOnly fileTree(dir: 'local-mods', include: '*.jar')
     }

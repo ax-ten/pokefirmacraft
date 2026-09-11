@@ -28,20 +28,22 @@ public final class BallTooltip {
         if (legame == null) {
             return;
         }
-        final MutableComponent nome = Component.empty().append(legame.label());
+        // una riga sola, nell'ordine in cui la si legge: livello, nome, sesso
+        final MutableComponent riga = Component.empty()
+                .append(Component.literal("Lv. " + ClientBallLevels.level(legame.pokemon(), legame.level()))
+                        .withStyle(ChatFormatting.GRAY))
+                .append(" ")
+                .append(legame.label().copy().withStyle(ChatFormatting.WHITE));
         final Component sesso = legame.genderMark();
         if (sesso != null) {
-            nome.append(" ").append(sesso);
+            riga.append(" ").append(sesso);
         }
         if (legame.shiny()) {
-            nome.append(" ").append(Component.literal("★").withStyle(ChatFormatting.GOLD));
+            riga.append(" ").append(Component.literal("★").withStyle(ChatFormatting.GOLD));
         }
 
         final List<Component> righe = event.getToolTip();
-        final int dove = Math.min(1, righe.size());
-        righe.add(dove, Component.literal("Lv. " + ClientBallLevels.level(legame.pokemon(), legame.level()))
-                .withStyle(ChatFormatting.GRAY));
-        righe.add(dove, nome.withStyle(ChatFormatting.WHITE));
+        righe.add(Math.min(1, righe.size()), riga);
     }
 
     @SubscribeEvent

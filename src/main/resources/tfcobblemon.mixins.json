@@ -7,7 +7,10 @@
     "RevivalHerbMixin",
     "VivichokeMixin",
     "PokeBallMixin",
-    "PartyGateMixin"
+    "PartyGateMixin",
+    "PcDepositMixin",
+    "PcWithdrawMixin",
+    "PcSwapMixin"
   ],
   "client": [
     "PartyOverlayMixin"

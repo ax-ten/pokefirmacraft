@@ -44,6 +44,13 @@ public final class Belts {
         return 1;
     }
 
+    /** Riscrive la cintura nel suo slot dopo averla modificata. */
+    public static void store(Player player, ItemStack cintura) {
+        if (curios()) {
+            CuriosBelt.store(player, cintura);
+        }
+    }
+
     /**
      * Infila una ball nella cintura indossata, se c'e' posto. La ball si
      * riduce di uno: quello che resta e' affare di chi chiama.
