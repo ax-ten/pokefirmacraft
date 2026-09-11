@@ -360,25 +360,23 @@ glielo si debba dire.
 
 ### 6.1 Trainer Belt
 
-Lo slot **`belt`** va dichiarato da noi: **Curios non ne spedisce nessuno.** Nel
-suo jar `data/curios/slots/` non esiste — `SlotTypePreset.BELT` e' solo il
-modello di come farlo, non una dichiarazione — e nel pacchetto lo slot c'e'
-perche' lo dichiara ToolBelt. Fuori dal pacchetto, senza dichiararlo, non si
-indossa niente.
+Lo slot **`belt`** esiste dentro Curios, ma **non e' dato a nessuno.** Sono due
+cose separate, e vanno tenute distinte:
 
-Servono due file:
+- il **tipo** di slot lo spedisce Curios, in
+  `data/curios/curios/slots/belt.json` del suo jar: ordine 180, icona
+  `curios:slot/empty_belt_slot`, validatore `curios:tag`. Nessuna dimensione.
+- la **dimensione** e **chi lo riceve** li deve mettere una mod. Nel pacchetto
+  lo fa ToolBelt, con `data/toolbelt/curios/slots/belt.json` che contiene solo
+  `{"size": 1}` e `data/toolbelt/curios/entities/curio_slots.json` che lo
+  concede a `minecraft:player`.
 
-- `data/curios/slots/belt.json` — `size: 1`, `operation: "SET"`, `order: 180`
-  (l'ordine del preset), icona `curios:slot/empty_belt_slot`
-- `data/curios/entities/tfcobblemon.json` — che lo concede a
-  `minecraft:player`. Il nome del file e' nostro di proposito: `player.json`
-  finirebbe sullo stesso percorso di quello di un'altra mod
-
-`operation: "SET"` e non `"ADD"` e' la cosa importante: lo slot e' di dimensione
-uno ed e' condiviso con ToolBelt, e sommando le dichiarazioni diventerebbe due.
-Con SET chiunque lo dichiari lo riporta a uno. Curios legge il file da **tutti**
-i pack — itera i `PackResources` e lista le risorse pack per pack — quindi la
-nostra dichiarazione e quella di ToolBelt convivono invece di sovrascriversi.
+Quindi facciamo gli stessi due file sotto il nostro namespace, con lo stesso
+contenuto. Il percorso e' `data/<namespace>/curios/slots/…`, con `curios`
+**dentro** il namespace e non come namespace: `data/curios/slots/belt.json` non
+lo legge nessuno. La dimensione va dichiarata e non sommata — l'operazione
+predefinita e' `SET` — perche' lo slot e' uno ed e' condiviso: se ognuno
+aggiungesse il suo, chi ha ToolBelt si troverebbe due posti alla cintura.
 
 La dimensione uno decide l'architettura.
 
