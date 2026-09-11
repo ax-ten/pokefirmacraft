@@ -1,0 +1,55 @@
+{
+  "variants": {
+    "count=1": [
+      {
+        "model": "tfcobblemon:block/loose/loose_tumblestone_1",
+        "y": 90
+      },
+      {
+        "model": "tfcobblemon:block/loose/loose_tumblestone_1"
+      },
+      {
+        "model": "tfcobblemon:block/loose/loose_tumblestone_1",
+        "y": 180
+      },
+      {
+        "model": "tfcobblemon:block/loose/loose_tumblestone_1",
+        "y": 270
+      }
+    ],
+    "count=2": [
+      {
+        "model": "tfcobblemon:block/loose/loose_tumblestone_2",
+        "y": 90
+      },
+      {
+        "model": "tfcobblemon:block/loose/loose_tumblestone_2"
+      },
+      {
+        "model": "tfcobblemon:block/loose/loose_tumblestone_2",
+        "y": 180
+      },
+      {
+        "model": "tfcobblemon:block/loose/loose_tumblestone_2",
+        "y": 270
+      }
+    ],
+    "count=3": [
+      {
+        "model": "tfcobblemon:block/loose/loose_tumblestone_3",
+        "y": 90
+      },
+      {
+        "model": "tfcobblemon:block/loose/loose_tumblestone_3"
+      },
+      {
+        "model": "tfcobblemon:block/loose/loose_tumblestone_3",
+        "y": 180
+      },
+      {
+        "model": "tfcobblemon:block/loose/loose_tumblestone_3",
+        "y": 270
+      }
+    ]
+  }
+}
