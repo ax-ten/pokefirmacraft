@@ -717,13 +717,13 @@ versione artigianale, molto prima.
 **Progettazione**
 
 - Redesign completo delle ricette Poké Ball in chiave Greg (sezione 5.1)
-- **Il PC va riprogettato con i componenti di Applied Energistics**, e con lui la
-  Trainer Belt avanzata: il PC è un magazzino indirizzabile e il collegamento
-  remoto è un terminale wireless, quindi celle, ME controller, terminali e
-  wireless access point sono esattamente il vocabolario giusto — molto più
-  della pila di lamiere di ora. Da decidere: quale capienza dà quale cella,
-  se le box del PC diventano celle vere e proprie, e quale tier AE2 fa da
-  cancello al collegamento remoto
+- **Il PC e la Trainer Belt avanzata si costruiscono con i componenti di Applied
+  Energistics**: celle, ME controller, terminali, wireless access point. È il
+  vocabolario giusto — un armadio in rete e un terminale senza fili — e dice
+  molto più della pila di lamiere di ora. **Ma solo la ricetta.** Lo storage
+  resta quello di Cobblemon: le box non diventano celle, non si ripartisce
+  niente, e il PC non va rifatto meccanicamente. Da decidere: quale tier AE2 fa
+  da cancello al collegamento remoto
 - Ricollocazione di PC e Pasture Block secondo la sezione 4
 - Materiali delle due cinture (la capienza è decisa: 1 a mani nude, 3, 6)
 - Quali categorie ha la borsa e con che era si aprono (sezione 6.4)
