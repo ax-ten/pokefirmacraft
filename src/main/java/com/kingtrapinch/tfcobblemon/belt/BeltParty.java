@@ -38,6 +38,9 @@ import java.util.UUID;
 public final class BeltParty {
     private BeltParty() {}
 
+    /** Chi e' dentro un allineamento, per non rientrarci dai nostri eventi. */
+    private static final Set<UUID> DENTRO = new HashSet<>();
+
     /**
      * Le ball che il giocatore porta addosso, nell'ordine, coi buchi al loro
      * posto: il posto i della squadra spetta alla ball i della cintura.
@@ -67,6 +70,35 @@ public final class BeltParty {
         if (BattleRegistry.getBattleByParticipatingPlayer(player) != null) {
             return;
         }
+        // i nostri stessi spostamenti fanno scattare eventi che tornano qui
+        if (!DENTRO.add(player.getUUID())) {
+            return;
+        }
+        try {
+            allinea(player);
+        } finally {
+            DENTRO.remove(player.getUUID());
+        }
+    }
+
+    /**
+     * Il riallineamento vero, in tre passaggi separati e in quest'ordine.
+     *
+     * <p>L'ordine non e' estetica, e' l'unica cosa che lo rende sicuro. Le tre
+     * operazioni di Cobblemon si comportano cosi':
+     * <ul>
+     *   <li>{@code set} su un posto <b>occupato</b> togli chi c'era <em>da
+     *       questo store e da nessun altro</em>: il precedente occupante finisce
+     *       senza coordinate, cioe' in nessun deposito. Qui {@code set} si usa
+     *       <b>solo su posti liberi</b>.
+     *   <li>{@code remove} lascia il Pokemon senza coordinate: va sempre seguito
+     *       da un {@code add} che riesca, altrimenti si e' perso. Se il PC
+     *       rifiuta, si rimette dove stava.
+     *   <li>{@code swap} non distrugge niente, ed e' il solo modo di mettere in
+     *       ordine.
+     * </ul>
+     */
+    private static void allinea(ServerPlayer player) {
         final PlayerPartyStore squadra = Cobblemon.INSTANCE.getStorage().getParty(player);
         final PCStore pc = Cobblemon.INSTANCE.getStorage().getPC(player);
         final UUID[] voluti = wanted(player);
@@ -78,42 +110,51 @@ public final class BeltParty {
             }
         }
 
-        // chi non e' su una ball addosso non e' a portata — a meno che non sia
-        // fuori, e allora e' affare del giocatore, non nostro
+        // 1. escono quelli di cui non si porta la ball. Chi e' in campo no: ce
+        //    l'ha messo il giocatore, e non e' affare nostro.
         for (int i = 0; i < squadra.size(); i++) {
             final Pokemon mon = squadra.get(i);
             if (mon == null || insieme.contains(mon.getUuid()) || mon.getEntity() != null) {
                 continue;
             }
             squadra.remove(mon);
-            if (pc.get(mon.getUuid()) == null) {
-                pc.add(mon);
+            if (pc.get(mon.getUuid()) == null && !pc.add(mon)) {
+                // il deposito non lo accetta: meglio a portata che in nessun
+                // posto. Il posto e' appena stato liberato, quindi rientra li'.
+                squadra.set(i, mon);
             }
         }
 
-        // e chi lo e' va al posto della sua ball
+        // 2. entrano quelli di cui si porta la ball, in un posto libero: cosi'
+        //    set() non ha niente da distruggere. Se i posti finiscono si
+        //    fermano fuori, che e' un dispiacere e non un danno.
+        for (UUID id : voluti) {
+            if (id == null || indiceDi(squadra, id) >= 0) {
+                continue;
+            }
+            final Pokemon nelPc = pc.get(id);
+            if (nelPc == null || !id.equals(nelPc.getUuid())) {
+                continue;
+            }
+            final int libero = primoLibero(squadra);
+            if (libero < 0) {
+                break;
+            }
+            pc.remove(nelPc);
+            squadra.set(libero, nelPc);
+        }
+
+        // 3. e vanno in ordine, solo scambiandosi di posto
         for (int i = 0; i < voluti.length && i < squadra.size(); i++) {
             final UUID id = voluti[i];
             if (id == null) {
                 continue;
             }
-            final Pokemon giaAlPosto = squadra.get(i);
-            if (giaAlPosto != null && giaAlPosto.getUuid().equals(id)) {
+            final int dove = indiceDi(squadra, id);
+            if (dove < 0 || dove == i) {
                 continue;
             }
-            final Pokemon altrove = squadra.get(id);
-            if (altrove != null) {
-                final int suo = indiceDi(squadra, altrove);
-                if (suo >= 0) {
-                    squadra.swap(new PartyPosition(i), new PartyPosition(suo));
-                }
-                continue;
-            }
-            final Pokemon nelPc = pc.get(id);
-            if (nelPc != null) {
-                pc.remove(nelPc);
-                squadra.set(i, nelPc);
-            }
+            squadra.swap(new PartyPosition(i), new PartyPosition(dove));
         }
     }
 
@@ -169,9 +210,25 @@ public final class BeltParty {
         return dentro;
     }
 
-    private static int indiceDi(PlayerPartyStore squadra, Pokemon mon) {
+    /**
+     * Dove sta questo Pokemon nella squadra, scorrendo i posti. Non si usa
+     * {@code get(UUID)}: quella passa da un indice interno che gli spostamenti
+     * fra depositi possono lasciare stantio, e qui una risposta sbagliata
+     * significa perdere un Pokemon.
+     */
+    private static int indiceDi(PlayerPartyStore squadra, UUID id) {
         for (int i = 0; i < squadra.size(); i++) {
-            if (squadra.get(i) == mon) {
+            final Pokemon mon = squadra.get(i);
+            if (mon != null && id.equals(mon.getUuid())) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private static int primoLibero(PlayerPartyStore squadra) {
+        for (int i = 0; i < squadra.size(); i++) {
+            if (squadra.get(i) == null) {
                 return i;
             }
         }

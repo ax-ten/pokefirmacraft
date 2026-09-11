@@ -502,6 +502,21 @@ tasto destro anche in mezzo a uno scontro: il blocco riguarda solo le ball
 piene, cioe' l'evocare. Mandare in campo e catturare sono due gesti diversi, e
 solo il primo deve passare dalla cintura.
 
+**La ball fisica e' il magazzino, e prima del PC e' l'unico.** Questo e' il
+cuore del sistema, non un dettaglio: in TFC il PC non esiste per meta' partita —
+arriva nell'era elettrica e vuole il Pokemon Storage Component (sezione 5.7) —
+quindi finche' non c'e' **l'unico posto dove un Pokemon puo' stare e' una ball
+che tieni in mano.** Si immagazzinano i Pokemon tenendo le loro ball in una
+cassa, ed e' il sistema grezzo e rustico che il pacchetto chiede.
+
+Da cui una conseguenza tecnica: **spostare un Pokemon dentro e fuori dalla
+squadra e' mettere e togliere la sua ball dalla cintura**, e non serve nessuna
+macchina per farlo. Il deposito interno di Cobblemon fa da magazzino invisibile
+per i Pokemon nelle ball che non si portano addosso — il giocatore non lo vede
+mai come un PC, vede delle ball. Il **blocco** PC diventa quello che deve
+essere: una macchina per la gestione in blocco e per l'accesso a distanza, non
+il presupposto per avere piu' di sei Pokemon.
+
 **Ma la ball non deve contenere il Pokemon: deve puntarlo.** Se il Pokemon vive
 dentro l'item, perdere l'item e' perderlo — in lava, in una morte in un posto
 irraggiungibile, in una mod che cancella oggetti — ed e' esattamente il motivo
@@ -583,7 +598,19 @@ in piedi gli altri due.
    accorciata il riquadro si stringe da se' e resta centrato. Mai piu' corta di
    quanti Pokemon ci sono davvero: nel momento in cui ti togli la cintura e' il
    caso di vederli.
-3. **L'allineamento, nei momenti in cui qualcosa cambia.** Chi non e' su una
+3. **L'allineamento, nei momenti in cui qualcosa cambia.** E' il pezzo che
+   regge tutto — senza di lui non c'e' modo di spostare un Pokemon dentro e
+   fuori dalla squadra prima del PC — quindi va scritto perche' sia sicuro, non
+   perche' sia breve. Le tre operazioni di Cobblemon non sono intercambiabili:
+   `set` su un posto **occupato** toglie il precedente occupante *da questo
+   store e da nessun altro*, cioe' lo lascia senza coordinate e quindi in nessun
+   deposito; `remove` lascia senza coordinate e va sempre seguito da un `add`
+   che riesca; `swap` e' l'unico che non distrugge niente. Da cui i tre passaggi
+   in quest'ordine: **prima escono** quelli di cui non si porta la ball (con
+   rientro immediato se il deposito rifiuta), **poi entrano** quelli di cui la
+   si porta, sempre in un posto libero, **poi si ordina** solo con `swap`. Cosi'
+   `set` non ha mai niente da distruggere.
+ Chi non e' su una
    ball addosso torna nel PC, chi lo e' va al posto della sua ball. E i momenti
    sono tre: la cintura che si mette o si toglie (`CurioChangeEvent` sullo slot
    `belt`), una ball che entra o esce, e l'apertura del PC. **Non a tempo**: un
