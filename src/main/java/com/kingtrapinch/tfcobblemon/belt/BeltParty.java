@@ -224,6 +224,53 @@ public final class BeltParty {
     }
 
     /**
+     * Tira in squadra un Pokemon che non ci sta, per farlo uscire come
+     * <b>compagno di viaggio</b>: una cavalcatura, o qualcuno che ti tiene
+     * compagnia, la cui ball non e' sulla cintura.
+     *
+     * <p>Deve passare dalla squadra e non puo' restare nel deposito, e il motivo
+     * e' nel modo in cui Cobblemon decide di chi e' un Pokemon:
+     * {@code getOwnerUUID()} lo ricava dal deposito in cui sta — per un PCStore
+     * restituisce l'UUID <em>del deposito</em>. Il nostro box ha una chiave
+     * derivata, quindi un Pokemon che vive li' non risulta di nessun giocatore,
+     * e {@code mobInteract} di PokemonEntity confronta proprio quell'UUID con
+     * quello di chi interagisce: non si potrebbe ne' cavalcare ne' toccare.
+     *
+     * <p>Uno solo per volta, e serve un posto libero in squadra: la cintura
+     * piena non lascia spazio per un compagno di viaggio, ed e' un prezzo
+     * giusto. Rientrando, l'allineamento lo rimanda nel box da se', perche' la
+     * sua ball non e' addosso.
+     */
+    public static Pokemon comeSupporto(ServerPlayer player, UUID pokemon) {
+        if (BattleRegistry.getBattleByParticipatingPlayer(player) != null) {
+            return null;
+        }
+        final PlayerPartyStore squadra = Cobblemon.INSTANCE.getStorage().getParty(player);
+        // un compagno per volta: chi c'e' gia' fuori senza la ball addosso
+        // rientra prima, altrimenti se ne accumulerebbero quanti sono i posti
+        for (int i = 0; i < squadra.size(); i++) {
+            final Pokemon fuori = squadra.get(i);
+            if (fuori != null && fuori.getEntity() != null
+                    && !BallHandover.onBelt(player, fuori.getUuid())) {
+                fuori.tryRecallWithAnimation();
+                return null;
+            }
+        }
+        final int libero = primoLibero(squadra);
+        if (libero < 0) {
+            return null;
+        }
+        final PCStore box = deposito(player);
+        final Pokemon mon = box.get(pokemon);
+        if (mon == null || !pokemon.equals(mon.getUuid())) {
+            return null;
+        }
+        box.remove(mon);
+        squadra.set(libero, mon);
+        return mon;
+    }
+
+    /**
      * Fa rientrare tutti i Pokemon che stavano in quello che si e' appena
      * sfilato. Togliersi la cintura non lascia i Pokemon in giro per il mondo
      * senza piu' un posto dove tornare: prima rientrano, poi si allinea.

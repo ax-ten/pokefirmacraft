@@ -81,7 +81,11 @@ public final class BallUse {
             return;
         }
 
-        final Pokemon mon = inSquadra(player, legame.pokemon());
+        Pokemon mon = inSquadra(player, legame.pokemon());
+        if (mon == null) {
+            // non e' in squadra: puo' uscire come compagno di viaggio, uno solo
+            mon = BeltParty.comeSupporto(player, legame.pokemon());
+        }
         if (mon == null) {
             player.displayClientMessage(Component.translatable(
                     "tfcobblemon.ball.fuori_squadra", legame.label())

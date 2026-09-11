@@ -2,7 +2,12 @@ package com.kingtrapinch.tfcobblemon.belt;
 
 import com.cobblemon.mod.common.api.events.CobblemonEvents;
 import com.cobblemon.mod.common.api.events.pokemon.PokemonRecallEvent;
+import com.cobblemon.mod.common.api.events.battles.BattleStartedEvent;
 import com.cobblemon.mod.common.api.events.pokemon.PokemonSentEvent;
+import com.cobblemon.mod.common.battles.actor.PlayerBattleActor;
+import com.cobblemon.mod.common.api.battles.model.actor.BattleActor;
+import com.cobblemon.mod.common.api.storage.party.PlayerPartyStore;
+import com.cobblemon.mod.common.Cobblemon;
 import com.cobblemon.mod.common.entity.pokemon.PokemonEntity;
 import com.cobblemon.mod.common.pokemon.Pokemon;
 import net.minecraft.server.level.ServerPlayer;
@@ -28,6 +33,7 @@ public final class BallFlight {
         CobblemonEvents.POKEMON_SENT_POST.subscribe(BallFlight::uscito);
         CobblemonEvents.POKEMON_RECALL_PRE.subscribe(BallFlight::rientra);
         CobblemonEvents.POKEMON_RECALL_POST.subscribe(BallFlight::rientrato);
+        CobblemonEvents.BATTLE_STARTED_PRE.subscribe(BallFlight::siCombatte);
     }
 
     private static void uscito(PokemonSentEvent.Post event) {
@@ -51,6 +57,45 @@ public final class BallFlight {
      * salta di proposito, quindi senza questo resterebbe in squadra dopo che la
      * sua cintura e' stata sfilata.
      */
+    /**
+     * Comincia uno scontro: il compagno di viaggio rientra e lascia il campo a
+     * chi si ha in squadra. Una cavalcatura non e' un combattente, e trovarsela
+     * in campo al posto del Pokemon scelto sarebbe un modo eccellente di
+     * perdere uno scontro.
+     *
+     * <p><b>A meno che non sia l'unico che si ha.</b> Chi va a zonzo con una
+     * ball sola in tasca e nessuna sulla cintura si ritroverebbe a combattere
+     * senza niente: in quel caso il compagno di viaggio <em>e'</em> la squadra.
+     */
+    private static void siCombatte(BattleStartedEvent.Pre event) {
+        for (BattleActor attore : event.getBattle().getActors()) {
+            if (!(attore instanceof PlayerBattleActor giocatore)) {
+                continue;
+            }
+            final ServerPlayer player = giocatore.getEntity();
+            if (player == null) {
+                continue;
+            }
+            final PlayerPartyStore squadra = Cobblemon.INSTANCE.getStorage().getParty(player);
+            Pokemon compagno = null;
+            int inSquadra = 0;
+            for (int i = 0; i < squadra.size(); i++) {
+                final Pokemon mon = squadra.get(i);
+                if (mon == null) {
+                    continue;
+                }
+                if (BallHandover.onBelt(player, mon.getUuid())) {
+                    inSquadra++;
+                } else if (mon.getEntity() != null) {
+                    compagno = mon;
+                }
+            }
+            if (compagno != null && inSquadra > 0) {
+                compagno.tryRecallWithAnimation();
+            }
+        }
+    }
+
     private static void rientrato(PokemonRecallEvent.Post event) {
         if (event.getOldEntity() == null) {
             return;
