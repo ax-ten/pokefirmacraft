@@ -104,8 +104,11 @@ public final class BeltParty {
     public static void align(ServerPlayer player) {
         // in combattimento la squadra e' quella registrata all'inizio: togliersi
         // la cintura a meta' scontro non cambia le carte in tavola
-        if (BattleRegistry.getBattleByParticipatingPlayer(player) != null
-                || Belts.senzaLimiti(player)) {
+        // In creativa l'allineamento gira comunque. "Nessun limite" vuol dire
+        // che non ti si nega niente — non che i conti si smettono di fare:
+        // saltandolo, in creativa i Pokemon restavano in squadra senza nessuna
+        // ball addosso, e non c'era modo di provare come funziona davvero.
+        if (BattleRegistry.getBattleByParticipatingPlayer(player) != null) {
             return;
         }
         // i nostri stessi spostamenti fanno scattare eventi che tornano qui

@@ -42,12 +42,13 @@ public final class BallFlight {
         if (player == null) {
             return;
         }
-        if (BallHandover.onBelt(player, mon.getUuid())) {
-            // addosso ci resta, ma segnata: finche' e' in campo non si sfila
-            BallHandover.mark(player, mon.getUuid(), true);
-            return;
-        }
-        BallHandover.takeLoose(player, mon.getUuid());
+        // La ball resta dov'e', e si segna che il suo Pokemon e' in campo.
+        //
+        // Toglierla era sbagliato: la ball e' la maniglia con cui lo si
+        // richiama, e un compagno di viaggio mandato fuori senza piu' la sua
+        // ball non aveva nessun modo di rientrare. L'animazione e' un lancio,
+        // ma quello che si lancia e' il Pokemon, non l'oggetto.
+        BallHandover.mark(player, mon.getUuid(), true);
     }
 
     /**

@@ -5,6 +5,7 @@ import com.kingtrapinch.tfcobblemon.TFCobblemon;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -104,10 +105,19 @@ public final class BeltEvents {
         if (player.level().isClientSide()) {
             return;
         }
-        // nella cintura se c'e' posto, altrimenti addosso se lo slot e' libero:
+        // Nella cintura se c'e' posto, altrimenti addosso se lo slot e' libero:
         // raccogliere una ball quando non si porta niente e' il momento in cui
-        // uno se l'aspetta addosso
-        if (!Belts.insert(player, ball) && !Belts.equip(player, ball)) {
+        // uno se l'aspetta addosso.
+        //
+        // Ma non se e' il giocatore stesso ad averla buttata: altrimenti
+        // lasciarla cadere e' impossibile, torna addosso da se' e sembra che il
+        // tasto per gettare gli oggetti non funzioni.
+        // getOwner() restituisce l'entita', non l'UUID: confrontarlo con un UUID
+        // compila benissimo ed e' sempre falso
+        final Entity chiLHaButtata = event.getItemEntity().getOwner();
+        final boolean buttata = chiLHaButtata != null
+                && chiLHaButtata.getUUID().equals(player.getUUID());
+        if (buttata || (!Belts.insert(player, ball) && !Belts.equip(player, ball))) {
             return;
         }
         event.setCanPickup(TriState.FALSE);

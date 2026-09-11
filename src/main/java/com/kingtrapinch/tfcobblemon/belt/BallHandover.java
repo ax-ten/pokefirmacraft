@@ -145,16 +145,6 @@ public final class BallHandover {
         }
     }
 
-    /** Toglie la ball di questo Pokemon, ma non quella che si porta addosso. */
-    public static void takeLoose(ServerPlayer player, UUID pokemon) {
-        final ItemStack addosso = Belts.inBeltSlot(player);
-        for (Posto posto : posti(player)) {
-            if (posto.stack() != addosso && punta(posto.stack(), pokemon)) {
-                posto.sostituisci().accept(ItemStack.EMPTY);
-            }
-        }
-    }
-
     /** Segna se il Pokemon di questa ball e' in campo, dovunque la ball sia. */
     public static void mark(ServerPlayer player, UUID pokemon, boolean fuori) {
         final Posto posto = ovunque(player, pokemon);

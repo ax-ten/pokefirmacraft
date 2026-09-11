@@ -101,13 +101,6 @@ public final class BallUse {
             mon.tryRecallWithAnimation();
             return;
         }
-        // la ball sparisce adesso, non a lancio finito: e' un lancio, e la
-        // mano dopo il lancio e' vuota. POKEMON_SENT_POST arriva un secondo
-        // dopo, quando l'animazione ha finito, e per un secondo la ball
-        // restava in mano al giocatore che l'aveva appena tirata.
-        if (!BallHandover.onBelt(player, legame.pokemon())) {
-            BallHandover.takeLoose(player, legame.pokemon());
-        }
         final Vec3 dove = player.getEyePosition().add(player.getLookAngle().scale(DAVANTI));
         mon.sendOutWithAnimation(player, level, dove, null, true, null, entity -> Unit.INSTANCE);
     }

@@ -16,12 +16,12 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 /**
- * In campo va solo chi si ha addosso.
+ * In campo va solo chi si ha.
  *
  * <p>Le frecce e il tasto R dell'elenco a sinistra mandano in campo per numero
  * di posto, e non passano dal nostro tasto destro: era la via per cui un Pokemon
- * rimasto in squadra ma senza la sua ball addosso usciva comunque. Il cancello
- * va qui, dove la richiesta arriva.
+ * di cui non si aveva nessuna ball usciva comunque. Il cancello va qui, dove la
+ * richiesta arriva.
  *
  * <p>In creativa non si applica.
  */
@@ -37,7 +37,11 @@ public abstract class SendOutGateMixin {
             return;
         }
         final Pokemon mon = Cobblemon.INSTANCE.getStorage().getParty(player).get(packet.getSlot());
-        if (mon == null || BallHandover.onBelt(player, mon.getUuid())) {
+        // basta avere la sua ball: addosso, in tasca, dentro una cintura in una
+        // cassa nello zaino. Il cancello serve a impedire di mandare in campo un
+        // Pokemon di cui non si ha niente in mano, non a pretendere che stia
+        // sulla cintura — quella decide la squadra da combattimento.
+        if (mon == null || BallHandover.anywhere(player, mon.getUuid())) {
             return;
         }
         callback.cancel();
