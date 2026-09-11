@@ -11,13 +11,13 @@
       "outer_layer_provider": {
         "type": "minecraft:simple_state_provider",
         "state": {
-          "Name": "tfc:rock/hardened/basalt"
+          "Name": "tfc:rock/cobble/basalt"
         }
       },
       "middle_layer_provider": {
         "type": "minecraft:simple_state_provider",
         "state": {
-          "Name": "tfc:rock/hardened/quartzite"
+          "Name": "tfc:rock/cobble/quartzite"
         }
       },
       "inner_layer_provider": {
