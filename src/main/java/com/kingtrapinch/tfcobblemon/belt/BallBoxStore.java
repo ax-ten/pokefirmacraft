@@ -1,6 +1,8 @@
 package com.kingtrapinch.tfcobblemon.belt;
 
+import com.cobblemon.mod.common.api.storage.pc.PCPosition;
 import com.cobblemon.mod.common.api.storage.pc.PCStore;
+import kotlin.Unit;
 
 import java.util.UUID;
 
@@ -25,10 +27,41 @@ import java.util.UUID;
  * mai perche' lo cerca come {@code PCStore}.
  *
  * <p>Da cui: proprietario giusto e deposito separato, insieme.
+ *
+ * <p><b>E deve avere delle box, altrimenti non accetta niente.</b> Un
+ * {@code PCStore} appena costruito ne ha zero, e
+ * {@code getFirstAvailablePosition()} scorre le box per trovare un posto
+ * libero: con zero box risponde sempre "nessun posto", quindi {@code add}
+ * falliva sempre e ogni Pokemon sfrattato dalla squadra ci rimbalzava dentro.
+ * Il PC vero non ha questo problema perche' la fabbrica lo costruisce con una
+ * sua funzione che le crea; il nostro passa dal costruttore riflessivo, che
+ * quella funzione non la chiama.
+ *
+ * <p>Le box si creano alla costruzione e crescono quando finiscono, e la
+ * crescita a richiesta non e' ridondante: un salvataggio fatto quando il box
+ * era rotto contiene zero box, e ricaricandolo tornerebbe a rifiutare tutto.
  */
 public class BallBoxStore extends PCStore {
 
+    /** Con quante box nasce, e di quante cresce quando finiscono. */
+    private static final int BOX = 30;
+
     public BallBoxStore(UUID uuid) {
         super(uuid);
+        cresci();
+    }
+
+    @Override
+    public PCPosition getFirstAvailablePosition() {
+        final PCPosition libero = super.getFirstAvailablePosition();
+        if (libero != null) {
+            return libero;
+        }
+        cresci();
+        return super.getFirstAvailablePosition();
+    }
+
+    private void cresci() {
+        resize(getBoxes().size() + BOX, false, mon -> Unit.INSTANCE);
     }
 }
