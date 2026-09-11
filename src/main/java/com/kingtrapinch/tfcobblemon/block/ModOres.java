@@ -9,6 +9,9 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 /**
  * La tumblestone dentro la roccia, alla maniera di TFC.
  *
@@ -29,14 +32,26 @@ public final class ModOres {
     public static final DeferredRegister.Blocks BLOCKS =
             DeferredRegister.createBlocks(TFCobblemon.MODID);
 
-    /** Tumblestone in quarzite: la roccia in cui TFC mette i suoi geodi. */
-    public static final DeferredBlock<Block> TUMBLESTONE_QUARTZITE =
-            BLOCKS.register("tumblestone_quartzite", () -> new Block(
+    /**
+     * Le tre tumblestone in quarzite: la roccia in cui TFC mette i suoi geodi.
+     *
+     * <p>Lo strato di minerale e' quello dell'ametista di TFC — la forma e'
+     * loro, disegnata a mano, e cambiano solo i colori, presi dalle texture
+     * vere della tumblestone di Cobblemon invece che inventati.
+     */
+    public static final Map<String, DeferredBlock<Block>> MINERALI = new LinkedHashMap<>();
+
+    static {
+        for (String nome : new String[] {"tumblestone_quartzite",
+                "sky_tumblestone_quartzite", "black_tumblestone_quartzite"}) {
+            MINERALI.put(nome, BLOCKS.register(nome, () -> new Block(
                     BlockBehaviour.Properties.of()
                             .mapColor(MapColor.TERRACOTTA_WHITE)
                             .strength(6.0F, 10.0F)
                             .sound(SoundType.STONE)
-                            .requiresCorrectToolForDrops()));
+                            .requiresCorrectToolForDrops())));
+        }
+    }
 
     public static void register(IEventBus eventBus) {
         BLOCKS.register(eventBus);

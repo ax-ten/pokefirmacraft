@@ -1,9 +1,11 @@
 {
   "replace": false,
   "values": [
-    "tfcobblemon:tumblestone_quartzite",
-    "tfcobblemon:loose_tumblestone",
+    "tfcobblemon:black_tumblestone_quartzite",
+    "tfcobblemon:loose_black_tumblestone",
     "tfcobblemon:loose_sky_tumblestone",
-    "tfcobblemon:loose_black_tumblestone"
+    "tfcobblemon:loose_tumblestone",
+    "tfcobblemon:sky_tumblestone_quartzite",
+    "tfcobblemon:tumblestone_quartzite"
   ]
 }
