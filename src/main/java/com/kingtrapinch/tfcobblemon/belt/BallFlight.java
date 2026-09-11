@@ -6,7 +6,6 @@ import com.cobblemon.mod.common.api.events.pokemon.PokemonSentEvent;
 import com.cobblemon.mod.common.entity.pokemon.PokemonEntity;
 import com.cobblemon.mod.common.pokemon.Pokemon;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.phys.Vec3;
 
 /**
  * La ball che sta nell'inventario si lancia per davvero.
@@ -45,6 +44,16 @@ public final class BallFlight {
     }
 
     private static void rientra(PokemonRecallEvent.Pre event) {
+        final PokemonEntity uscito = event.getOldEntity();
+        if (uscito == null) {
+            // Non e' un rientro: e' contabilita'. PokemonStore.remove(Pokemon)
+            // chiama Pokemon.recall() su qualunque Pokemon tolga da uno store, e
+            // recall() emette questo evento come sua prima istruzione senza
+            // guardare se c'e' un'entita' da richiamare. Quindi ogni spostamento
+            // fra squadra e PC — anche quelli di Cobblemon, come il ritiro dal
+            // PC — passava da qui e si faceva coniare una ball.
+            return;
+        }
         final Pokemon mon = event.getPokemon();
         final ServerPlayer player = mon.getOwnerPlayer();
         if (player == null) {
@@ -54,8 +63,6 @@ public final class BallFlight {
             BallHandover.mark(player, mon.getUuid(), false);
             return;
         }
-        final PokemonEntity uscito = event.getOldEntity();
-        final Vec3 dove = uscito == null ? player.position() : uscito.position();
-        BallHandover.give(player, mon, dove);
+        BallHandover.give(player, mon, uscito.position());
     }
 }

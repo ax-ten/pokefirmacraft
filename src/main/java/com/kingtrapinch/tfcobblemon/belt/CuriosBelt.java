@@ -67,9 +67,22 @@ final class CuriosBelt {
                 || !(event.getEntity() instanceof ServerPlayer player)) {
             return;
         }
-        // chi stava in quello che si e' sfilato rientra: togliersi la cintura
-        // non lascia Pokemon in giro per il mondo senza un posto dove tornare
-        BeltParty.recallAll(player, event.getFrom());
+        // Attenzione: questo evento NON e' un cambio d'oggetto. Curios confronta
+        // lo stack indossato con una sua copia del tick prima usando
+        // ItemStack.matches, che in 1.21.1 guarda anche i componenti: quindi
+        // riscrivere il contenuto della cintura — cosa che facciamo noi ogni
+        // volta che una ball entra o che si marca un Pokemon in campo — arriva
+        // qui come "cintura sfilata". Trattarlo come tale richiamava dal mondo
+        // il Pokemon che si era appena mandato in campo.
+        //
+        // Il cambio e' vero solo se l'oggetto e' un altro.
+        final boolean sfilata = event.getFrom().getItem() != event.getTo().getItem();
+        if (sfilata) {
+            // chi stava in quello che si e' sfilato rientra: togliersi la
+            // cintura non lascia Pokemon in giro per il mondo senza un posto
+            // dove tornare
+            BeltParty.recallAll(player, event.getFrom());
+        }
         BeltParty.align(player);
     }
 

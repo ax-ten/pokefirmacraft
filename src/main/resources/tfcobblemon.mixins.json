@@ -7,7 +7,6 @@
     "RevivalHerbMixin",
     "VivichokeMixin",
     "PokeBallMixin",
-    "PartyGateMixin",
     "PcDepositMixin",
     "PcWithdrawMixin",
     "PcSwapMixin"
