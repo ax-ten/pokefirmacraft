@@ -10,7 +10,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -47,23 +46,19 @@ public final class BeltParty {
      *
      * <p>Cobblemon pretende che ogni Pokemon stia registrato in un deposito: uno
      * senza coordinate non e' "dentro la ball", e' in nessun posto, e non lo
-     * salva nessuno. Ma usare il PC del giocatore per questo avrebbe una
-     * conseguenza sbagliata: il giorno in cui il blocco PC esiste, dentro ci si
-     * troverebbe tutto quello che si ha in una cassa, e il PC diventerebbe
-     * l'indice gratuito di ogni Pokemon mai preso — il contrario del punto delle
-     * ball fisiche.
+     * salva nessuno. Ma usare il PC del giocatore avrebbe una conseguenza
+     * sbagliata: il giorno in cui il blocco PC esiste, dentro ci si troverebbe
+     * tutto quello che si ha in una cassa, e il PC diventerebbe l'indice
+     * gratuito di ogni Pokemon mai preso — il contrario del punto delle ball
+     * fisiche.
      *
-     * <p>Quindi un deposito nostro, dedicato e invisibile.
-     * {@code getCustomStore} lo tiene in cache e lo salva su file come gli
-     * altri, e la chiave e' un UUID derivato da quello del giocatore: il PC
-     * cerca col suo UUID e questo non lo trova mai. Nel PC finisce solo quello
-     * che il giocatore vi deposita di proposito.
+     * <p>Quindi un deposito nostro, che porta l'UUID del giocatore perche' e' da
+     * li' che Cobblemon ricava di chi sono i Pokemon, ed e' separato perche' e'
+     * una classe a se'. Il perche' funzioni sta su {@link BallBoxStore}.
      */
-    public static PCStore deposito(ServerPlayer player) {
-        final UUID chiave = UUID.nameUUIDFromBytes(
-                ("tfcobblemon:balls/" + player.getUUID()).getBytes(StandardCharsets.UTF_8));
+    public static BallBoxStore deposito(ServerPlayer player) {
         return Cobblemon.INSTANCE.getStorage()
-                .getCustomStore(PCStore.class, chiave, player.registryAccess());
+                .getCustomStore(BallBoxStore.class, player.getUUID(), player.registryAccess());
     }
 
     /**
@@ -143,7 +138,7 @@ public final class BeltParty {
      */
     private static void allinea(ServerPlayer player) {
         final PlayerPartyStore squadra = Cobblemon.INSTANCE.getStorage().getParty(player);
-        final PCStore pc = deposito(player);
+        final BallBoxStore pc = deposito(player);
         final UUID[] voluti = wanted(player);
 
         final Set<UUID> insieme = new HashSet<>();
@@ -224,50 +219,28 @@ public final class BeltParty {
     }
 
     /**
-     * Tira in squadra un Pokemon che non ci sta, per farlo uscire come
+     * Il Pokemon di una ball che non sta sulla cintura, per farlo uscire come
      * <b>compagno di viaggio</b>: una cavalcatura, o qualcuno che ti tiene
-     * compagnia, la cui ball non e' sulla cintura.
+     * compagnia. <b>Non entra in squadra</b> — resta nel suo box, ed e' il
+     * motivo per cui il box porta l'UUID del giocatore: cosi' il compagno
+     * risulta suo, e si puo' cavalcare e toccare.
      *
-     * <p>Deve passare dalla squadra e non puo' restare nel deposito, e il motivo
-     * e' nel modo in cui Cobblemon decide di chi e' un Pokemon:
-     * {@code getOwnerUUID()} lo ricava dal deposito in cui sta — per un PCStore
-     * restituisce l'UUID <em>del deposito</em>. Il nostro box ha una chiave
-     * derivata, quindi un Pokemon che vive li' non risulta di nessun giocatore,
-     * e {@code mobInteract} di PokemonEntity confronta proprio quell'UUID con
-     * quello di chi interagisce: non si potrebbe ne' cavalcare ne' toccare.
-     *
-     * <p>Uno solo per volta, e serve un posto libero in squadra: la cintura
-     * piena non lascia spazio per un compagno di viaggio, ed e' un prezzo
-     * giusto. Rientrando, l'allineamento lo rimanda nel box da se', perche' la
-     * sua ball non e' addosso.
+     * <p>Uno solo per volta: se ce n'e' gia' uno fuori, il gesto lo fa rientrare
+     * invece di aggiungerne un secondo.
      */
     public static Pokemon comeSupporto(ServerPlayer player, UUID pokemon) {
         if (BattleRegistry.getBattleByParticipatingPlayer(player) != null) {
             return null;
         }
-        final PlayerPartyStore squadra = Cobblemon.INSTANCE.getStorage().getParty(player);
-        // un compagno per volta: chi c'e' gia' fuori senza la ball addosso
-        // rientra prima, altrimenti se ne accumulerebbero quanti sono i posti
-        for (int i = 0; i < squadra.size(); i++) {
-            final Pokemon fuori = squadra.get(i);
-            if (fuori != null && fuori.getEntity() != null
-                    && !BallHandover.onBelt(player, fuori.getUuid())) {
+        final BallBoxStore box = deposito(player);
+        for (Pokemon fuori : box) {
+            if (fuori.getEntity() != null) {
                 fuori.tryRecallWithAnimation();
                 return null;
             }
         }
-        final int libero = primoLibero(squadra);
-        if (libero < 0) {
-            return null;
-        }
-        final PCStore box = deposito(player);
         final Pokemon mon = box.get(pokemon);
-        if (mon == null || !pokemon.equals(mon.getUuid())) {
-            return null;
-        }
-        box.remove(mon);
-        squadra.set(libero, mon);
-        return mon;
+        return mon != null && pokemon.equals(mon.getUuid()) ? mon : null;
     }
 
     /**

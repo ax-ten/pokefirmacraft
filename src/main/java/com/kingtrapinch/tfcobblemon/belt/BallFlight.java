@@ -76,24 +76,34 @@ public final class BallFlight {
             if (player == null) {
                 continue;
             }
-            final PlayerPartyStore squadra = Cobblemon.INSTANCE.getStorage().getParty(player);
+            // il compagno di viaggio sta nel box, non in squadra
             Pokemon compagno = null;
-            int inSquadra = 0;
-            for (int i = 0; i < squadra.size(); i++) {
-                final Pokemon mon = squadra.get(i);
-                if (mon == null) {
-                    continue;
-                }
-                if (BallHandover.onBelt(player, mon.getUuid())) {
-                    inSquadra++;
-                } else if (mon.getEntity() != null) {
-                    compagno = mon;
+            for (Pokemon fuori : BeltParty.deposito(player)) {
+                if (fuori.getEntity() != null) {
+                    compagno = fuori;
+                    break;
                 }
             }
-            if (compagno != null && inSquadra > 0) {
+            if (compagno == null) {
+                continue;
+            }
+            final PlayerPartyStore squadra = Cobblemon.INSTANCE.getStorage().getParty(player);
+            if (squadra.occupied() > 0) {
                 compagno.tryRecallWithAnimation();
+                continue;
             }
+            // e' tutto quello che si ha: allora combatte lui. Entra in squadra
+            // per la durata dello scontro, e l'allineamento lo rimandera' nel
+            // box quando sara' finito, perche' la sua ball non e' addosso.
+            box(player, compagno);
         }
+    }
+
+    /** Sposta un compagno dal box alla squadra, per combattere. */
+    private static void box(ServerPlayer player, Pokemon compagno) {
+        final PlayerPartyStore squadra = Cobblemon.INSTANCE.getStorage().getParty(player);
+        BeltParty.deposito(player).remove(compagno);
+        squadra.add(compagno);
     }
 
     private static void rientrato(PokemonRecallEvent.Post event) {
