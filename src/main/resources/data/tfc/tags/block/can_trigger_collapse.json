@@ -1,9 +1,6 @@
 {
   "replace": false,
   "values": [
-    "cobblemon:tumblestone_block",
-    "cobblemon:black_tumblestone_block",
-    "cobblemon:sky_tumblestone_block",
     "minecraft:obsidian"
   ]
 }
