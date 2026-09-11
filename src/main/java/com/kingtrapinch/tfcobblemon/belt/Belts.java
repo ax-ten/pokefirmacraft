@@ -31,16 +31,17 @@ public final class Belts {
     /**
      * Quanti Pokemon il giocatore ha a portata.
      *
-     * <p>Una cintura concede i suoi posti. Senza cintura si indossa la ball
-     * stessa, e allora ne vale uno — ma solo se dentro c'e' qualcuno: una ball
-     * vuota al collo non e' un Pokemon a portata.
+     * <p>Una cintura concede i suoi posti. Senza cintura ne vale uno: un posto
+     * ce l'hai sempre, che tu indossi la ball o niente. Zero posti vorrebbe dire
+     * cominciare la partita senza poter tenere il primo Pokemon che prendi, e
+     * l'elenco a sinistra vuoto non spiega perche'.
      */
     public static int capacity(Player player) {
         final ItemStack nelloSlot = inBeltSlot(player);
         if (nelloSlot.getItem() instanceof TrainerBeltItem belt) {
             return belt.slots();
         }
-        return BallLink.filled(nelloSlot) ? 1 : 0;
+        return 1;
     }
 
     /**

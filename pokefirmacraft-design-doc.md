@@ -303,6 +303,12 @@ La colata rende otto core da duecento millibucket, e ogni core fa due ball:
 dodici e mezzo per ball. Le due vie automatiche saltano il core e prendono il
 fuso direttamente, e costano meno perche' non passano dallo stampo.
 
+**In cima alla scala il core non c'e' piu'.** Le ball di ultimo tier prendono al
+suo posto il **logic processor di Applied Energistics** (`ae2:logic_processor`):
+non un core migliore, un altro pezzo. E' la sostituzione giusta perche' dice la
+cosa giusta — il core e' il fermo che tiene dentro un Pokemon, e a fine gioco
+quel fermo diventa un calcolatore. Il resto di quelle ricette e' da decidere.
+
 **Come cresce la resa, e dove mi ero sbagliato.** Avevo scritto che il rapporto
 della ricetta non cambia mai e che la scala viene solo dal tier della macchina.
 E' falso, e il pacchetto lo dimostra riga per riga. In
@@ -362,7 +368,7 @@ va condiviso. E' di dimensione uno, e questo decide l'architettura.
 
 | Cosa indossi | Ball a portata |
 |---|---|
-| una ball, nuda nello slot belt | 1 |
+| niente, o una ball nuda nello slot belt | 1 |
 | Trainer Belt di cuoio | 3 |
 | Trainer Belt completa | 6 |
 
@@ -513,14 +519,19 @@ anche il solo momento in cui serve sapere con certezza dove sta ciascuno.
 cintura a meta' scontro non cambia le carte in tavola: finche' la battaglia e'
 in corso l'allineamento non fa niente.
 
-**Quanti posti, esattamente.** Una cintura concede i suoi. Senza cintura si
-indossa la ball stessa, e allora ne vale uno — ma solo se dentro c'e' qualcuno:
-una ball vuota al collo non e' un Pokemon a portata. Da cui una conseguenza che
-va guardata in faccia: **chi non indossa niente non ha squadra.** Il primo
-Pokemon catturato finisce nel PC e la sua ball nell'inventario, e per averlo a
-portata va indossata. E' coerente col resto — se la ball non e' addosso, il
-Pokemon non e' a portata — ma e' anche il punto in cui il sistema si fa sentire
-di piu', perche' capita alla prima cattura della partita.
+**Quanti posti, esattamente.** Una cintura concede i suoi: tre col cuoio, sei
+con quella completa. Senza cintura ne vale **uno**, e quell'uno non si toglie
+mai — che tu indossi la ball o niente.
+
+Il pavimento a uno non e' una gentilezza, e' quello che tiene il sistema
+leggibile. A zero posti chi comincia la partita non puo' tenere il primo Pokemon
+che prende, e l'elenco a sinistra vuoto non spiega perche': si legge come un
+difetto, non come una regola. Con un posto sempre disponibile la progressione
+resta la stessa — uno, tre, sei — e il primo Pokemon ce l'hai.
+
+Conseguenza sull'allineamento: senza niente addosso non c'e' nulla a cui
+allinearsi, e la squadra non si tocca. Il limite lo tiene il cancello su `add`,
+che e' il posto giusto.
 - `PlayerPartyStore.add(Pokemon)` restituisce un booleano e c'e'
   `getOverflowPC(RegistryAccess)`: **e' li' che vive l'automatismo del PC**, ed
   e' il punto in cui inserirsi per far restare il Pokemon nella ball.

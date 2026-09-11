@@ -77,6 +77,13 @@ public final class BeltParty {
             }
         }
 
+        // niente addosso, o niente dentro: non c'e' nulla a cui allinearsi, e il
+        // posto che spetta comunque a tutti lo tiene il cancello su add. Senza
+        // questo, chi gioca senza cintura si vedrebbe svuotare la squadra.
+        if (insieme.isEmpty()) {
+            return;
+        }
+
         // chi non e' su una ball addosso non e' a portata — a meno che non sia
         // fuori, e allora e' affare del giocatore, non nostro
         for (int i = 0; i < squadra.size(); i++) {
