@@ -9,6 +9,9 @@ import net.neoforged.fml.ModList;
 public final class Belts {
     private Belts() {}
 
+    /** I posti della squadra di Cobblemon: il massimo che si possa concedere. */
+    private static final int PIENA = 6;
+
     private static Boolean curios;
 
     private static boolean curios() {
@@ -22,6 +25,15 @@ public final class Belts {
     public static ItemStack worn(Player player) {
         final ItemStack nelloSlot = inBeltSlot(player);
         return nelloSlot.getItem() instanceof TrainerBeltItem ? nelloSlot : ItemStack.EMPTY;
+    }
+
+    /**
+     * In creativa i limiti non si applicano. La creativa serve a provare le
+     * cose, non a rispettarle: la cintura non fa da cancello, la squadra non si
+     * riallinea, e si evoca qualunque Pokemon si abbia.
+     */
+    public static boolean senzaLimiti(Player player) {
+        return player.isCreative();
     }
 
     /** Cosa il giocatore porta nello slot belt, qualunque cosa sia. */
@@ -38,6 +50,9 @@ public final class Belts {
      * l'elenco a sinistra vuoto non spiega perche'.
      */
     public static int capacity(Player player) {
+        if (senzaLimiti(player)) {
+            return PIENA;
+        }
         final ItemStack nelloSlot = inBeltSlot(player);
         if (nelloSlot.getItem() instanceof TrainerBeltItem belt) {
             return belt.slots();

@@ -188,5 +188,6 @@
   "tfcobblemon.ball.non_risponde": "This Ball no longer answers",
   "tfcobblemon.ball.in_combattimento": "An unfamiliar voice echoes in your mind: %s",
   "tfcobblemon.ball.in_combattimento.voce": "You can't send out pokémons outside your team during combat!",
-  "tfcobblemon.ball.fuori_squadra": "This Pokémon is not in your party"
+  "tfcobblemon.ball.fuori_squadra": "%s is not in your party",
+  "tfcobblemon.ball.non_addosso": "You aren't carrying %s's Ball"
 }

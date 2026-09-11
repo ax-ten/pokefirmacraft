@@ -49,5 +49,11 @@ public final class BallCapture {
         final Vec3 dove = lancio == null ? player.position() : lancio.position();
         player.serverLevel().addFreshEntity(
                 new ItemEntity(player.serverLevel(), dove.x, dove.y, dove.z, ball));
+
+        // e la squadra si rimette in pari: Cobblemon ha appena messo il Pokemon
+        // dove ha voluto lui, e se la sua ball non e' addosso non e' a portata.
+        // Senza questo restava in squadra fino al gesto successivo sulla
+        // cintura, cioe' sembrava che una cattura bastasse per averlo in mano.
+        BeltParty.align(player);
     }
 }

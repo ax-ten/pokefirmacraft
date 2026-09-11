@@ -27,6 +27,7 @@ public final class BallFlight {
     public static void hook() {
         CobblemonEvents.POKEMON_SENT_POST.subscribe(BallFlight::uscito);
         CobblemonEvents.POKEMON_RECALL_PRE.subscribe(BallFlight::rientra);
+        CobblemonEvents.POKEMON_RECALL_POST.subscribe(BallFlight::rientrato);
     }
 
     private static void uscito(PokemonSentEvent.Post event) {
@@ -41,6 +42,23 @@ public final class BallFlight {
             return;
         }
         BallHandover.takeLoose(player, mon.getUuid());
+    }
+
+    /**
+     * A rientro finito la squadra si rimette in pari. Serve perche' il rientro
+     * con animazione finisce qualche tick dopo il gesto che l'ha chiesto: fino a
+     * quel momento il Pokemon ha ancora un'entita' nel mondo e l'allineamento lo
+     * salta di proposito, quindi senza questo resterebbe in squadra dopo che la
+     * sua cintura e' stata sfilata.
+     */
+    private static void rientrato(PokemonRecallEvent.Post event) {
+        if (event.getOldEntity() == null) {
+            return;
+        }
+        final ServerPlayer player = event.getPokemon().getOwnerPlayer();
+        if (player != null) {
+            BeltParty.align(player);
+        }
     }
 
     private static void rientra(PokemonRecallEvent.Pre event) {

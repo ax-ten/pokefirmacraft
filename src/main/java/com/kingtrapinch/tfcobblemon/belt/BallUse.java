@@ -49,6 +49,7 @@ public final class BallUse {
     public static void nienteEvocazioniInCombattimento(PlayerInteractEvent.RightClickItem event) {
         if (!BallLink.filled(event.getItemStack())
                 || !(event.getEntity() instanceof ServerPlayer player)
+                || Belts.senzaLimiti(player)
                 || BattleRegistry.getBattleByParticipatingPlayer(player) == null) {
             return;
         }
@@ -82,7 +83,9 @@ public final class BallUse {
 
         final Pokemon mon = inSquadra(player, legame.pokemon());
         if (mon == null) {
-            avvisa(player, "tfcobblemon.ball.fuori_squadra");
+            player.displayClientMessage(Component.translatable(
+                    "tfcobblemon.ball.fuori_squadra", legame.label())
+                    .withStyle(ChatFormatting.GRAY), true);
             return;
         }
         if (!nostro(mon, legame)) {
@@ -93,6 +96,13 @@ public final class BallUse {
         if (mon.getEntity() != null) {
             mon.tryRecallWithAnimation();
             return;
+        }
+        // la ball sparisce adesso, non a lancio finito: e' un lancio, e la
+        // mano dopo il lancio e' vuota. POKEMON_SENT_POST arriva un secondo
+        // dopo, quando l'animazione ha finito, e per un secondo la ball
+        // restava in mano al giocatore che l'aveva appena tirata.
+        if (!BallHandover.onBelt(player, legame.pokemon())) {
+            BallHandover.takeLoose(player, legame.pokemon());
         }
         final Vec3 dove = player.getEyePosition().add(player.getLookAngle().scale(DAVANTI));
         mon.sendOutWithAnimation(player, level, dove, null, true, null, entity -> Unit.INSTANCE);

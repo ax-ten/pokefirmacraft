@@ -9,7 +9,8 @@
     "PokeBallMixin",
     "PcDepositMixin",
     "PcWithdrawMixin",
-    "PcSwapMixin"
+    "PcSwapMixin",
+    "SendOutGateMixin"
   ],
   "client": [
     "PartyOverlayMixin"

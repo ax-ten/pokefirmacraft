@@ -101,7 +101,13 @@ public final class BeltEvents {
             return;
         }
         final Player player = event.getPlayer();
-        if (player.level().isClientSide() || !Belts.insert(player, ball)) {
+        if (player.level().isClientSide()) {
+            return;
+        }
+        // nella cintura se c'e' posto, altrimenti addosso se lo slot e' libero:
+        // raccogliere una ball quando non si porta niente e' il momento in cui
+        // uno se l'aspetta addosso
+        if (!Belts.insert(player, ball) && !Belts.equip(player, ball)) {
             return;
         }
         event.setCanPickup(TriState.FALSE);

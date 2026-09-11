@@ -67,7 +67,8 @@ public final class BeltParty {
     public static void align(ServerPlayer player) {
         // in combattimento la squadra e' quella registrata all'inizio: togliersi
         // la cintura a meta' scontro non cambia le carte in tavola
-        if (BattleRegistry.getBattleByParticipatingPlayer(player) != null) {
+        if (BattleRegistry.getBattleByParticipatingPlayer(player) != null
+                || Belts.senzaLimiti(player)) {
             return;
         }
         // i nostri stessi spostamenti fanno scattare eventi che tornano qui
@@ -171,7 +172,10 @@ public final class BeltParty {
         for (int i = 0; i < squadra.size(); i++) {
             final Pokemon mon = squadra.get(i);
             if (mon != null && mon.getEntity() != null) {
-                mon.recall();
+                // con l'animazione: sfilarsi la cintura non fa svanire i Pokemon
+                // dal mondo, li fa rientrare. Il rientro finisce qualche tick
+                // dopo, e il riallineamento lo fa POKEMON_RECALL_POST.
+                mon.tryRecallWithAnimation();
             }
         }
         align(player);
@@ -186,7 +190,10 @@ public final class BeltParty {
         for (UUID id : contenuti(cosa)) {
             final Pokemon mon = Cobblemon.INSTANCE.getStorage().getParty(player).get(id);
             if (mon != null && mon.getEntity() != null) {
-                mon.recall();
+                // con l'animazione: sfilarsi la cintura non fa svanire i Pokemon
+                // dal mondo, li fa rientrare. Il rientro finisce qualche tick
+                // dopo, e il riallineamento lo fa POKEMON_RECALL_POST.
+                mon.tryRecallWithAnimation();
             }
         }
     }
