@@ -6,9 +6,12 @@
   "mixins": [
     "RevivalHerbMixin",
     "VivichokeMixin",
-    "PokeBallMixin"
+    "PokeBallMixin",
+    "PartyGateMixin"
   ],
-  "client": [],
+  "client": [
+    "PartyOverlayMixin"
+  ],
   "injectors": {
     "defaultRequire": 1
   }

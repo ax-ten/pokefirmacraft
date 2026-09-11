@@ -44,6 +44,18 @@ final class CuriosBelt {
         }
     }
 
+    /**
+     * Cosa c'e' nello slot {@code belt}, qualunque cosa sia: una nostra
+     * cintura, una ball nuda, o il tool belt di un'altra mod. Lo slot e' di
+     * dimensione uno, quindi la domanda ha una risposta sola.
+     */
+    static ItemStack wornInBelt(Player player) {
+        return CuriosApi.getCuriosInventory(player)
+                .flatMap(inventario -> inventario.getStacksHandler("belt"))
+                .map(handler -> handler.getStacks().getStackInSlot(0))
+                .orElse(ItemStack.EMPTY);
+    }
+
     /** La cintura che il giocatore ha addosso, o vuoto se non ne porta. */
     static ItemStack worn(Player player) {
         return CuriosApi.getCuriosInventory(player)

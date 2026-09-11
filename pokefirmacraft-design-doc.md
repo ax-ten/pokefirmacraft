@@ -406,6 +406,38 @@ li spedisci da qualunque posto.
   toccata**: resta sei internamente, altrimenti i salvataggi esistenti si
   rompono. Il limite della cintura va messo come cancello su `add` e sul
   disegno dell'overlay, non sulla struttura.
+
+**Come il cancello e' fatto davvero.** Tre pezzi, e il terzo e' quello che tiene
+in piedi gli altri due.
+
+1. `PlayerPartyStore.add` risponde no oltre quanto la cintura concede, e chi
+   chiama fa quello che ha sempre fatto a squadra piena: manda nel PC. A
+   giocatore offline non ci mettiamo in mezzo — uno scambio che arriva mentre
+   non c'e' nessuno non ha una cintura da guardare.
+2. L'elenco a sinistra mostra solo i posti concessi. L'overlay chiede a
+   `ClientParty.getSlots()` la lista degli slot piu' volte — una per l'altezza
+   complessiva, una per disegnarli — e rispondendo a tutte con la lista
+   accorciata il riquadro si stringe da se' e resta centrato. Mai piu' corta di
+   quanti Pokemon ci sono davvero: nel momento in cui ti togli la cintura e' il
+   caso di vederli.
+3. **Il riallineamento, una volta al secondo.** La cintura si cambia da mille
+   strade — trascinando nell'inventario, morendo, un'altra mod che sposta
+   oggetti — e inseguirle tutte significa dimenticarne una. Quindi si ricalcola
+   da zero: chi non e' su una ball addosso torna nel PC (richiamato prima, se
+   era fuori), chi lo e' va al posto della sua ball. Non costa niente e non
+   dimentica niente.
+
+Senza il punto 3 i primi due si contraddicono: il cancello manda nel PC, e
+niente riporterebbe indietro il Pokemon quando la ball torna sulla cintura.
+
+**Quanti posti, esattamente.** Una cintura concede i suoi. Senza cintura si
+indossa la ball stessa, e allora ne vale uno — ma solo se dentro c'e' qualcuno:
+una ball vuota al collo non e' un Pokemon a portata. Da cui una conseguenza che
+va guardata in faccia: **chi non indossa niente non ha squadra.** Il primo
+Pokemon catturato finisce nel PC e la sua ball nell'inventario, e per averlo a
+portata va indossata. E' coerente col resto — se la ball non e' addosso, il
+Pokemon non e' a portata — ma e' anche il punto in cui il sistema si fa sentire
+di piu', perche' capita alla prima cattura della partita.
 - `PlayerPartyStore.add(Pokemon)` restituisce un booleano e c'e'
   `getOverflowPC(RegistryAccess)`: **e' li' che vive l'automatismo del PC**, ed
   e' il punto in cui inserirsi per far restare il Pokemon nella ball.
@@ -685,8 +717,15 @@ versione artigianale, molto prima.
 **Progettazione**
 
 - Redesign completo delle ricette Poké Ball in chiave Greg (sezione 5.1)
+- **Il PC va riprogettato con i componenti di Applied Energistics**, e con lui la
+  Trainer Belt avanzata: il PC è un magazzino indirizzabile e il collegamento
+  remoto è un terminale wireless, quindi celle, ME controller, terminali e
+  wireless access point sono esattamente il vocabolario giusto — molto più
+  della pila di lamiere di ora. Da decidere: quale capienza dà quale cella,
+  se le box del PC diventano celle vere e proprie, e quale tier AE2 fa da
+  cancello al collegamento remoto
 - Ricollocazione di PC e Pasture Block secondo la sezione 4
-- Capienza e materiali degli aggiornamenti della Trainer Belt (sezione 6.1)
+- Materiali delle due cinture (la capienza è decisa: 1 a mani nude, 3, 6)
 - Quali categorie ha la borsa e con che era si aprono (sezione 6.4)
 - Struttura dettagliata del capitolo di quest FTB (nomi, ordine, traguardi di sblocco)
 - Held item non ancora assegnati singolarmente su tutti i 101 esistenti in Cobblemon (la sezione 4 copre le categorie principali per rappresentanza, non ogni singolo item)

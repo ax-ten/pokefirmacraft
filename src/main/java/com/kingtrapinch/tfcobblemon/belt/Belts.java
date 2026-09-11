@@ -22,10 +22,24 @@ public final class Belts {
         return curios() ? CuriosBelt.worn(player) : ItemStack.EMPTY;
     }
 
-    /** Quanti posti concede quello che il giocatore ha addosso. */
+    /** Cosa il giocatore porta nello slot belt, qualunque cosa sia. */
+    public static ItemStack inBeltSlot(Player player) {
+        return curios() ? CuriosBelt.wornInBelt(player) : ItemStack.EMPTY;
+    }
+
+    /**
+     * Quanti Pokemon il giocatore ha a portata.
+     *
+     * <p>Una cintura concede i suoi posti. Senza cintura si indossa la ball
+     * stessa, e allora ne vale uno — ma solo se dentro c'e' qualcuno: una ball
+     * vuota al collo non e' un Pokemon a portata.
+     */
     public static int capacity(Player player) {
-        final ItemStack cintura = worn(player);
-        return cintura.getItem() instanceof TrainerBeltItem belt ? belt.slots() : 0;
+        final ItemStack nelloSlot = inBeltSlot(player);
+        if (nelloSlot.getItem() instanceof TrainerBeltItem belt) {
+            return belt.slots();
+        }
+        return BallLink.filled(nelloSlot) ? 1 : 0;
     }
 
     /**

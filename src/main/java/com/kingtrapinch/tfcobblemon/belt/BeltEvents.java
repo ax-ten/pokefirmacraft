@@ -13,6 +13,7 @@ import net.neoforged.neoforge.common.util.TriState;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.player.ItemEntityPickupEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
+import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 
 /** Le abitudini della cintura e delle ball piene. */
 @EventBusSubscriber(modid = TFCobblemon.MODID)
@@ -74,6 +75,23 @@ public final class BeltEvents {
         event.setCanPickup(TriState.FALSE);
         event.getItemEntity().discard();
         clic(player);
+    }
+
+    /** Ogni quanti tick si guarda se la squadra e' ancora quella della cintura. */
+    private static final int RESPIRO = 20;
+
+    /**
+     * La cintura si cambia da mille strade — trascinando nell'inventario,
+     * morendo, un'altra mod che sposta oggetti — e inseguirle tutte significa
+     * dimenticarne una. Una volta al secondo si ricalcola da zero, che non
+     * dimentica niente e costa sei confronti.
+     */
+    @SubscribeEvent
+    public static void laSquadraSeguaLaCintura(PlayerTickEvent.Post event) {
+        if (event.getEntity() instanceof ServerPlayer player
+                && player.tickCount % RESPIRO == 0) {
+            BeltParty.reconcile(player);
+        }
     }
 
     /** Il verso del sacco, sentito da chi lo fa e non dal mondo intorno. */
