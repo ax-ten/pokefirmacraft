@@ -1,7 +1,6 @@
 package com.kingtrapinch.tfcobblemon.belt;
 
 import com.cobblemon.mod.common.Cobblemon;
-import com.cobblemon.mod.common.entity.pokemon.PokemonEntity;
 import com.cobblemon.mod.common.pokemon.Pokemon;
 import com.kingtrapinch.tfcobblemon.TFCobblemon;
 import kotlin.Unit;
@@ -10,7 +9,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -67,42 +65,6 @@ public final class BallUse {
         }
         final Vec3 dove = player.getEyePosition().add(player.getLookAngle().scale(DAVANTI));
         mon.sendOutWithAnimation(player, level, dove, null, true, null, entity -> Unit.INSTANCE);
-    }
-
-    /**
-     * Tasto destro con una ball vuota su un proprio Pokemon fuori: lo richiama
-     * dentro quella ball, e da quel momento e' la sua. Una ball vuota addosso a
-     * un Pokemon selvatico resta il lancio di sempre, che non passa da qui.
-     */
-    @SubscribeEvent
-    public static void legaAlProprio(PlayerInteractEvent.EntityInteract event) {
-        final ItemStack ball = event.getItemStack();
-        if (!TrainerBeltItem.isBall(ball) || BallLink.filled(ball)
-                || !(event.getTarget() instanceof PokemonEntity target)) {
-            return;
-        }
-        final Player player = event.getEntity();
-        final Pokemon mon = target.getPokemon();
-        if (mon.isWild() || !player.getUUID().equals(mon.getOwnerUUID())) {
-            return;
-        }
-        event.setCanceled(true);
-        event.setCancellationResult(InteractionResult.SUCCESS);
-        if (!(player instanceof ServerPlayer)) {
-            return;
-        }
-
-        // l'handle e' l'identita' della ball: il Pokemon si ricorda di questa e
-        // di nessun'altra, cosi' una copia dell'item non risponde piu'
-        final UUID handle = UUID.randomUUID();
-        mon.getPersistentData().putString(BallLink.OWNER, handle.toString());
-
-        final ItemStack legata = ball.split(1);
-        legata.set(ModBallData.BALL_LINK.get(), BallLink.of(mon, handle));
-        mon.recall();
-        if (!player.getInventory().add(legata)) {
-            player.drop(legata, false);
-        }
     }
 
     /** Il Pokemon puntato, cercato dove vive: prima la squadra, poi il PC. */

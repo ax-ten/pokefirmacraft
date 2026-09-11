@@ -22,16 +22,18 @@ public final class ModBelt {
 
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(TFCobblemon.MODID);
 
-    /** Quante ball tiene ogni grado di cintura. */
+    /**
+     * Quante ball tiene ogni grado di cintura. Senza cintura si indossa una
+     * ball nuda, quindi la scala e' 1, 3, 6.
+     */
     public static final Map<String, Integer> TIERS = Map.of(
-            "leather_trainer_belt", 2,
-            "reinforced_trainer_belt", 4,
+            "leather_trainer_belt", 3,
             "trainer_belt", 6);
 
     public static final Map<String, DeferredItem<Item>> BELTS = new LinkedHashMap<>();
 
     static {
-        for (String nome : new String[] {"leather_trainer_belt", "reinforced_trainer_belt", "trainer_belt"}) {
+        for (String nome : new String[] {"leather_trainer_belt", "trainer_belt"}) {
             final int slots = TIERS.get(nome);
             BELTS.put(nome, ITEMS.register(nome, () -> new TrainerBeltItem(slots, new Item.Properties())));
         }

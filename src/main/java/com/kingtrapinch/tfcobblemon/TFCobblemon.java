@@ -1,5 +1,6 @@
 package com.kingtrapinch.tfcobblemon;
 
+import com.kingtrapinch.tfcobblemon.belt.BallCapture;
 import com.kingtrapinch.tfcobblemon.belt.ModBallData;
 import com.kingtrapinch.tfcobblemon.belt.ModBelt;
 import com.kingtrapinch.tfcobblemon.dig.ModDig;
@@ -31,6 +32,11 @@ public class TFCobblemon {
         ModFluids.register(modEventBus);
 
         modEventBus.addListener(this::addCreative);
+        modEventBus.addListener(this::setup);
+    }
+
+    private void setup(net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent event) {
+        BallCapture.hook();
     }
 
     private void addCreative(BuildCreativeModeTabContentsEvent event) {

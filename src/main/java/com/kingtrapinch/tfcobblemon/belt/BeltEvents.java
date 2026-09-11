@@ -1,13 +1,17 @@
 package com.kingtrapinch.tfcobblemon.belt;
 
 import com.kingtrapinch.tfcobblemon.TFCobblemon;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.common.util.TriState;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
+import net.neoforged.neoforge.event.entity.player.ItemEntityPickupEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 
 /** Le abitudini della cintura e delle ball piene. */
@@ -48,11 +52,34 @@ public final class BeltEvents {
         }
         event.setCanceled(true);
         event.setCancellationResult(InteractionResult.SUCCESS);
-        if (player.level().isClientSide()) {
+        if (!player.level().isClientSide() && Belts.insert(player, inMano)) {
+            clic(player);
+        }
+    }
+
+    /**
+     * Una ball piena raccolta da terra va sulla cintura, se c'e' un posto: e'
+     * un Pokemon, il suo posto e' addosso, non in fondo allo zaino.
+     */
+    @SubscribeEvent
+    public static void raccoltaVaSullaCintura(ItemEntityPickupEvent.Pre event) {
+        final ItemStack ball = event.getItemEntity().getItem();
+        if (ball.getCount() != 1 || !BallLink.filled(ball)) {
             return;
         }
-        if (belt.infila(cintura, inMano)) {
-            player.playSound(net.minecraft.sounds.SoundEvents.BUNDLE_INSERT, 0.8F, 1.0F);
+        final Player player = event.getPlayer();
+        if (player.level().isClientSide() || !Belts.insert(player, ball)) {
+            return;
+        }
+        event.setCanPickup(TriState.FALSE);
+        event.getItemEntity().discard();
+        clic(player);
+    }
+
+    /** Il verso del sacco, sentito da chi lo fa e non dal mondo intorno. */
+    static void clic(Player player) {
+        if (player instanceof ServerPlayer chi) {
+            chi.playNotifySound(SoundEvents.BUNDLE_INSERT, chi.getSoundSource(), 0.8F, 1.0F);
         }
     }
 }

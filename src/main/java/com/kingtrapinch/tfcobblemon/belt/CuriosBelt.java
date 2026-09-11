@@ -9,6 +9,7 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.CuriosCapability;
+import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.SlotResult;
 
 /**
@@ -50,5 +51,29 @@ final class CuriosBelt {
                         stack -> stack.getItem() instanceof TrainerBeltItem))
                 .map(SlotResult::stack)
                 .orElse(ItemStack.EMPTY);
+    }
+
+    /**
+     * Infila una ball nella cintura indossata. La cintura va riscritta nel suo
+     * slot e non solo modificata: Curios si accorge che un curio e' cambiato
+     * confrontando gli stack, e cambiare un componente dello stesso stack non
+     * gli basta a mandarlo al client.
+     */
+    static boolean insert(Player player, ItemStack ball) {
+        return CuriosApi.getCuriosInventory(player).map(inventario ->
+                inventario.findFirstCurio(stack -> stack.getItem() instanceof TrainerBeltItem)
+                        .map(trovata -> {
+                            final ItemStack cintura = trovata.stack();
+                            if (!(cintura.getItem() instanceof TrainerBeltItem belt)
+                                    || !belt.infila(cintura, ball)) {
+                                return false;
+                            }
+                            final SlotContext dove = trovata.slotContext();
+                            inventario.getStacksHandler(dove.identifier()).ifPresent(
+                                    handler -> handler.getStacks().setStackInSlot(dove.index(), cintura));
+                            return true;
+                        })
+                        .orElse(false))
+                .orElse(false);
     }
 }

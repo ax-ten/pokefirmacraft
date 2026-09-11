@@ -344,8 +344,7 @@ va condiviso. E' di dimensione uno, e questo decide l'architettura.
 | Cosa indossi | Ball a portata |
 |---|---|
 | una ball, nuda nello slot belt | 1 |
-| Trainer Belt di cuoio | 2 |
-| Trainer Belt rinforzata | 4 |
+| Trainer Belt di cuoio | 3 |
 | Trainer Belt completa | 6 |
 
 Lo slot e' uno, quindi la cintura non allarga lo slot: la cintura **e'**
@@ -376,6 +375,19 @@ Se la ball si perde, si perde una ball.
 
 Per i Pokemon in eccesso, quelli che oggi finiscono nel PC, vale lo stesso: la
 ball in tasca punta a un deposito personale in overflow, non se lo porta dentro.
+
+**La ball di un Pokemon e' la sua, e nessun'altra.** Cobblemon si ricorda con
+che ball l'hai preso (`Pokemon.getCaughtBall()`): quella e' la sua per sempre,
+e non si richiama un Pokemon dentro una ball diversa. Quindi non esiste il
+gesto "ball vuota addosso al mio Pokemon": la ball giusta nasce alla cattura, e
+se la perdi la riprendi ritirandolo dal PC.
+
+**Appena catturato, il Pokemon e' un oggetto.** La sua ball compare come item —
+non c'e' il caso in cui un Pokemon esista solo dentro una struttura invisibile.
+Se la cintura ha un posto libero la ball ci finisce da se'; altrimenti sta
+nell'inventario, e la cintura se la prende quando un posto si libera. Lo stesso
+vale per una ball piena raccolta da terra: il posto di un Pokemon e' addosso,
+non in fondo allo zaino.
 
 **Portarsi un Pokemon in tasca invece che nel PC.** Oggi, a squadra piena, il
 Pokemon catturato finisce nel PC. Con la cintura piena vorremmo che restasse

@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "tfcobblemon:item/belt/reinforced_trainer_belt"
-  }
-}
