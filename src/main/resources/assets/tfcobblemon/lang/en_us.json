@@ -185,5 +185,7 @@
   "item.tfcobblemon.leather_trainer_belt": "Leather Trainer Belt",
   "item.tfcobblemon.reinforced_trainer_belt": "Reinforced Trainer Belt",
   "item.tfcobblemon.trainer_belt": "Trainer Belt",
-  "tooltip.tfcobblemon.trainer_belt": "%s/%s Poké Balls"
+  "tooltip.tfcobblemon.trainer_belt": "%s/%s Poké Balls",
+  "tfcobblemon.ball.lontano": "That Pokémon is neither in your party nor in your PC",
+  "tfcobblemon.ball.non_risponde": "This Ball no longer answers"
 }

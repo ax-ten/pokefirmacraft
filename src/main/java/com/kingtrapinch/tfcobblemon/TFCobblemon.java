@@ -1,5 +1,6 @@
 package com.kingtrapinch.tfcobblemon;
 
+import com.kingtrapinch.tfcobblemon.belt.ModBallData;
 import com.kingtrapinch.tfcobblemon.belt.ModBelt;
 import com.kingtrapinch.tfcobblemon.dig.ModDig;
 import com.kingtrapinch.tfcobblemon.fluid.ModFluids;
@@ -25,6 +26,7 @@ public class TFCobblemon {
         ModCreativeModTabs.register(modEventBus);
         ModGlassOperations.register(modEventBus);
         ModBelt.register(modEventBus);
+        ModBallData.register(modEventBus);
         ModDig.register(modEventBus);
         ModFluids.register(modEventBus);
 

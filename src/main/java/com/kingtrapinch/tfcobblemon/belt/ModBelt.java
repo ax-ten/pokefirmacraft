@@ -3,10 +3,7 @@ package com.kingtrapinch.tfcobblemon.belt;
 import com.kingtrapinch.tfcobblemon.TFCobblemon;
 import net.minecraft.world.item.Item;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModList;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -14,7 +11,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Le tre cinture e la capability che zittisce il tooltip di Curios.
+ * Le tre cinture.
  *
  * <p>Lo slot {@code belt} non lo dichiariamo: esiste dentro Curios e lo usa
  * anche ToolBelt. Quello che dichiariamo e' quali oggetti ci si possono
@@ -42,21 +39,8 @@ public final class ModBelt {
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
-    }
-
-    @EventBusSubscriber(modid = TFCobblemon.MODID, bus = EventBusSubscriber.Bus.MOD)
-    public static final class Capabilities {
-        private Capabilities() {}
-
-        @SubscribeEvent
-        public static void register(RegisterCapabilitiesEvent event) {
-            if (!ModList.get().isLoaded("curios")) {
-                return;
-            }
-            for (DeferredItem<Item> belt : BELTS.values()) {
-                event.registerItem(top.theillusivec4.curios.api.CuriosCapability.ITEM,
-                        (stack, unused) -> new QuietCurio(stack), belt.get());
-            }
+        if (ModList.get().isLoaded("curios")) {
+            CuriosBelt.hook(eventBus);
         }
     }
 }

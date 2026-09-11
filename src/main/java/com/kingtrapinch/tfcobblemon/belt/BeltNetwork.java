@@ -1,0 +1,48 @@
+package com.kingtrapinch.tfcobblemon.belt;
+
+import com.cobblemon.mod.common.Cobblemon;
+import com.cobblemon.mod.common.pokemon.Pokemon;
+import com.kingtrapinch.tfcobblemon.TFCobblemon;
+import com.kingtrapinch.tfcobblemon.client.ClientBallLevels;
+import net.minecraft.server.level.ServerPlayer;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
+
+@EventBusSubscriber(modid = TFCobblemon.MODID, bus = EventBusSubscriber.Bus.MOD)
+public final class BeltNetwork {
+    private BeltNetwork() {}
+
+    @SubscribeEvent
+    public static void register(RegisterPayloadHandlersEvent event) {
+        final var registrar = event.registrar("1");
+        registrar.playToServer(BallProbePayload.TYPE, BallProbePayload.STREAM_CODEC, BeltNetwork::onProbe);
+        registrar.playToClient(BallLevelPayload.TYPE, BallLevelPayload.STREAM_CODEC,
+                (payload, context) -> context.enqueueWork(() -> ClientBallLevels.accept(payload)));
+    }
+
+    /**
+     * Il livello in cache sulla ball e' quello di quando il Pokemon vi e'
+     * rientrato l'ultima volta: cresce mentre e' fuori, e una ball nello zaino
+     * non si accorge di niente. Quindi il tooltip lo richiede, e qui si guarda
+     * dove il Pokemon vive davvero — prima la squadra, poi il PC.
+     */
+    private static void onProbe(BallProbePayload payload, IPayloadContext context) {
+        context.enqueueWork(() -> {
+            if (!(context.player() instanceof ServerPlayer player)) {
+                return;
+            }
+            final var storage = Cobblemon.INSTANCE.getStorage();
+            Pokemon mon = storage.getParty(player).get(payload.pokemon());
+            if (mon == null) {
+                mon = storage.getPC(player).get(payload.pokemon());
+            }
+            if (mon != null) {
+                PacketDistributor.sendToPlayer(player,
+                        new BallLevelPayload(payload.pokemon(), mon.getLevel()));
+            }
+        });
+    }
+}

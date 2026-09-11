@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "group": "trainer_belt",
+  "pattern": [
+    "LLL",
+    " R "
+  ],
+  "key": {
+    "L": {
+      "item": "minecraft:leather"
+    },
+    "R": {
+      "tag": "c:rods/copper"
+    }
+  },
+  "result": {
+    "id": "tfcobblemon:leather_trainer_belt",
+    "count": 1
+  }
+}

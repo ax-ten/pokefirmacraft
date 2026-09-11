@@ -404,12 +404,43 @@ li spedisci da qualunque posto.
   rifiuto in combattimento va messo sull'uso dell'item controllando se il
   giocatore e' in battaglia e da dove viene lo stack.
 
-**La scritta "Slot: belt" sotto ogni ball si puo' togliere.** Curios la
-aggiunge da se' a qualunque oggetto indossabile, e con cinquanta ball diventa
-rumore. `ICurio.getSlotsTooltip(List, TooltipContext)` e' un metodo default:
+**La scritta "Slot: belt" si toglie alle ball, non alle cinture.** Curios la
+aggiunge da se' a qualunque oggetto indossabile: sotto una cintura ci sta, e'
+la sua unica ragione di esistere, ma sotto cinquanta ball e' rumore.
+`ICurio.getSlotsTooltip(List, TooltipContext)` e' un metodo default:
 restituendo la lista invariata la riga non compare. La capability si attacca
 agli item di Cobblemon con `CuriosCapability.ITEM`, che e' una `ItemCapability`
 di NeoForge, quindi si registra sui loro item senza toccare la loro mod.
+
+**Come si maneggia nell'inventario: come un sacco.** Cintura sul cursore, tasto
+destro su una ball e la infila; tasto destro su uno slot vuoto e ne esce
+l'ultima. Con la cintura addosso, shift + tasto destro con una ball in mano la
+infila senza aprire niente — e se la cintura e' piena la ball si lancia, come
+sempre. Un posto una ball: i posti sono gli slot della squadra, non un
+magazzino.
+
+**Una ball piena non si perde.** A terra non scade (`setUnlimitedLifetime`) e
+non la intacca niente (`setInvulnerable`). Il Pokemon vive comunque nel
+deposito, ma la ball e' l'unico modo di richiamarlo senza passare dal PC, e
+vederla bruciare in una colata di lava sarebbe una punizione sproporzionata.
+Resta la rete di sicurezza: ritirando dal PC la ball si rimaterializza, perche'
+Cobblemon salva in `Pokemon.getCaughtBall()` con che ball l'hai preso.
+
+**Contro i doppioni: la ball ha un'identita'.** Se una ball piena venisse
+copiata — creativa, una mod che duplica oggetti — ci sarebbero due maniglie per
+una creatura. Quindi la ball porta, oltre all'UUID del Pokemon, un `handle`
+suo, e il Pokemon si ricorda quale handle lo possiede nei suoi dati
+persistenti: una copia non risponde piu'. La verifica passa se il Pokemon non
+ha padrone scritto, cosi' i Pokemon presi prima di questa modifica continuano a
+funzionare.
+
+**Il tooltip: cache per tutto, tranne il livello.** Specie, soprannome, sesso e
+shiny non cambiano da soli, quindi stanno sulla ball e si disegnano senza
+chiedere niente a nessuno. Il livello invece cresce mentre il Pokemon e' fuori,
+e una ball nello zaino non se ne accorge: quello in cache e' l'ultimo visto, e
+quando il cursore si posa sulla ball parte una domanda al server che risponde
+col livello vero. Una richiesta ogni due secondi per Pokemon, un intero per
+risposta.
 
 ### 6.2 "Siediti e aspetta"
 
