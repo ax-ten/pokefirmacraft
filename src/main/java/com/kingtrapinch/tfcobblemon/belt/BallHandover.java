@@ -146,6 +146,38 @@ public final class BallHandover {
         player.serverLevel().addFreshEntity(caduta);
     }
 
+    /**
+     * Segna sulla ball indossata se il suo Pokemon e' in campo. E' quello che
+     * la rende inamovibile finche' non rientra.
+     */
+    public static void mark(ServerPlayer player, UUID pokemon, boolean fuori) {
+        final ItemStack nelloSlot = Belts.inBeltSlot(player);
+        if (punta(nelloSlot, pokemon)) {
+            segna(nelloSlot, fuori);
+            Belts.store(player, nelloSlot);
+            return;
+        }
+        if (!(nelloSlot.getItem() instanceof TrainerBeltItem belt)) {
+            return;
+        }
+        final List<ItemStack> posti = belt.posti(nelloSlot);
+        for (ItemStack ball : posti) {
+            if (punta(ball, pokemon)) {
+                segna(ball, fuori);
+                belt.salva(nelloSlot, posti);
+                Belts.store(player, nelloSlot);
+                return;
+            }
+        }
+    }
+
+    private static void segna(ItemStack ball, boolean fuori) {
+        final BallLink legame = BallLink.read(ball);
+        if (legame != null) {
+            ball.set(ModBallData.BALL_LINK.get(), legame.withOut(fuori));
+        }
+    }
+
     private static boolean punta(ItemStack stack, UUID pokemon) {
         final BallLink legame = BallLink.read(stack);
         return legame != null && legame.pokemon().equals(pokemon);

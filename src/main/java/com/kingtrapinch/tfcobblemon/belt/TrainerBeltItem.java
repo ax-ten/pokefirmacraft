@@ -92,11 +92,15 @@ public class TrainerBeltItem extends Item {
         return false;
     }
 
-    /** Tira fuori l'ultima ball infilata. */
+    /**
+     * Tira fuori l'ultima ball infilata, saltando quelle il cui Pokemon e' in
+     * campo: quelle stanno ferme finche' non rientra, altrimenti spostare la
+     * ball mentre lui e' nel mondo lascia due ball o nessuna.
+     */
     public ItemStack sfila(ItemStack belt) {
         final List<ItemStack> posti = posti(belt);
         for (int i = posti.size() - 1; i >= 0; i--) {
-            if (!posti.get(i).isEmpty()) {
+            if (!posti.get(i).isEmpty() && !BallLink.bloccata(posti.get(i))) {
                 final ItemStack uscita = posti.get(i);
                 posti.set(i, ItemStack.EMPTY);
                 salva(belt, posti);
@@ -122,6 +126,7 @@ public class TrainerBeltItem extends Item {
                 infila(belt, avanzo);
             }
             suonoFuori(player);
+            allinea(player);
             return true;
         }
         if (!isBall(sotto) || !slot.allowModification(player)) {
@@ -136,6 +141,7 @@ public class TrainerBeltItem extends Item {
             slot.setChanged();
         }
         suonoDentro(player);
+        allinea(player);
         return true;
     }
 
@@ -153,13 +159,27 @@ public class TrainerBeltItem extends Item {
             }
             access.set(uscita);
             suonoFuori(player);
+            allinea(player);
             return true;
         }
         if (!isBall(altro) || !infila(belt, altro)) {
             return false;
         }
         suonoDentro(player);
+        allinea(player);
         return true;
+    }
+
+    /**
+     * Dopo ogni gesto che cambia il contenuto della cintura la squadra va
+     * rifatta: questi gesti passano dall'inventario e non da {@code Belts},
+     * quindi l'allineamento non lo farebbe nessuno — ed e' il motivo per cui un
+     * Pokemon appena messo sulla cintura non entrava in squadra.
+     */
+    private static void allinea(Player player) {
+        if (player instanceof net.minecraft.server.level.ServerPlayer chi) {
+            BeltParty.align(chi);
+        }
     }
 
     @Override

@@ -29,7 +29,8 @@ import java.util.UUID;
  * una copia della ball non risponde perche' il suo handle non combacia piu'.
  */
 public record BallLink(UUID pokemon, UUID handle, ResourceLocation species,
-                       Optional<String> nickname, String gender, boolean shiny, int level) {
+                       Optional<String> nickname, String gender, boolean shiny, int level,
+                       boolean out) {
 
     /** La chiave nei dati persistenti del Pokemon dove scriviamo l'handle padrone. */
     public static final String OWNER = "tfcobblemon:ball";
@@ -41,7 +42,8 @@ public record BallLink(UUID pokemon, UUID handle, ResourceLocation species,
             Codec.STRING.optionalFieldOf("nickname").forGetter(BallLink::nickname),
             Codec.STRING.fieldOf("gender").forGetter(BallLink::gender),
             Codec.BOOL.optionalFieldOf("shiny", false).forGetter(BallLink::shiny),
-            Codec.INT.fieldOf("level").forGetter(BallLink::level)
+            Codec.INT.fieldOf("level").forGetter(BallLink::level),
+            Codec.BOOL.optionalFieldOf("out", false).forGetter(BallLink::out)
     ).apply(instance, BallLink::new));
 
     /** Prende la fotografia di un Pokemon, e gli assegna una ball padrona nuova. */
@@ -54,7 +56,8 @@ public record BallLink(UUID pokemon, UUID handle, ResourceLocation species,
                 nick == null || nick.isBlank() ? Optional.empty() : Optional.of(nick),
                 mon.getGender().getSerializedName(),
                 mon.getShiny(),
-                mon.getLevel());
+                mon.getLevel(),
+                mon.getEntity() != null);
     }
 
     public static @Nullable BallLink read(ItemStack stack) {
@@ -67,7 +70,23 @@ public record BallLink(UUID pokemon, UUID handle, ResourceLocation species,
     }
 
     public BallLink withLevel(int nuovo) {
-        return new BallLink(pokemon, handle, species, nickname, gender, shiny, nuovo);
+        return new BallLink(pokemon, handle, species, nickname, gender, shiny, nuovo, out);
+    }
+
+    /**
+     * Se il Pokemon e' in campo. Serve a due cose: sapere che la ball e' vuota
+     * senza chiedere al server, e tenerla ferma dove sta — una ball il cui
+     * Pokemon e' fuori non si sfila, perche' spostarla mentre lui e' nel mondo
+     * e' il modo piu' facile di ritrovarsi con due ball o con nessuna.
+     */
+    public BallLink withOut(boolean fuori) {
+        return new BallLink(pokemon, handle, species, nickname, gender, shiny, level, fuori);
+    }
+
+    /** Una ball piena il cui Pokemon e' in campo: non si tocca. */
+    public static boolean bloccata(ItemStack stack) {
+        final BallLink legame = read(stack);
+        return legame != null && legame.out();
     }
 
     /** Il nome da mostrare: il soprannome se c'e', altrimenti quello della specie. */

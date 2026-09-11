@@ -9,8 +9,10 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.common.util.TriState;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.CuriosCapability;
+import top.theillusivec4.curios.api.event.CurioCanUnequipEvent;
 import top.theillusivec4.curios.api.event.CurioChangeEvent;
 import top.theillusivec4.curios.api.type.inventory.IDynamicStackHandler;
 
@@ -36,6 +38,7 @@ final class CuriosBelt {
     static void hook(IEventBus eventBus) {
         eventBus.addListener(RegisterCapabilitiesEvent.class, CuriosBelt::zittisciLeBall);
         NeoForge.EVENT_BUS.addListener(CurioChangeEvent.class, CuriosBelt::laCinturaCambiaMano);
+        NeoForge.EVENT_BUS.addListener(CurioCanUnequipEvent.class, CuriosBelt::nonMentreEInCampo);
     }
 
     /**
@@ -62,6 +65,25 @@ final class CuriosBelt {
         if (SLOT.equals(event.getIdentifier())
                 && event.getEntity() instanceof ServerPlayer player) {
             BeltParty.align(player);
+        }
+    }
+
+    /**
+     * Con un Pokemon in campo, quello che si ha addosso non si sfila. Vale per
+     * la ball nuda e per la cintura che ne contiene una: togliersela mentre lui
+     * e' nel mondo e' il modo piu' facile di ritrovarsi con due ball o con
+     * nessuna, e bloccare il gesto costa meno che rimediare dopo.
+     */
+    private static void nonMentreEInCampo(CurioCanUnequipEvent event) {
+        if (!SLOT.equals(event.getSlotContext().identifier())) {
+            return;
+        }
+        final ItemStack cosa = event.getStack();
+        final boolean ferma = BallLink.bloccata(cosa)
+                || (cosa.getItem() instanceof TrainerBeltItem belt
+                        && belt.posti(cosa).stream().anyMatch(BallLink::bloccata));
+        if (ferma) {
+            event.setUnequipResult(TriState.FALSE);
         }
     }
 

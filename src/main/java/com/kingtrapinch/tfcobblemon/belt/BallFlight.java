@@ -33,7 +33,12 @@ public final class BallFlight {
     private static void uscito(PokemonSentEvent.Post event) {
         final Pokemon mon = event.getPokemon();
         final ServerPlayer player = mon.getOwnerPlayer();
-        if (player == null || BallHandover.onBelt(player, mon.getUuid())) {
+        if (player == null) {
+            return;
+        }
+        if (BallHandover.onBelt(player, mon.getUuid())) {
+            // addosso ci resta, ma segnata: finche' e' in campo non si sfila
+            BallHandover.mark(player, mon.getUuid(), true);
             return;
         }
         BallHandover.takeFromInventory(player, mon.getUuid());
@@ -42,7 +47,11 @@ public final class BallFlight {
     private static void rientra(PokemonRecallEvent.Pre event) {
         final Pokemon mon = event.getPokemon();
         final ServerPlayer player = mon.getOwnerPlayer();
-        if (player == null || BallHandover.anywhere(player, mon.getUuid())) {
+        if (player == null) {
+            return;
+        }
+        if (BallHandover.anywhere(player, mon.getUuid())) {
+            BallHandover.mark(player, mon.getUuid(), false);
             return;
         }
         final PokemonEntity uscito = event.getOldEntity();
