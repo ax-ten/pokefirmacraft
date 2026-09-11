@@ -847,45 +847,51 @@ Z-A: tempo reale, schivate, posizionamento, invece dei turni.
 
 **Il pinball.** Pokemon Pinball, con la ball che rimbalza e cattura.
 
-### Quello che propongo io
+### Quello che propongo io, e cosa e' sopravvissuto
 
-Scelti perche' si appoggiano su qualcosa che c'e' gia', non perche' suonano
-bene.
+Li avevo scelti perche' si appoggiano su qualcosa che c'e' gia'. Tre sono
+passati, quattro no, e le bocciature dicono qualcosa che vale tenere scritto.
 
-**Il frullatore di bacche** (Pokeblock e Poffin, da Rubino/Zaffiro e
-Diamante/Perla). Un minigioco di tempismo su una manovella: piu' vai a ritmo,
-piu' il blocco viene buono. E' l'idea che si incastra meglio con TFC di tutte,
-perche' TFC ha **gia' l'albero motore** — windmill, water wheel, crankshaft — e
-un frullatore a manovella e' esattamente il suo vocabolario. E da' un senso
-alle bacche di Cobblemon, che adesso sono decorative.
+**PASSA — La forza cinetica di Create dentro Cobblemon.** Era nato come
+"frullatore di bacche" (Pokeblock e Poffin, da Rubino/Zaffiro e Diamante/Perla):
+un minigioco di tempismo su una manovella, piu' vai a ritmo piu' il blocco viene
+buono. L'idea vera pero' e' piu' larga di un frullatore: **oggetti di Cobblemon
+mossi dall'albero motore di TFC e di Create**. Windmill, water wheel,
+crankshaft, e le macchine di Create esistono e girano gia': quello che manca
+sono i pezzi di Cobblemon che sappiano prendere quel movimento.
 
-**Voltorb Flip** (HeartGold/SoulSilver). Il campo minato logico del Game
-Corner. Costa poco: e' tutto dentro una finestra, senza stato nel mondo, e la
-macchina per le finestre custom l'abbiamo gia' scritta per lo scavo.
+Il minigioco resta un'opzione, non la via: **tutto deve essere automatizzabile
+senza**. Il tempismo a mano da' il risultato migliore, la macchina lo da'
+costante — che e' lo stesso patto di tutto il resto del pacchetto.
 
-**La Zona Safari e la gara di scarafaggi** (Rosso/Blu, Oro/Argento). Un'area a
-tempo con un numero fisso di ball. E risolve un problema che abbiamo: la
-safari ball e la sport ball hanno effetti di nicchia e nessun posto dove
-esistere, e questo glielo darebbe.
+(Correzione di un mio errore: avevo scritto che le bacche di Cobblemon sono
+decorative. Non lo sono — ci si fanno gia' gli snack.)
 
-**Le fotografie alla Pokemon Snap.** Il pacchetto **ha gia' una mod di
-fotografia**, `exposure-neoforge-1.21.1-1.9.18.jar`. Quindi la macchina
-fotografica esiste: manca solo chi giudica lo scatto — inquadratura, distanza,
-posa, rarita' — e un committente che paghi.
+**PASSA — Le fotografie alla Pokemon Snap.** Il pacchetto **ha gia' una mod di
+fotografia**, `exposure-neoforge-1.21.1-1.9.18.jar`, quindi la macchina
+fotografica esiste. Manca chi giudica lo scatto — inquadratura, distanza, posa,
+rarita' — e **un NPC o un villager dedicato con cui scambiarle**: le foto
+diventano merce, non un punteggio in una finestra.
 
-**Il Pokewalker.** Un oggetto che allena il Pokemon in base alla distanza
-percorsa. In Minecraft si cammina sempre, quindi la meccanica si traduce da
-sola, e il pacchetto ha **Curios** (`curios-neoforge-9.5.1`), che e' lo stesso
-slot che serve alla Trainer Belt della sezione 6.
+**PASSA — Il Pokewalker.** Un oggetto che allena il Pokemon in base alla
+distanza percorsa. In Minecraft si cammina sempre, quindi la meccanica si traduce
+da se', e Curios e' gia' li' — lo stesso slot su cui e' costruita la cintura.
 
-**La pesca a catena** (X/Y). Catture consecutive con la stessa canna alzano le
-probabilita' di shiny. Cobblemon ha gia' canna, ami ed esche, e TFC ha i suoi
-tag: e' quasi solo un contatore.
+**BOCCIATO — Voltorb Flip.** Il campo minato del Game Corner. Costava poco, ed
+e' l'unico motivo per cui l'avevo proposto: non e' un motivo.
 
-**Le basi segrete con le statue** (Rubino/Zaffiro, Diamante/Perla). Le statue
-che alterano gli spawn intorno alla base sono la stessa cosa che l'Habitat
-Block della tabella di progressione fa nell'era elettrica: valgono come la sua
-versione artigianale, molto prima.
+**BOCCIATO — La Zona Safari e la gara di scarafaggi.** Un'area a tempo con un
+numero fisso di ball e' **un evento da server**, non una meccanica di gioco
+singolo. Resta aperto il problema che l'aveva fatta proporre: la safari ball e
+la sport ball hanno effetti di nicchia e nessun posto dove esistere. Va risolto
+altrove.
+
+**BOCCIATA — La pesca a catena.** Esiste gia' come mod a se': non si rifa'.
+
+**BOCCIATE — Le basi segrete.** In Minecraft non hanno senso: la base e' la
+casa che ti costruisci, e non serve un sistema che te ne dia una finta. Quello
+che l'aveva fatta proporre — le statue che alterano gli spawn intorno — resta
+valido e vive gia' nell'Habitat Block dell'era elettrica.
 
 ## 9. Punti aperti / da decidere durante lo sviluppo
 
