@@ -7,7 +7,6 @@ import com.cobblemon.mod.common.api.storage.party.PlayerPartyStore;
 import com.cobblemon.mod.common.api.storage.pc.PCStore;
 import com.cobblemon.mod.common.battles.BattleRegistry;
 import com.cobblemon.mod.common.pokemon.Pokemon;
-import com.kingtrapinch.tfcobblemon.TFCobblemon;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
@@ -158,10 +157,6 @@ public final class BeltParty {
             }
         }
 
-        // DIAGNOSTICA, da togliere quando il difetto e' chiuso
-        TFCobblemon.LOGGER.info("allineo: addosso {}, in squadra {}, nel box {}",
-                insieme.size(), squadra.occupied(), conta(pc));
-
         // 1. escono quelli di cui non si porta la ball. Chi e' in campo no: ce
         //    l'ha messo il giocatore, e non e' affare nostro.
         for (int i = 0; i < squadra.size(); i++) {
@@ -169,9 +164,8 @@ public final class BeltParty {
             if (mon == null || insieme.contains(mon.getUuid()) || mon.getEntity() != null) {
                 continue;
             }
-            TFCobblemon.LOGGER.info("sfratto {}", mon.getUuid());
             squadra.remove(mon);
-            if (pc.get(mon.getUuid()) == null && !pc.add(mon)) {
+            if (cerca(pc, mon.getUuid()) == null && !pc.add(mon)) {
                 // il deposito non lo accetta: meglio a portata che in nessun
                 // posto. Il posto e' appena stato liberato, quindi rientra li'.
                 squadra.set(i, mon);
@@ -190,10 +184,10 @@ public final class BeltParty {
             // li' con l'overflow di Cobblemon prima che lo dirottassimo. Se
             // porti la sua ball, e' tuo e torna a portata da dove sta.
             PokemonStore<?> dove = pc;
-            Pokemon mon = pc.get(id);
+            Pokemon mon = cerca(pc, id);
             if (mon == null) {
                 dove = Cobblemon.INSTANCE.getStorage().getPC(player);
-                mon = dove.get(id);
+                mon = cerca(dove, id);
             }
             if (mon == null || !id.equals(mon.getUuid())) {
                 continue;
@@ -202,7 +196,6 @@ public final class BeltParty {
             if (libero < 0) {
                 break;
             }
-            TFCobblemon.LOGGER.info("richiamo {} da {}", id, dove.getClass().getSimpleName());
             dove.remove(mon);
             squadra.set(libero, mon);
         }
@@ -320,12 +313,24 @@ public final class BeltParty {
         return -1;
     }
 
-    private static int conta(BallBoxStore box) {
-        int quanti = 0;
-        for (Pokemon ignorato : box) {
-            quanti++;
+    /**
+     * Cerca un Pokemon in un deposito <b>scorrendolo</b>, e non con
+     * {@code get(UUID)}.
+     *
+     * <p>Quello passa da un indice interno che i depositi tengono a parte, e
+     * che non e' affidabile: per la squadra l'avevo gia' scoperto — e' il motivo
+     * per cui {@code indiceDi} scorre i posti — ma non l'avevo applicato al box.
+     * Il risultato e' che il passaggio che riporta un Pokemon dal box alla
+     * squadra non ha mai trovato niente, in nessuna sessione: il log non ha una
+     * sola riga di richiamo.
+     */
+    private static Pokemon cerca(PokemonStore<?> deposito, UUID id) {
+        for (Pokemon mon : deposito) {
+            if (mon != null && id.equals(mon.getUuid())) {
+                return mon;
+            }
         }
-        return quanti;
+        return null;
     }
 
     private static int primoLibero(PlayerPartyStore squadra) {

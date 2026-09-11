@@ -57,7 +57,7 @@ public final class ModBelt {
      * giocatore se l'e' messa o togliata.
      */
     public static void setup() {
-        TFCobblemon.LOGGER.info("cintura: Curios {}", curios() ? "c'e'" : "non c'e'");
+        TFCobblemon.LOGGER.debug("cintura: Curios {}", curios() ? "c'e'" : "non c'e'");
         if (curios()) {
             CuriosBelt.hookGame();
         }

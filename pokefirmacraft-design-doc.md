@@ -646,6 +646,40 @@ in piedi gli altri due.
 Senza il punto 3 i primi due si contraddicono: il cancello manda nel PC, e
 niente riporterebbe indietro il Pokemon quando la ball torna sulla cintura.
 
+**Due trappole nei depositi di Cobblemon, trovate a caro prezzo.** Nessuna delle
+due si scopre leggendo il codice, perche' sono presupposti e non righe.
+
+1. **Un `PCStore` appena costruito non ha box**, e `getFirstAvailablePosition()`
+   le scorre per trovare un posto libero: con zero box risponde sempre "nessun
+   posto", quindi `add` **falisce sempre**. Il PC vero non ne soffre perche' la
+   fabbrica lo costruisce con una funzione propria (`pcConstructor`) che le
+   crea; un deposito chiesto con `getCustomStore` passa invece dal costruttore
+   riflessivo — `getConstructor(UUID.class).newInstance(uuid)` — e quella
+   funzione non viene chiamata. **Un deposito custom non e' un deposito
+   pronto**: le box se le deve creare da se', e conviene farle crescere anche a
+   richiesta, perche' un salvataggio fatto mentre il deposito era vuoto le
+   riporta a zero.
+
+   Il sintomo era irriconoscibile: la cintura sembrava non contare niente. In
+   realta' l'allineamento contava e sfrattava giusto, ma lo sfrattato non aveva
+   dove andare e rimbalzava in squadra. L'unica ragione per cui non si e' perso
+   nessun Pokemon e' il ripiego che rimette in squadra chi il deposito rifiuta,
+   scritto per un caso che sembrava teorico.
+
+2. **`PokemonStore.get(UUID)` passa da un indice interno**, e quell'indice puo'
+   restare indietro rispetto al contenuto. Per cercare un Pokemon in un
+   deposito conviene **scorrerlo**: una risposta sbagliata li' significa
+   duplicare un Pokemon o perderlo, e non vale il tempo che si risparmia.
+
+**E una lezione sul come si cercano questi difetti.** Il primo l'ho inseguito
+per quattro tornate correggendo sintomi — ogni correzione ne mascherava un
+altro — e si e' arreso solo a tre righe di log messe nei punti giusti: quanti
+Pokemon sono addosso, quanti in squadra, quanti nel deposito. La riga
+"addosso 3, in squadra 4, nel box 0" seguita da uno sfratto, e alla riga dopo
+la squadra ancora 4 e il box ancora 0, dice in due secondi quello che nessuna
+rilettura del codice avrebbe detto — perche' il difetto non era nel nostro
+codice.
+
 **Un Pokemon fuori dalla sua ball non si tocca.** Se sta nel mondo ce l'hai
 messo tu, e spedirlo nel PC perche' la sua ball ha cambiato posto svuoterebbe di
 senso l'averlo fuori. L'unico posto dove si richiama d'ufficio e' il PC: aprendo
