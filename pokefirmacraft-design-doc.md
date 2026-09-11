@@ -363,6 +363,24 @@ addosso e' una cosa che va guadagnata, e il cancello naturale e' il **fluido di
 cattura** (perla dell'end + tumblestone fusa), che nel pacchetto e' la cosa piu'
 vicina al rimpicciolire che esista.
 
+**Si riusa la cintura vecchia, e il motivo e' che dentro ci sono i Pokemon.**
+Rifarla da zero vuol dire o perdere quello che ha dentro o dover svuotarla prima
+— un passaggio in piu' che si dimentica esattamente quando costa di piu'. Ed e'
+anche la convenzione di tutto quello che contiene roba: gli zaini delle mod si
+migliorano col vecchio zaino nella ricetta, e vanilla passa da diamante a
+netherite tenendosi l'oggetto.
+
+Tecnicamente c'e' un solo modo di farlo bene, e non e' la tavola da lavoro: un
+crafting normale costruisce un risultato nuovo e i componenti del vecchio si
+perdono. Il **tavolo da fucina** invece no — `SmithingTransformRecipe.assemble`
+usa `transmuteCopy`, che porta sul risultato l'intera patch di componenti del
+pezzo base. Quindi la cintura passa a sei **con le ball ancora dentro**. E il
+tavolo da fucina c'e': TFC lo tiene e ne spedisce la ricetta.
+
+Il fluido di cattura non si mette in un tavolo da fucina, quindi il cancello
+diventa un pezzo intermedio fatto col fluido, e quel pezzo e' l'aggiunta della
+fucinatura.
+
 Perche' altro non c'e': ho guardato, e prima dell'era elettrica nel pacchetto
 nessuno rimpicciolisce niente. TFC no, Create no, GregTech nemmeno — i suoi
 trucchi di densita' arrivano tutti dopo. L'unico vocabolario del "dentro ci sta
