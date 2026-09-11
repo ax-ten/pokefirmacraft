@@ -593,6 +593,20 @@ Pokemon catturato finisce nel PC. Con la cintura piena vorremmo che restasse
 **dentro la ball, nell'inventario**, e che il PC diventasse una scelta e non un
 automatismo.
 
+**Da fare, in coda alla cintura.**
+
+- **L'icona della cintura**, disegnata a mano: quelle di adesso sono segnaposto,
+  le borchie si pestano con la fibbia e la fascia si legge come un mattone.
+- **I cerchietti colorati** sull'icona, uno per ball portata e nell'ordine in cui
+  stanno — great, poke, gigaton da' blu, rosso, nero. **Aspettano l'icona**: i
+  cerchietti si disegnano sopra, e sopra un segnaposto non si capisce se stanno
+  bene. Il colore non lo scriviamo a mano, lo si ricava dalla texture di ogni
+  ball, cosi' vale anche per quelle che aggiungeremo.
+- **L'elenco a sinistra a squadra vuota**: Cobblemon esce subito dal disegno se
+  non c'e' nessun Pokemon (`PartyOverlay.render`, offset 150), quindi il posto
+  vuoto non si vede. Si puo' forzare, ma vuol dire tenere in piedi un pezzo di
+  HUD che il suo autore ha deciso di non mostrare.
+
 **Il collegamento remoto al PC**, era elettrica LV: la cintura avanzata apre il
 PC con una scorciatoia, configurabile, e da li' si fanno le stesse cose che si
 farebbero davanti al PC — depositare e ritirare passando dalla cintura. Niente

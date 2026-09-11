@@ -18,8 +18,29 @@ public final class BeltNetwork {
     public static void register(RegisterPayloadHandlersEvent event) {
         final var registrar = event.registrar("1");
         registrar.playToServer(BallProbePayload.TYPE, BallProbePayload.STREAM_CODEC, BeltNetwork::onProbe);
+        registrar.playToServer(RecallPayload.TYPE, RecallPayload.STREAM_CODEC, BeltNetwork::onRecall);
         registrar.playToClient(BallLevelPayload.TYPE, BallLevelPayload.STREAM_CODEC,
                 (payload, context) -> context.enqueueWork(() -> ClientBallLevels.accept(payload)));
+    }
+
+    /**
+     * Il rientro chiesto dalla ruota delle interazioni. La ruota e' di
+     * Cobblemon e gira sul client, quindi il gesto arriva qui; e arriva per
+     * UUID e non per posto in squadra, perche' un compagno di viaggio in
+     * squadra non ci sta.
+     */
+    private static void onRecall(RecallPayload payload, IPayloadContext context) {
+        context.enqueueWork(() -> {
+            if (!(context.player() instanceof ServerPlayer player)) {
+                return;
+            }
+            final Pokemon mon = BeltParty.trova(player, payload.pokemon());
+            if (mon == null || mon.getEntity() == null
+                    || !player.getUUID().equals(mon.getOwnerUUID())) {
+                return;
+            }
+            mon.tryRecallWithAnimation();
+        });
     }
 
     /**
