@@ -376,11 +376,16 @@ della squadra, e sono quelle che compaiono nell'elenco a sinistra. Non c'e' una
 "squadra" separata da gestire: se la ball non e' sulla cintura, il Pokemon non
 e' a portata.
 
-**La cintura da sei aspetta la sua era.** La cintura di cuoio da tre si fa con
-tre ami, uno per posto, a cui appendere le ball. Quella da sei no: sei Pokemon
-addosso e' una cosa che va guadagnata, e il cancello naturale e' il **fluido di
-cattura** (perla dell'end + tumblestone fusa), che nel pacchetto e' la cosa piu'
-vicina al rimpicciolire che esista.
+**La cintura da sei e il suo cancello.** Quella di cuoio da tre si fa con tre
+ami, uno per posto, a cui appendere le ball. Quella da sei si **fucina sulla
+prima**: lamiera di **acciaio rosso** come template, la cintura di cuoio come
+base, del cuoio come aggiunta. E le ball restano dentro, perche' la fucinatura
+ricopia i componenti del pezzo base.
+
+L'acciaio rosso e' il cancello, e non serve altro: e' uno dei due metalli di
+fine corsa di TFC, vuole l'altoforno e una catena di leghe che non esiste prima.
+Un oggetto fatto col fluido di cattura sarebbe stato un passaggio in piu' per
+dire la stessa cosa.
 
 **Si riusa la cintura vecchia, e il motivo e' che dentro ci sono i Pokemon.**
 Rifarla da zero vuol dire o perdere quello che ha dentro o dover svuotarla prima
@@ -402,18 +407,6 @@ le ball ancora dentro senza che scriviamo una riga. E il tavolo c'e': TFC lo
 tiene e ne spedisce la ricetta.
 
 Fra le due, la fucinatura: lo stesso risultato senza codice da mantenere.
-
-Il fluido di cattura non si mette in un tavolo da fucina, quindi il cancello
-diventa un pezzo intermedio fatto col fluido, e quel pezzo e' l'aggiunta della
-fucinatura.
-
-Perche' altro non c'e': ho guardato, e prima dell'era elettrica nel pacchetto
-nessuno rimpicciolisce niente. TFC no, Create no, GregTech nemmeno — i suoi
-trucchi di densita' arrivano tutti dopo. L'unico vocabolario del "dentro ci sta
-piu' di quanto sembri" e' vanilla, ed e' lo **shulker**: guscio e box. Quindi le
-due strade sono il nostro fluido, che e' coerente e gia' nostro, oppure lo
-shulker, che e' evocativo ma vuole l'End — e l'End prima del vapore e' una
-forzatura. Il fluido e' la strada giusta.
 
 **Usare una ball evoca il Pokemon che ha dentro.** Non e' "seleziona nella
 lista, poi premi R": la ball stessa e' la maniglia del suo Pokemon, e il tasto
