@@ -807,20 +807,20 @@ bene.
 **Il frullatore di bacche** (Pokeblock e Poffin, da Rubino/Zaffiro e
 Diamante/Perla). Un minigioco di tempismo su una manovella: piu' vai a ritmo,
 piu' il blocco viene buono. E' l'idea che si incastra meglio con TFC di tutte,
-perche' TFC ha **giа' l'albero motore** — windmill, water wheel, crankshaft — e
+perche' TFC ha **gia' l'albero motore** — windmill, water wheel, crankshaft — e
 un frullatore a manovella e' esattamente il suo vocabolario. E da' un senso
 alle bacche di Cobblemon, che adesso sono decorative.
 
 **Voltorb Flip** (HeartGold/SoulSilver). Il campo minato logico del Game
 Corner. Costa poco: e' tutto dentro una finestra, senza stato nel mondo, e la
-macchina per le finestre custom l'abbiamo giа' scritta per lo scavo.
+macchina per le finestre custom l'abbiamo gia' scritta per lo scavo.
 
 **La Zona Safari e la gara di scarafaggi** (Rosso/Blu, Oro/Argento). Un'area a
 tempo con un numero fisso di ball. E risolve un problema che abbiamo: la
 safari ball e la sport ball hanno effetti di nicchia e nessun posto dove
 esistere, e questo glielo darebbe.
 
-**Le fotografie alla Pokemon Snap.** Il pacchetto **ha giа' una mod di
+**Le fotografie alla Pokemon Snap.** Il pacchetto **ha gia' una mod di
 fotografia**, `exposure-neoforge-1.21.1-1.9.18.jar`. Quindi la macchina
 fotografica esiste: manca solo chi giudica lo scatto — inquadratura, distanza,
 posa, rarita' — e un committente che paghi.
@@ -831,7 +831,7 @@ sola, e il pacchetto ha **Curios** (`curios-neoforge-9.5.1`), che e' lo stesso
 slot che serve alla Trainer Belt della sezione 6.
 
 **La pesca a catena** (X/Y). Catture consecutive con la stessa canna alzano le
-probabilita' di shiny. Cobblemon ha giа' canna, ami ed esche, e TFC ha i suoi
+probabilita' di shiny. Cobblemon ha gia' canna, ami ed esche, e TFC ha i suoi
 tag: e' quasi solo un contatore.
 
 **Le basi segrete con le statue** (Rubino/Zaffiro, Diamante/Perla). Le statue
