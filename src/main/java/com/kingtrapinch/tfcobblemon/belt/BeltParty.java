@@ -1,11 +1,14 @@
 package com.kingtrapinch.tfcobblemon.belt;
 
 import com.cobblemon.mod.common.Cobblemon;
+import com.cobblemon.mod.common.api.storage.PokemonStore;
 import com.cobblemon.mod.common.api.storage.party.PartyPosition;
 import com.cobblemon.mod.common.api.storage.party.PlayerPartyStore;
 import com.cobblemon.mod.common.api.storage.pc.PCStore;
 import com.cobblemon.mod.common.battles.BattleRegistry;
 import com.cobblemon.mod.common.pokemon.Pokemon;
+import com.kingtrapinch.tfcobblemon.TFCobblemon;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -57,8 +60,12 @@ public final class BeltParty {
      * una classe a se'. Il perche' funzioni sta su {@link BallBoxStore}.
      */
     public static BallBoxStore deposito(ServerPlayer player) {
+        return deposito(player.getUUID(), player.registryAccess());
+    }
+
+    public static BallBoxStore deposito(UUID giocatore, RegistryAccess registri) {
         return Cobblemon.INSTANCE.getStorage()
-                .getCustomStore(BallBoxStore.class, player.getUUID(), player.registryAccess());
+                .getCustomStore(BallBoxStore.class, giocatore, registri);
     }
 
     /**
@@ -151,6 +158,10 @@ public final class BeltParty {
             }
         }
 
+        // DIAGNOSTICA, da togliere quando il difetto e' chiuso
+        TFCobblemon.LOGGER.info("allineo: addosso {}, in squadra {}, nel box {}",
+                insieme.size(), squadra.occupied(), conta(pc));
+
         // 1. escono quelli di cui non si porta la ball. Chi e' in campo no: ce
         //    l'ha messo il giocatore, e non e' affare nostro.
         for (int i = 0; i < squadra.size(); i++) {
@@ -158,6 +169,7 @@ public final class BeltParty {
             if (mon == null || insieme.contains(mon.getUuid()) || mon.getEntity() != null) {
                 continue;
             }
+            TFCobblemon.LOGGER.info("sfratto {}", mon.getUuid());
             squadra.remove(mon);
             if (pc.get(mon.getUuid()) == null && !pc.add(mon)) {
                 // il deposito non lo accetta: meglio a portata che in nessun
@@ -173,16 +185,26 @@ public final class BeltParty {
             if (id == null || indiceDi(squadra, id) >= 0) {
                 continue;
             }
-            final Pokemon nelPc = pc.get(id);
-            if (nelPc == null || !id.equals(nelPc.getUuid())) {
+            // nel nostro box, e in seconda battuta nel PC vero: un Pokemon puo'
+            // starci perche' il giocatore l'ha depositato, o perche' e' arrivato
+            // li' con l'overflow di Cobblemon prima che lo dirottassimo. Se
+            // porti la sua ball, e' tuo e torna a portata da dove sta.
+            PokemonStore<?> dove = pc;
+            Pokemon mon = pc.get(id);
+            if (mon == null) {
+                dove = Cobblemon.INSTANCE.getStorage().getPC(player);
+                mon = dove.get(id);
+            }
+            if (mon == null || !id.equals(mon.getUuid())) {
                 continue;
             }
             final int libero = primoLibero(squadra);
             if (libero < 0) {
                 break;
             }
-            pc.remove(nelPc);
-            squadra.set(libero, nelPc);
+            TFCobblemon.LOGGER.info("richiamo {} da {}", id, dove.getClass().getSimpleName());
+            dove.remove(mon);
+            squadra.set(libero, mon);
         }
 
         // 3. e vanno in ordine, solo scambiandosi di posto
@@ -296,6 +318,14 @@ public final class BeltParty {
             }
         }
         return -1;
+    }
+
+    private static int conta(BallBoxStore box) {
+        int quanti = 0;
+        for (Pokemon ignorato : box) {
+            quanti++;
+        }
+        return quanti;
     }
 
     private static int primoLibero(PlayerPartyStore squadra) {

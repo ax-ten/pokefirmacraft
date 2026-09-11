@@ -10,7 +10,8 @@
     "PcDepositMixin",
     "PcWithdrawMixin",
     "PcSwapMixin",
-    "SendOutGateMixin"
+    "SendOutGateMixin",
+    "PartyOverflowMixin"
   ],
   "client": [
     "PartyOverlayMixin"
