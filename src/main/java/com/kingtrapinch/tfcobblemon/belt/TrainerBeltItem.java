@@ -83,6 +83,17 @@ public class TrainerBeltItem extends Item {
             return false;
         }
         final List<ItemStack> posti = posti(belt);
+        // lo stesso Pokemon in due posti sarebbe due posti di squadra per una
+        // creatura, e un ordine impossibile da rispettare
+        final BallLink legame = BallLink.read(ball);
+        if (legame != null) {
+            for (ItemStack altra : posti) {
+                final BallLink suo = BallLink.read(altra);
+                if (suo != null && suo.pokemon().equals(legame.pokemon())) {
+                    return false;
+                }
+            }
+        }
         for (int i = 0; i < posti.size(); i++) {
             if (posti.get(i).isEmpty()) {
                 posti.set(i, ball.split(1));
@@ -185,9 +196,14 @@ public class TrainerBeltItem extends Item {
         if (!(player instanceof ServerPlayer chi)) {
             return;
         }
-        if (Belts.inBeltSlot(chi) == belt) {
-            Belts.store(chi, belt);
+        // solo la cintura indossata cambia chi si ha a portata. Allinearsi per
+        // una cintura che sta in una cassa non ha niente da allineare, e
+        // farlo a meta' di un gesto — con una ball sul cursore — era uno dei
+        // modi in cui la ball finiva contata due volte.
+        if (Belts.inBeltSlot(chi) != belt) {
+            return;
         }
+        Belts.store(chi, belt);
         BeltParty.align(chi);
     }
 

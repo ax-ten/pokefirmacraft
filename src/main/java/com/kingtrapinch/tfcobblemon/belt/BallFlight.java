@@ -40,7 +40,7 @@ public final class BallFlight {
             BallHandover.mark(player, mon.getUuid(), true);
             return;
         }
-        BallHandover.takeFromInventory(player, mon.getUuid());
+        BallHandover.takeLoose(player, mon.getUuid());
     }
 
     private static void rientra(PokemonRecallEvent.Pre event) {

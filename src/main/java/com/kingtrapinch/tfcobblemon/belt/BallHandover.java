@@ -8,19 +8,26 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 /**
- * Il passaggio di mano fra la ball e il PC.
+ * Dove sta la ball di un Pokemon, e chi la crea o la distrugge.
  *
- * <p>La regola e' semplice: **il PC tiene il Pokemon, la ball lo tiene in mano.**
- * Depositare vuol dire consegnarlo, quindi la sua ball non serve piu' e
- * sparisce; ritirarlo vuol dire riprenderlo in mano, e la ball torna — quella
- * vera, perche' Cobblemon si ricorda con che ball l'hai preso.
+ * <p>Una sola domanda sta alla base di tutto: <b>questo Pokemon ha una ball, e
+ * dove?</b> Sbagliare quella risposta ha due esiti e sono entrambi cattivi — se
+ * si risponde "non ce l'ha" quando invece c'e', gliene si conia una seconda e il
+ * Pokemon finisce in due ball entrambe funzionanti; se si risponde "ce l'ha"
+ * quando non c'e', il Pokemon resta senza modo di essere richiamato.
  *
- * <p>Senza la seconda meta' la prima sarebbe una trappola: depositi, ritiri, e
- * ti ritrovi un Pokemon che non hai modo di far uscire.
+ * <p>Per questo la ricerca passa da un posto solo, {@link #ovunque}, e guarda
+ * <b>tre</b> posti: lo slot cintura (che puo' contenere una ball nuda o una
+ * cintura piena di ball), l'inventario (dove a sua volta puo' esserci una
+ * cintura), e <b>il cursore della schermata aperta</b>. Il cursore e' quello che
+ * ci e' sfuggito piu' a lungo: non fa parte dell'inventario, e una ball tirata
+ * fuori dalla cintura ci sta sopra per tutto il tempo del gesto.
  */
 public final class BallHandover {
     private BallHandover() {}
@@ -28,9 +35,12 @@ public final class BallHandover {
     /** Quanti tick la ball resta inerte dopo che il Pokemon e' rientrato. */
     private static final int RESPIRO = 20;
 
+    /** Un posto dove una ball puo' stare, e come riscriverlo quando cambia. */
+    private record Posto(ItemStack stack, Runnable salva, Consumer<ItemStack> sostituisci) {}
+
     /**
      * Il contorno di un movimento nel PC: si fa quello che va fatto sulle ball,
-     * poi la squadra si riallinea e torna al client.
+     * poi la squadra si riallinea.
      *
      * <p>Tutto dentro un {@code try}: il deposito e' di Cobblemon e il contorno
      * e' nostro, e un nostro inciampo non deve poter far fallire il suo gesto.
@@ -51,34 +61,111 @@ public final class BallHandover {
         }
     }
 
-    /**
-     * Via la ball di chi e' stato depositato, dalla cintura e dall'inventario.
-     * Ogni copia: se ne girano due per lo stesso Pokemon, nessuna deve
-     * sopravvivere al deposito.
-     */
-    public static void forget(ServerPlayer player, UUID pokemon) {
-        final ItemStack cintura = Belts.inBeltSlot(player);
-        if (punta(cintura, pokemon)) {
-            // la ball nuda che si portava addosso
-            Belts.store(player, ItemStack.EMPTY);
-        } else if (cintura.getItem() instanceof TrainerBeltItem belt) {
-            final List<ItemStack> posti = belt.posti(cintura);
-            boolean toccata = false;
-            for (int i = 0; i < posti.size(); i++) {
-                if (punta(posti.get(i), pokemon)) {
-                    posti.set(i, ItemStack.EMPTY);
-                    toccata = true;
-                }
-            }
-            if (toccata) {
-                belt.salva(cintura, posti);
-                Belts.store(player, cintura);
+    /** Tutti i posti dove una ball di questo giocatore puo' trovarsi. */
+    private static List<Posto> posti(ServerPlayer player) {
+        final List<Posto> tutti = new ArrayList<>();
+
+        final ItemStack nelloSlot = Belts.inBeltSlot(player);
+        aggiungi(tutti, nelloSlot, () -> Belts.store(player, nelloSlot),
+                nuovo -> Belts.store(player, nuovo));
+
+        for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
+            final int posto = i;
+            aggiungi(tutti, player.getInventory().getItem(i), () -> {},
+                    nuovo -> player.getInventory().setItem(posto, nuovo));
+        }
+
+        // il cursore della schermata aperta: non e' parte dell'inventario, e una
+        // ball appena tirata fuori dalla cintura ci sta sopra
+        if (player.containerMenu != null) {
+            final ItemStack inMano = player.containerMenu.getCarried();
+            aggiungi(tutti, inMano, () -> {}, player.containerMenu::setCarried);
+        }
+
+        return tutti;
+    }
+
+    /** Un posto conta per se' e, se e' una cintura, anche per quel che porta. */
+    private static void aggiungi(List<Posto> tutti, ItemStack stack,
+                                 Runnable salva, Consumer<ItemStack> sostituisci) {
+        if (stack.isEmpty()) {
+            return;
+        }
+        tutti.add(new Posto(stack, salva, sostituisci));
+        if (!(stack.getItem() instanceof TrainerBeltItem belt)) {
+            return;
+        }
+        final List<ItemStack> dentro = belt.posti(stack);
+        for (int i = 0; i < dentro.size(); i++) {
+            final int quale = i;
+            tutti.add(new Posto(dentro.get(i), () -> {
+                belt.salva(stack, dentro);
+                salva.run();
+            }, nuovo -> {
+                dentro.set(quale, nuovo);
+                belt.salva(stack, dentro);
+                salva.run();
+            }));
+        }
+    }
+
+    /** Il posto dove sta la ball di questo Pokemon, o niente. */
+    private static Posto ovunque(ServerPlayer player, UUID pokemon) {
+        for (Posto posto : posti(player)) {
+            if (punta(posto.stack(), pokemon)) {
+                return posto;
             }
         }
-        for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
-            if (punta(player.getInventory().getItem(i), pokemon)) {
-                player.getInventory().setItem(i, ItemStack.EMPTY);
+        return null;
+    }
+
+    /** Se il giocatore ha da qualche parte la ball di questo Pokemon. */
+    public static boolean anywhere(ServerPlayer player, UUID pokemon) {
+        return ovunque(player, pokemon) != null;
+    }
+
+    /** Se il Pokemon sta in una ball che il giocatore ha <em>addosso</em>. */
+    public static boolean onBelt(ServerPlayer player, UUID pokemon) {
+        for (UUID addosso : BeltParty.wanted(player)) {
+            if (pokemon.equals(addosso)) {
+                return true;
             }
+        }
+        return false;
+    }
+
+    /**
+     * Via la ball di chi e' stato depositato, da qualunque posto. Ogni copia: se
+     * ne girano due per lo stesso Pokemon, nessuna deve sopravvivere.
+     */
+    public static void forget(ServerPlayer player, UUID pokemon) {
+        for (Posto posto : posti(player)) {
+            if (punta(posto.stack(), pokemon)) {
+                posto.sostituisci().accept(ItemStack.EMPTY);
+            }
+        }
+    }
+
+    /** Toglie la ball di questo Pokemon, ma non quella che si porta addosso. */
+    public static void takeLoose(ServerPlayer player, UUID pokemon) {
+        final ItemStack addosso = Belts.inBeltSlot(player);
+        for (Posto posto : posti(player)) {
+            if (posto.stack() != addosso && punta(posto.stack(), pokemon)) {
+                posto.sostituisci().accept(ItemStack.EMPTY);
+            }
+        }
+    }
+
+    /** Segna se il Pokemon di questa ball e' in campo, dovunque la ball sia. */
+    public static void mark(ServerPlayer player, UUID pokemon, boolean fuori) {
+        final Posto posto = ovunque(player, pokemon);
+        if (posto == null) {
+            return;
+        }
+        final BallLink legame = BallLink.read(posto.stack());
+        if (legame != null && legame.out() != fuori) {
+            posto.stack().set(ModBallData.BALL_LINK.get(), legame.withOut(fuori));
+            posto.salva().run();
         }
     }
 
@@ -93,88 +180,26 @@ public final class BallHandover {
         if (mon == null) {
             return;
         }
-        // handle nuovo: la ball vecchia e' stata distrutta col deposito, e se
-        // una sua copia girasse ancora non deve rispondere
-        final UUID handle = UUID.randomUUID();
-        mon.getPersistentData().putString(BallLink.OWNER, handle.toString());
-
-        final ItemStack ball = mon.getCaughtBall().stack(1);
-        ball.set(ModBallData.BALL_LINK.get(), BallLink.of(mon, handle));
-        if (Belts.insert(player, ball)) {
-            return;
-        }
-        if (!player.getInventory().add(ball)) {
-            player.drop(ball, false);
-        }
-    }
-
-    /**
-     * Se il Pokemon sta in una ball che il giocatore ha addosso. Vale anche la
-     * ball nuda nello slot cintura, che e' il caso che mi era sfuggito: non
-     * essendo una cintura non veniva guardata, e al rientro se ne creava una
-     * seconda.
-     */
-    public static boolean onBelt(ServerPlayer player, UUID pokemon) {
-        for (UUID addosso : BeltParty.wanted(player)) {
-            if (pokemon.equals(addosso)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Se il giocatore ha da qualche parte una ball che punta questo Pokemon.
-     *
-     * <p>Guarda anche <em>dentro</em> le cinture che porta nell'inventario, non
-     * solo quella indossata: togliersi la cintura mentre un Pokemon e' in campo
-     * la sposta nell'inventario con la ball ancora dentro, e non vederla
-     * significherebbe creargliene una seconda al rientro.
-     */
-    public static boolean anywhere(ServerPlayer player, UUID pokemon) {
-        if (dentro(Belts.inBeltSlot(player), pokemon)) {
-            return true;
-        }
-        for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
-            if (dentro(player.getInventory().getItem(i), pokemon)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /** Se questo oggetto e' la ball di quel Pokemon, o una cintura che la porta. */
-    private static boolean dentro(ItemStack stack, UUID pokemon) {
-        if (punta(stack, pokemon)) {
-            return true;
-        }
-        if (!(stack.getItem() instanceof TrainerBeltItem belt)) {
-            return false;
-        }
-        for (ItemStack ball : belt.posti(stack)) {
-            if (punta(ball, pokemon)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /** Toglie dall'inventario — e solo da li' — la ball di questo Pokemon. */
-    public static void takeFromInventory(ServerPlayer player, UUID pokemon) {
-        for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
-            if (punta(player.getInventory().getItem(i), pokemon)) {
-                player.getInventory().setItem(i, ItemStack.EMPTY);
-                return;
-            }
-        }
+        // prima si fa piazza pulita: se una ball per questo Pokemon gira ancora,
+        // coniarne un'altra vorrebbe dire due maniglie per una creatura
+        forget(player, pokemon);
+        consegna(player, mon, player.position());
     }
 
     /**
      * Rimette in mano la ball di un Pokemon: nell'inventario se c'e' posto,
-     * altrimenti a terra dove indicato. La ball e' identica a quella di prima —
-     * l'handle non si inventa, lo tiene il Pokemon nei suoi dati.
+     * altrimenti a terra dove indicato.
      */
     public static void give(ServerPlayer player, Pokemon mon, Vec3 dove) {
+        if (anywhere(player, mon.getUuid())) {
+            return;
+        }
+        consegna(player, mon, dove);
+    }
+
+    private static void consegna(ServerPlayer player, Pokemon mon, Vec3 dove) {
+        // l'handle non si inventa: lo tiene il Pokemon nei suoi dati, ed e' cosi'
+        // che la ball che torna e' la stessa di prima e non una gemella
         final String padrone = mon.getPersistentData().getString(BallLink.OWNER);
         final UUID handle = padrone.isEmpty() ? UUID.randomUUID() : UUID.fromString(padrone);
         if (padrone.isEmpty()) {
@@ -186,43 +211,14 @@ public final class BallHandover {
         // Pokemon rientra, e senza pausa un doppio clic lo rispedisce fuori
         // prima che l'animazione di rientro sia finita
         player.getCooldowns().addCooldown(ball.getItem(), RESPIRO);
+        if (Belts.insert(player, ball)) {
+            return;
+        }
         if (player.getInventory().add(ball)) {
             return;
         }
-        final ItemEntity caduta = new ItemEntity(player.serverLevel(), dove.x, dove.y, dove.z, ball);
-        player.serverLevel().addFreshEntity(caduta);
-    }
-
-    /**
-     * Segna sulla ball indossata se il suo Pokemon e' in campo. E' quello che
-     * la rende inamovibile finche' non rientra.
-     */
-    public static void mark(ServerPlayer player, UUID pokemon, boolean fuori) {
-        final ItemStack nelloSlot = Belts.inBeltSlot(player);
-        if (punta(nelloSlot, pokemon)) {
-            segna(nelloSlot, fuori);
-            Belts.store(player, nelloSlot);
-            return;
-        }
-        if (!(nelloSlot.getItem() instanceof TrainerBeltItem belt)) {
-            return;
-        }
-        final List<ItemStack> posti = belt.posti(nelloSlot);
-        for (ItemStack ball : posti) {
-            if (punta(ball, pokemon)) {
-                segna(ball, fuori);
-                belt.salva(nelloSlot, posti);
-                Belts.store(player, nelloSlot);
-                return;
-            }
-        }
-    }
-
-    private static void segna(ItemStack ball, boolean fuori) {
-        final BallLink legame = BallLink.read(ball);
-        if (legame != null) {
-            ball.set(ModBallData.BALL_LINK.get(), legame.withOut(fuori));
-        }
+        player.serverLevel().addFreshEntity(
+                new ItemEntity(player.serverLevel(), dove.x, dove.y, dove.z, ball));
     }
 
     private static boolean punta(ItemStack stack, UUID pokemon) {

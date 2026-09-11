@@ -28,10 +28,23 @@ public final class BeltEvents {
      */
     @SubscribeEvent
     public static void ballPieneResistono(EntityJoinLevelEvent event) {
-        if (event.getEntity() instanceof ItemEntity item && BallLink.filled(item.getItem())) {
+        if (event.getEntity() instanceof ItemEntity item && prezioso(item.getItem())) {
             item.setUnlimitedLifetime();
             item.setInvulnerable(true);
         }
+    }
+
+    /**
+     * Una ball piena, o una cintura che ne porta almeno una. La cintura vale
+     * quanto il suo contenuto: proteggere le ball nude e lasciar bruciare la
+     * cintura che le contiene sarebbe la peggiore delle due scelte.
+     */
+    private static boolean prezioso(ItemStack stack) {
+        if (BallLink.filled(stack)) {
+            return true;
+        }
+        return stack.getItem() instanceof TrainerBeltItem belt
+                && belt.posti(stack).stream().anyMatch(BallLink::filled);
     }
 
     /**
