@@ -23,27 +23,24 @@
       "inner_layer_provider": {
         "type": "minecraft:simple_state_provider",
         "state": {
-          "Name": "cobblemon:tumblestone_block"
+          "Name": "tfc:rock/hardened/quartzite"
         }
       },
       "alternate_inner_layer_provider": {
         "type": "minecraft:simple_state_provider",
         "state": {
-          "Name": "cobblemon:tumblestone_block"
+          "Name": "tfcobblemon:tumblestone_quartzite"
         }
       },
       "invalid_blocks": "#minecraft:geode_invalid_blocks",
       "cannot_replace": "#minecraft:features_cannot_replace",
       "inner_placements": [
         {
-          "Name": "cobblemon:tumblestone_cluster",
-          "Properties": {
-            "facing": "up"
-          }
+          "Name": "minecraft:air"
         }
       ]
     },
-    "use_alternate_layer0_chance": 0.1,
+    "use_alternate_layer0_chance": 0.3,
     "invalid_blocks_threshold": 1,
     "crack": {
       "generate_crack_chance": 0.95,

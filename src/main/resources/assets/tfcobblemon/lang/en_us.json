@@ -193,5 +193,6 @@
   "tfcobblemon.ui.interact.recall": "Recall",
   "block.tfcobblemon.loose_tumblestone": "Tumblestone",
   "block.tfcobblemon.loose_sky_tumblestone": "Sky Tumblestone",
-  "block.tfcobblemon.loose_black_tumblestone": "Black Tumblestone"
+  "block.tfcobblemon.loose_black_tumblestone": "Black Tumblestone",
+  "block.tfcobblemon.tumblestone_quartzite": "Tumblestone"
 }

@@ -5,6 +5,7 @@ import com.kingtrapinch.tfcobblemon.belt.BallFlight;
 import com.kingtrapinch.tfcobblemon.belt.ModBallData;
 import com.kingtrapinch.tfcobblemon.belt.ModBelt;
 import com.kingtrapinch.tfcobblemon.block.ModGroundcover;
+import com.kingtrapinch.tfcobblemon.block.ModOres;
 import com.kingtrapinch.tfcobblemon.dig.ModDig;
 import com.kingtrapinch.tfcobblemon.fluid.ModFluids;
 import com.kingtrapinch.tfcobblemon.glass.ModGlassOperations;
@@ -31,6 +32,7 @@ public class TFCobblemon {
         ModBelt.register(modEventBus);
         ModBallData.register(modEventBus);
         ModGroundcover.register(modEventBus);
+        ModOres.register(modEventBus);
         ModDig.register(modEventBus);
         ModFluids.register(modEventBus);
 
