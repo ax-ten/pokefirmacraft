@@ -10,7 +10,8 @@ import java.util.List;
 /**
  * Il pulviscolo che salta via quando una zolla cede. Nella finestra non c'e' un
  * mondo in cui spawnare particelle, quindi sono quadratini disegnati a mano:
- * partono dalla cella, si aprono a raggiera e cadono.
+ * partono sparsi sulla zolla, si aprono a raggiera e cadono. Il colore lo
+ * pescano dai pixel veri della texture che ha ceduto, come fa vanilla.
  */
 public final class DigDust {
     private static final RandomSource RANDOM = RandomSource.create();
@@ -28,15 +29,21 @@ public final class DigDust {
 
     private final List<Speck> specks = new ArrayList<>();
 
-    /** Una manciata di schizzi al centro di una cella. */
-    public void burst(int x, int y, int colour) {
+    /**
+     * Una manciata di schizzi sparsi su una zolla. Non partono dal centro: una
+     * zolla che cede si sbriciola per intero, e otto granelli dallo stesso punto
+     * si leggono come uno scoppio invece che come un crollo. Il margine tiene i
+     * granelli dentro la cella, cosi' non sembrano nascere dal vicino.
+     */
+    public void burst(int x, int y, int span, int[] palette) {
+        final int margine = Math.max(1, span / 6);
         for (int i = 0; i < 8; i++) {
             final Speck s = new Speck();
-            s.x = x;
-            s.y = y;
+            s.x = x + margine + RANDOM.nextDouble() * (span - 2 * margine);
+            s.y = y + margine + RANDOM.nextDouble() * (span - 2 * margine);
             s.vx = (RANDOM.nextDouble() - 0.5) * 2.4;
             s.vy = -RANDOM.nextDouble() * 1.6 - 0.2;
-            s.colour = colour;
+            s.colour = palette[RANDOM.nextInt(palette.length)];
             s.size = 1 + RANDOM.nextInt(2);
             specks.add(s);
         }

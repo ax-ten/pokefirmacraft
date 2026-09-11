@@ -50,6 +50,9 @@ public class DigScreen extends AbstractContainerScreen<DigMenu> {
     }
 
     private final DigDust dust = new DigDust();
+
+    /** Le scintille di un tesoro non vengono da una texture: sono luce. */
+    private static final int[] SCINTILLE = {0xFFF0A0, 0xFFFFD0, 0xFFE070};
     private DigSkin skin = DigSkin.of(ResourceLocation
             .fromNamespaceAndPath("tfcobblemon", "suspicious_gravel/granite"));
     /** Lo slot dell'inventario da cui viene l'attrezzo scelto, o -1. */
@@ -306,16 +309,18 @@ public class DigScreen extends AbstractContainerScreen<DigMenu> {
     @Override
     public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
         for (int[] cell : ClientDigState.drainBroken()) {
-            dust.burst(leftPos + DigLayout.cellX(cell[0]) + DigLayout.CELL / 2,
-                    topPos + DigLayout.cellY(cell[1]) + DigLayout.CELL / 2, 0xC8B090);
+            final int prima = cell[2];
+            final Layer caduto = ClientDigState.kind().materialAt(prima);
+            dust.burst(leftPos + DigLayout.cellX(cell[0]), topPos + DigLayout.cellY(cell[1]),
+                    DigLayout.CELL, DigPalette.of(skin.forCell(caduto, prima)));
         }
         // un tesoro appena venuto fuori: scintille chiare sopra il punto giusto
         final int trovato = ClientDigState.drainFound();
         if (trovato >= 0 && trovato < menu.spots().size()) {
             final DigMenu.Spot spot = menu.spots().get(trovato);
             for (int i = 0; i < 3; i++) {
-                dust.burst(leftPos + DigLayout.treasureX(spot.x()) + 8,
-                        topPos + DigLayout.treasureY(spot.y()) + 8, 0xFFF0A0);
+                dust.burst(leftPos + DigLayout.treasureX(spot.x()),
+                        topPos + DigLayout.treasureY(spot.y()), 16, SCINTILLE);
             }
         }
         super.render(graphics, mouseX, mouseY, partialTick);

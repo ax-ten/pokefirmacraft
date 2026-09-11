@@ -12,7 +12,12 @@ public final class ClientDigState {
     private static int durability = DigSite.DURABILITY;
     private static SiteKind kind = SiteKind.SEDIMENT;
 
-    /** Le celle che hanno ceduto con l'ultimo colpo, per il pulviscolo. */
+    /**
+     * Le celle che hanno ceduto con l'ultimo colpo, per il pulviscolo: colonna,
+     * riga, e a che profondita' erano prima. La profondita' serve perche' il
+     * colore del pulviscolo lo da' lo strato che si e' rotto, non quello che e'
+     * venuto fuori sotto.
+     */
     private static final java.util.List<int[]> broken = new java.util.ArrayList<>();
 
     private static int found = -1;
@@ -39,7 +44,7 @@ public final class ClientDigState {
         }
         for (int i = 0; i < Math.min(prima.length, depth.length); i++) {
             if ((depth[i] & 0x0F) > (prima[i] & 0x0F)) {
-                broken.add(new int[] {i % DigSite.SIZE, i / DigSite.SIZE});
+                broken.add(new int[] {i % DigSite.SIZE, i / DigSite.SIZE, prima[i] & 0x0F});
             }
         }
     }
