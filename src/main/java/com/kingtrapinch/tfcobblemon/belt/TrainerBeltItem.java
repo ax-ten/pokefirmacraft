@@ -4,6 +4,7 @@ import com.cobblemon.mod.common.item.PokeBallItem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -126,7 +127,7 @@ public class TrainerBeltItem extends Item {
                 infila(belt, avanzo);
             }
             suonoFuori(player);
-            allinea(player);
+            aggiorna(player, belt);
             return true;
         }
         if (!isBall(sotto) || !slot.allowModification(player)) {
@@ -141,7 +142,7 @@ public class TrainerBeltItem extends Item {
             slot.setChanged();
         }
         suonoDentro(player);
-        allinea(player);
+        aggiorna(player, belt);
         return true;
     }
 
@@ -159,27 +160,35 @@ public class TrainerBeltItem extends Item {
             }
             access.set(uscita);
             suonoFuori(player);
-            allinea(player);
+            aggiorna(player, belt);
             return true;
         }
         if (!isBall(altro) || !infila(belt, altro)) {
             return false;
         }
         suonoDentro(player);
-        allinea(player);
+        aggiorna(player, belt);
         return true;
     }
 
     /**
-     * Dopo ogni gesto che cambia il contenuto della cintura la squadra va
-     * rifatta: questi gesti passano dall'inventario e non da {@code Belts},
-     * quindi l'allineamento non lo farebbe nessuno — ed e' il motivo per cui un
-     * Pokemon appena messo sulla cintura non entrava in squadra.
+     * Dopo ogni gesto da sacco: se la cintura e' quella indossata va riscritta
+     * nel suo slot, altrimenti Curios non si accorge del cambiamento e rimanda
+     * al client la versione di prima — con la ball ancora dentro, mentre sul
+     * cursore c'e' quella appena uscita. Sembra un doppione ed e' solo un
+     * disaccordo fra le due parti.
+     *
+     * <p>E poi la squadra va riallineata: questi gesti passano da {@code Slot} e
+     * non da {@code Belts}, quindi non lo farebbe nessuno.
      */
-    private static void allinea(Player player) {
-        if (player instanceof net.minecraft.server.level.ServerPlayer chi) {
-            BeltParty.align(chi);
+    private void aggiorna(Player player, ItemStack belt) {
+        if (!(player instanceof ServerPlayer chi)) {
+            return;
         }
+        if (Belts.inBeltSlot(chi) == belt) {
+            Belts.store(chi, belt);
+        }
+        BeltParty.align(chi);
     }
 
     @Override

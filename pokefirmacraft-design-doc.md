@@ -753,12 +753,17 @@ Il minigioco funziona, i numeri sono messi a caso e vanno provati con le mani.
       scalpello 30% di prendere anche la cella sotto. Sul pulviscolo il ferro
       non fa presa: il martello dimezza, lo scalpello riesce solo a incrinare,
       e per la sabbia c'e' la spazzola.
-- [ ] Il titolo della finestra e' "Test Pit". Alternative in fondo alla lista.
 - [ ] `SiteKind.CRYSTAL.hammerPenalty` = 2: nel cristallo il martello consuma
       il doppio, quattordici a colpo, quindi conviene lo scalpello ma il
       martello resta usabile.
-- [ ] `SiteKind.rollCrystal` = 4% — quanto raro e' un sito di cristallo, quando
-      la worldgen li piazzera'.
+- [ ] `SiteKind.rollCrystal` = 4% — quanto raro e' un sito di cristallo.
+
+**La worldgen dei siti: frequenti come in Cobblemon base.** E' il riferimento
+giusto, perche' e' quello con cui la loot table archeologica e' stata bilanciata.
+Ma c'e' un problema piu' grosso sotto: **i monumenti di Cobblemon non si
+generano**, il generatore di terreno di TerraFirmaCraft li ha rimossi. Sono loro
+che piazzano i blocchi sospetti, quindi finche' non tornano non c'e' niente da
+scavare. Rimetterli in piedi viene prima di tarare qualunque numero.
 - [ ] La griglia e' 9x9 in una costante sola (`DigSite.SIZE`), quindi cambiarla
       e' una riga; la finestra pero' e' dimensionata a mano in `DigLayout`.
 
@@ -838,25 +843,44 @@ versione artigianale, molto prima.
 
 **Decisioni di fondo**
 
-- **Su quale pack poggiare**: Gregnautics Continued è stato ritirato dall'autore e
-  sopravvive solo come fork di terzi (vedi sezione 2). Va deciso se accettare il
-  rischio, forkare a propria volta il pack, o agganciarsi ad altro
-- **Separazione da TFCobblemon** (sezione 6.1): staccare il fork su GitHub e smettere
-  di trattare l'upstream come base da seguire
+- ~~Su quale pack poggiare~~ — **deciso, e non e' un problema.** Gregnautics
+  Continued e' stato ritirato, ma noi non dipendiamo dal pacchetto: dipendiamo
+  da un elenco di mod. Quell'elenco va tenuto scritto, e con quello ci si
+  appoggia a qualunque pacchetto con la stessa filosofia — ce ne sono diversi.
+  Il pacchetto e' un posto dove giocare, non una base su cui costruire.
+- ~~Separazione da TFCobblemon~~ — **deciso: resta un fork, e va bene cosi'.**
+  E' stata una base grossa e diverse delle sue ricette sono ancora in uso. Nome,
+  modid e licenza restano i suoi.
 
 **Progettazione**
 
-- Redesign completo delle ricette Poké Ball in chiave Greg (sezione 5.1)
+- Redesign completo delle ricette Poké Ball in chiave Greg (sezione 5.1), con
+  due cose gia' decise: l'**alluminio** e' il materiale dell'ultimo tier, e i
+  **coperchi** possono andare di circuiti come tutto il resto di quell'era
+- Le tre vie di produzione danno tutte due ball, quindi **non seguono la
+  convenzione** scoperta col tubo a elettroni (sezione 5.5): era piu' avanzata =
+  meno pezzi, migliori, resa maggiore. Da rifare coi numeri
 - **Il PC e la Trainer Belt avanzata si costruiscono con i componenti di Applied
   Energistics**: celle, ME controller, terminali, wireless access point. È il
   vocabolario giusto — un armadio in rete e un terminale senza fili — e dice
   molto più della pila di lamiere di ora. **Ma solo la ricetta.** Lo storage
   resta quello di Cobblemon: le box non diventano celle, non si ripartisce
-  niente, e il PC non va rifatto meccanicamente. Da decidere: quale tier AE2 fa
-  da cancello al collegamento remoto
+  niente, e il PC non va rifatto meccanicamente.
+
+  **Il cancello e' un pezzo nostro, fatto col vocabolario di AE2: il Pokemon
+  Storage Component.** In AE2 ogni processore nasce da un circuito stampato su
+  un materiale — il logic processor sull'oro, il calculation sul certus, l'engineering
+  sul diamante. Il nostro si stampa sulla **tumblestone base**, ed e' l'unico
+  pezzo che serve: lo vuole il PC e lo vuole il grado di cintura col collegamento
+  remoto. Tier di AE2 richiesto: **quello base**, perche' il cancello e' il
+  componente, non la tecnologia attorno.
 - Ricollocazione di PC e Pasture Block secondo la sezione 4
 - Materiali delle due cinture (la capienza è decisa: 1 a mani nude, 3, 6)
-- Quali categorie ha la borsa e con che era si aprono (sezione 6.4)
+- ~~Quali categorie ha la borsa~~ — **decise.** Si rifanno a quelle di
+  Cobblemon, tenendo solo le quattro che hanno senso come tasche: **ball**,
+  **bacche + mente + snack**, **medicine**, **oggetti che cambiano le statistiche**.
+  Tutto il resto resta oggetto normale nell'inventario. Si sblocca **quando si
+  sbloccano borse e tool belt**, con una ricetta della stessa famiglia
 - Struttura dettagliata del capitolo di quest FTB (nomi, ordine, traguardi di sblocco)
 - Held item non ancora assegnati singolarmente su tutti i 101 esistenti in Cobblemon (la sezione 4 copre le categorie principali per rappresentanza, non ogni singolo item)
 - Dettaglio tecnico dei processi Greg di intaglio/taglio gemme da riusare per le Evolution Stone Ore (va verificato quale macchina/processo Greg esatto si applica)

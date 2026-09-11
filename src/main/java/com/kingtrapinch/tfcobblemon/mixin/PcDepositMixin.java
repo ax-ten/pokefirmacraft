@@ -25,6 +25,6 @@ public abstract class PcDepositMixin {
             at = @At("TAIL"))
     private void tfcobblemon$viaLaBall(MovePartyPokemonToPCPacket packet, MinecraftServer server,
                                        ServerPlayer player, CallbackInfo callback) {
-        BallHandover.forget(player, packet.getPokemonID());
+        BallHandover.afterPc(player, () -> BallHandover.forget(player, packet.getPokemonID()));
     }
 }

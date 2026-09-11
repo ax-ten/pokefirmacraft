@@ -10,6 +10,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -85,7 +86,9 @@ public final class BeltParty {
                 continue;
             }
             squadra.remove(mon);
-            pc.add(mon);
+            if (pc.get(mon.getUuid()) == null) {
+                pc.add(mon);
+            }
         }
 
         // e chi lo e' va al posto della sua ball
@@ -137,6 +140,39 @@ public final class BeltParty {
             }
         }
         align(player);
+    }
+
+    /**
+     * Fa rientrare tutti i Pokemon che stavano in quello che si e' appena
+     * sfilato. Togliersi la cintura non lascia i Pokemon in giro per il mondo
+     * senza piu' un posto dove tornare: prima rientrano, poi si allinea.
+     */
+    public static void recallAll(ServerPlayer player, ItemStack cosa) {
+        for (UUID id : contenuti(cosa)) {
+            final Pokemon mon = Cobblemon.INSTANCE.getStorage().getParty(player).get(id);
+            if (mon != null && mon.getEntity() != null) {
+                mon.recall();
+            }
+        }
+    }
+
+    /** Gli UUID che un oggetto porta: una ball sola, o quelli di una cintura. */
+    private static List<UUID> contenuti(ItemStack cosa) {
+        final BallLink sola = BallLink.read(cosa);
+        if (sola != null) {
+            return List.of(sola.pokemon());
+        }
+        if (!(cosa.getItem() instanceof TrainerBeltItem belt)) {
+            return List.of();
+        }
+        final List<UUID> dentro = new ArrayList<>();
+        for (ItemStack ball : belt.posti(cosa)) {
+            final BallLink legame = BallLink.read(ball);
+            if (legame != null) {
+                dentro.add(legame.pokemon());
+            }
+        }
+        return dentro;
     }
 
     private static int indiceDi(PlayerPartyStore squadra, Pokemon mon) {

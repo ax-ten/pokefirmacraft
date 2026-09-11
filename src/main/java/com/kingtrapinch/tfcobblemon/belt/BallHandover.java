@@ -2,6 +2,7 @@ package com.kingtrapinch.tfcobblemon.belt;
 
 import com.cobblemon.mod.common.Cobblemon;
 import com.cobblemon.mod.common.pokemon.Pokemon;
+import com.kingtrapinch.tfcobblemon.TFCobblemon;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
@@ -26,6 +27,29 @@ public final class BallHandover {
 
     /** Quanti tick la ball resta inerte dopo che il Pokemon e' rientrato. */
     private static final int RESPIRO = 20;
+
+    /**
+     * Il contorno di un movimento nel PC: si fa quello che va fatto sulle ball,
+     * poi la squadra si riallinea e torna al client.
+     *
+     * <p>Tutto dentro un {@code try}: il deposito e' di Cobblemon e il contorno
+     * e' nostro, e un nostro inciampo non deve poter far fallire il suo gesto.
+     * Senza questo un'eccezione qui dentro lasciava il movimento a meta' —
+     * avvenuto sul server, mai confermato al client — e a schermo sembrava un
+     * Pokemon che si rifiutava di andare nel PC, o che si sdoppiava.
+     */
+    public static void afterPc(ServerPlayer player, Runnable cosa) {
+        try {
+            cosa.run();
+        } catch (Exception e) {
+            TFCobblemon.LOGGER.error("ball e PC", e);
+        }
+        try {
+            BeltParty.align(player);
+        } catch (Exception e) {
+            TFCobblemon.LOGGER.error("allineamento dopo il PC", e);
+        }
+    }
 
     /**
      * Via la ball di chi e' stato depositato, dalla cintura e dall'inventario.
@@ -99,13 +123,36 @@ public final class BallHandover {
         return false;
     }
 
-    /** Se il giocatore ha da qualche parte una ball che punta questo Pokemon. */
+    /**
+     * Se il giocatore ha da qualche parte una ball che punta questo Pokemon.
+     *
+     * <p>Guarda anche <em>dentro</em> le cinture che porta nell'inventario, non
+     * solo quella indossata: togliersi la cintura mentre un Pokemon e' in campo
+     * la sposta nell'inventario con la ball ancora dentro, e non vederla
+     * significherebbe creargliene una seconda al rientro.
+     */
     public static boolean anywhere(ServerPlayer player, UUID pokemon) {
-        if (onBelt(player, pokemon)) {
+        if (dentro(Belts.inBeltSlot(player), pokemon)) {
             return true;
         }
         for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
-            if (punta(player.getInventory().getItem(i), pokemon)) {
+            if (dentro(player.getInventory().getItem(i), pokemon)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /** Se questo oggetto e' la ball di quel Pokemon, o una cintura che la porta. */
+    private static boolean dentro(ItemStack stack, UUID pokemon) {
+        if (punta(stack, pokemon)) {
+            return true;
+        }
+        if (!(stack.getItem() instanceof TrainerBeltItem belt)) {
+            return false;
+        }
+        for (ItemStack ball : belt.posti(stack)) {
+            if (punta(ball, pokemon)) {
                 return true;
             }
         }

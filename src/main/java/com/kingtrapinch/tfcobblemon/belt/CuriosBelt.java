@@ -1,5 +1,6 @@
 package com.kingtrapinch.tfcobblemon.belt;
 
+import com.cobblemon.mod.common.battles.BattleRegistry;
 import com.cobblemon.mod.common.item.PokeBallItem;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerPlayer;
@@ -38,7 +39,7 @@ final class CuriosBelt {
     static void hook(IEventBus eventBus) {
         eventBus.addListener(RegisterCapabilitiesEvent.class, CuriosBelt::zittisciLeBall);
         NeoForge.EVENT_BUS.addListener(CurioChangeEvent.class, CuriosBelt::laCinturaCambiaMano);
-        NeoForge.EVENT_BUS.addListener(CurioCanUnequipEvent.class, CuriosBelt::nonMentreEInCampo);
+        NeoForge.EVENT_BUS.addListener(CurioCanUnequipEvent.class, CuriosBelt::nonInCombattimento);
     }
 
     /**
@@ -62,27 +63,25 @@ final class CuriosBelt {
      * che il giocatore non fa passando da una nostra riga di codice.
      */
     private static void laCinturaCambiaMano(CurioChangeEvent event) {
-        if (SLOT.equals(event.getIdentifier())
-                && event.getEntity() instanceof ServerPlayer player) {
-            BeltParty.align(player);
+        if (!SLOT.equals(event.getIdentifier())
+                || !(event.getEntity() instanceof ServerPlayer player)) {
+            return;
         }
+        // chi stava in quello che si e' sfilato rientra: togliersi la cintura
+        // non lascia Pokemon in giro per il mondo senza un posto dove tornare
+        BeltParty.recallAll(player, event.getFrom());
+        BeltParty.align(player);
     }
 
     /**
-     * Con un Pokemon in campo, quello che si ha addosso non si sfila. Vale per
-     * la ball nuda e per la cintura che ne contiene una: togliersela mentre lui
-     * e' nel mondo e' il modo piu' facile di ritrovarsi con due ball o con
-     * nessuna, e bloccare il gesto costa meno che rimediare dopo.
+     * In combattimento la cintura non si sfila. Fuori si', e chi era dentro
+     * rientra — ma a meta' scontro la squadra e' quella registrata all'inizio,
+     * e cambiarla sotto i piedi alla battaglia non ha un esito sensato.
      */
-    private static void nonMentreEInCampo(CurioCanUnequipEvent event) {
-        if (!SLOT.equals(event.getSlotContext().identifier())) {
-            return;
-        }
-        final ItemStack cosa = event.getStack();
-        final boolean ferma = BallLink.bloccata(cosa)
-                || (cosa.getItem() instanceof TrainerBeltItem belt
-                        && belt.posti(cosa).stream().anyMatch(BallLink::bloccata));
-        if (ferma) {
+    private static void nonInCombattimento(CurioCanUnequipEvent event) {
+        if (SLOT.equals(event.getSlotContext().identifier())
+                && event.getEntity() instanceof ServerPlayer player
+                && BattleRegistry.getBattleByParticipatingPlayer(player) != null) {
             event.setUnequipResult(TriState.FALSE);
         }
     }

@@ -25,6 +25,6 @@ public abstract class PcWithdrawMixin {
             at = @At("TAIL"))
     private void tfcobblemon$rendiLaBall(MovePCPokemonToPartyPacket packet, MinecraftServer server,
                                          ServerPlayer player, CallbackInfo callback) {
-        BallHandover.hand(player, packet.getPokemonID());
+        BallHandover.afterPc(player, () -> BallHandover.hand(player, packet.getPokemonID()));
     }
 }

@@ -23,7 +23,9 @@ public abstract class PcSwapMixin {
             at = @At("TAIL"))
     private void tfcobblemon$scambiaLeBall(SwapPCPartyPokemonPacket packet, MinecraftServer server,
                                            ServerPlayer player, CallbackInfo callback) {
-        BallHandover.forget(player, packet.getPartyPokemonID());
-        BallHandover.hand(player, packet.getPcPokemonID());
+        BallHandover.afterPc(player, () -> {
+            BallHandover.forget(player, packet.getPartyPokemonID());
+            BallHandover.hand(player, packet.getPcPokemonID());
+        });
     }
 }
