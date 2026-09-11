@@ -517,6 +517,32 @@ mai come un PC, vede delle ball. Il **blocco** PC diventa quello che deve
 essere: una macchina per la gestione in blocco e per l'accesso a distanza, non
 il presupposto per avere piu' di sei Pokemon.
 
+**Dove stanno i dati, e sono tre posti.** La squadra, il PC vero, e un **box
+invisibile** che tiene tutti gli altri. Nient'altro: le ball sono **maniglie**
+verso il box invisibile, non contenitori. Un Pokemon esiste in uno di quei tre
+posti e in nessun altro, e la ball e' il modo di maneggiarlo da fuori senza
+mescolare i dati.
+
+Il box invisibile si prende con `getCustomStore(PCStore.class, chiave,
+registryAccess)`, dove la chiave e' un UUID derivato da quello del giocatore: il
+PC cerca col suo UUID e questo non lo trova mai. Cobblemon lo tiene in cache e
+lo salva su file come gli altri. Nel PC vero finisce solo quello che il giocatore
+vi deposita di proposito, ed e' quello che tiene il PC un traguardo invece di un
+indice gratuito di ogni Pokemon che si ha in una cassa.
+
+**Perche' non serializzare il Pokemon dentro la ball**, che sarebbe piu'
+intuitivo. Un'obiezione che sembrava decisiva non lo e': i data fixer di
+Cobblemon stanno dentro `Pokemon.CODEC`
+(`CobblemonSchemas.wrapCodec(CODEC, POKEMON)` nell'inizializzatore statico),
+quindi un Pokemon dentro un item migrerebbe fra versioni come uno in un
+deposito. Quella che resta invece e' pesante: oggi una ball copiata e' una
+**maniglia morta**, perche' il Pokemon ricorda quale handle lo possiede e rifiuta
+le altre; con i dati dentro l'item, una copia e' un **secondo Pokemon vero**, e
+in creativa si copia col tasto centrale. Si passerebbe da "impossibile per
+costruzione" a "un clic". E le battaglie vorrebbero comunque un deposito, quindi
+la materializzazione cintura-squadra resterebbe: lo stesso lavoro, con in piu' il
+rischio.
+
 **Ma la ball non deve contenere il Pokemon: deve puntarlo.** Se il Pokemon vive
 dentro l'item, perdere l'item e' perderlo — in lava, in una morte in un posto
 irraggiungibile, in una mod che cancella oggetti — ed e' esattamente il motivo
