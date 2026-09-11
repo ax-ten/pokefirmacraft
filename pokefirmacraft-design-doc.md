@@ -360,9 +360,27 @@ glielo si debba dire.
 
 ### 6.1 Trainer Belt
 
-Lo slot **`belt`** esiste dentro Curios stessa (`data/curios/slots/belt.json`
-nel suo jar) e nel pacchetto lo usa anche ToolBelt: quindi non va dichiarato,
-va condiviso. E' di dimensione uno, e questo decide l'architettura.
+Lo slot **`belt`** va dichiarato da noi: **Curios non ne spedisce nessuno.** Nel
+suo jar `data/curios/slots/` non esiste — `SlotTypePreset.BELT` e' solo il
+modello di come farlo, non una dichiarazione — e nel pacchetto lo slot c'e'
+perche' lo dichiara ToolBelt. Fuori dal pacchetto, senza dichiararlo, non si
+indossa niente.
+
+Servono due file:
+
+- `data/curios/slots/belt.json` — `size: 1`, `operation: "SET"`, `order: 180`
+  (l'ordine del preset), icona `curios:slot/empty_belt_slot`
+- `data/curios/entities/tfcobblemon.json` — che lo concede a
+  `minecraft:player`. Il nome del file e' nostro di proposito: `player.json`
+  finirebbe sullo stesso percorso di quello di un'altra mod
+
+`operation: "SET"` e non `"ADD"` e' la cosa importante: lo slot e' di dimensione
+uno ed e' condiviso con ToolBelt, e sommando le dichiarazioni diventerebbe due.
+Con SET chiunque lo dichiari lo riporta a uno. Curios legge il file da **tutti**
+i pack — itera i `PackResources` e lista le risorse pack per pack — quindi la
+nostra dichiarazione e quella di ToolBelt convivono invece di sovrascriversi.
+
+La dimensione uno decide l'architettura.
 
 **Come si portano le ball.**
 
