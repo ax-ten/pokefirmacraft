@@ -3,6 +3,8 @@ package com.kingtrapinch.tfcobblemon.belt;
 import com.cobblemon.mod.common.api.events.CobblemonEvents;
 import com.cobblemon.mod.common.api.events.pokemon.PokemonCapturedEvent;
 import com.cobblemon.mod.common.entity.pokeball.EmptyPokeBallEntity;
+import com.cobblemon.mod.common.Cobblemon;
+import com.cobblemon.mod.common.api.storage.party.PlayerPartyStore;
 import com.cobblemon.mod.common.pokemon.Pokemon;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -50,10 +52,28 @@ public final class BallCapture {
         player.serverLevel().addFreshEntity(
                 new ItemEntity(player.serverLevel(), dove.x, dove.y, dove.z, ball));
 
-        // e la squadra si rimette in pari: Cobblemon ha appena messo il Pokemon
-        // dove ha voluto lui, e se la sua ball non e' addosso non e' a portata.
-        // Senza questo restava in squadra fino al gesto successivo sulla
-        // cintura, cioe' sembrava che una cattura bastasse per averlo in mano.
-        BeltParty.align(player);
+        // E il Pokemon va nel box, sempre. Cobblemon lo mette in squadra prima
+        // di annunciare la cattura — l'add sta all'offset 141 di
+        // EmptyPokeBallEntity e l'evento arriva al 218 — ma una cattura non e'
+        // un Pokemon a portata: a portata ci va quando raccogli la sua ball e
+        // c'e' posto per lui.
+        //
+        // Farlo qui invece di lasciarlo all'allineamento e' la differenza fra
+        // una regola e una correzione: non c'e' nessun momento in cui il
+        // Pokemon appena preso si trova in squadra senza che tu l'abbia
+        // raccolto.
+        nelBox(player, mon);
+    }
+
+    private static void nelBox(ServerPlayer player, Pokemon mon) {
+        final PlayerPartyStore squadra = Cobblemon.INSTANCE.getStorage().getParty(player);
+        if (squadra.get(mon.getUuid()) == null) {
+            return;
+        }
+        squadra.remove(mon);
+        if (!BeltParty.deposito(player).add(mon)) {
+            // il box non lo accetta: meglio a portata che in nessun posto
+            squadra.add(mon);
+        }
     }
 }
