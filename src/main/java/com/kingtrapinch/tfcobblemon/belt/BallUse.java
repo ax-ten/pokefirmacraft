@@ -33,17 +33,21 @@ public final class BallUse {
     private static final double DAVANTI = 2.0D;
 
     /**
-     * In combattimento le ball dell'inventario non si usano: valgono solo
-     * quelle che si hanno addosso. Chi si e' preparato male resta con quello che
-     * ha alla cintura.
+     * In combattimento non si evoca da una ball tenuta in mano: si manda in
+     * campo dalla cintura, con le frecce e R. Chi si e' preparato male resta con
+     * quello che ha addosso.
+     *
+     * <p>Vale solo per le ball piene. Una ball vuota si lancia come sempre,
+     * anche in mezzo a uno scontro: catturare e' un'altra cosa dal mandare in
+     * campo, e non c'e' ragione di impedirlo.
      *
      * <p>Il blocco e' di parte server, che e' l'unica che sa delle battaglie: il
      * client muove il braccio e non succede niente, che e' brutto ma innocuo —
      * il lancio di una ball lo fa il server, non lui.
      */
     @SubscribeEvent(priority = EventPriority.HIGHEST)
-    public static void nienteBallInCombattimento(PlayerInteractEvent.RightClickItem event) {
-        if (!TrainerBeltItem.isBall(event.getItemStack())
+    public static void nienteEvocazioniInCombattimento(PlayerInteractEvent.RightClickItem event) {
+        if (!BallLink.filled(event.getItemStack())
                 || !(event.getEntity() instanceof ServerPlayer player)
                 || BattleRegistry.getBattleByParticipatingPlayer(player) == null) {
             return;

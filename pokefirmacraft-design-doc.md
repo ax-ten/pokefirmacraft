@@ -374,8 +374,8 @@ forzatura. Il fluido e' la strada giusta.
 **Usare una ball evoca il Pokemon che ha dentro.** Non e' "seleziona nella
 lista, poi premi R": la ball stessa e' la maniglia del suo Pokemon, e il tasto
 destro su di essa fa quello che farebbe R su quel Pokemon nell'elenco. Da cui
-segue che in combattimento **le ball dell'inventario non si possono usare** —
-solo quelle sulla cintura. Chi si e' preparato male resta con quello che ha
+segue che in combattimento **non si evoca da una ball tenuta in mano** — si
+manda in campo dalla cintura. Chi si e' preparato male resta con quello che ha
 addosso.
 
 Il blocco e' di parte server, che e' l'unica a sapere delle battaglie: il client
@@ -390,9 +390,10 @@ momentaneamente dalla sua ball, che resta sua e **non lascia la cintura**: il
 posto e' occupato da lui anche mentre e' fuori. Quando si ispeziona la cintura,
 la sua icona dovrebbe mostrarsi aperta.
 
-Quello che il blocco toglia davvero e' una cosa sola: lanciare una ball vuota
-per catturare mentre si e' in combattimento. Le frecce e R mandano in campo chi
-si ha, non catturano chi si ha davanti. Da decidere se e' voluto.
+**Catturare non c'entra e funziona come sempre.** Una ball vuota si lancia col
+tasto destro anche in mezzo a uno scontro: il blocco riguarda solo le ball
+piene, cioe' l'evocare. Mandare in campo e catturare sono due gesti diversi, e
+solo il primo deve passare dalla cintura.
 
 **Ma la ball non deve contenere il Pokemon: deve puntarlo.** Se il Pokemon vive
 dentro l'item, perdere l'item e' perderlo — in lava, in una morte in un posto
