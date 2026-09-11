@@ -38,6 +38,12 @@ public final class BeltEvents {
      * Shift + tasto destro con una ball in mano la infila nella cintura, se c'e'
      * posto. Senza questo si dovrebbe passare dall'inventario ogni volta, e la
      * cintura si riempie molto piu' spesso di quanto si apra una schermata.
+     *
+     * <p><b>E una ball piena non si lancia mai.</b> Il lancio di Cobblemon
+     * consuma l'oggetto e manda in volo una ball vuota: su una ball piena
+     * vorrebbe dire buttare via l'unico modo di richiamare quel Pokemon. Quindi
+     * se non c'e' posto dove infilarla il gesto non fa niente, invece di fare
+     * la cosa sbagliata.
      */
     @SubscribeEvent
     public static void infilaConLoShift(PlayerInteractEvent.RightClickItem event) {
@@ -47,13 +53,15 @@ public final class BeltEvents {
             return;
         }
         final ItemStack cintura = Belts.worn(player);
-        if (!(cintura.getItem() instanceof TrainerBeltItem belt) || !belt.haPosto(cintura)) {
-            // cintura piena: la ball si lancia, come sempre
+        final boolean posto = cintura.getItem() instanceof TrainerBeltItem belt
+                && belt.haPosto(cintura);
+        if (!posto && !BallLink.filled(inMano)) {
+            // ball vuota e nessun posto dove metterla: si lancia, come sempre
             return;
         }
         event.setCanceled(true);
-        event.setCancellationResult(InteractionResult.SUCCESS);
-        if (!player.level().isClientSide() && Belts.insert(player, inMano)) {
+        event.setCancellationResult(posto ? InteractionResult.SUCCESS : InteractionResult.FAIL);
+        if (!player.level().isClientSide() && posto && Belts.insert(player, inMano)) {
             clic(player);
         }
     }

@@ -3,7 +3,9 @@ package com.kingtrapinch.tfcobblemon.belt;
 import com.cobblemon.mod.common.Cobblemon;
 import com.cobblemon.mod.common.pokemon.Pokemon;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
 import java.util.UUID;
@@ -74,6 +76,63 @@ public final class BallHandover {
         if (!player.getInventory().add(ball)) {
             player.drop(ball, false);
         }
+    }
+
+    /** Se una ball che punta questo Pokemon e' sulla cintura indossata. */
+    public static boolean onBelt(ServerPlayer player, UUID pokemon) {
+        final ItemStack cintura = Belts.worn(player);
+        if (!(cintura.getItem() instanceof TrainerBeltItem belt)) {
+            return false;
+        }
+        for (ItemStack ball : belt.posti(cintura)) {
+            if (punta(ball, pokemon)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /** Se il giocatore ha da qualche parte una ball che punta questo Pokemon. */
+    public static boolean anywhere(ServerPlayer player, UUID pokemon) {
+        if (onBelt(player, pokemon)) {
+            return true;
+        }
+        for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
+            if (punta(player.getInventory().getItem(i), pokemon)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /** Toglie dall'inventario — e solo da li' — la ball di questo Pokemon. */
+    public static void takeFromInventory(ServerPlayer player, UUID pokemon) {
+        for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
+            if (punta(player.getInventory().getItem(i), pokemon)) {
+                player.getInventory().setItem(i, ItemStack.EMPTY);
+                return;
+            }
+        }
+    }
+
+    /**
+     * Rimette in mano la ball di un Pokemon: nell'inventario se c'e' posto,
+     * altrimenti a terra dove indicato. La ball e' identica a quella di prima —
+     * l'handle non si inventa, lo tiene il Pokemon nei suoi dati.
+     */
+    public static void give(ServerPlayer player, Pokemon mon, Vec3 dove) {
+        final String padrone = mon.getPersistentData().getString(BallLink.OWNER);
+        final UUID handle = padrone.isEmpty() ? UUID.randomUUID() : UUID.fromString(padrone);
+        if (padrone.isEmpty()) {
+            mon.getPersistentData().putString(BallLink.OWNER, handle.toString());
+        }
+        final ItemStack ball = mon.getCaughtBall().stack(1);
+        ball.set(ModBallData.BALL_LINK.get(), BallLink.of(mon, handle));
+        if (player.getInventory().add(ball)) {
+            return;
+        }
+        final ItemEntity caduta = new ItemEntity(player.serverLevel(), dove.x, dove.y, dove.z, ball);
+        player.serverLevel().addFreshEntity(caduta);
     }
 
     private static boolean punta(ItemStack stack, UUID pokemon) {
