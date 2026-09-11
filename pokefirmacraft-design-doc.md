@@ -380,10 +380,19 @@ addosso.
 
 Il blocco e' di parte server, che e' l'unica a sapere delle battaglie: il client
 muove il braccio e non succede niente. Brutto ma innocuo, perche' il lancio di
-una ball lo fa il server. **E manca la meta' che serve:** le ball sulla cintura
-si "usano" senza tenerle in mano, quindi vogliono una scorciatoia o
-l'interazione con l'elenco a sinistra. Finche' quella non c'e', in combattimento
-non si usa nessuna ball — nemmeno per catturare.
+una ball lo fa il server.
+
+**E le ball della cintura si usano con l'interfaccia che Cobblemon ha gia':**
+frecce su e giu' per scegliere nell'elenco a sinistra, R per mandare in campo.
+Non c'e' niente da costruire — dato che la squadra e' la cintura, quelle frecce
+scorrono esattamente le ball che si hanno addosso. Chi va in campo esce
+momentaneamente dalla sua ball, che resta sua e **non lascia la cintura**: il
+posto e' occupato da lui anche mentre e' fuori. Quando si ispeziona la cintura,
+la sua icona dovrebbe mostrarsi aperta.
+
+Quello che il blocco toglia davvero e' una cosa sola: lanciare una ball vuota
+per catturare mentre si e' in combattimento. Le frecce e R mandano in campo chi
+si ha, non catturano chi si ha davanti. Da decidere se e' voluto.
 
 **Ma la ball non deve contenere il Pokemon: deve puntarlo.** Se il Pokemon vive
 dentro l'item, perdere l'item e' perderlo — in lava, in una morte in un posto
@@ -561,10 +570,10 @@ già.
 Le categorie possono aprirsi con le ere — medicine da subito, MT in Electrical Age, key
 item alla fine — così la borsa diventa un altro modo di leggere la progressione.
 
-**Costo**: è il pezzo di codice più grosso del progetto. `MenuType`, storage con filtri
-per slot, schermata client con linguette, sincronizzazione, persistenza sull'oggetto
-Curios, più la grafica dell'interfaccia. Il limite per categoria, che è ciò che la rende
-una borsa Pokémon, è invece la parte facile.
+**Cosa serve**: `MenuType`, storage con filtri per slot, schermata client con
+linguette, sincronizzazione, persistenza sull'oggetto Curios, più la grafica
+dell'interfaccia. Il limite per categoria, che è ciò che la rende una borsa Pokémon, è
+invece la parte facile.
 
 **Ordine**: dopo la cintura e dopo il rifacimento della cattura. Una borsa che organizza
 per categorie oggetti che ancora non esistono è un contenitore vuoto con delle etichette.
