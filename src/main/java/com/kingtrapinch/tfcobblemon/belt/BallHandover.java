@@ -24,14 +24,20 @@ import java.util.UUID;
 public final class BallHandover {
     private BallHandover() {}
 
+    /** Quanti tick la ball resta inerte dopo che il Pokemon e' rientrato. */
+    private static final int RESPIRO = 20;
+
     /**
      * Via la ball di chi e' stato depositato, dalla cintura e dall'inventario.
      * Ogni copia: se ne girano due per lo stesso Pokemon, nessuna deve
      * sopravvivere al deposito.
      */
     public static void forget(ServerPlayer player, UUID pokemon) {
-        final ItemStack cintura = Belts.worn(player);
-        if (cintura.getItem() instanceof TrainerBeltItem belt) {
+        final ItemStack cintura = Belts.inBeltSlot(player);
+        if (punta(cintura, pokemon)) {
+            // la ball nuda che si portava addosso
+            Belts.store(player, ItemStack.EMPTY);
+        } else if (cintura.getItem() instanceof TrainerBeltItem belt) {
             final List<ItemStack> posti = belt.posti(cintura);
             boolean toccata = false;
             for (int i = 0; i < posti.size(); i++) {
@@ -78,14 +84,15 @@ public final class BallHandover {
         }
     }
 
-    /** Se una ball che punta questo Pokemon e' sulla cintura indossata. */
+    /**
+     * Se il Pokemon sta in una ball che il giocatore ha addosso. Vale anche la
+     * ball nuda nello slot cintura, che e' il caso che mi era sfuggito: non
+     * essendo una cintura non veniva guardata, e al rientro se ne creava una
+     * seconda.
+     */
     public static boolean onBelt(ServerPlayer player, UUID pokemon) {
-        final ItemStack cintura = Belts.worn(player);
-        if (!(cintura.getItem() instanceof TrainerBeltItem belt)) {
-            return false;
-        }
-        for (ItemStack ball : belt.posti(cintura)) {
-            if (punta(ball, pokemon)) {
+        for (UUID addosso : BeltParty.wanted(player)) {
+            if (pokemon.equals(addosso)) {
                 return true;
             }
         }
@@ -128,6 +135,10 @@ public final class BallHandover {
         }
         final ItemStack ball = mon.getCaughtBall().stack(1);
         ball.set(ModBallData.BALL_LINK.get(), BallLink.of(mon, handle));
+        // un secondo di respiro: la ball torna in mano nell'istante in cui il
+        // Pokemon rientra, e senza pausa un doppio clic lo rispedisce fuori
+        // prima che l'animazione di rientro sia finita
+        player.getCooldowns().addCooldown(ball.getItem(), RESPIRO);
         if (player.getInventory().add(ball)) {
             return;
         }

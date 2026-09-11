@@ -35,33 +35,44 @@ public final class BeltEvents {
     }
 
     /**
-     * Shift + tasto destro con una ball in mano la infila nella cintura, se c'e'
-     * posto. Senza questo si dovrebbe passare dall'inventario ogni volta, e la
-     * cintura si riempie molto piu' spesso di quanto si apra una schermata.
+     * Shift + tasto destro: quello che hai in mano va addosso.
+     *
+     * <p>Nell'ordine: se indossi una cintura con un posto libero la ball ci
+     * finisce dentro; se lo slot cintura e' vuoto ci finisce quello che hai in
+     * mano, cintura o ball nuda che sia; altrimenti niente. Un gesto solo per
+     * tutta la faccenda, senza aprire nessuna schermata.
      *
      * <p><b>E una ball piena non si lancia mai.</b> Il lancio di Cobblemon
      * consuma l'oggetto e manda in volo una ball vuota: su una ball piena
      * vorrebbe dire buttare via l'unico modo di richiamare quel Pokemon. Quindi
-     * se non c'e' posto dove infilarla il gesto non fa niente, invece di fare
-     * la cosa sbagliata.
+     * se non c'e' posto dove metterla il gesto non fa niente, invece di fare la
+     * cosa sbagliata.
      */
     @SubscribeEvent
-    public static void infilaConLoShift(PlayerInteractEvent.RightClickItem event) {
+    public static void addossoConLoShift(PlayerInteractEvent.RightClickItem event) {
         final Player player = event.getEntity();
         final ItemStack inMano = event.getItemStack();
-        if (!player.isShiftKeyDown() || !TrainerBeltItem.isBall(inMano)) {
+        final boolean ball = TrainerBeltItem.isBall(inMano);
+        if (!player.isShiftKeyDown() || (!ball && !(inMano.getItem() instanceof TrainerBeltItem))) {
             return;
         }
+
         final ItemStack cintura = Belts.worn(player);
-        final boolean posto = cintura.getItem() instanceof TrainerBeltItem belt
-                && belt.haPosto(cintura);
-        if (!posto && !BallLink.filled(inMano)) {
+        final boolean dentroLaCintura = ball
+                && cintura.getItem() instanceof TrainerBeltItem belt && belt.haPosto(cintura);
+        final boolean slotLibero = Belts.inBeltSlot(player).isEmpty();
+        if (!dentroLaCintura && !slotLibero && !BallLink.filled(inMano)) {
             // ball vuota e nessun posto dove metterla: si lancia, come sempre
             return;
         }
+
         event.setCanceled(true);
-        event.setCancellationResult(posto ? InteractionResult.SUCCESS : InteractionResult.FAIL);
-        if (!player.level().isClientSide() && posto && Belts.insert(player, inMano)) {
+        event.setCancellationResult(dentroLaCintura || slotLibero
+                ? InteractionResult.SUCCESS : InteractionResult.FAIL);
+        if (player.level().isClientSide()) {
+            return;
+        }
+        if (dentroLaCintura ? Belts.insert(player, inMano) : Belts.equip(player, inMano)) {
             clic(player);
         }
     }

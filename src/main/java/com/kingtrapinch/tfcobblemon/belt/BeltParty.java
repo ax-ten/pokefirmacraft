@@ -112,6 +112,12 @@ public final class BeltParty {
                 squadra.set(i, nelPc);
             }
         }
+
+        // e l'elenco a sinistra si rifa' da zero. Ogni gesto sulla cintura ne
+        // cambia il contenuto o la lunghezza, e il client non ha modo di
+        // saperlo da se': i posti glieli concede un oggetto indossato, non la
+        // squadra.
+        squadra.sendTo(player);
     }
 
     /**

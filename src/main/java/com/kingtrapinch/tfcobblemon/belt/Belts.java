@@ -18,9 +18,10 @@ public final class Belts {
         return curios;
     }
 
-    /** La cintura indossata, o vuoto: senza Curios non se ne indossano. */
+    /** La cintura indossata, o vuoto se nello slot c'e' altro o niente. */
     public static ItemStack worn(Player player) {
-        return curios() ? CuriosBelt.worn(player) : ItemStack.EMPTY;
+        final ItemStack nelloSlot = inBeltSlot(player);
+        return nelloSlot.getItem() instanceof TrainerBeltItem ? nelloSlot : ItemStack.EMPTY;
     }
 
     /** Cosa il giocatore porta nello slot belt, qualunque cosa sia. */
@@ -42,6 +43,11 @@ public final class Belts {
             return belt.slots();
         }
         return 1;
+    }
+
+    /** Indossa quello che ha in mano, se lo slot cintura e' libero. */
+    public static boolean equip(Player player, ItemStack cosa) {
+        return curios() && CuriosBelt.equip(player, cosa);
     }
 
     /** Riscrive la cintura nel suo slot dopo averla modificata. */
