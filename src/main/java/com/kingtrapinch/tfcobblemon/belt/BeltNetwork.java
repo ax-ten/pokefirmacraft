@@ -1,6 +1,5 @@
 package com.kingtrapinch.tfcobblemon.belt;
 
-import com.cobblemon.mod.common.Cobblemon;
 import com.cobblemon.mod.common.pokemon.Pokemon;
 import com.kingtrapinch.tfcobblemon.TFCobblemon;
 import com.kingtrapinch.tfcobblemon.client.ClientBallLevels;
@@ -34,11 +33,7 @@ public final class BeltNetwork {
             if (!(context.player() instanceof ServerPlayer player)) {
                 return;
             }
-            final var storage = Cobblemon.INSTANCE.getStorage();
-            Pokemon mon = storage.getParty(player).get(payload.pokemon());
-            if (mon == null) {
-                mon = storage.getPC(player).get(payload.pokemon());
-            }
+            final Pokemon mon = BeltParty.trova(player, payload.pokemon());
             if (mon != null) {
                 PacketDistributor.sendToPlayer(player,
                         new BallLevelPayload(payload.pokemon(), mon.getLevel()));

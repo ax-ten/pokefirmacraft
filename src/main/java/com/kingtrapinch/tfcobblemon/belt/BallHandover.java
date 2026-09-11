@@ -1,6 +1,5 @@
 package com.kingtrapinch.tfcobblemon.belt;
 
-import com.cobblemon.mod.common.Cobblemon;
 import com.cobblemon.mod.common.pokemon.Pokemon;
 import com.kingtrapinch.tfcobblemon.TFCobblemon;
 import net.minecraft.server.level.ServerPlayer;
@@ -227,8 +226,6 @@ public final class BallHandover {
     }
 
     private static Pokemon cerca(ServerPlayer player, UUID pokemon) {
-        final var storage = Cobblemon.INSTANCE.getStorage();
-        final Pokemon inSquadra = storage.getParty(player).get(pokemon);
-        return inSquadra != null ? inSquadra : storage.getPC(player).get(pokemon);
+        return BeltParty.trova(player, pokemon);
     }
 }

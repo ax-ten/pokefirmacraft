@@ -10,6 +10,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -40,6 +41,47 @@ public final class BeltParty {
 
     /** Chi e' dentro un allineamento, per non rientrarci dai nostri eventi. */
     private static final Set<UUID> DENTRO = new HashSet<>();
+
+    /**
+     * Il deposito delle ball che non si portano addosso, e <b>non e' il PC.</b>
+     *
+     * <p>Cobblemon pretende che ogni Pokemon stia registrato in un deposito: uno
+     * senza coordinate non e' "dentro la ball", e' in nessun posto, e non lo
+     * salva nessuno. Ma usare il PC del giocatore per questo avrebbe una
+     * conseguenza sbagliata: il giorno in cui il blocco PC esiste, dentro ci si
+     * troverebbe tutto quello che si ha in una cassa, e il PC diventerebbe
+     * l'indice gratuito di ogni Pokemon mai preso — il contrario del punto delle
+     * ball fisiche.
+     *
+     * <p>Quindi un deposito nostro, dedicato e invisibile.
+     * {@code getCustomStore} lo tiene in cache e lo salva su file come gli
+     * altri, e la chiave e' un UUID derivato da quello del giocatore: il PC
+     * cerca col suo UUID e questo non lo trova mai. Nel PC finisce solo quello
+     * che il giocatore vi deposita di proposito.
+     */
+    public static PCStore deposito(ServerPlayer player) {
+        final UUID chiave = UUID.nameUUIDFromBytes(
+                ("tfcobblemon:balls/" + player.getUUID()).getBytes(StandardCharsets.UTF_8));
+        return Cobblemon.INSTANCE.getStorage()
+                .getCustomStore(PCStore.class, chiave, player.registryAccess());
+    }
+
+    /**
+     * Il Pokemon puntato da una ball, cercato dove puo' stare: la squadra, il
+     * nostro deposito, e il PC vero — perche' una ball resta valida anche per un
+     * Pokemon che il giocatore ha depositato di sua mano.
+     */
+    public static Pokemon trova(ServerPlayer player, UUID pokemon) {
+        final var storage = Cobblemon.INSTANCE.getStorage();
+        Pokemon mon = storage.getParty(player).get(pokemon);
+        if (mon == null) {
+            mon = deposito(player).get(pokemon);
+        }
+        if (mon == null) {
+            mon = storage.getPC(player).get(pokemon);
+        }
+        return mon;
+    }
 
     /**
      * Le ball che il giocatore porta addosso, nell'ordine, coi buchi al loro
@@ -101,7 +143,7 @@ public final class BeltParty {
      */
     private static void allinea(ServerPlayer player) {
         final PlayerPartyStore squadra = Cobblemon.INSTANCE.getStorage().getParty(player);
-        final PCStore pc = Cobblemon.INSTANCE.getStorage().getPC(player);
+        final PCStore pc = deposito(player);
         final UUID[] voluti = wanted(player);
 
         final Set<UUID> insieme = new HashSet<>();
