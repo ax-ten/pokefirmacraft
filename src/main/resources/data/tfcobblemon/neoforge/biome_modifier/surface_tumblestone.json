@@ -1,0 +1,6 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": "#tfcobblemon:has_tumblestone",
+  "features": "tfcobblemon:surface_tumblestone",
+  "step": "vegetal_decoration"
+}

@@ -1,0 +1,36 @@
+{
+  "type": "minecraft:geode",
+  "config": {
+    "blocks": {
+      "filling_provider": {
+        "type": "minecraft:simple_state_provider",
+        "state": { "Name": "minecraft:air" }
+      },
+      "outer_layer_provider": {
+        "type": "minecraft:simple_state_provider",
+        "state": { "Name": "tfc:rock/hardened/basalt" }
+      },
+      "middle_layer_provider": {
+        "type": "minecraft:simple_state_provider",
+        "state": { "Name": "tfc:rock/hardened/quartzite" }
+      },
+      "inner_layer_provider": {
+        "type": "minecraft:simple_state_provider",
+        "state": { "Name": "cobblemon:tumblestone_block" }
+      },
+      "alternate_inner_layer_provider": {
+        "type": "minecraft:simple_state_provider",
+        "state": { "Name": "cobblemon:tumblestone_block" }
+      },
+      "invalid_blocks": "#minecraft:geode_invalid_blocks",
+      "cannot_replace": "#minecraft:features_cannot_replace",
+      "inner_placements": [
+        { "Name": "cobblemon:tumblestone_cluster", "Properties": { "facing": "up" } }
+      ]
+    },
+    "use_alternate_layer0_chance": 0.1,
+    "invalid_blocks_threshold": 1,
+    "crack": { "generate_crack_chance": 0.95, "base_crack_size": 2.0 },
+    "layers": {}
+  }
+}
