@@ -31,6 +31,8 @@ public final class ModOres {
 
     public static final DeferredRegister.Blocks BLOCKS =
             DeferredRegister.createBlocks(TFCobblemon.MODID);
+    public static final DeferredRegister.Items ITEMS =
+            DeferredRegister.createItems(TFCobblemon.MODID);
 
     /**
      * Le tre tumblestone in quarzite: la roccia in cui TFC mette i suoi geodi.
@@ -44,16 +46,23 @@ public final class ModOres {
     static {
         for (String nome : new String[] {"tumblestone_quartzite",
                 "sky_tumblestone_quartzite", "black_tumblestone_quartzite"}) {
-            MINERALI.put(nome, BLOCKS.register(nome, () -> new Block(
+            final var blocco = BLOCKS.register(nome, () -> new Block(
                     BlockBehaviour.Properties.of()
                             .mapColor(MapColor.TERRACOTTA_WHITE)
                             .strength(6.0F, 10.0F)
                             .sound(SoundType.STONE)
-                            .requiresCorrectToolForDrops())));
+                            .requiresCorrectToolForDrops()));
+            MINERALI.put(nome, blocco);
+            // un item ci vuole anche se il blocco non si raccoglie: il
+            // prospector di GregTech, per disegnare cosa ha trovato, chiede
+            // al blocco il suo item, e se non ce l'ha mostra un lucchetto
+            ITEMS.register(nome, () -> new net.minecraft.world.item.BlockItem(
+                    blocco.get(), new net.minecraft.world.item.Item.Properties()));
         }
     }
 
     public static void register(IEventBus eventBus) {
         BLOCKS.register(eventBus);
+        ITEMS.register(eventBus);
     }
 }

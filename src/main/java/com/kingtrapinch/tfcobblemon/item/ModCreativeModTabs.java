@@ -47,6 +47,8 @@ public class ModCreativeModTabs {
                                 com.kingtrapinch.tfcobblemon.zone.ModZones.tutte()
                                         .forEach(zona -> output.accept(zona.get()));
                                 output.accept(com.kingtrapinch.tfcobblemon.pasture.ModPasture.PC_LINK.get());
+                                com.kingtrapinch.tfcobblemon.block.ModOres.MINERALI.values()
+                                        .forEach(minerale -> output.accept(minerale.get()));
 
                                 com.kingtrapinch.tfcobblemon.dig.ModDig.allSites()
                                         .forEach(sito -> output.accept(sito.get()));
