@@ -968,9 +968,19 @@ e' dove sta l'attacco, mentre il basso lo mette lui e pende due pixel sopra il
 pavimento. Rompendo l'uno cade l'altro, e la tabella di loot e' solo del pezzo
 basso, cosi' da qualunque parte lo si rompa ne cade uno e uno solo. La tela e'
 la **juta di TFC** (`tfc:burlap_cloth`), riempita di sabbia e appesa a una
-corda; logoro e sfondato sono la stessa texture con gli squarci, e dai buchi si
-vede la sabbia. Manca solo chi li usi: e' il blocco d'area che deve dire a un
-Pokemon di prenderli a pugni, consumare il carburante e chiamare `logora`.
+corda.
+
+**Il colore non sta nelle texture.** Diciotto sacchi con la fascia colorata
+cotta dentro volevano ventuna texture; cosi' invece ne bastano **quattro** —
+tre basi, una per stadio d'usura, piu' una fascia sola in bianco e nero — e la
+statistica la mette il **tint** a schermo, moltiplicando il colore sulla trama.
+Moltiplicare e non coprire e' la parte che conta: la tela dipinta resta tela
+invece di diventare vernice. I modelli scendono da trentasei a **sei**, perche'
+tutte e sei le statistiche dello stesso stadio usano lo stesso modello.
+
+Gli stadi di usura, quelli, vanno portati **nella forma** e non solo nella
+texture: un sacco sfondato deve sgonfiarsi, non solo mostrare i buchi. I tre
+modelli sono nella todolist, in Blockbench.
 
 **Amicizia: la scenografia.****Amicizia: la scenografia.** Non attrezzi ma arredo, da costruire: sale da te',
 terme, un giardino. Item nostri, dove contano **quantita' e posizione** dentro
@@ -1206,8 +1216,14 @@ diventano merce, non un punteggio in una finestra.
 distanza percorsa. In Minecraft si cammina sempre, quindi la meccanica si traduce
 da se', e Curios e' gia' li' — lo stesso slot su cui e' costruita la cintura.
 
-**BOCCIATO — Voltorb Flip.** Il campo minato del Game Corner. Costava poco, ed
-e' l'unico motivo per cui l'avevo proposto: non e' un motivo.
+**RIPRESO — Voltorb Flip.** Era bocciato con la motivazione giusta per allora:
+costava poco, e costare poco non e' un motivo per fare una cosa. Quello che e'
+cambiato non e' il minigioco, e' la cornice — **gli arcade sono in gioco**. Il
+catalogo (sezione 8.2) ha una sezione intera di Poke-Arcade e una di Game
+Corner, dove il Voltorb Flip sta accanto a slot e roulette, e un puzzle che
+vive dentro un mobile non deve giustificarsi come meccanica del mondo: deve
+solo essere un buon puzzle dentro un mobile. E lo e' — campo minato e picross
+insieme, coi moltiplicatori che ti fanno decidere quando smettere.
 
 **BOCCIATO — La Zona Safari e la gara di scarafaggi.** Un'area a tempo con un
 numero fisso di ball e' **un evento da server**, non una meccanica di gioco
@@ -1275,6 +1291,21 @@ valido e vive gia' nell'Habitat Block dell'era elettrica.
   aperti **i numeri** (dimensione dell'area, costo per tick, rottura dei
   sacchi, EV per sacco, resa di un habitat pieno) e se sono **tre blocchi o
   uno** che capisce da se' cosa gli hanno costruito attorno
+- **Le vitamine vanno rese craftabili, in era elettrica.** In Cobblemon HP Up,
+  Protein, Iron, Calcium, Zinc e Carbos **non hanno ricetta**: si trovano
+  soltanto. Sono gli oggetti EV dei giochi, quindi e' giusto che esistano come
+  cosa che si produce — ma tardi, perche' un integratore e' chimica, non
+  cucina. Finche' non ci sono, i sacchi da boxe restano gatati sui power item
+  (sezione 6.7)
+- **Le ricette dei power item vanno rifatte.** Quelle di Cobblemon sono
+  calcestruzzo, diamanti e foglia di menta: niente che parli la lingua di TFC.
+  E adesso contano il doppio, perche' il power item e' il cancello di un sacco
+  da boxe — cambiare la sua ricetta vuol dire cambiare quando si apre la
+  palestra
+- **I modelli dei tre stadi dei sacchi, in Blockbench.** Oggi i tre stadi
+  cambiano solo texture e la forma e' la stessa: la rottura si deve vedere
+  nella geometria, un sacco sfondato che si sgonfia. Il colore non c'entra, ci
+  pensa il tint (sezione 6.7)
 - Materiali delle due cinture (la capienza è decisa: 1 a mani nude, 3, 6)
 - ~~Quali categorie ha la borsa~~ — **decise.** Si rifanno a quelle di
   Cobblemon, tenendo solo le quattro che hanno senso come tasche: **ball**,

@@ -1,10 +1,10 @@
 {
   "variants": {
     "half=upper": {
-      "model": "tfcobblemon:block/punching_bag/speed_torn_upper"
+      "model": "tfcobblemon:block/punching_bag/torn_upper"
     },
     "half=lower": {
-      "model": "tfcobblemon:block/punching_bag/speed_torn_lower"
+      "model": "tfcobblemon:block/punching_bag/torn_lower"
     }
   }
 }

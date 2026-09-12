@@ -12,7 +12,6 @@ import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
@@ -36,9 +35,24 @@ public final class ModBags {
     public static final DeferredRegister.Items ITEMS =
             DeferredRegister.createItems(TFCobblemon.MODID);
 
-    /** Le sei statistiche, coi nomi con cui le chiama Cobblemon. */
-    public static final List<String> STATS = List.of(
-            "hp", "attack", "defence", "special_attack", "special_defence", "speed");
+    /**
+     * Le sei statistiche, coi nomi con cui le chiama Cobblemon, e il colore con
+     * cui i giochi le disegnano.
+     *
+     * <p>Il colore non sta nelle texture: la fascia del sacco e' una sola
+     * texture in bianco e nero, tinta a schermo. Diciotto sacchi con la fascia
+     * cotta dentro volevano diciotto texture, e bastano quattro.
+     */
+    public static final Map<String, Integer> STATS = new LinkedHashMap<>();
+
+    static {
+        STATS.put("hp", 0xFF5959);
+        STATS.put("attack", 0xF58A4B);
+        STATS.put("defence", 0xE8C83C);
+        STATS.put("special_attack", 0x7A9CF5);
+        STATS.put("special_defence", 0x86C867);
+        STATS.put("speed", 0xF0749E);
+    }
 
     /** Sfondato: chi lo usa ancora se lo apre del tutto e non resta niente. */
     public static final Map<String, DeferredBlock<PunchingBagBlock>> TORN = new LinkedHashMap<>();
@@ -46,7 +60,7 @@ public final class ModBags {
     public static final Map<String, DeferredBlock<PunchingBagBlock>> WHOLE = new LinkedHashMap<>();
 
     static {
-        for (String stat : STATS) {
+        for (String stat : STATS.keySet()) {
             TORN.put(stat, sacco(stat, "_torn", stat, null));
             WORN.put(stat, sacco(stat, "_worn", stat, TORN.get(stat)::get));
             WHOLE.put(stat, sacco(stat, "", stat, WORN.get(stat)::get));

@@ -1,7 +1,0 @@
-{
-  "parent": "tfcobblemon:block/punching_bag/upper",
-  "textures": {
-    "side": "tfcobblemon:block/punching_bag/hp_whole",
-    "end": "tfcobblemon:block/punching_bag/end_whole"
-  }
-}

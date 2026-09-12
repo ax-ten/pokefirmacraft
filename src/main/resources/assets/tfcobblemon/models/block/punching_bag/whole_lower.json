@@ -1,0 +1,42 @@
+{
+  "parent": "block/block",
+  "textures": {
+    "particle": "tfcobblemon:block/punching_bag/bag_whole",
+    "bag": "tfcobblemon:block/punching_bag/bag_whole",
+    "band": "tfcobblemon:block/punching_bag/band"
+  },
+  "elements": [
+    {
+      "from": [
+        4,
+        2,
+        4
+      ],
+      "to": [
+        12,
+        16,
+        12
+      ],
+      "faces": {
+        "north": {
+          "texture": "#bag"
+        },
+        "east": {
+          "texture": "#bag"
+        },
+        "south": {
+          "texture": "#bag"
+        },
+        "west": {
+          "texture": "#bag"
+        },
+        "up": {
+          "texture": "#bag"
+        },
+        "down": {
+          "texture": "#bag"
+        }
+      }
+    }
+  ]
+}
