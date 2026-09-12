@@ -1014,7 +1014,8 @@ modelli sono nella todolist, in Blockbench.
 terme, un giardino. Item nostri, dove contano **quantita' e posizione** dentro
 l'area, e l'amicizia sale ad ogni tick di quanto la stanza se lo merita. E' il
 modo rustico di fare quello che nei giochi si fa camminando col Pokemon
-appresso: qui non cammini tu, gli costruisci un posto dove stare bene.
+appresso: qui non cammini tu, gli costruisci un posto dove stare bene. Non e'
+un day-care: le uova non passano da qui (vedi sotto).
 
 **Raccolto: l'habitat.** La resa dei drop cresce con **quante condizioni di
 spawn di quel Pokemon l'area soddisfa**. Per un Magmar: che sia in un bioma
@@ -1072,38 +1073,34 @@ stanza che uno costruisce davvero — quattro sacchi e le bottiglie intorno — 
 perche' il tick deve contare i blocchi dell'area, e contarli per sedici Pokemon
 quattro volte al secondo e' il principe di tutti i mali un'altra volta.
 
-### Le uova
+### Le uova non sono roba nostra
 
-**Cobblemon 1.8 ha i ganci e non ha la feature**, e questo si misura. Ci sono
+Nascono dal pascolo normale, quando nasceranno: **noi non ce ne occupiamo**, e
+i blocchi d'area non hanno uno slot per l'uovo — non c'e' da togliere niente,
+c'e' da non metterlo.
+
+Il motivo per cui non lo facciamo adesso, che vale scritto perche' e' misurato:
+Cobblemon 1.8 ha i **ganci** e non ha la feature. Ci sono
 `CollectEggEvent(uovo, padre, madre, giocatore)` e `HatchEggEvent.Pre/Post`,
-c'e' `EggGroup`, e i dati delle specie portano gia' **`eggGroups`**,
-**`eggCycles`** e **`maleRatio`** (Bulbasaur: monster e grass, 20 cicli,
-0.875). Ma cercando chi <em>lancia</em> `CollectEggEvent` si trovano soltanto
-il registro degli eventi, un handler di progressi e uno di statistiche: cioe'
-solo ascoltatori. In 1.8 nessuno lo lancia. Il progresso e la statistica per
-"hai raccolto un uovo" esistono e aspettano.
+c'e' `EggGroup`, e le specie portano gia' `eggGroups`, `eggCycles` e
+`maleRatio` — ma chi <em>lancia</em> `CollectEggEvent` in 1.8 non esiste: si
+trovano solo il registro degli eventi, un handler di progressi e uno di
+statistiche, cioe' ascoltatori. Il progresso "hai raccolto un uovo" esiste e
+aspetta. E le 1.9 portano le uova per specie. Scriverne una versione nostra
+adesso vorrebbe dire buttarla fra due release.
 
-Un fatto che conta per il progetto: **un uovo e' un `PokemonProperties`**, non
-un Pokemon. E' una specifica — si salva in NBT con `saveToNBT` e diventa un
-Pokemon con `create(player)` solo alla schiusa. Quindi lo slot dell'uovo e'
-leggero: non tiene una creatura, tiene una riga.
+### Questa famiglia e' candidata a uscire di qui
 
-**Dove nascono: nella zona dell'amicizia.** E' il posto giusto per ragioni che
-non sono di comodo: nei giochi le uova vengono dal day-care, che e' esattamente
-un posto dove due Pokemon stanno bene insieme, ed e' la stessa stanza che
-stiamo costruendo per far salire l'amicizia. La palestra e l'allevamento sono
-due posti diversi, e va bene che lo siano.
+I pascoli specializzati — palestra, terme, allevamento di materiali — non e'
+detto che restino in TFCobblemon: il posto piu' probabile per loro e' **una mod
+a se', con l'integrazione a TFC**, come per il catalogo dei minigiochi
+(sezione 8.2).
 
-**Come, senza buttare il lavoro quando arriva la 1.9.** Le 1.9 hanno le uova
-per specie, quindi qualunque cosa scriviamo adesso verra' sostituita. La via
-che non si butta e' passare **dai loro eventi invece che intorno**: la zona
-guarda le coppie (gruppi uovo compatibili, sessi opposti secondo `maleRatio`,
-entrambi presenti e contenti), **lancia `CollectEggEvent`** rispettandone
-l'annullamento, e tiene la specifica che ne esce nel suo slot; la schiusa passa
-per `HatchEggEvent`. Cosi' progressi e statistiche si accendono da se', e il
-giorno che Cobblemon implementa la cosa per davvero il nostro pezzo o si toglie
-o convive, invece di litigare. **Le texture delle uova non le disegniamo**: per
-specie sono mille, e le porta la 1.9.
+Non e' una nota organizzativa, e' un vincolo tecnico da rispettare mentre li si
+scrive: **vanno tenuti scollegati**. Blocchi propri, deposito proprio, e
+nessuna mano dentro le cose della cintura o delle ball oltre a quello che passa
+per un'interfaccia. Se domani si staccano, si deve staccare una cartella e non
+sfilare un filo da sotto tutto il resto.
 
 **Cosa resta da decidere:** i numeri — quanto grande e' l'area, quanto costa un
 tick, la probabilita' di rottura dei sacchi, quanti EV per sacco, di quanto
@@ -1113,10 +1110,6 @@ hanno costruito attorno. Su quest'ultimo: un blocco solo e' piu' elegante da
 guardare e peggiore da giocare, perche' non si vede da fuori a cosa serve una
 stanza finche' non la si ispeziona. Tre blocchi si riconoscono a colpo
 d'occhio, e sono la stessa classe con tre letture diverse dell'area.
-
-E una sola cosa da decidere prima di scrivere una riga: **se l'allevamento lo
-facciamo adesso** passando dai ganci di Cobblemon, sapendo che la 1.9 lo
-sostituira', **o se per ora si lascia lo slot e niente dentro**.
 
 ## 7. Alpha Pokémon e leggendari
 
