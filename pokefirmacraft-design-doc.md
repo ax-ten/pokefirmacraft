@@ -852,6 +852,50 @@ sezione 4 (che lo colloca in Electrical Age) e svuota qualunque limite all'accum
 Pokémon. Non è un bug del porting, è una divergenza di design — e con la cintura la
 distanza fra i due progetti si allarga ancora.
 
+### 6.6 Il pascolo, a ball
+
+Il pasture block di Cobblemon e' una **finestra sul PC**: al click apre la
+schermata del PC in modalita' pascolo, e da li' si trascinano dentro i Pokemon,
+che intanto continuano ad abitare nel PC. Questo e' il terzo posto — dopo la
+squadra e il PC — in cui una ball fisica non contava niente, e per la stessa
+ragione degli altri due: senza PC non lo usi.
+
+**Da noi la ball e' l'interfaccia, e non si apre niente.** Si appende una ball
+al blocco col tasto destro e il Pokemon esce a pascolare; a mani vuote si
+stacca l'ultima appesa e rientra nella sua ball, con l'animazione. Nessuna
+schermata, nessun trascinamento, nessun PC richiesto. Il limite resta quello di
+Cobblemon — **sedici**, `defaultPasturedPokemonLimit` — che e' anche quanti
+Pokemon il pascolo sa tenere legati.
+
+**Sotto, quello che si sposta e' la residenza.** Il Pokemon passa dal box
+invisibile a un terzo deposito, il **PC del pascolo**, che porta l'UUID del
+giocatore come gli altri due — deve, altrimenti i Pokemon che ci vivono non
+risultano di nessuno e non si possono nemmeno accarezzare — ed e' separato
+perche' la fabbrica di Cobblemon tiene file e cache per *classe* di deposito.
+Tirando fuori la ball si torna nel box. Rompendo il blocco le ball cadono a
+terra e i Pokemon rientrano nel box del loro padrone, che e' quello del legame
+e non quello del blocco: a un pascolo ci puo' appendere una ball chiunque passi.
+
+**Perche' si cambia il pascolo che c'e' invece di farne uno nostro.** La block
+entity di Cobblemon e' `final` e non si estende; NeoForge permetterebbe a un
+blocco nostro di ospitarla (`BlockEntityTypeAddBlocksEvent`), ma il suo tick
+chiama `togglePastureOn`, che fa un cast secco a `PastureBlock` — un blocco
+nostro esploderebbe venti volte al secondo. Quello che si riusa, e vale la
+pena, e' tutto il resto: il vagabondaggio dentro i confini, il controllo
+periodico dei legami, il rilascio alla rottura. Il costo sono quattro innesti
+piccoli, e il cardine e' uno solo: il legame ritrova il Pokemon con
+`getPC(pcId).get(pokemonId)`, e quella ricerca deve ripiegare sul deposito del
+pascolo, o entro due secondi ogni Pokemon appeso risulta scomparso.
+
+**Il pascolo si accende quando ha qualcuno dentro.** Cobblemon usa quello stato
+per dire "c'e' una schermata aperta", che da noi non succede mai; senza
+schermata serviva un segno, e quello e' l'unico che il modello ha gia'.
+
+**Resta aperto il grado industriale.** Il pascolo collegato al PC — quello che
+ti fa sfogliare tutte le box invece delle sedici ball che ti porti dietro — e'
+esattamente il pascolo di Cobblemon come era: non c'e' da costruirlo, c'e' da
+rimetterlo come secondo blocco, dietro al PC.
+
 ## 7. Alpha Pokémon e leggendari
 
 - Gli **Alpha Pokémon non sono legati al tier tecnologico** del giocatore — spawnano secondo le meccaniche native di Cobblemon, senza sistemi di drop/materiali ibridi custom

@@ -11,7 +11,10 @@
     "PcWithdrawMixin",
     "PcSwapMixin",
     "SendOutGateMixin",
-    "PartyOverflowMixin"
+    "PartyOverflowMixin",
+    "PastureLookupMixin",
+    "PastureBasketMixin",
+    "PastureUseMixin"
   ],
   "client": [
     "PartyOverlayMixin"
