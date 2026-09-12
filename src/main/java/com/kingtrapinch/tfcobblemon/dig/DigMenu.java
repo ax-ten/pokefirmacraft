@@ -28,6 +28,10 @@ public class DigMenu extends AbstractContainerMenu {
     private final Container contents;
     @Nullable
     private final DigSiteBlockEntity site;
+    private final Player chi;
+    /** Arriva al client da se': e' il gioco a sincronizzare i DataSlot. */
+    private final net.minecraft.world.inventory.DataSlot finito =
+            net.minecraft.world.inventory.DataSlot.standalone();
     private final BlockPos pos;
     private final List<Spot> spots;
 
@@ -47,6 +51,8 @@ public class DigMenu extends AbstractContainerMenu {
         this.spots = List.copyOf(spots);
         final var be = inventory.player.level().getBlockEntity(pos);
         this.site = be instanceof DigSiteBlockEntity s ? s : null;
+        this.chi = inventory.player;
+        addDataSlot(finito);
         this.contents = site != null ? site.contents()
                 : new SimpleContainer(DigSiteBlockEntity.TREASURES);
 
@@ -135,12 +141,44 @@ public class DigMenu extends AbstractContainerMenu {
         @Override
         public void onTake(Player player, ItemStack stack) {
             super.onTake(player, stack);
-            if (player.level() instanceof net.minecraft.server.level.ServerLevel level
-                    && owner != null && owner.emptied()) {
-                owner.settle(level);
-                player.closeContainer();
+            if (!player.level().isClientSide() && owner != null && owner.emptied()) {
+                owner.finisci();
             }
         }
+    }
+
+    /**
+     * Il mezzo secondo di festa. Il conto lo tiene questo metodo, che il gioco
+     * chiama a ogni tick finche' la finestra e' aperta: scaduto, il blocco si
+     * posa e la finestra si chiude.
+     */
+    @Override
+    public void broadcastChanges() {
+        if (site != null && !chi.level().isClientSide()) {
+            finito.set(site.finito() ? 1 : 0);
+        }
+        super.broadcastChanges();
+        if (site != null && site.finito() && site.scala()
+                && chi instanceof net.minecraft.server.level.ServerPlayer giocatore
+                && giocatore.level() instanceof net.minecraft.server.level.ServerLevel level) {
+            site.settle(level);
+            giocatore.closeContainer();
+        }
+    }
+
+    /** A festa cominciata non si scava piu'. */
+    @Override
+    public void clicked(int slot, int bottone, net.minecraft.world.inventory.ClickType tipo,
+                        Player player) {
+        if (site != null && site.finito()) {
+            return;
+        }
+        super.clicked(slot, bottone, tipo, player);
+    }
+
+    /** Se il sito ha finito e sta solo aspettando di chiudersi. */
+    public boolean finito() {
+        return finito.get() != 0;
     }
 
     public BlockPos pos() {
@@ -179,10 +217,9 @@ public class DigMenu extends AbstractContainerMenu {
         }
         // lo spostamento rapido non passa da Slot.onTake, quindi il controllo
         // "e' rimasto qualcosa?" va rifatto anche qui
-        if (index < tesori && player.level() instanceof net.minecraft.server.level.ServerLevel level
+        if (index < tesori && !player.level().isClientSide()
                 && site != null && site.emptied()) {
-            site.settle(level);
-            player.closeContainer();
+            site.finisci();
         }
         return copy;
     }

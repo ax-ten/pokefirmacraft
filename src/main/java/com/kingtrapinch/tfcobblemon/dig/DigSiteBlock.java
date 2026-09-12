@@ -35,6 +35,10 @@ public class DigSiteBlock extends Block implements EntityBlock {
         }
         if (level instanceof ServerLevel server
                 && level.getBlockEntity(pos) instanceof DigSiteBlockEntity site) {
+            // finito e in attesa di chiudersi: non ci si mette le mani
+            if (site.finito()) {
+                return ItemInteractionResult.SUCCESS;
+            }
             final DigSite scavo = site.site(server);
             player.openMenu(new DigMenuProvider(pos), buf -> {
                 buf.writeBlockPos(pos);

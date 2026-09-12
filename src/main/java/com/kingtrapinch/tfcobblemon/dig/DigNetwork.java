@@ -32,7 +32,9 @@ public final class DigNetwork {
             }
             final DigSiteBlockEntity be = menu.site();
             final DigSite site = be.site(level);
-            if (site.exhausted() || payload.cell() < 0 || payload.cell() >= DigSite.CELLS) {
+            // a scavo finito il sito e' fermo: aspetta solo di chiudersi
+            if (be.finito() || site.exhausted()
+                    || payload.cell() < 0 || payload.cell() >= DigSite.CELLS) {
                 return;
             }
             final DigTool tool = DigTool.values()[Math.floorMod(payload.tool(), DigTool.values().length)];

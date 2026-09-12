@@ -305,10 +305,13 @@ public class DigScreen extends AbstractContainerScreen<DigMenu> {
         }
         super.render(graphics, mouseX, mouseY, partialTick);
         greyOut(graphics);
-        preview(graphics, mouseX, mouseY);
+        if (!menu.finito()) {
+            preview(graphics, mouseX, mouseY);
+        }
         dust.render(graphics);
         cursorTool(graphics, mouseX, mouseY);
         renderTooltip(graphics, mouseX, mouseY);
+        finito(graphics);
     }
 
     /**
@@ -330,8 +333,28 @@ public class DigScreen extends AbstractContainerScreen<DigMenu> {
         graphics.pose().popPose();
     }
 
+    /**
+     * Lo scavo e' finito: mezzo secondo di scritta in mezzo alla griglia, poi
+     * la finestra si chiude da se'. Il conto lo tiene il server, qui si
+     * disegna soltanto.
+     */
+    private void finito(GuiGraphics graphics) {
+        if (!menu.finito()) {
+            return;
+        }
+        final int x = leftPos + DigLayout.GRID_X;
+        final int y = topPos + DigLayout.GRID_Y;
+        final int meta = y + DigLayout.GRID_SPAN / 2;
+        graphics.fill(x, meta - 12, x + DigLayout.GRID_SPAN, meta + 12, 0xC0101014);
+        final Component detto = Component.translatable("tfcobblemon.dig.completed");
+        graphics.drawCenteredString(font, detto, x + DigLayout.GRID_SPAN / 2, meta - 4, 0xFFF0C060);
+    }
+
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        if (menu.finito()) {
+            return true;
+        }
         final Slot under = getSlotUnderMouse();
         if (under != null && under.container instanceof Inventory && toolOf(under.getItem()) != null) {
             // riclicco sullo stesso e lo depongo: senza attrezzo in mano si

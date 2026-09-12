@@ -56,9 +56,22 @@ public final class ModBallParts {
             ITEMS.register("core_mold", () -> new MoldItem(() -> 200, CORE_MOLD_FLUIDS,
                     new Item.Properties()));
 
-    /** Tumblestone lucidata a carta vetrata: il cuore di ogni ball. */
-    public static final DeferredItem<Item> CAPTURE_CORE =
-            ITEMS.registerSimpleItem("capture_core");
+    /**
+     * La perlina di tumblestone: il cuore di ogni ball.
+     *
+     * <p>Si chiama perlina e non "nucleo di cattura" perche' e' quello che e':
+     * una pietra tonda lavorata. E' anche il nome che regge il modo in cui si
+     * fa — lo stampo ne cola <b>otto per volta</b>, che e' esattamente come si
+     * fanno le perline — e resta lontano tanto dal gergo di GregTech
+     * (chipped, flawed, exquisite) quanto dai gradi dei giacimenti di TFC
+     * (poor, normal, rich), che vogliono dire un'altra cosa.
+     *
+     * <p>Lavorata vuol dire <b>non piantabile</b>: e' il punto in cui il
+     * cristallo smette di poter tornare nel terreno, e la scelta fra piantare
+     * e costruire si fa qui.
+     */
+    public static final DeferredItem<Item> TUMBLESTONE_BEAD =
+            ITEMS.registerSimpleItem("tumblestone_bead");
 
 
     /** Le tre semisfere del ramo leggero: stessa bolla, polvere diversa. */
@@ -139,13 +152,21 @@ public final class ModBallParts {
      * polvere e' un abrasivo buono per la carta vetrata di TFC, e con quella si
      * liscia il resto. Il primo geode si apre da se', senza chiedere niente a
      * un'altra gemma.
+     *
+     * <p>Ed e' <b>la forma che si pianta</b>: e' il cristallo naturale, quindi
+     * usa la classe di Cobblemon e mette a terra il suo budding. Da cui la
+     * grezza e' tutto — si pianta, si macina, si lavora — e la tumblestone
+     * lisciata diventa il frutto del raccolto invece di un passaggio obbligato.
      */
-    public static final DeferredItem<Item> RAW_TUMBLESTONE =
-            ITEMS.registerSimpleItem("raw_tumblestone");
-    public static final DeferredItem<Item> RAW_SKY_TUMBLESTONE =
-            ITEMS.registerSimpleItem("raw_sky_tumblestone");
-    public static final DeferredItem<Item> RAW_BLACK_TUMBLESTONE =
-            ITEMS.registerSimpleItem("raw_black_tumblestone");
+    public static final DeferredItem<Item> RAW_TUMBLESTONE = ITEMS.register("raw_tumblestone",
+            () -> new com.cobblemon.mod.common.item.TumblestoneItem(new Item.Properties(),
+                    com.cobblemon.mod.common.CobblemonBlocks.SMALL_BUDDING_TUMBLESTONE));
+    public static final DeferredItem<Item> RAW_SKY_TUMBLESTONE = ITEMS.register("raw_sky_tumblestone",
+            () -> new com.cobblemon.mod.common.item.TumblestoneItem(new Item.Properties(),
+                    com.cobblemon.mod.common.CobblemonBlocks.SMALL_BUDDING_SKY_TUMBLESTONE));
+    public static final DeferredItem<Item> RAW_BLACK_TUMBLESTONE = ITEMS.register("raw_black_tumblestone",
+            () -> new com.cobblemon.mod.common.item.TumblestoneItem(new Item.Properties(),
+                    com.cobblemon.mod.common.CobblemonBlocks.SMALL_BUDDING_BLACK_TUMBLESTONE));
 
     /** La tumblestone macinata alla mola: l'abrasivo. */
     public static final DeferredItem<Item> TUMBLESTONE_POWDER =

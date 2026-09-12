@@ -32,9 +32,11 @@ public final class PlainBlock {
     private static String crystal(String variant) {
         return switch (variant) {
             case "amethyst" -> "minecraft:amethyst_block";
-            case "tumblestone" -> "cobblemon:tumblestone_block";
-            case "sky_tumblestone" -> "cobblemon:sky_tumblestone_block";
-            case "black_tumblestone" -> "cobblemon:black_tumblestone_block";
+            // il sito sta nella fodera del geode, quindi quello che resta
+            // sotto e' il minerale, non un blocco di cristallo pieno
+            case "tumblestone" -> "tfcobblemon:tumblestone_quartzite";
+            case "sky_tumblestone" -> "tfcobblemon:sky_tumblestone_quartzite";
+            case "black_tumblestone" -> "tfcobblemon:black_tumblestone_quartzite";
             // l'opale non ha un blocco suo: e' la sua vena nel quarzite
             case "opal" -> "tfc:ore/opal/quartzite";
             default -> "minecraft:amethyst_block";

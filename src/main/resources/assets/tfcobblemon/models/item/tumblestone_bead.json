@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "tfcobblemon:item/ball/capture_core"
+    "layer0": "tfcobblemon:item/tumblestone_bead"
   }
 }

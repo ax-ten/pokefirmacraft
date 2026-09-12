@@ -520,40 +520,39 @@ roba da eta' della pietra** — e' carta vetrata piu' tumblestone, e tutte e due
 si fanno senza metallo. La catena rustica delle ball (sezione 5.5) sta in piedi
 dal primo geode.
 
-**Il nucleo si scheggia, non si liscia: il knapping.** Il knapping in TFC 4 e'
-**tutto a dati** — un registro `tfc/knapping_type` piu' ricette `tfc:knapping`
-con un disegno 5x5 — quindi ci si puo' aggiungere un tipo nostro senza una riga
-di codice: la **tumblestone**, che si scheggia col suono del cristallo di
-ametista e col sasso grezzo come icona.
+**Il pezzo che va nelle ball e' la perlina.** Si chiama cosi' perche' e' quello
+che e': una pietra tonda lavorata. Il nome e' stato scelto guardando come
+parlano le due mod — GregTech grada le gemme in *chipped, flawed, flawless,
+exquisite*, TFC grada i giacimenti in *poor, normal, rich* — e nessuna delle due
+serie va bene: la prima e' gergo di un'altra mod, la seconda vuol dire la
+ricchezza del minerale, non la lavorazione. TFC, quando una cosa e' lavorata,
+non le da' un grado: le da' un **nome fisico** (`unfired_brick`,
+`unrefined_paper`, `raw_iron_bloom`). Quindi perlina.
 
-E il disegno e' un **tondo**:
+E il nome regge il modo in cui si fa: **lo stampo ne cola otto per volta**, che
+e' esattamente come si fanno le perline.
+
+**Da cui la catena, per intero:**
 
 ```
- ###
-#####
-#####
-#####
- ###
+minerale / sasso  →  tumblestone grezza  ─┬─ carta vetrata →  PERLINA  → le ball
+                                          ├─ mola → 4 polveri → impasto, carta vetrata
+                                          └─ piantata → budding → cluster → tumblestone
 ```
 
-Cioe' si scheggia il cristallo finche' non resta una **sfera**, e quella sfera
-e' il capture core. Il che sistema anche una cosa che stonava: il core e' tondo,
-e arrivarci per via di carta vetrata non spiegava la forma. Scheggiare si'.
+**La grezza si pianta.** E' il cristallo naturale, quindi usa la classe di
+Cobblemon e mette a terra il suo budding: da li' crescono i cluster e si
+raccoglie la tumblestone vera. Cosi' la grezza e' tutto — si pianta, si macina,
+si lavora — e la **tumblestone diventa il frutto del raccolto** invece di un
+passaggio obbligato della catena industriale. La perlina, essendo lavorata, non
+si pianta: e' li' che il cristallo smette di poter tornare nel terreno, ed e' li'
+che si sceglie fra piantare e costruire.
 
-**Cosi' i due rami si separano, ognuno col suo attrezzo:**
+**Il knapping e' stato tolto.** Ci avevo provato — scheggiare la grezza fino a
+farne una sfera — ed era carino, ma non convinceva: un passaggio di abilita' in
+mezzo a una catena che per il resto e' fatta di attrezzi che si consumano.
 
-| | attrezzo | serve a |
-|---|---|---|
-| grezza → tumblestone | **carta vetrata** | fluido di cattura, polvere, Pokemon Storage Component |
-| grezza → capture core | **knapping** | le ball |
-
-**Una cosa da decidere.** La ricetta del capture core da carta vetrata +
-tumblestone lisciata **esiste ancora**, per cui adesso al core si arriva per due
-strade e la vecchia e' piu' comoda — cioe' il knapping non lo userebbe nessuno.
-Io la toglierei e lascerei il core al solo knapping. E' un file da cancellare,
-ma e' una ricetta che c'era prima di me e aspetto un tuo si'.
-
-**I sassi in superficie sono un indizio, non decorazione.** Sopra ogni geode
+**I sassi in superficie sono un indizio, non decorazione.****I sassi in superficie sono un indizio, non decorazione.** Sopra ogni geode
 che nasce, sulla sua colonna, cadono da tre a sei sassi sciolti dello stesso
 cristallo — la feature `tfcobblemon:geode_trail`, che piazza il geode di
 vanilla e poi, solo se ha attecchito, sparge i sassi chiedendo l'altezza del
@@ -1531,6 +1530,21 @@ stessa meccanica di un reattore — combustibile, innesco, e qualcosa che puo'
 andare male.
 
 ## 8.1 Scavo archeologico — numeri da tarare in gioco
+
+**La fine di uno scavo si vede.** Tirato fuori l'ultimo tesoro, la finestra
+resta aperta mezzo secondo con un **"Completed!"** in mezzo alla griglia, poi si
+chiude da se'. In quel mezzo secondo il sito e' fermo: non si scava piu', la
+finestra non risponde ai clic e nessun altro puo' aprirlo.
+
+Il pezzo non ovvio e' un altro: **il blocco si posa solo alla fine**. Posarlo
+subito farebbe sparire la block entity, e la finestra — che controlla di averla
+ancora davanti — si chiuderebbe da sola, mangiandosi il mezzo secondo. Quindi il
+conto lo tiene la finestra e il blocco cambia per ultimo.
+
+**E il sito di cristallo lascia il minerale, non il cristallo.** Un sito sta
+nella fodera del geode, quindi finito lo scavo quello che resta e' la quarzite
+venata. Prima restava un blocco di tumblestone pieno, che li' dentro non
+c'entrava niente.
 
 Il minigioco funziona, i numeri sono messi a caso e vanno provati con le mani.
 
