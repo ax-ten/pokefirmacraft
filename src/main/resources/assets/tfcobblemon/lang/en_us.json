@@ -218,5 +218,7 @@
   "block.tfcobblemon.punching_bag.speed_torn": "Torn Speed Punching Bag",
   "block.tfcobblemon.zone.gym": "Training Ground",
   "block.tfcobblemon.zone.spa": "Hot Spring",
-  "block.tfcobblemon.zone.ranch": "Ranch"
+  "block.tfcobblemon.zone.ranch": "Ranch",
+  "tfcobblemon.zone.senza_pascolo": "No pasture nearby.",
+  "tfcobblemon.zone.al_lavoro": "Working on %s pokémon at the pasture."
 }

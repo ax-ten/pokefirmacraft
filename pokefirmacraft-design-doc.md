@@ -1047,93 +1047,80 @@ buono. Da cui, gratis, un habitat perfetto non e' costruibile per ogni specie
 nello stesso posto: chi vuole mungere un Magmar si scava una fornace, chi vuole
 un Magnemite gli fa una miniera.
 
-### Il blocco che dichiara l'area
+### Il controllore che dichiara l'area
 
-**Non si riusa il pascolo, e non e' per ordine.** Il pascolo di Cobblemon e'
-una block entity `final` il cui tick fa un cast secco a `PastureBlock`, e ci
-abbiamo gia' innestato quattro cose sopra. Appenderci anche tre
-specializzazioni — attrezzi, arredo, punteggio di habitat, bottiglie da contare
-— vorrebbe dire tenere tutto lo stato di una feature nuova attaccato con lo
-spago a una classe che non e' nostra. E le due cose non hanno nemmeno le stesse
-regole: il pascolo e' un parcheggio da sedici, una palestra e' una stanza.
+Un blocco per genere — palestra, terme, recinto — che si piazza **accanto a un
+pascolo** e lavora sui Pokemon che ci stanno dentro. Non tiene Pokemon: legge
+la sua area, conta quello che trova, e applica l'effetto a chi e' al pascolo
+vicino. La block entity e' nostra, il tick e' nostro, e di Cobblemon si usano
+solo metodi pubblici.
 
-Quello che si riusa e' il pezzo che vale: il **legame** (`Tethering`) e' una
-classe pubblica col costruttore pubblico, e `PokemonEntity.setTethering` e'
-pubblico. Costruendolo noi, il Pokemon esce, gira **dentro i confini** — il
-limite di vagabondaggio vive nell'entita', non nel blocco — e il legame si
-salva nell'entita' da se'. Ci resta da riscrivere solo il controllo periodico,
-che sono quaranta righe. E il ripiego che fa trovare un Pokemon nel deposito
-del pascolo c'e' gia' (sezione 6.6).
+### Non un pascolo nuovo: una struttura accanto a quello
 
-**Il limite e' quattro, e non e' un numero scelto a caso: e' l'arredo.** In una
-zona ci stanno **tanti Pokemon quanti sono gli attrezzi**, con un tetto di
-quattro. Non serve una regola in piu' per dire "non puoi allenarne sei con un
-sacco solo": la stanza lo dice da se'. Quattro perche' e' quanto ci sta in una
-stanza che uno costruisce davvero — quattro sacchi e le bottiglie intorno — e
-perche' il tick deve contare i blocchi dell'area, e contarli per sedici Pokemon
-quattro volte al secondo e' il principe di tutti i mali un'altra volta.
+Il primo giro l'avevo fatto con tre blocchi-pascolo nostri, che ospitavano la
+block entity di Cobblemon per attaccarsi al PC. Funzionava, e ha portato a galla
+due cose che dicevano che la strada era storta: per farlo bisognava **scrivere a
+mano l'insieme dei blocchi validi di una block entity altrui** — l'evento
+ufficiale di NeoForge rifiuta un blocco che non discenda da `PastureBlock`, che
+e' final — e bisognava **riscrivere il loro tick** per non farlo esplodere sul
+cast al loro blocco. Due porte di servizio per ottenere un contenitore che
+c'era gia'.
 
-### Tre blocchi, e come si attaccano al PC
+**La forma giusta e' un'altra: il pascolo resta uno, e le specializzazioni si
+costruiscono accanto.** Un controllore per genere — palestra, terme, recinto —
+che si piazza vicino a un pascolo e agisce sui Pokemon che ci stanno dentro.
+Non un contenitore in piu': una macchina attaccata al contenitore che c'e'.
 
-**Tre blocchi, non uno.** Da fuori si deve vedere a cosa serve una stanza senza
-entrarci a ispezionare, e tre blocchi si riconoscono a colpo d'occhio. Sono la
-stessa classe con tre letture diverse dell'area.
+Perche' e' meglio, punto per punto:
 
-**E si attaccano al PC come fa il pascolo, cioe' ospitando la sua block
-entity.** Questa non e' una scelta di gusto, la decidono due righe del loro
-codice che ho letto:
+- **Zero innesti e zero porte di servizio.** `getTetheredPokemon()` sulla loro
+  block entity e' pubblico, e `Tethering.getPokemon()` pure: un blocco vicino
+  puo' leggere chi c'e' al pascolo e agire su di lui senza toccare niente di
+  loro. Anche gli effetti sono API pubbliche — `Pokemon.getEvs().add(Stat, int)`
+  coi sei `Stats`, `getFriendship()`/`setFriendship`, e
+  `getForm().getDrops().getDrops(range, pokemon)` per la tabella dei drop della
+  specie.
+- **Il problema "dove abita il mio Pokemon" sparisce.** Prima erano quattro
+  posti (PC, box invisibile, pascolo, zona); adesso restano quelli che c'erano
+  gia'.
+- **Le specializzazioni si sommano.** Palestra da un lato e terme dall'altro
+  sullo stesso pascolo: gli stessi Pokemon prendono tutte e due, senza doverli
+  spostare. Con tre pascoli separati avresti dovuto scegliere.
+- **La cucitura PC/ball non serve piu'.** Era un'interfaccia per decidere cosa
+  si vede aprendo una zona; se i Pokemon stanno nel pascolo, quella domanda ha
+  gia' una risposta sola, data una volta sul pascolo — il PC in un mondo
+  Cobblemon qualunque, la cesta delle ball dove c'e' la cintura.
+- **E' la lingua di Greg.** Un controllore che si costruisce accanto e legge
+  quello che gli hai messo intorno e' esattamente quello che un giocatore di
+  GregTech si aspetta di fare.
 
-1. `PasturePokemonHandler` — il pezzo che riceve "metti questo Pokemon al
-   pascolo" dalla schermata del PC — cerca la block entity all'indirizzo del
-   link e **pretende che sia una `PokemonPastureBlockEntity`**, poi le chiama
-   `canAddPokemon` e `tether`. Con una block entity nostra quel messaggio cade
-   nel vuoto, e tutta la finestra del PC con lui.
-2. Il loro tick chiama `togglePastureOn`, che fa un **cast secco a
-   `PastureBlock`**: un blocco nostro che ospita la loro entita' esplode venti
-   volte al secondo.
+**Multiblocco, ma non rigido.** Il controllore non pretende una forma esatta
+come una macchina di Greg: legge la sua area e conta quello che trova — i
+sacchi, le bottiglie, l'arredo, le condizioni di spawn. Una forma obbligata
+ucciderebbe la meta' bella dell'idea, che e' costruirsi una stanza che sia bella
+e che *per questo* funzioni meglio.
 
-Quindi: i tre blocchi sono nostri e ospitano la **loro** block entity. In
-cambio
-arrivano gratis la finestra del PC in modalita' pascolo, il link, i permessi,
-il legame, il vagabondaggio nei confini, il controllo periodico e lo
-sganciamento, e tutto quello che serve per aprirla e' pubblico:
-`OpenPasturePacket`, `PastureLinkManager.createLink`,
-`PasturePermissionControllers.permit`, `CobblemonNetwork.sendPacketToPlayer`.
+**Il limite non e' un numero di slot, e' l'attrezzatura.** Cadendo il
+contenitore cade anche il bisogno di dire "quattro": la palestra allena tanti
+Pokemon quanti sono i sacchi che le hai messo intorno, e se il pascolo ne tiene
+dieci ma i sacchi sono due, se ne allenano due. La stanza dice il limite da se',
+come doveva essere dall'inizio.
 
-**L'evento di NeoForge fatto per questo non si puo' usare, e vale saperlo.**
-`BlockEntityTypeAddBlocksEvent.modify` **rifiuta un blocco che non discenda da
-quelli che il tipo ha gia'** — qui `PastureBlock`, che e' final: quindi la
-strada ufficiale e' chiusa in partenza. Quel controllo e' una rete generica
-contro le block entity che castano il proprio blocco, e nel pascolo di cast ce
-n'e' **uno**, in `togglePastureOn`, chiamato solo dal loro tick. Percio' si
-scrive l'insieme dei blocchi validi a mano, con l'accessorio pubblico di
-NeoForge che l'evento usa lui stesso (`BlockEntityTypeAccessor`), e la ragione
-sta scritta sul posto. E' l'unico punto di tutto lo strato in cui si passa da
-una porta di servizio.
+**Chi trova chi.** E' il controllore a cercarsi il pascolo, non il contrario:
+cosi' il pascolo non sa niente di noi e non serve entrarci dentro. Una
+scansione ogni giro di tick nel raggio del controllore, e l'indirizzo trovato si
+tiene.
 
-**Per il resto non serve nessun innesto**, che era il prezzo che avevo previsto.
-Il loro tick fa tre cose: il conto alla rovescia fino al controllo dei legami,
-il metabolismo dei Pokemon al pascolo, e accendere il blocco mentre qualcuno
-guarda. Le prime due passano da metodi pubblici; solo la terza chiama
-`togglePastureOn`, ed e' l'unico posto da cui quel cast venga chiamato.
-Riscrivendo il tick — sono dieci righe — si chiamano gli stessi metodi e si
-lascia fuori quella riga. Zero mixin su Cobblemon per tutto lo strato di
-fondo.
+### Le ball restano roba del pascolo
 
-### Le ball sono uno strato sopra, e sta a noi
-
-Attaccarsi al PC e' il **fondo**: cosi' i tre blocchi funzionano in un mondo
-Cobblemon qualunque, e questa e' la parte che un giorno puo' uscire di qui
-(vedi sotto). Usare le **ball fisiche** invece del computer e' quello che
-questa mod aggiunge — e' roba di TFC e di Greg, dove il PC non e' un
-elettrodomestico che hai da sempre — e va **sopra**, non dentro.
-
-Sopra e non dentro significa una cosa precisa: non un innesto sul loro codice
-ma **una cucitura nostra, aperta di proposito**. Un'interfaccia sola — "come si
-guarda dentro una zona" — con due attuazioni: quella che apre la finestra del
-PC, e quella che apre la cesta delle ball. La prima e' il fondo, la seconda si
-installa. Chi non ha la cintura vede il PC; chi ce l'ha vede le ball, e non
-cambia una riga della zona.
+Usare le ball fisiche invece del computer e' quello che questa mod aggiunge —
+e' roba di TFC e di Greg, dove il PC non e' un elettrodomestico che hai da
+sempre — ma **non e' un problema dei controllori**: i Pokemon stanno nel
+pascolo, e come ci si mettono lo decide il pascolo, che quella domanda l'ha
+gia' risolta (sezione 6.6). La cesta delle ball c'e', e il PC in un mondo
+Cobblemon qualunque funziona come sempre. I controllori non sanno niente di
+ball, ed e' giusto cosi': una cosa in meno da portarsi dietro il giorno che
+questa famiglia esce di qui.
 
 ### Le uova non sono roba nostra
 
