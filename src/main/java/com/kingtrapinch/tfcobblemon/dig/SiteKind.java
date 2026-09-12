@@ -8,16 +8,16 @@ import java.util.List;
  * Che roba e' un sito, cioe' in che ordine sono impilati gli strati.
  *
  * <p>Un sito di sabbia o ghiaia ha il pulviscolo fuori e la pietra dentro; uno
- * di pietra viva e' il contrario, la crosta dura sopra e il molle sotto. Nel
- * cristallo ci sono due strati di cristallo e basta, per cui la spazzola —
- * che porta via solo pulviscolo — non trova mai niente da fare.
+ * di pietra viva e' il contrario, la crosta dura sopra e il molle sotto. Il
+ * cristallo ha la roccia del geode sopra e la vena sotto, e in nessuno dei due
+ * c'e' pulviscolo: la spazzola non trova mai niente da fare.
  */
 public enum SiteKind {
     /** Sciolto: pulviscolo, calce, roccia. */
     SEDIMENT(List.of(Layer.DUST, Layer.LIME, Layer.ROCK), 1, 0.55F, 0.78F),
     /** Pietra viva: crosta dura sopra, e sotto si sfarina. */
     STONE(List.of(Layer.ROCK, Layer.LIME, Layer.DUST), 1, 0.55F, 0.78F),
-    /** Cristallo, due strati: quello esterno piu' chiaro. Fragile. */
+    /** Cristallo, due strati: fuori la roccia, sotto la vena. Fragile. */
     CRYSTAL(List.of(Layer.CRYSTAL, Layer.CRYSTAL), 2, 0.5F, 1.01F);
 
     /** Gli strati dall'esterno verso il fondo. */

@@ -8,7 +8,9 @@ import net.minecraft.resources.ResourceLocation;
  * Che texture mostrare per ogni strato di un sito. Non ne disegniamo di nuove
  * per la roccia: si prendono quelle di TFC del materiale su cui stai scavando,
  * cosi' un sito nella ghiaia di calcare ha dentro il calcare e non un granito
- * qualunque. Il cristallo invece ha due facce sue, quella esterna piu' chiara.
+ * qualunque. Anche il cristallo fuori e' roccia — la faccia del blocco
+ * sospetto stesso, cioe' la quarzite venata del geode — e il cristallo si
+ * vede solo sotto, quando la crosta e' venuta via.
  */
 public record DigSkin(ResourceLocation rock, ResourceLocation lime, ResourceLocation dust,
                       ResourceLocation crystalOuter, ResourceLocation crystalInner) {
@@ -33,9 +35,11 @@ public record DigSkin(ResourceLocation rock, ResourceLocation lime, ResourceLoca
         final int slash = path.indexOf('/');
         final String variant = slash < 0 ? "" : path.substring(slash + 1);
         if (path.startsWith("suspicious_crystal")) {
-            // il fondo di un geode e' pietra come tutti gli altri
-            return new DigSkin(tfc("rock/raw/granite"), EMPTY, EMPTY,
-                    crystalBlock(variant), ours("crystal/" + variant + "_inner"));
+            // il guscio di un geode di tumblestone e' quarzite, e il fondo e' lo
+            // stesso guscio: il cristallo e' solo la vena che ci sta in mezzo
+            final String guscio = variant.endsWith("tumblestone") ? "quartzite" : "granite";
+            return new DigSkin(tfc("rock/raw/" + guscio), EMPTY, EMPTY,
+                    crust(path), ours("crystal/" + variant + "_inner"));
         }
         if (path.startsWith("suspicious_sand")) {
             // le facce lisce dell'arenaria, non quella intagliata
@@ -50,23 +54,12 @@ public record DigSkin(ResourceLocation rock, ResourceLocation lime, ResourceLoca
     }
 
     /**
-     * Il materiale dice quale faccia, ma nel cristallo i due strati sono
-     * entrambi cristallo: li distingue la profondita'.
+     * La crosta di un sito di cristallo e' la faccia del blocco sospetto: la
+     * roccia del geode con le sue vene, la stessa che si vedeva da fuori prima
+     * di mettersi a scavare.
      */
-    /**
-     * Lo strato esterno del cristallo e' la faccia del blocco vero — ametista,
-     * diamante, tumblestone — che esiste gia': non serve ridisegnarla.
-     */
-    private static ResourceLocation crystalBlock(String variant) {
-        final String path = switch (variant) {
-            case "amethyst" -> "minecraft:textures/block/amethyst_block.png";
-            case "tumblestone" -> "cobblemon:textures/block/tumblestone/tumblestone_block.png";
-            case "sky_tumblestone" -> "cobblemon:textures/block/tumblestone/sky_tumblestone_block.png";
-            case "black_tumblestone" -> "cobblemon:textures/block/tumblestone/black_tumblestone_block.png";
-            case "opal" -> "tfcobblemon:textures/gui/dig/crystal/opal_outer.png";
-            default -> "minecraft:textures/block/amethyst_block.png";
-        };
-        return ResourceLocation.parse(path);
+    private static ResourceLocation crust(String block) {
+        return ResourceLocation.fromNamespaceAndPath(TFCobblemon.MODID, "textures/block/" + block + ".png");
     }
 
     public ResourceLocation forCell(Layer layer, int depth) {
