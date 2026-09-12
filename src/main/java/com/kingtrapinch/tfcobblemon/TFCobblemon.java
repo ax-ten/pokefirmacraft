@@ -16,6 +16,7 @@ import com.kingtrapinch.tfcobblemon.item.custom.GolettItem;
 import com.kingtrapinch.tfcobblemon.pasture.ModPasture;
 import com.kingtrapinch.tfcobblemon.world.ModWorld;
 import com.kingtrapinch.tfcobblemon.zone.ModZones;
+import com.kingtrapinch.tfcobblemon.zone.tfc.TfcZoneWorld;
 import com.mojang.logging.LogUtils;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.neoforged.bus.api.IEventBus;
@@ -52,6 +53,10 @@ public class TFCobblemon {
         BallCapture.hook();
         BallFlight.hook();
         ModBelt.setup();
+        // le zone sanno vivere da sole; dove TFC c'e', passano al suo calendario
+        if (net.neoforged.fml.ModList.get().isLoaded("tfc")) {
+            TfcZoneWorld.installa();
+        }
     }
 
     private void addCreative(BuildCreativeModeTabContentsEvent event) {

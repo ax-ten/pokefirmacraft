@@ -14,10 +14,12 @@ package com.kingtrapinch.tfcobblemon.zone;
  * tempo</b>: e' quello che fanno le vitamine, ed e' anche il motivo per cui
  * hanno senso solo quando si possono produrre.
  *
- * <p>Il tempo sono i <b>tick del mondo</b> e non il calendario di TFC, per una
- * ragione che non e' tecnica: questa famiglia di blocchi deve poter vivere in
- * una mod a se' che funziona <b>anche senza TFC</b>. Niente di TFC entra in
- * questo pacchetto.
+ * <p>Il tempo sono i <b>tick</b>, e da dove arrivano lo decide {@link
+ * ZoneWorld}: di base quelli del mondo, e dove c'e' TFC quelli del suo
+ * calendario. La ragione non e' tecnica: questa famiglia di blocchi deve poter
+ * vivere in una mod a se' che funziona <b>anche senza TFC</b>, e infatti
+ * niente di TFC entra in questo pacchetto — il ponte sta fuori, in
+ * {@code zone.tfc}.
  */
 public final class ZoneClock {
     private ZoneClock() {}
