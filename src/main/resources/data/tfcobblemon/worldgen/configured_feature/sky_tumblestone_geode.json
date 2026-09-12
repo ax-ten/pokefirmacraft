@@ -32,13 +32,13 @@
           {
             "weight": 96,
             "data": {
-              "Name": "tfcobblemon:tumblestone_quartzite"
+              "Name": "tfcobblemon:sky_tumblestone_quartzite"
             }
           },
           {
             "weight": 4,
             "data": {
-              "Name": "tfcobblemon:suspicious_crystal/tumblestone"
+              "Name": "tfcobblemon:suspicious_crystal/sky_tumblestone"
             }
           }
         ]
@@ -51,7 +51,7 @@
         }
       ]
     },
-    "use_alternate_layer0_chance": 0.3,
+    "use_alternate_layer0_chance": 0.55,
     "invalid_blocks_threshold": 1,
     "crack": {
       "generate_crack_chance": 0.95,
