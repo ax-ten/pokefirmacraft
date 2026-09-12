@@ -914,6 +914,11 @@ appeso risulta scomparso.
 dire "c'e' una schermata aperta"; a cesta chiusa non vorrebbe dire niente, e
 acceso-con-qualcuno-dentro e' l'unico segno che il modello ha gia'.
 
+**Resta aperta la specializzazione**, che e' la cosa che rende un pascolo
+diverso da un parcheggio: allenare EV, alzare l'amicizia, raccogliere quello
+che il Pokemon droppa. Sta nei punti aperti della sezione 9, coi dati che
+servono.
+
 **Resta aperto il grado industriale.** Il pascolo collegato al PC — quello che
 ti fa sfogliare tutte le box invece delle sedici ball che ti porti dietro — e'
 esattamente il pascolo di Cobblemon come era: non c'e' da costruirlo, c'e' da
@@ -1135,6 +1140,24 @@ valido e vive gia' nell'Habitat Block dell'era elettrica.
   e ce lo siamo messo come gate senza sapere se il ferro lo tagga qualcuno.
   Da tenere presente che ne stiamo gia' sovrascrivendo 66
 - Ricollocazione di PC e Pasture Block secondo la sezione 4
+- **Pascoli specializzati**, che facciano qualcosa mentre i Pokemon stanno
+  fuori invece di tenerli solo parcheggiati (sezione 6.6). Tre direzioni, e i
+  dati per tutte tre ci sono gia':
+  - **allenamento EV** — `EVs.add(Stat, int)` con i tetti dei giochi,
+    **252** per statistica e **510** in totale, per cui un pascolo che allena
+    una statistica sola e' un investimento che si esaurisce e non una macchina
+    infinita. Ogni specie porta anche il suo `evYield`, che e' quanto da'
+    *da battuta*: e' la scala giusta da cui copiare i ritmi
+  - **amicizia** — sta nella specie come `baseFriendship` (50 per Bulbasaur) e
+    nel Pokemon come valore suo: un pascolo che la alza col tempo e' il modo
+    rustico di fare quello che nei giochi si fa camminando
+  - **raccolto di quello che droppano** — ogni specie ha il suo blocco
+    `drops`: un `amount` che dice quante voci si tirano e le voci con
+    `quantityRange` o `percentage` (Bulbasaur: semi di melone e, al 5%, un
+    Miracle Seed). Su **1025 specie** e' una tabella di materiali enorme che
+    oggi si apre solo uccidendo, e mungerla invece di ammazzarli e' la cosa
+    piu' TFC che ci sia. Va pero' messa a un ritmo e a un costo — cibo, tempo,
+    spazio — o sostituisce le farm di mob e basta
 - Materiali delle due cinture (la capienza è decisa: 1 a mani nude, 3, 6)
 - ~~Quali categorie ha la borsa~~ — **decise.** Si rifanno a quelle di
   Cobblemon, tenendo solo le quattro che hanno senso come tasche: **ball**,
