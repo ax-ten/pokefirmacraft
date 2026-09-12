@@ -416,6 +416,17 @@ tutta la fascia -32..48; sky e black a 40 ciascuna, sbilanciate verso il basso
 densi e piu' spesso delle due varianti pregiate. Dentro la fodera, il 4% dei
 blocchi di minerale e' un sito da scavare.
 
+**Il guscio e' crepato, e dentro resta asciutto.** La crepa e' quella di
+vanilla — un buco nel guscio, che e' anche il modo di accorgersi di un geode
+scavandogli accanto — ma un buco vuol dire che da fuori puo' entrare acqua, e
+un geode pieno d'acqua non ha senso. Si chiude a monte invece che a valle:
+`invalid_blocks_threshold` a **zero**, cioe' il geode rinuncia a nascere se
+trova una sola goccia d'acqua nel suo ingombro, dove vanilla ne tollera una —
+e quella una, se capita sulla crepa, e' la falla. Non costa niente: su un mondo
+di prova il conteggio dei minerali e' rimasto identico a prima, e di 2650
+blocchi di minerale **nessuno** aveva acqua entro due blocchi. Gia' erano
+asciutti; ora lo sono per costruzione.
+
 **I sassi in superficie sono un indizio, non decorazione.** Sopra ogni geode
 che nasce, sulla sua colonna, cadono da tre a sei sassi sciolti dello stesso
 cristallo — la feature `tfcobblemon:geode_trail`, che piazza il geode di
