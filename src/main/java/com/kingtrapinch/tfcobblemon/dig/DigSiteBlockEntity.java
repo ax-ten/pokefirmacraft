@@ -166,15 +166,15 @@ public class DigSiteBlockEntity extends BlockEntity {
     }
 
     /**
-     * Mezzo secondo fra l'ultimo tesoro e la chiusura, per far leggere il
-     * "Completed!". In quel mezzo secondo il sito e' fermo: non si scava piu',
-     * e nessun altro puo' aprirlo.
+     * Un secondo fra l'ultimo tesoro e la chiusura, per far leggere il
+     * "Completed!". In quel secondo il sito e' fermo: non si scava piu', e
+     * nessun altro puo' aprirlo.
      *
      * <p>Il blocco si posa solo alla fine, e non subito, per una ragione
      * pratica: posarlo fa sparire questa block entity, e la finestra — che
      * controlla di averla ancora davanti — si chiuderebbe da sola.
      */
-    private static final int ATTESA = 10;
+    private static final int ATTESA = 20;
 
     private int chiusura = -1;
 

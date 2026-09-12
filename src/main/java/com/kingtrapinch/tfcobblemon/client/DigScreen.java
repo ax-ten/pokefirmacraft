@@ -47,6 +47,12 @@ public class DigScreen extends AbstractContainerScreen<DigMenu> {
 
     private final DigDust dust = new DigDust();
 
+    /** Quanto dura la comparsa della scritta di fine, in millesimi. */
+    private static final int DISSOLVENZA = 250;
+
+    /** Quando la scritta di fine e' comparsa, per la dissolvenza. */
+    private long apparso;
+
     /** Le scintille di un tesoro non vengono da una texture: sono luce. */
     private static final int[] SCINTILLE = {0xFFF0A0, 0xFFFFD0, 0xFFE070};
     private DigSkin skin = DigSkin.of(ResourceLocation
@@ -334,20 +340,31 @@ public class DigScreen extends AbstractContainerScreen<DigMenu> {
     }
 
     /**
-     * Lo scavo e' finito: mezzo secondo di scritta in mezzo alla griglia, poi
-     * la finestra si chiude da se'. Il conto lo tiene il server, qui si
-     * disegna soltanto.
+     * Lo scavo e' finito: un secondo di scritta in mezzo alla griglia, poi la
+     * finestra si chiude da se'. Il conto lo tiene il server; qui si disegna, e
+     * la comparsa e' una dissolvenza.
+     *
+     * <p>La dissolvenza va a orologio del client e non a tick: un tick e'
+     * cinquanta millesimi, e a quella grana una comparsa in un quarto di
+     * secondo verrebbe a cinque scatti invece che liscia.
      */
     private void finito(GuiGraphics graphics) {
         if (!menu.finito()) {
+            apparso = 0L;
             return;
         }
+        if (apparso == 0L) {
+            apparso = net.minecraft.Util.getMillis();
+        }
+        final float quanto = Math.min(1.0F, (net.minecraft.Util.getMillis() - apparso) / (float) DISSOLVENZA);
         final int x = leftPos + DigLayout.GRID_X;
         final int y = topPos + DigLayout.GRID_Y;
         final int meta = y + DigLayout.GRID_SPAN / 2;
-        graphics.fill(x, meta - 12, x + DigLayout.GRID_SPAN, meta + 12, 0xC0101014);
+        graphics.fill(x, meta - 12, x + DigLayout.GRID_SPAN, meta + 12,
+                (int) (0xC0 * quanto) << 24 | 0x101014);
         final Component detto = Component.translatable("tfcobblemon.dig.completed");
-        graphics.drawCenteredString(font, detto, x + DigLayout.GRID_SPAN / 2, meta - 4, 0xFFFFFF55);
+        graphics.drawCenteredString(font, detto, x + DigLayout.GRID_SPAN / 2, meta - 4,
+                (int) (0xFF * quanto) << 24 | 0xFFFF55);
     }
 
     @Override
