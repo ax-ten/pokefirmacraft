@@ -956,6 +956,34 @@ dispongono da se' su tre ruoli diversi invece di litigare per lo stesso:
 | **Succo e polvere di bacca** | `berry_juice` si fa con **due bacche e una scodella** | il **carburante ordinario**: costa poco, rende poco. La *polvere* di bacca non esiste ancora: la fa il Berry Crush, che sta nel catalogo dei minigiochi (sezione 8.2) — una dipendenza vera fra le due mod |
 | **Oggetti X** — attack, defence, special attack, special defence, speed | **craftabili nella pentola**, quattro per volta, da un fiore e una bacca | il **carburante buono**, che accelera il tick. Attenzione: sono **cinque**, per gli HP non esiste un oggetto X, quindi quel sacco va alimentato d'altro |
 
+**E gli oggetti X si possono appoggiare a terra** — questa e' la scoperta che
+chiude il disegno. Non sono solo consumabili da inventario: Cobblemon ne ha il
+**blocco**, `StackableItemBlock`, con `facing` e `amount`, e ogni blocco tiene
+**fino a quattro bottiglie** che si vedono nel modello. Esiste per gli oggetti
+X (il tipo `BATTLE_ITEM`), per le pozioni, per gli ether e per i curativi di
+stato; `getType()` e la proprieta' `AMOUNT` sono pubblici, quindi il blocco
+d'area **puo' contare le bottiglie** che ha attorno invece di chiedere un
+inventario.
+
+Da cui il carburante non e' un serbatoio nascosto: e' una **mensola visibile**.
+Si posano le bottiglie intorno al sacco, l'allenamento le consuma scalando
+`amount`, e la scorta che si svuota si vede da fuori. Nessuna interfaccia,
+nessun modello nuovo, e la stessa lingua della cesta del pascolo — gli oggetti
+stanno nel mondo, non in una finestra.
+
+E si chiude anche il buco degli HP, che l'oggetto X non ce l'hanno: per quel
+sacco valgono le **pozioni**, che sono l'oggetto degli HP e hanno il blocco
+come gli altri. La mappa viene intera:
+
+| Sacco | Bottiglie da posargli intorno |
+|---|---|
+| HP | `potion`, `super_potion`, `hyper_potion`, `max_potion` |
+| Attacco | `x_attack` |
+| Difesa | `x_defence` |
+| Attacco Speciale | `x_special_attack` |
+| Difesa Speciale | `x_special_defence` |
+| Velocita' | `x_speed` |
+
 Le **vitamine** (HP Up, Protein, Iron, Calcium, Zinc, Carbos) restano fuori, e
 per un motivo misurato: in Cobblemon **non hanno ricetta**, si trovano soltanto.
 Gatare sei sacchi dietro sei oggetti che non si possono fabbricare vorrebbe dire
