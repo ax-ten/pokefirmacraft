@@ -13,6 +13,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,8 +38,8 @@ public enum ZoneKind {
      */
     LEISURE("leisure"),
     /**
-     * Recinto: si contano le condizioni di spawn soddisfatte, e rende quello
-     * che il Pokemon droppa. Non si chiama "habitat" per non confonderlo con
+     * Ranch: si contano le condizioni di spawn soddisfatte, e rende quello che
+     * il Pokemon droppa. Non si chiama "habitat" per non confonderlo con
      * l'Habitat Block dell'era elettrica, che fa un altro mestiere.
      */
     RANCH("ranch");
@@ -47,8 +48,16 @@ public enum ZoneKind {
     private static final int USURA = 84;
     /** Ogni quanti punti si vuota una bottiglia. */
     private static final int BOTTIGLIA = 21;
-    /** Ogni quanti punti il recinto raccoglie: 84 punti sono un giorno. */
-    private static final int RACCOLTO = 84;
+    /**
+     * Quanti punti vale un pezzo di raccolto, a resa uno. Il raccolto e'
+     * <b>continuo</b>: un pezzo per volta appena e' maturo, non una cesta a
+     * fine giornata. Quarantadue punti sono mezzo giorno di gioco, quindi due
+     * pezzi al giorno per un Pokemon di livello basso e tre per uno di
+     * livello 100.
+     */
+    private static final int PEZZO = 42;
+    /** La maturazione si conta in millesimi, per non perdere i decimali. */
+    private static final int FINO = 1000;
     /** Il tetto dell'amicizia. */
     private static final int AMICIZIA = 255;
 
@@ -81,14 +90,14 @@ public enum ZoneKind {
      * <p>{@code punti} sono i punti maturati dal giro scorso, e il loro valore
      * viene dalla regola unica: tre giorni di gioco portano un Pokemon al
      * massimo, cioe' 252. Un punto e' un EV per la palestra, un punto di
-     * amicizia per l'ozio, e un passo verso il prossimo raccolto per il
-     * recinto.
+     * amicizia per l'ozio, e un passo verso il prossimo pezzo di raccolto per
+     * il ranch.
      */
     public void lavora(ServerLevel level, ZoneBlockEntity zona, List<Pokemon> dentro, int punti) {
         switch (this) {
             case GYM -> palestra(level, zona, dentro, punti);
             case LEISURE -> ozio(dentro, punti);
-            case RANCH -> recinto(level, zona, dentro, punti);
+            case RANCH -> ranch(level, zona, dentro, punti);
         }
     }
 
@@ -104,17 +113,31 @@ public enum ZoneKind {
     private static void palestra(ServerLevel level, ZoneBlockEntity zona,
                                  List<Pokemon> dentro, int punti) {
         final ZoneArea area = ZoneArea.guarda(level, zona.getBlockPos());
-        final List<ZoneArea.Sacco> sacchi = area.sacchi();
-        for (int i = 0; i < Math.min(dentro.size(), sacchi.size()); i++) {
-            final ZoneArea.Sacco sacco = sacchi.get(i);
-            final Stats statistica = STATISTICHE.get(sacco.allena());
+        final List<ZoneArea.Sacco> liberi = new ArrayList<>(area.sacchi());
+        for (Pokemon mon : dentro) {
+            if (liberi.isEmpty() || zona.fermo(mon.getUuid())) {
+                continue;
+            }
+            // un sacco per Pokemon: quello della statistica scelta nella
+            // finestra, o il primo che capita se non e' stata scelta
+            final String voluta = zona.scelta(mon.getUuid());
+            ZoneArea.Sacco preso = null;
+            for (java.util.Iterator<ZoneArea.Sacco> giro = liberi.iterator(); giro.hasNext();) {
+                final ZoneArea.Sacco sacco = giro.next();
+                if (voluta == null || sacco.allena().equals(voluta)) {
+                    preso = sacco;
+                    giro.remove();
+                    break;
+                }
+            }
+            final Stats statistica = preso == null ? null : STATISTICHE.get(preso.allena());
             if (statistica == null) {
                 continue;
             }
-            dentro.get(i).getEvs().add(statistica, punti);
+            mon.getEvs().add(statistica, punti);
             for (int colpo = 0; colpo < punti; colpo++) {
                 if (level.getRandom().nextInt(USURA) == 0) {
-                    sacco.blocco().logora(level, sacco.pos());
+                    preso.blocco().logora(level, preso.pos());
                     break;
                 }
             }
@@ -145,40 +168,47 @@ public enum ZoneKind {
     }
 
     /**
-     * Il recinto: ogni tanto si raccoglie quello che quel Pokemon lascerebbe
-     * morendo, senza che muoia. La tabella e' la sua, non una nostra —
+     * Il ranch: si raccoglie quello che quel Pokemon lascerebbe morendo, senza
+     * che muoia. La tabella e' la sua, non una nostra —
      * {@code getForm().getDrops()} — e il raccolto va in un contenitore
      * attaccato al controllore se c'e', altrimenti a terra.
      *
-     * <p>Il passo e' un raccolto al giorno di gioco per Pokemon: ottantaquattro
-     * punti sono un terzo del cammino verso il tetto, cioe' un giorno.
+     * <p><b>Continuo</b>: ogni Pokemon matura per conto suo e lascia cadere un
+     * pezzo appena e' pronto. Quanto in fretta lo dice {@link ZoneWorld} —
+     * di base il livello, e dove c'e' TFC anche la stagione e il clima — per
+     * cui due Pokemon nella stessa stanza non rendono uguale.
      */
-    private static void recinto(ServerLevel level, ZoneBlockEntity zona,
-                                List<Pokemon> dentro, int punti) {
-        int gruzzolo = zona.resto() + punti;
-        while (gruzzolo >= RACCOLTO) {
-            gruzzolo -= RACCOLTO;
-            raccogli(level, zona, dentro.get(level.getRandom().nextInt(dentro.size())));
+    private static void ranch(ServerLevel level, ZoneBlockEntity zona,
+                              List<Pokemon> dentro, int punti) {
+        for (Pokemon mon : dentro) {
+            final float resa = ZoneWorld.attivo().resa(level, zona.getBlockPos(), mon);
+            final int maturo = zona.matura(mon.getUuid(), (int) (punti * FINO * resa));
+            for (int pezzi = 0; pezzi < maturo; pezzi++) {
+                raccogli(level, zona, mon);
+            }
         }
-        zona.resto(gruzzolo);
     }
 
+    /** Un pezzo solo, pescato dalla tabella di quel Pokemon. */
     private static void raccogli(ServerLevel level, ZoneBlockEntity zona, Pokemon mon) {
         final DropTable tabella = mon.getForm().getDrops();
+        final List<DropEntry> tirate = tabella.getDrops(new kotlin.ranges.IntRange(1, 1), mon);
+        if (tirate.isEmpty()) {
+            return;
+        }
+        final DropEntry voce = tirate.get(0);
+        if (!(voce instanceof ItemDropEntry roba)) {
+            return;
+        }
+        final Item cosa = BuiltInRegistries.ITEM.get(roba.getItem());
+        if (cosa == Items.AIR) {
+            return;
+        }
+        final ItemStack pila = new ItemStack(cosa, Math.max(1, roba.getQuantity()));
         final Container cassa = ZoneArea.cassa(level, zona.getBlockPos());
-        for (DropEntry voce : tabella.getDrops(tabella.getAmount(), mon)) {
-            if (!(voce instanceof ItemDropEntry roba)) {
-                continue;
-            }
-            final Item cosa = BuiltInRegistries.ITEM.get(roba.getItem());
-            if (cosa == Items.AIR) {
-                continue;
-            }
-            final ItemStack pila = new ItemStack(cosa, Math.max(1, roba.getQuantity()));
-            if (cassa == null || !infila(cassa, pila)) {
-                Containers.dropItemStack(level, zona.getBlockPos().getX() + 0.5,
-                        zona.getBlockPos().getY() + 1.0, zona.getBlockPos().getZ() + 0.5, pila);
-            }
+        if (cassa == null || !infila(cassa, pila)) {
+            Containers.dropItemStack(level, zona.getBlockPos().getX() + 0.5,
+                    zona.getBlockPos().getY() + 1.0, zona.getBlockPos().getZ() + 0.5, pila);
         }
     }
 

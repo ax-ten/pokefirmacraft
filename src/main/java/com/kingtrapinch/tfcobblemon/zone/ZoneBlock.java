@@ -92,8 +92,8 @@ public class ZoneBlock extends BaseEntityBlock {
     }
 
     /**
-     * A mani vuote dice se e' sopra un pascolo e su quanti sta lavorando.
-     * Finche' non c'e' la finestra, e' l'unica cosa che serve sapere.
+     * Apre il quadro comandi. Senza un pascolo sotto non c'e' niente da
+     * comandare, e lo dice invece di aprire una finestra vuota.
      */
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos,
@@ -101,14 +101,23 @@ public class ZoneBlock extends BaseEntityBlock {
                                                BlockHitResult hit) {
         if (player instanceof ServerPlayer giocatore && level instanceof ServerLevel server
                 && level.getBlockEntity(pos) instanceof ZoneBlockEntity zona) {
-            final net.minecraft.network.chat.Component detto;
             if (zona.pascolo(server) == null) {
-                detto = net.minecraft.network.chat.Component.translatable("tfcobblemon.zone.senza_pascolo");
-            } else {
-                detto = net.minecraft.network.chat.Component.translatable(
-                        "tfcobblemon.zone.al_lavoro", zona.alPascolo(server).size());
+                giocatore.displayClientMessage(net.minecraft.network.chat.Component
+                        .translatable("tfcobblemon.zone.senza_pascolo"), true);
+                return InteractionResult.SUCCESS;
             }
-            giocatore.displayClientMessage(detto, true);
+            final java.util.List<ZoneMenu.Riga> righe = ZoneMenu.righe(server, zona);
+            final int sacchi = ZoneMenu.sacchi(server, zona);
+            giocatore.openMenu(new ZoneMenuProvider(pos, genere, righe, sacchi), buf -> {
+                buf.writeBlockPos(pos);
+                buf.writeByte(sacchi);
+                buf.writeByte(righe.size());
+                for (ZoneMenu.Riga riga : righe) {
+                    buf.writeUUID(riga.chi());
+                    buf.writeUtf(riga.nome());
+                    buf.writeByte(riga.livello());
+                }
+            });
         }
         return InteractionResult.SUCCESS;
     }

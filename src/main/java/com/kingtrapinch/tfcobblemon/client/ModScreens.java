@@ -18,6 +18,7 @@ public final class ModScreens {
     public static void register(RegisterMenuScreensEvent event) {
         event.register(ModDig.DIG_MENU.get(), DigScreen::new);
         event.register(ModPasture.PASTURE_MENU.get(), PastureScreen::new);
+        event.register(com.kingtrapinch.tfcobblemon.zone.ModZones.ZONA_MENU.get(), ZoneScreen::new);
     }
 
     /**

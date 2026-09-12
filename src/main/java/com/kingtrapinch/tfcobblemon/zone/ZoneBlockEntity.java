@@ -12,7 +12,12 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 
 /**
  * Il cervello di una zona: sta <b>attaccato</b> a un pascolo, guarda cosa gli
@@ -38,20 +43,58 @@ public class ZoneBlockEntity extends BlockEntity {
     private long visto;
     @Nullable
     private BlockPos pascolo;
-    /** Punti messi da parte da chi non li spende uno per volta. */
-    private int resto;
+    /** Quanto e' maturato ogni Pokemon, in millesimi di pezzo. */
+    private final Map<UUID, Integer> maturazione = new HashMap<>();
+    /** Che statistica allena ciascun Pokemon, scelta nella finestra. */
+    private final Map<UUID, String> scelte = new HashMap<>();
+    /** Chi non deve allenarsi, anche se un sacco ci sarebbe. */
+    private final Set<UUID> fermi = new HashSet<>();
 
     public ZoneBlockEntity(BlockPos pos, BlockState state) {
         super(ModZones.ZONA_BE.get(), pos, state);
     }
 
-    /** Il gruzzolo di chi matura piano: il recinto raccoglie una volta al giorno. */
-    public int resto() {
-        return resto;
+    /**
+     * Aggiunge maturazione a un Pokemon e dice quanti pezzi sono pronti. Il
+     * resto resta da parte: il raccolto e' continuo, e i decimali non si
+     * buttano.
+     */
+    public int matura(UUID chi, int millesimi) {
+        final int totale = maturazione.getOrDefault(chi, 0) + millesimi;
+        final int pezzi = totale / (PEZZO_IN_MILLESIMI);
+        maturazione.put(chi, totale - pezzi * PEZZO_IN_MILLESIMI);
+        setChanged();
+        return pezzi;
     }
 
-    public void resto(int quanto) {
-        resto = quanto;
+    /** Quanti millesimi vale un pezzo: quarantadue punti. */
+    private static final int PEZZO_IN_MILLESIMI = 42 * 1000;
+
+    /** La statistica scelta per un Pokemon, o null se non e' stata scelta. */
+    @Nullable
+    public String scelta(UUID chi) {
+        return scelte.get(chi);
+    }
+
+    public void scegli(UUID chi, @Nullable String statistica) {
+        if (statistica == null) {
+            scelte.remove(chi);
+        } else {
+            scelte.put(chi, statistica);
+        }
+        setChanged();
+    }
+
+    public boolean fermo(UUID chi) {
+        return fermi.contains(chi);
+    }
+
+    public void ferma(UUID chi, boolean sta) {
+        if (sta) {
+            fermi.add(chi);
+        } else {
+            fermi.remove(chi);
+        }
         setChanged();
     }
 
@@ -108,10 +151,10 @@ public class ZoneBlockEntity extends BlockEntity {
         if (dentro.isEmpty()) {
             // senza nessuno da allenare l'orologio non corre: il tempo fermo
             // non si accumula per essere speso tutto insieme dopo
-            visto = level.getGameTime();
+            visto = ZoneWorld.attivo().adesso(level);
             return;
         }
-        final long adesso = level.getGameTime();
+        final long adesso = ZoneWorld.attivo().adesso(level);
         if (visto == 0L) {
             visto = adesso;
             return;
@@ -132,7 +175,20 @@ public class ZoneBlockEntity extends BlockEntity {
         super.loadAdditional(tag, registri);
         pascolo = tag.contains("Pasture") ? NbtUtils.readBlockPos(tag, "Pasture").orElse(null) : null;
         visto = tag.getLong("Seen");
-        resto = tag.getInt("Rest");
+        maturazione.clear();
+        scelte.clear();
+        fermi.clear();
+        final CompoundTag cresce = tag.getCompound("Ripening");
+        for (String chiave : cresce.getAllKeys()) {
+            maturazione.put(UUID.fromString(chiave), cresce.getInt(chiave));
+        }
+        final CompoundTag scelto = tag.getCompound("Chosen");
+        for (String chiave : scelto.getAllKeys()) {
+            scelte.put(UUID.fromString(chiave), scelto.getString(chiave));
+        }
+        for (String chiave : tag.getCompound("Paused").getAllKeys()) {
+            fermi.add(UUID.fromString(chiave));
+        }
     }
 
     @Override
@@ -142,6 +198,14 @@ public class ZoneBlockEntity extends BlockEntity {
             tag.put("Pasture", NbtUtils.writeBlockPos(pascolo));
         }
         tag.putLong("Seen", visto);
-        tag.putInt("Rest", resto);
+        final CompoundTag cresce = new CompoundTag();
+        maturazione.forEach((chi, quanto) -> cresce.putInt(chi.toString(), quanto));
+        tag.put("Ripening", cresce);
+        final CompoundTag scelto = new CompoundTag();
+        scelte.forEach((chi, statistica) -> scelto.putString(chi.toString(), statistica));
+        tag.put("Chosen", scelto);
+        final CompoundTag fermati = new CompoundTag();
+        fermi.forEach(chi -> fermati.putBoolean(chi.toString(), true));
+        tag.put("Paused", fermati);
     }
 }

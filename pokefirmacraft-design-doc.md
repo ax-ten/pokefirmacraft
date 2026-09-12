@@ -1049,7 +1049,7 @@ un Magnemite gli fa una miniera.
 
 ### Il controllore che dichiara l'area
 
-Un blocco per genere — palestra, terme, recinto — che si piazza **accanto a un
+Un blocco per genere — palestra, ozio, ranch — che si piazza **accanto a un
 pascolo** e lavora sui Pokemon che ci stanno dentro. Non tiene Pokemon: legge
 la sua area, conta quello che trova, e applica l'effetto a chi e' al pascolo
 vicino. La block entity e' nostra, il tick e' nostro, e di Cobblemon si usano
@@ -1067,7 +1067,7 @@ cast al loro blocco. Due porte di servizio per ottenere un contenitore che
 c'era gia'.
 
 **La forma giusta e' un'altra: il pascolo resta uno, e le specializzazioni si
-costruiscono accanto.** Un controllore per genere — palestra, terme, recinto —
+costruiscono accanto.** Un controllore per genere — palestra, ozio, ranch —
 che si piazza vicino a un pascolo e agisce sui Pokemon che ci stanno dentro.
 Non un contenitore in piu': una macchina attaccata al contenitore che c'e'.
 
@@ -1271,17 +1271,55 @@ cartella e non sfilare un filo da sotto tutto il resto.
 |---|---|---|
 | **Palestra** | un sacco allena un Pokemon, e sale la statistica del sacco | logora il sacco una volta ogni **84** punti (84 x 3 stadi = 252: un sacco per intero e' un tetto raggiunto); una bottiglia si vuota ogni **21** punti |
 | **Ozio** | sale l'amicizia fino a 255, e intanto guarisce HP; le alterazioni passano quando si e' tornati in forze | un punto di amicizia e un punto di vita per punto |
-| **Recinto** | ogni tanto raccoglie quello che quel Pokemon lascerebbe morendo, dalla **sua** tabella di drop, in un contenitore attaccato al controllore o a terra | un raccolto ogni **84** punti, cioe' uno al giorno di gioco per Pokemon |
+| **Ranch** | raccoglie quello che quel Pokemon lascerebbe morendo, dalla **sua** tabella di drop, in un contenitore attaccato al controllore o a terra | **continuo**: un pezzo per volta appena e' maturo, uno ogni **42** punti a resa uno — mezzo giorno di gioco |
 
 L'area e' una stanza e non una sfera: **quattro blocchi per lato**, da tre
 sotto il controllore a due sopra.
 
-**Cosa resta da fare:** la finestrella (con l'interruttore che mostra l'area),
-il cambio di faccia del pascolo quando ci saranno i modelli, la marcia indietro
-con le bacche, e **il punteggio di habitat** per il recinto — che oggi rende
-sempre uguale, mentre deve rendere di piu' quante piu' condizioni di spawn la
-stanza soddisfa. E' l'unico numero che il traguardo non determina, perche' il
-raccolto non ha un tetto a cui arrivare.
+**Il raccolto e' continuo, e non rende uguale per tutti.** Ogni Pokemon matura
+per conto suo e lascia cadere un pezzo appena e' pronto, invece di una cesta a
+fine giornata: la maturazione si conta in millesimi, cosi' i decimali non si
+buttano e la resa puo' essere un numero qualunque invece di un multiplo.
+
+Il moltiplicatore di resa e' l'unica cosa che guarda fuori dalla stanza, e sta
+dietro una cucitura — `ZoneWorld` — perche' quello che lo fa salire dipende da
+cosa e' installato:
+
+- **il livello**, sempre: uno di livello 100 rende **una volta e mezza** uno di
+  livello 1, e in mezzo si sale liscio. Scala volutamente piatta — un Pokemon
+  appena catturato deve poter lavorare
+- **le stagioni**, dove c'e' TFC: un Pokemon di ghiaccio rende piu' d'inverno e
+  meno d'estate, uno di fuoco il contrario, uno d'erba in primavera ed estate e
+  poco d'inverno. E' il tipo che decide, e il tipo lo sa Cobblemon
+- **temperatura e umidita'** del posto, che TFC sa per ogni coordinata: un
+  Pokemon di ghiaccio in un deserto rende meno che uno in montagna, anche
+  d'inverno
+- e prima o poi la **sete**, che va insieme alla fame: un abbeveratoio da
+  tenere pieno, come le mangiatoie
+
+**Cosa resta da fare:** il cambio di faccia del pascolo quando ci saranno i
+modelli, la marcia indietro con le bacche, il ponte con TFC per stagioni e
+clima, e **il punteggio di habitat** del ranch — che oggi non c'e', mentre deve
+far rendere di piu' quante piu' condizioni di spawn la stanza soddisfa. E'
+l'unico numero che il traguardo non determina, perche' il raccolto non ha un
+tetto a cui arrivare.
+
+### La finestrella, e l'interruttore dell'area
+
+**C'e'.** Una riga per Pokemon al pascolo, con nome e livello, e un bottone che
+gira fra le statistiche **di cui c'e' un sacco nella stanza**, piu' "come
+viene" e "fermo". Girare solo su quelle che esistono e' voluto: far scegliere
+una cosa che non puo' succedere e' peggio che non farla scegliere.
+
+Non ha slot — e' un quadro comandi, non un contenitore — e non ha un pacchetto
+suo: lo stato di ogni riga viaggia in un `DataSlot`, che il gioco sincronizza
+da se', e i clic tornano indietro come `clickMenuButton`, che e' la strada di
+vanilla per i bottoni. Meno codice di rete da mantenere, e niente da
+ridisegnare quando cambia.
+
+**E l'interruttore dell'area disegna la stanza**: un riquadro giallo intorno a
+ogni controllore in vista, quattro blocchi per lato. Vive tutto sul client e non
+viaggia: il server non sa nemmeno che qualcuno sta guardando.
 
 ## 7. Alpha Pokémon e leggendari
 
@@ -1561,13 +1599,13 @@ valido e vive gia' nell'Habitat Block dell'era elettrica.
   E adesso contano il doppio, perche' il power item e' il cancello di un sacco
   da boxe — cambiare la sua ricetta vuol dire cambiare quando si apre la
   palestra
-- **La finestrella del controllore di zona**: una riga per Pokemon, un
-  interruttore, la statistica scelta fra quelle di cui c'e' un sacco intorno,
-  e un interruttore che disegna l'area. Fa anche da quadrante (sezione 6.7)
-- **Il ponte col calendario di TFC**, come integrazione: dove TFC c'e', il tempo
-  delle zone passa anche a chunk scaricato, come per le sue colture. Vive fuori
-  dal pacchetto delle zone (sezione 6.7)
-- **Il punteggio di habitat del recinto**: quante condizioni di spawn della
+- **Il ponte con TFC**, come integrazione, e non e' solo il calendario: dove
+  TFC c'e' il tempo delle zone passa anche a chunk scaricato (come per le sue
+  colture), e soprattutto entrano in gioco **stagioni, temperatura e umidita'**
+  sulla resa del ranch — un Pokemon di ghiaccio che rende d'inverno e non
+  d'agosto. Vive fuori dal pacchetto delle zone, dietro `ZoneWorld`
+  (sezione 6.7)
+- **Il punteggio di habitat del ranch**: quante condizioni di spawn della
   specie la stanza soddisfa, e quanto quello moltiplica la resa (sezione 6.7)
 - **I modelli dei controllori e del pascolo specializzato, in Blockbench.**
   Quello del pascolo e' quello che sblocca il cambio di faccia: senza modelli

@@ -220,5 +220,12 @@
   "block.tfcobblemon.zone.leisure": "Leisure Lounge",
   "block.tfcobblemon.zone.ranch": "Ranch",
   "tfcobblemon.zone.senza_pascolo": "Not attached to a pasture.",
-  "tfcobblemon.zone.al_lavoro": "Working on %s pokémon at the pasture."
+  "tfcobblemon.zone.al_lavoro": "Working on %s pokémon at the pasture.",
+  "container.tfcobblemon.zone.gym": "Training Ground",
+  "container.tfcobblemon.zone.leisure": "Leisure Lounge",
+  "container.tfcobblemon.zone.ranch": "Ranch",
+  "tfcobblemon.zone.fermo": "Paused",
+  "tfcobblemon.zone.come_viene": "Any bag",
+  "tfcobblemon.zone.area_si": "Area: shown",
+  "tfcobblemon.zone.area_no": "Area: hidden"
 }
