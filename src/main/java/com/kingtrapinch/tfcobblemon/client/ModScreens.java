@@ -2,6 +2,7 @@ package com.kingtrapinch.tfcobblemon.client;
 
 import com.kingtrapinch.tfcobblemon.TFCobblemon;
 import com.kingtrapinch.tfcobblemon.dig.ModDig;
+import com.kingtrapinch.tfcobblemon.pasture.ModPasture;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -16,6 +17,7 @@ public final class ModScreens {
     @SubscribeEvent
     public static void register(RegisterMenuScreensEvent event) {
         event.register(ModDig.DIG_MENU.get(), DigScreen::new);
+        event.register(ModPasture.PASTURE_MENU.get(), PastureScreen::new);
     }
 
     /**

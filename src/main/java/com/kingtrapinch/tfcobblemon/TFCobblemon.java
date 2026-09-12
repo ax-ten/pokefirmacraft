@@ -12,6 +12,7 @@ import com.kingtrapinch.tfcobblemon.glass.ModGlassOperations;
 import com.kingtrapinch.tfcobblemon.item.ModCreativeModTabs;
 import com.kingtrapinch.tfcobblemon.item.ModItems;
 import com.kingtrapinch.tfcobblemon.item.custom.GolettItem;
+import com.kingtrapinch.tfcobblemon.pasture.ModPasture;
 import com.kingtrapinch.tfcobblemon.world.ModWorld;
 import com.mojang.logging.LogUtils;
 import net.minecraft.world.item.CreativeModeTabs;
@@ -37,6 +38,7 @@ public class TFCobblemon {
         ModDig.register(modEventBus);
         ModFluids.register(modEventBus);
         ModWorld.register(modEventBus);
+        ModPasture.register(modEventBus);
 
         modEventBus.addListener(this::addCreative);
         modEventBus.addListener(this::setup);

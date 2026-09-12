@@ -25,10 +25,6 @@ import net.neoforged.neoforge.network.PacketDistributor;
  * non serve a scavare resta ingrigito.
  */
 public class DigScreen extends AbstractContainerScreen<DigMenu> {
-    private static final int BODY = 0xFFC6C6C6;
-    private static final int LIGHT = 0xFFFFFFFF;
-    private static final int SHADE = 0xFF555555;
-    private static final int WELL = 0xFF8B8B8B;
     private static final int WELL_DARK = 0xFF373737;
     /** Il velo su quello che non si puo' usare per scavare. */
     private static final int GREYED = 0xB0202020;
@@ -89,22 +85,6 @@ public class DigScreen extends AbstractContainerScreen<DigMenu> {
         return toolOf(minecraft.player.getInventory().getItem(chosen));
     }
 
-    private static void panel(GuiGraphics g, int x, int y, int w, int h) {
-        g.fill(x, y, x + w, y + h, BODY);
-        g.fill(x, y, x + w - 1, y + 1, LIGHT);
-        g.fill(x, y, x + 1, y + h - 1, LIGHT);
-        g.fill(x + 1, y + h - 1, x + w, y + h, SHADE);
-        g.fill(x + w - 1, y + 1, x + w, y + h, SHADE);
-    }
-
-    private static void well(GuiGraphics g, int x, int y, int w, int h) {
-        g.fill(x, y, x + w, y + h, WELL);
-        g.fill(x, y, x + w - 1, y + 1, WELL_DARK);
-        g.fill(x, y, x + 1, y + h - 1, WELL_DARK);
-        g.fill(x + 1, y + h - 1, x + w, y + h, LIGHT);
-        g.fill(x + w - 1, y + 1, x + w, y + h, LIGHT);
-    }
-
     /**
      * L'ombra sui lati dove la zolla si affaccia su una cella piu' scavata.
      * E' il trucco delle connected texture ridotto all'osso: non servono
@@ -146,9 +126,9 @@ public class DigScreen extends AbstractContainerScreen<DigMenu> {
     protected void renderBg(GuiGraphics graphics, float partialTick, int mouseX, int mouseY) {
         final int x = leftPos;
         final int y = topPos;
-        panel(graphics, x, y, imageWidth, imageHeight);
+        GuiFrame.panel(graphics, x, y, imageWidth, imageHeight);
         // la griglia va incassata, altrimenti galleggia sul pannello
-        well(graphics, x + DigLayout.GRID_X - 2, y + DigLayout.GRID_Y - 2,
+        GuiFrame.well(graphics, x + DigLayout.GRID_X - 2, y + DigLayout.GRID_Y - 2,
                 DigLayout.GRID_SPAN + 4, DigLayout.GRID_SPAN + 4);
 
         for (int gy = 0; gy < DigSite.SIZE; gy++) {
@@ -181,18 +161,18 @@ public class DigScreen extends AbstractContainerScreen<DigMenu> {
 
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 9; col++) {
-                well(graphics, x + 7 + col * 18, y + DigLayout.INV_Y - 1 + row * 18, 18, 18);
+                GuiFrame.well(graphics, x + 7 + col * 18, y + DigLayout.INV_Y - 1 + row * 18, 18, 18);
             }
         }
         for (int col = 0; col < 9; col++) {
-            well(graphics, x + 7 + col * 18, y + DigLayout.HOTBAR_Y - 1, 18, 18);
+            GuiFrame.well(graphics, x + 7 + col * 18, y + DigLayout.HOTBAR_Y - 1, 18, 18);
         }
 
         final int resta = Math.max(0, ClientDigState.durability());
         final int left = resta * DigLayout.GRID_SPAN / DigSite.DURABILITY;
         final int by = y + DigLayout.BAR_Y;
         // la barra in una conca come gli slot, altrimenti galleggia sul pannello
-        well(graphics, x + DigLayout.GRID_X - 1, by - 1, DigLayout.GRID_SPAN + 2, 7);
+        GuiFrame.well(graphics, x + DigLayout.GRID_X - 1, by - 1, DigLayout.GRID_SPAN + 2, 7);
         graphics.fill(x + DigLayout.GRID_X, by, x + DigLayout.GRID_X + DigLayout.GRID_SPAN, by + 5, WELL_DARK);
         graphics.fill(x + DigLayout.GRID_X, by, x + DigLayout.GRID_X + left, by + 5, 0xFF6ABE30);
         // quanto se ne mangerebbe il prossimo colpo, in coda alla parte piena:

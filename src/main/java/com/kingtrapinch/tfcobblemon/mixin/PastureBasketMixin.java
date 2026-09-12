@@ -1,21 +1,21 @@
 package com.kingtrapinch.tfcobblemon.mixin;
 
-import com.cobblemon.mod.common.api.storage.StoreCoordinates;
 import com.cobblemon.mod.common.block.entity.PokemonPastureBlockEntity;
 import com.cobblemon.mod.common.pokemon.Pokemon;
-import com.kingtrapinch.tfcobblemon.belt.BeltParty;
 import com.kingtrapinch.tfcobblemon.pasture.BallBasket;
-import com.kingtrapinch.tfcobblemon.pasture.PastureStore;
 import com.kingtrapinch.tfcobblemon.pasture.Pastures;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.Containers;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+
+import java.util.UUID;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -23,8 +23,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Le ball appese al pascolo, e cosa succede quando lo si rompe.
@@ -41,28 +39,25 @@ public abstract class PastureBasketMixin implements BallBasket {
     private static final String CHIAVE = "TfcobblemonBalls";
 
     @Unique
-    private final List<ItemStack> tfcobblemon$cesta = new ArrayList<>();
+    private final NonNullList<ItemStack> tfcobblemon$cesta =
+            NonNullList.withSize(BallBasket.POSTI, ItemStack.EMPTY);
 
     @Override
-    public List<ItemStack> tfcobblemon$balls() {
+    public NonNullList<ItemStack> tfcobblemon$balls() {
         return tfcobblemon$cesta;
     }
 
     @Inject(method = "saveAdditional", at = @At("TAIL"))
     private void tfcobblemon$salva(CompoundTag tag, HolderLookup.Provider registri, CallbackInfo ci) {
-        final ListTag lista = new ListTag();
-        for (ItemStack ball : tfcobblemon$cesta) {
-            lista.add(ball.save(registri));
-        }
-        tag.put(CHIAVE, lista);
+        final CompoundTag mio = new CompoundTag();
+        ContainerHelper.saveAllItems(mio, tfcobblemon$cesta, true, registri);
+        tag.put(CHIAVE, mio);
     }
 
     @Inject(method = "loadAdditional", at = @At("TAIL"))
     private void tfcobblemon$carica(CompoundTag tag, HolderLookup.Provider registri, CallbackInfo ci) {
         tfcobblemon$cesta.clear();
-        for (Tag voce : tag.getList(CHIAVE, Tag.TAG_COMPOUND)) {
-            ItemStack.parse(registri, voce).ifPresent(tfcobblemon$cesta::add);
-        }
+        ContainerHelper.loadAllItems(tag.getCompound(CHIAVE), tfcobblemon$cesta, registri);
     }
 
     /**
@@ -76,18 +71,20 @@ public abstract class PastureBasketMixin implements BallBasket {
     @Inject(method = "getInRangeViewerCount", at = @At("RETURN"), cancellable = true)
     private void tfcobblemon$accesoSeHaBall(Level level, BlockPos pos, double range,
                                             CallbackInfoReturnable<Integer> callback) {
-        if (!tfcobblemon$cesta.isEmpty()) {
+        if (tfcobblemon$cesta.stream().anyMatch(ball -> !ball.isEmpty())) {
             callback.setReturnValue(Math.max(1, callback.getReturnValue()));
         }
     }
 
     /**
-     * Rotto il pascolo, le ball cadono a terra e i Pokemon tornano nel box del
-     * loro padrone. Si fa prima che Cobblemon sciolga i legami: dopo, dal
-     * legame non si risalirebbe piu' al Pokemon.
+     * Rotto il pascolo, le ball cadono dove stava il blocco e i Pokemon
+     * rientrano. Il rientro e' quello del pascolo — lo stesso effetto con cui
+     * ne escono — e non il richiamo verso il giocatore: il Pokemon non e'
+     * tornato in tasca a nessuno, il suo recinto e' solo sparito.
      *
-     * <p>Il padrone e' quello del legame e non quello del blocco: a un pascolo
-     * ci puo' appendere una ball chiunque passi.
+     * <p>Si fa prima che Cobblemon sciolga i legami: dopo, dal legame non si
+     * risalirebbe piu' al Pokemon. E il padrone e' quello del legame, non
+     * quello del blocco: a un pascolo ci puo' appendere una ball chiunque.
      */
     @Inject(method = "onBroken", at = @At("HEAD"))
     private void tfcobblemon$leBallCadono(CallbackInfo ci) {
@@ -95,23 +92,19 @@ public abstract class PastureBasketMixin implements BallBasket {
         if (!(pascolo.getLevel() instanceof ServerLevel mondo)) {
             return;
         }
+        final RegistryAccess registri = mondo.registryAccess();
         for (PokemonPastureBlockEntity.Tethering legame : pascolo.getTetheredPokemon()) {
             final Pokemon mon = legame.getPokemon();
             if (mon == null) {
                 continue;
             }
-            Pastures.rientra(mon);
-            // si riporta a casa solo chi stava nel deposito del pascolo: un
-            // Pokemon messo al pascolo dal PC — cioe' alla maniera di
-            // Cobblemon, prima di noi — nel PC ci resta
-            final StoreCoordinates<?> dove = mon.getStoreCoordinates().get();
-            if (dove != null && dove.getStore() instanceof PastureStore) {
-                Pastures.trasloca(mon, BeltParty.deposito(legame.getPlayerId(), mondo.registryAccess()));
-            }
+            Pastures.rientra(mon, legame.getPlayerId(), registri);
         }
         final BlockPos pos = pascolo.getBlockPos();
         for (ItemStack ball : tfcobblemon$cesta) {
-            Containers.dropItemStack(mondo, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, ball);
+            if (!ball.isEmpty()) {
+                Containers.dropItemStack(mondo, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, ball);
+            }
         }
         tfcobblemon$cesta.clear();
     }

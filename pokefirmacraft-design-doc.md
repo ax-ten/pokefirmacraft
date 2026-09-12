@@ -856,25 +856,37 @@ distanza fra i due progetti si allarga ancora.
 
 Il pasture block di Cobblemon e' una **finestra sul PC**: al click apre la
 schermata del PC in modalita' pascolo, e da li' si trascinano dentro i Pokemon,
-che intanto continuano ad abitare nel PC. Questo e' il terzo posto — dopo la
+che intanto continuano ad abitare nel PC. Questo era il terzo posto — dopo la
 squadra e il PC — in cui una ball fisica non contava niente, e per la stessa
 ragione degli altri due: senza PC non lo usi.
 
-**Da noi la ball e' l'interfaccia, e non si apre niente.** Si appende una ball
-al blocco col tasto destro e il Pokemon esce a pascolare; a mani vuote si
-stacca l'ultima appesa e rientra nella sua ball, con l'animazione. Nessuna
-schermata, nessun trascinamento, nessun PC richiesto. Il limite resta quello di
-Cobblemon — **sedici**, `defaultPasturedPokemonLimit` — che e' anche quanti
-Pokemon il pascolo sa tenere legati.
+**Da noi e' una cesta.** Tasto destro sul blocco e si aprono **sedici caselle**,
+due file da otto, che accettano solo ball con un Pokemon dentro. Ci si mettono
+le ball che si hanno addosso, e chi ha la sua ball appesa qui sta al pascolo; si
+ritira la ball e il Pokemon rientra, sempre sotto forma di ball, nell'inventario.
+Nessun PC, nessun trascinamento da una box. Sedici e' il limite di Cobblemon
+(`defaultPasturedPokemonLimit`), che e' anche quanti Pokemon il pascolo sa
+tenere legati.
+
+**Chi pascola non si decide al clic, si riconcilia dopo.** A fine clic si
+confronta la cesta coi legami del pascolo e si sistema la differenza: chi ha
+perso la sua ball rientra, chi l'ha appena appesa esce. E' la stessa scelta
+fatta per la cintura e per la stessa ragione: un clic in una finestra e' tre
+mosse — prendi, sposta, deponi — e provare a reagire a ognuna vuol dire
+inseguire stati di mezzo.
 
 **Sotto, quello che si sposta e' la residenza.** Il Pokemon passa dal box
 invisibile a un terzo deposito, il **PC del pascolo**, che porta l'UUID del
 giocatore come gli altri due — deve, altrimenti i Pokemon che ci vivono non
 risultano di nessuno e non si possono nemmeno accarezzare — ed e' separato
 perche' la fabbrica di Cobblemon tiene file e cache per *classe* di deposito.
-Tirando fuori la ball si torna nel box. Rompendo il blocco le ball cadono a
-terra e i Pokemon rientrano nel box del loro padrone, che e' quello del legame
-e non quello del blocco: a un pascolo ci puo' appendere una ball chiunque passi.
+Tolta la ball dalla cesta si torna nel box.
+
+**Rotto il blocco**, le ball cadono dove stava e tutti i Pokemon rientrano con
+l'effetto del pascolo, quello con cui ne escono: non il richiamo verso il
+giocatore, perche' non sono tornati in tasca a nessuno — e' il recinto che e'
+sparito. Il padrone a cui tornano e' quello del legame e non quello del blocco:
+a un pascolo ci puo' appendere una ball chiunque passi.
 
 **Perche' si cambia il pascolo che c'e' invece di farne uno nostro.** La block
 entity di Cobblemon e' `final` e non si estende; NeoForge permetterebbe a un
@@ -882,14 +894,14 @@ blocco nostro di ospitarla (`BlockEntityTypeAddBlocksEvent`), ma il suo tick
 chiama `togglePastureOn`, che fa un cast secco a `PastureBlock` — un blocco
 nostro esploderebbe venti volte al secondo. Quello che si riusa, e vale la
 pena, e' tutto il resto: il vagabondaggio dentro i confini, il controllo
-periodico dei legami, il rilascio alla rottura. Il costo sono quattro innesti
-piccoli, e il cardine e' uno solo: il legame ritrova il Pokemon con
-`getPC(pcId).get(pokemonId)`, e quella ricerca deve ripiegare sul deposito del
-pascolo, o entro due secondi ogni Pokemon appeso risulta scomparso.
+periodico dei legami, il rilascio alla rottura. Il cardine e' uno solo: il
+legame ritrova il Pokemon con `getPC(pcId).get(pokemonId)`, e quella ricerca
+deve ripiegare sul deposito del pascolo, o entro due secondi ogni Pokemon
+appeso risulta scomparso.
 
-**Il pascolo si accende quando ha qualcuno dentro.** Cobblemon usa quello stato
-per dire "c'e' una schermata aperta", che da noi non succede mai; senza
-schermata serviva un segno, e quello e' l'unico che il modello ha gia'.
+**Il pascolo si accende quando ha ball appese.** Cobblemon usa quello stato per
+dire "c'e' una schermata aperta"; a cesta chiusa non vorrebbe dire niente, e
+acceso-con-qualcuno-dentro e' l'unico segno che il modello ha gia'.
 
 **Resta aperto il grado industriale.** Il pascolo collegato al PC — quello che
 ti fa sfogliare tutte le box invece delle sedici ball che ti porti dietro — e'

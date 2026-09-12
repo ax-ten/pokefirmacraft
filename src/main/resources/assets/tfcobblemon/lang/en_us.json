@@ -197,5 +197,5 @@
   "block.tfcobblemon.tumblestone_quartzite": "Tumblestone",
   "block.tfcobblemon.sky_tumblestone_quartzite": "Sky Tumblestone",
   "block.tfcobblemon.black_tumblestone_quartzite": "Black Tumblestone",
-  "tfcobblemon.pasture.pieno": "The pasture already holds %s pokémon."
+  "container.tfcobblemon.pasture": "Pasture"
 }

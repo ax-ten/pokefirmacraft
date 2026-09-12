@@ -2,17 +2,18 @@ package com.kingtrapinch.tfcobblemon.pasture;
 
 import com.cobblemon.mod.common.Cobblemon;
 import com.cobblemon.mod.common.api.storage.PokemonStore;
+import com.cobblemon.mod.common.api.scheduling.SchedulingFunctionsKt;
 import com.cobblemon.mod.common.api.storage.StoreCoordinates;
+import com.cobblemon.mod.common.entity.pokemon.PokemonEntity;
 import com.cobblemon.mod.common.block.PastureBlock;
 import com.cobblemon.mod.common.block.entity.PokemonPastureBlockEntity;
 import com.cobblemon.mod.common.pokemon.Pokemon;
-import com.kingtrapinch.tfcobblemon.TFCobblemon;
 import com.kingtrapinch.tfcobblemon.belt.BallLink;
 import com.kingtrapinch.tfcobblemon.belt.BeltParty;
-import com.kingtrapinch.tfcobblemon.belt.Belts;
-import com.kingtrapinch.tfcobblemon.belt.ModBallData;
+import kotlin.Unit;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
@@ -20,7 +21,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -53,7 +57,7 @@ public final class Pastures {
     }
 
     /** La cesta di un pascolo, che il mixin gli ha attaccato. */
-    public static List<ItemStack> cesta(PokemonPastureBlockEntity pascolo) {
+    public static NonNullList<ItemStack> cesta(PokemonPastureBlockEntity pascolo) {
         return ((BallBasket) (Object) pascolo).tfcobblemon$balls();
     }
 
@@ -89,72 +93,118 @@ public final class Pastures {
     }
 
     /**
-     * Una ball si appende al pascolo: il Pokemon passa al deposito del pascolo e
-     * viene messo in giro. Il limite e' quello di Cobblemon — sedici — che e'
-     * anche quanti Pokemon il pascolo sa tenere legati.
+     * Apre la cesta. Prima di mostrarla si fa un giro di pulizia: un Pokemon
+     * che sta nel deposito del pascolo senza un legame — puo' succedere se il
+     * server e' morto nel mezzo mentre rientrava — tornerebbe altrimenti
+     * irraggiungibile, e invece torna nel box.
      */
-    public static boolean infila(ServerPlayer player, PokemonPastureBlockEntity pascolo, ItemStack ball) {
-        final BallLink legame = BallLink.read(ball);
-        if (legame == null || legame.out()) {
-            return false;
+    public static void apri(ServerPlayer player, Level level, BlockPos pos) {
+        final PokemonPastureBlockEntity pascolo = pascolo(level, pos);
+        if (pascolo == null) {
+            return;
         }
-        final List<ItemStack> cesta = cesta(pascolo);
-        if (cesta.size() >= pascolo.getMaxTethered()) {
-            return false;
+        final List<Pokemon> sciolti = new ArrayList<>();
+        for (Pokemon mon : store(player)) {
+            if (mon.getTetheringId() == null) {
+                sciolti.add(mon);
+            }
         }
-        final Pokemon mon = BeltParty.trova(player, legame.pokemon());
-        if (mon == null || mon.isFainted()) {
-            return false;
-        }
-        // la copia si prende adesso: legando il Pokemon parte l'evento di uscita
-        // in campo, che marcherebbe la ball in mano come "fuori"
-        final ItemStack appesa = ball.copy();
-        appesa.setCount(1);
-        if (!trasloca(mon, store(player))) {
-            return false;
-        }
-        if (!pascolo.tether(player, mon, verso(player.level(), pascolo.getBlockPos()))) {
-            // niente posto dove uscire: il Pokemon torna da dove veniva
+        for (Pokemon mon : sciolti) {
             trasloca(mon, BeltParty.deposito(player));
-            return false;
         }
-        appesa.set(ModBallData.BALL_LINK.get(), legame.withOut(false));
-        cesta.add(appesa);
-        pascolo.setChanged();
-        return true;
+        player.openMenu(new PastureMenuProvider(pascolo.getBlockPos()),
+                buf -> buf.writeBlockPos(pascolo.getBlockPos()));
     }
 
     /**
-     * L'ultima ball appesa torna in mano, e con lei il Pokemon: prima rientra
-     * con la sua animazione, poi si stacca il legame, poi cambia deposito.
+     * Sistema il pascolo su quello che c'e' nella cesta: chi ha perso la sua
+     * ball rientra, chi l'ha appena appesa esce. Si chiama a fine clic e non
+     * durante, perche' un clic in una finestra e' tre mosse e gli stati di
+     * mezzo non vanno inseguiti.
      */
-    public static ItemStack sfila(ServerPlayer player, PokemonPastureBlockEntity pascolo) {
-        final List<ItemStack> cesta = cesta(pascolo);
-        if (cesta.isEmpty()) {
-            return ItemStack.EMPTY;
+    public static void allinea(PokemonPastureBlockEntity pascolo, ServerPlayer player) {
+        final Set<UUID> appesi = new HashSet<>();
+        for (ItemStack ball : cesta(pascolo)) {
+            final BallLink legame = BallLink.read(ball);
+            if (legame != null) {
+                appesi.add(legame.pokemon());
+            }
         }
-        final ItemStack ball = cesta.remove(cesta.size() - 1);
-        pascolo.setChanged();
-        final BallLink legame = BallLink.read(ball);
-        if (legame != null) {
-            final Pokemon mon = cerca(store(player), legame.pokemon());
-            if (mon == null) {
-                TFCobblemon.LOGGER.debug("pascolo: la ball di {} non trova il suo Pokemon", legame.pokemon());
-            } else {
-                rientra(mon);
-                pascolo.releasePokemon(mon.getUuid());
+
+        // 1. chi non ha piu' la sua ball nella cesta smette di pascolare
+        for (PokemonPastureBlockEntity.Tethering legame
+                : List.copyOf(pascolo.getTetheredPokemon())) {
+            if (appesi.contains(legame.getPokemonId())) {
+                continue;
+            }
+            final Pokemon mon = legame.getPokemon();
+            pascolo.releasePokemon(legame.getPokemonId());
+            if (mon != null) {
+                rientra(mon, legame.getPlayerId(), player.registryAccess());
+            }
+        }
+
+        // 2. le ball appena appese mandano fuori il loro Pokemon
+        final Set<UUID> fuori = new HashSet<>();
+        for (PokemonPastureBlockEntity.Tethering legame : pascolo.getTetheredPokemon()) {
+            fuori.add(legame.getPokemonId());
+        }
+        for (ItemStack ball : cesta(pascolo)) {
+            final BallLink legame = BallLink.read(ball);
+            if (legame == null || fuori.contains(legame.pokemon())) {
+                continue;
+            }
+            final Pokemon mon = BeltParty.trova(player, legame.pokemon());
+            if (mon == null || mon.isFainted()) {
+                continue;
+            }
+            if (!trasloca(mon, store(player))) {
+                continue;
+            }
+            if (!pascolo.tether(player, mon, verso(player.level(), pascolo.getBlockPos()))) {
+                // non c'e' posto dove uscire: il Pokemon torna da dove veniva e
+                // la ball resta appesa, che ci riprova al prossimo giro
                 trasloca(mon, BeltParty.deposito(player));
             }
         }
-        return ball;
+        pascolo.setChanged();
     }
 
-    /** Il rientro nella ball, con l'animazione: un Pokemon non svanisce. */
-    public static void rientra(Pokemon mon) {
-        if (mon.getEntity() != null) {
-            mon.tryRecallWithAnimation();
+    /**
+     * Rimanda un Pokemon nel box del suo padrone, ma solo se stava nel deposito
+     * del pascolo: uno messo al pascolo dal PC — alla maniera di Cobblemon,
+     * prima di noi — nel PC ci resta.
+     */
+    public static void casa(Pokemon mon, UUID padrone, RegistryAccess registri) {
+        final StoreCoordinates<?> dove = mon.getStoreCoordinates().get();
+        if (dove != null && dove.getStore() instanceof PastureStore) {
+            trasloca(mon, BeltParty.deposito(padrone, registri));
         }
+    }
+
+    /**
+     * Il rientro di chi smette di pascolare: si accende il velo del pascolo —
+     * lo stesso effetto con cui ne e' uscito — e mezzo secondo dopo il Pokemon
+     * rientra e torna nel box del suo padrone.
+     *
+     * <p>Non e' il richiamo verso il giocatore, col raggio: nessuno lo ha
+     * ritirato in tasca da lontano, ha solo smesso di stare al pascolo. E il
+     * mezzo secondo serve perche' l'effetto si veda: togliere il Pokemon dal
+     * deposito lo richiama subito, e non si vedrebbe niente.
+     */
+    public static void rientra(Pokemon mon, UUID padrone, RegistryAccess registri) {
         mon.setTetheringId(null);
+        final PokemonEntity entita = mon.getEntity();
+        if (entita == null) {
+            casa(mon, padrone, registri);
+            return;
+        }
+        entita.setBeamMode(2);
+        SchedulingFunctionsKt.afterOnServer(0.5F, () -> {
+            mon.recall();
+            casa(mon, padrone, registri);
+            return Unit.INSTANCE;
+        });
     }
 
     /**
@@ -171,13 +221,4 @@ public final class Pastures {
         return null;
     }
 
-    /** La ball che torna: sulla cintura se c'e' posto, altrimenti in mano. */
-    public static void rendi(ServerPlayer player, ItemStack ball) {
-        if (ball.isEmpty() || Belts.insert(player, ball)) {
-            return;
-        }
-        if (!player.getInventory().add(ball)) {
-            player.drop(ball, false);
-        }
-    }
 }

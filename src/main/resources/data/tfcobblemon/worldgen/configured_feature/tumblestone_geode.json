@@ -55,7 +55,7 @@
       "use_alternate_layer0_chance": 0.3,
       "invalid_blocks_threshold": 1,
       "crack": {
-        "generate_crack_chance": 0.95,
+        "generate_crack_chance": 0.0,
         "base_crack_size": 2.0
       },
       "layers": {}
