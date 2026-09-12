@@ -427,6 +427,13 @@ di prova il conteggio dei minerali e' rimasto identico a prima, e di 2650
 blocchi di minerale **nessuno** aveva acqua entro due blocchi. Gia' erano
 asciutti; ora lo sono per costruzione.
 
+**E il sasso in superficie ha la faccia del minerale, non del cristallo.** Un
+sasso sciolto in TFC serve a dirti che roccia hai sotto, quindi deve
+assomigliare a quello che si trova scavando: quarzite con le vene, la stessa
+faccia del blocco di minerale. Ci era rimasta la texture del blocco di
+tumblestone di Cobblemon — un lingotto di cristallo per terra — che diceva la
+cosa sbagliata.
+
 **I sassi in superficie sono un indizio, non decorazione.** Sopra ogni geode
 che nasce, sulla sua colonna, cadono da tre a sei sassi sciolti dello stesso
 cristallo — la feature `tfcobblemon:geode_trail`, che piazza il geode di
@@ -918,10 +925,8 @@ acceso-con-qualcuno-dentro e' l'unico segno che il modello ha gia'.
 diverso da un parcheggio: allenare EV, alzare l'amicizia, raccogliere quello
 che il Pokemon droppa. Il disegno sta nella sezione 6.7.
 
-**Resta aperto il grado industriale.** Il pascolo collegato al PC — quello che
-ti fa sfogliare tutte le box invece delle sedici ball che ti porti dietro — e'
-esattamente il pascolo di Cobblemon come era: non c'e' da costruirlo, c'e' da
-rimetterlo come secondo blocco, dietro al PC.
+**Il grado industriale non e' un secondo blocco**: e' uno slot di upgrade sul
+pascolo stesso, che lo passa dalle ball al PC. Il disegno sta in 6.7.
 
 ### 6.7 Pascoli specializzati — un blocco che dichiara un'area
 
@@ -1304,6 +1309,29 @@ far rendere di piu' quante piu' condizioni di spawn la stanza soddisfa. E'
 l'unico numero che il traguardo non determina, perche' il raccolto non ha un
 tetto a cui arrivare.
 
+### Il grado industriale: uno slot, non un blocco
+
+Il pascolo collegato al PC non e' un secondo blocco: e' **uno slot di upgrade**
+sul pascolo stesso. Ci si mette il pezzo e il pascolo smette di lavorare a ball
+e passa al PC.
+
+Come si comporta, e sono tre regole che vanno insieme:
+
+- **si mette e non si toglie.** L'upgrade esce solo rompendo il blocco: e' una
+  modifica, non un accessorio da scambiare
+- **le ball dentro se ne vanno.** Nel momento in cui l'upgrade entra, i Pokemon
+  che stavano nelle ball appese passano al **PC vero** e le ball sparirono dal
+  blocco: da quel momento il pascolo pesca dal PC, e tenere due sistemi
+  insieme sarebbe solo un modo di perdere roba
+- **chi era al pascolo resta al pascolo.** Il legame non si scioglie: cambia
+  dove abita il Pokemon, non dove sta
+
+E' meglio di un secondo blocco per la ragione per cui il primo giro era
+sbagliato: un blocco in piu' vuol dire un altro contenitore, un'altra ricetta,
+un'altra cosa da spiegare, e un giocatore che deve spostare i Pokemon da un
+recinto all'altro per cambiare epoca. Uno slot dice la stessa cosa senza
+aggiungere niente.
+
 ### La finestrella, e l'interruttore dell'area
 
 **C'e'.** Una riga per Pokemon al pascolo, con nome e livello, e un bottone che
@@ -1320,6 +1348,22 @@ ridisegnare quando cambia.
 **E l'interruttore dell'area disegna la stanza**: un riquadro giallo intorno a
 ogni controllore in vista, quattro blocchi per lato. Vive tutto sul client e non
 viaggia: il server non sa nemmeno che qualcuno sta guardando.
+
+**Col cursore su un nome si vede il Pokemon**, il suo modello accanto al
+cursore. Non lo disegniamo noi: e' il `ModelWidget` di Cobblemon, quello del
+riepilogo, che sa girare il modello e tenere la posa. Perche' funzioni, la
+finestra manda anche **specie e aspetti** di ogni riga — il client non ha il
+Pokemon, ha solo quello che gli e' stato detto.
+
+**Il controllore si piazza solo sopra un pascolo.** Non e' una comodita': una
+macchina senza pascolo non fa niente, e un blocco che si puo' mettere dove non
+funziona e' un blocco che mente.
+
+**E c'e' un comando per provare**: `/tfcobblemon zona fretta <n>` moltiplica la
+velocita' dell'orologio. Serve perche' i tempi veri sono lunghi di proposito —
+un'ora vera per una statistica — e per sapere se il giro gira non si puo' stare
+un'ora a guardare un sacco. Non e' una config: si perde al riavvio, perche' non
+deve finire in una partita per sbaglio.
 
 ## 7. Alpha Pokémon e leggendari
 
@@ -1624,6 +1668,13 @@ valido e vive gia' nell'Habitat Block dell'era elettrica.
 - Held item non ancora assegnati singolarmente su tutti i 101 esistenti in Cobblemon (la sezione 4 copre le categorie principali per rappresentanza, non ogni singolo item)
 - Dettaglio tecnico dei processi Greg di intaglio/taglio gemme da riusare per le Evolution Stone Ore (va verificato quale macchina/processo Greg esatto si applica)
 - Fascia di altitudine dei 96 biomi nuovi di TFC 4 (sezione 2)
+
+**Da sistemare**
+
+- **L'overlay della squadra mostra sei caselle anche senza cintura.** Dovrebbe
+  mostrarne una — quante ne regge chi non ha niente addosso — e invece resta
+  quello di Cobblemon. Il ripiego sul numero di caselle c'e'
+  (`PartyOverlayMixin`), ma qualcosa a monte lo scavalca
 
 **Tecnica**
 

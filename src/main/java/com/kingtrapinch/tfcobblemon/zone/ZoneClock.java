@@ -31,9 +31,24 @@ public final class ZoneClock {
     /** Quanto dura un giorno di Minecraft. */
     private static final int TICK_AL_GIORNO = 24000;
 
+    /**
+     * Quante volte piu' veloce va l'orologio. Vale <b>uno</b> e si tocca solo
+     * col comando di prova: tre giorni di gioco sono un'ora vera, e guardare
+     * un'ora un sacco per sapere se si logora non e' un modo di lavorare.
+     */
+    private static int prova = 1;
+
+    public static int prova() {
+        return prova;
+    }
+
+    public static void prova(int quante) {
+        prova = Math.max(1, quante);
+    }
+
     /** Quanti tick vale un punto, senza acceleratori. */
     public static long passo() {
-        return Math.max(1L, (long) TICK_AL_GIORNO * GIORNI_AL_TETTO / PUNTI_AL_TETTO);
+        return Math.max(1L, (long) TICK_AL_GIORNO * GIORNI_AL_TETTO / PUNTI_AL_TETTO / prova);
     }
 
     /**

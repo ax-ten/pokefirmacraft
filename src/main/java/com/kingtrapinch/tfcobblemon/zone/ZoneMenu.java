@@ -35,8 +35,14 @@ public class ZoneMenu extends AbstractContainerMenu {
     public static final int FERMO = -1;
     public static final int COMEVIENE = 6;
 
-    /** Un Pokemon in elenco. */
-    public record Riga(UUID chi, String nome, int livello) {}
+    /**
+     * Un Pokemon in elenco. Ci sono anche specie e aspetti perche' il client
+     * deve poterne disegnare il modello, e di la' non ha il Pokemon: ha
+     * soltanto quello che gli e' stato mandato.
+     */
+    public record Riga(UUID chi, String nome, int livello,
+                       net.minecraft.resources.ResourceLocation specie,
+                       java.util.Set<String> aspetti) {}
 
     private final BlockPos pos;
     private final List<Riga> righe;
@@ -55,7 +61,16 @@ public class ZoneMenu extends AbstractContainerMenu {
         final int quante = buf.readByte();
         final List<Riga> righe = new ArrayList<>(quante);
         for (int i = 0; i < quante; i++) {
-            righe.add(new Riga(buf.readUUID(), buf.readUtf(), buf.readByte()));
+            final UUID chi = buf.readUUID();
+            final String nome = buf.readUtf();
+            final int livello = buf.readByte();
+            final net.minecraft.resources.ResourceLocation specie = buf.readResourceLocation();
+            final int quanti = buf.readByte();
+            final java.util.Set<String> aspetti = new java.util.LinkedHashSet<>();
+            for (int a = 0; a < quanti; a++) {
+                aspetti.add(buf.readUtf());
+            }
+            righe.add(new Riga(chi, nome, livello, specie, aspetti));
         }
         return new ZoneMenu(id, inventario, pos, righe, sacchi);
     }
@@ -153,7 +168,8 @@ public class ZoneMenu extends AbstractContainerMenu {
             if (righe.size() >= RIGHE) {
                 break;
             }
-            righe.add(new Riga(mon.getUuid(), mon.getDisplayName(false).getString(), mon.getLevel()));
+            righe.add(new Riga(mon.getUuid(), mon.getDisplayName(false).getString(), mon.getLevel(),
+                    mon.getSpecies().getResourceIdentifier(), mon.getAspects()));
         }
         return righe;
     }

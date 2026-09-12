@@ -1,6 +1,6 @@
 {
   "parent": "tfc:block/rock/loose_igneous_extrusive_3",
   "textures": {
-    "texture": "cobblemon:block/tumblestone/tumblestone_block"
+    "texture": "tfcobblemon:block/loose/tumblestone"
   }
 }

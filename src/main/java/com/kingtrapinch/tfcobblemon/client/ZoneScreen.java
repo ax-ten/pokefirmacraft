@@ -1,13 +1,20 @@
 package com.kingtrapinch.tfcobblemon.client;
 
+import com.cobblemon.mod.common.api.pokemon.PokemonSpecies;
+import com.cobblemon.mod.common.client.gui.summary.widgets.ModelWidget;
+import com.cobblemon.mod.common.pokemon.RenderablePokemon;
+import com.cobblemon.mod.common.pokemon.Species;
 import com.kingtrapinch.tfcobblemon.block.ModBags;
 import com.kingtrapinch.tfcobblemon.zone.ZoneMenu;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
+import org.jetbrains.annotations.Nullable;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.ItemStack;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,6 +27,11 @@ public class ZoneScreen extends AbstractContainerScreen<ZoneMenu> {
 
     private static final int RIGA = 18;
     private static final int CIMA = 20;
+    /** Quanto grande e' l'anteprima che segue il cursore. */
+    private static final int ANTEPRIMA = 52;
+
+    /** Un modello per riga, costruito solo quando serve. */
+    private final List<ModelWidget> ritratti = new ArrayList<>();
 
     public ZoneScreen(ZoneMenu menu, Inventory inventario, Component titolo) {
         super(menu, inventario, titolo);
@@ -30,7 +42,11 @@ public class ZoneScreen extends AbstractContainerScreen<ZoneMenu> {
     @Override
     protected void init() {
         super.init();
+        ritratti.clear();
         final List<ZoneMenu.Riga> righe = menu.righe();
+        for (ZoneMenu.Riga riga : righe) {
+            ritratti.add(ritratto(riga));
+        }
         for (int i = 0; i < righe.size(); i++) {
             final int riga = i;
             addRenderableWidget(Button.builder(scritta(riga), bottone -> {
@@ -46,6 +62,22 @@ public class ZoneScreen extends AbstractContainerScreen<ZoneMenu> {
                 })
                 .bounds(leftPos + 8, topPos + imageHeight - 26, 172, 18)
                 .build());
+    }
+
+    /**
+     * Il modello di un Pokemon come lo disegna Cobblemon. Non ridisegniamo
+     * niente: il loro widget sa girare il modello, tenere la posa e seguire il
+     * cursore, e di la' abbiamo specie e aspetti perche' li manda la finestra.
+     */
+    @Nullable
+    private ModelWidget ritratto(ZoneMenu.Riga riga) {
+        final Species specie = PokemonSpecies.getByIdentifier(riga.specie());
+        if (specie == null) {
+            return null;
+        }
+        return new ModelWidget(0, 0, ANTEPRIMA, ANTEPRIMA,
+                new RenderablePokemon(specie, riga.aspetti(), ItemStack.EMPTY),
+                2.0F, 325.0F, 0.0, false, true, 0);
     }
 
     private Component area() {
@@ -71,15 +103,12 @@ public class ZoneScreen extends AbstractContainerScreen<ZoneMenu> {
     protected void renderBg(GuiGraphics g, float partialTick, int mouseX, int mouseY) {
         GuiFrame.panel(g, leftPos, topPos, imageWidth, imageHeight);
         final List<ZoneMenu.Riga> righe = menu.righe();
-        for (int i = 0; i < ZoneMenu.RIGHE; i++) {
-            GuiFrame.well(g, leftPos + 7, topPos + CIMA + i * RIGA - 1, 90, 18);
-            if (i < righe.size()) {
-                final ZoneMenu.Riga riga = righe.get(i);
-                g.drawString(font, riga.nome(), leftPos + 11, topPos + CIMA + i * RIGA + 4,
-                        0xFF404040, false);
-                g.drawString(font, "Lv." + riga.livello(), leftPos + 74,
-                        topPos + CIMA + i * RIGA + 4, 0xFF707070, false);
-            }
+        for (int i = 0; i < righe.size(); i++) {
+            final ZoneMenu.Riga riga = righe.get(i);
+            g.drawString(font, riga.nome(), leftPos + 11, topPos + CIMA + i * RIGA + 4,
+                    0xFF404040, false);
+            g.drawString(font, "Lv." + riga.livello(), leftPos + 74,
+                    topPos + CIMA + i * RIGA + 4, 0xFF707070, false);
         }
     }
 
@@ -99,5 +128,28 @@ public class ZoneScreen extends AbstractContainerScreen<ZoneMenu> {
                 i++;
             }
         }
+        anteprima(g, mouseX, mouseY, partialTick);
+    }
+
+    /** Col cursore sul nome di un Pokemon, il suo modello accanto al cursore. */
+    private void anteprima(GuiGraphics g, int mouseX, int mouseY, float partialTick) {
+        final int riga = (mouseY - topPos - CIMA) / RIGA;
+        if (riga < 0 || riga >= ritratti.size()
+                || mouseX < leftPos + 7 || mouseX > leftPos + 96) {
+            return;
+        }
+        final ModelWidget ritratto = ritratti.get(riga);
+        if (ritratto == null) {
+            return;
+        }
+        final int x = Math.min(mouseX + 8, width - ANTEPRIMA - 4);
+        final int y = Math.max(4, mouseY - ANTEPRIMA / 2);
+        g.pose().pushPose();
+        g.pose().translate(0, 0, 300);
+        GuiFrame.panel(g, x - 2, y - 2, ANTEPRIMA + 4, ANTEPRIMA + 4);
+        ritratto.setX(x);
+        ritratto.setY(y);
+        ritratto.render(g, mouseX, mouseY, partialTick);
+        g.pose().popPose();
     }
 }

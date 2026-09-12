@@ -1,5 +1,6 @@
 package com.kingtrapinch.tfcobblemon.zone;
 
+import com.cobblemon.mod.common.block.entity.PokemonPastureBlockEntity;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -59,9 +60,19 @@ public class ZoneBlock extends BaseEntityBlock {
         builder.add(HorizontalDirectionalBlock.FACING);
     }
 
+    /**
+     * Si piazza <b>solo sopra un pascolo</b>, e non e' una comodita': una
+     * macchina senza pascolo non fa niente, e un blocco che si puo' mettere
+     * dove non funziona e' un blocco che mente. Il pascolo e' alto due e la
+     * sua block entity sta nel pezzo basso, quindi due blocchi sotto.
+     */
     @Nullable
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
+        final BlockPos sotto = context.getClickedPos().below(2);
+        if (!(context.getLevel().getBlockEntity(sotto) instanceof PokemonPastureBlockEntity)) {
+            return null;
+        }
         return defaultBlockState().setValue(HorizontalDirectionalBlock.FACING,
                 context.getHorizontalDirection().getOpposite());
     }
@@ -116,6 +127,9 @@ public class ZoneBlock extends BaseEntityBlock {
                     buf.writeUUID(riga.chi());
                     buf.writeUtf(riga.nome());
                     buf.writeByte(riga.livello());
+                    buf.writeResourceLocation(riga.specie());
+                    buf.writeByte(riga.aspetti().size());
+                    riga.aspetti().forEach(buf::writeUtf);
                 }
             });
         }
