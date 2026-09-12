@@ -2,6 +2,8 @@ package com.kingtrapinch.tfcobblemon.world;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.dries007.tfc.common.fluids.FluidHelpers;
+import net.dries007.tfc.util.EnvironmentHelpers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.IntProvider;
@@ -66,9 +68,22 @@ public class GeodeTrailFeature extends Feature<GeodeTrailFeature.Config> {
     }
 
     /**
-     * I sassi, uno per uno. L'altezza si chiede per ognuno e non una volta per
-     * tutti: su un pendio un'altezza sola li lascerebbe meta' a mezz'aria e
-     * meta' sepolti.
+     * I sassi, uno per uno, con le regole degli indicatori di TFC.
+     *
+     * <p>TFC ha di suo il meccanismo del sasso in superficie sopra un
+     * giacimento — e' il campo {@code indicator} delle sue vene — ma vive
+     * dentro {@code VeinFeature.place}, impastato col ciclo che riempie la
+     * vena blocco per blocco: gli serve sapere fin dove e' arrivato il
+     * minerale in quella colonna, e un geode di vanilla quel numero non ce
+     * l'ha. Quello che si puo' riusare sono le sue regole, e sono queste:
+     * l'altezza si prende dal fondo dell'oceano e non dalla superficie, cosi'
+     * un geode sotto un lago il suo sasso ce l'ha; si scrive solo dove la
+     * worldgen puo' sovrascrivere; e il sasso si allaga se finisce in acqua.
+     *
+     * <p>L'altezza si chiede per ogni sasso e non una volta per tutti: su un
+     * pendio un'altezza sola li lascerebbe meta' a mezz'aria e meta' sepolti.
+     * Lo scarto dalla colonna e' la differenza di due tiri come fa TFC, che
+     * li tiene raccolti intorno al centro invece di spargerli uniformi.
      */
     private void sassi(FeaturePlaceContext<Config> context, Config config) {
         final WorldGenLevel level = context.level();
@@ -77,17 +92,20 @@ public class GeodeTrailFeature extends Feature<GeodeTrailFeature.Config> {
         final int quanti = config.tries().sample(random);
         final int raggio = config.spread();
         for (int i = 0; i < quanti; i++) {
-            final int x = origin.getX() + random.nextInt(raggio * 2 + 1) - raggio;
-            final int z = origin.getZ() + random.nextInt(raggio * 2 + 1) - raggio;
+            final int x = origin.getX() + random.nextInt(raggio + 1) - random.nextInt(raggio + 1);
+            final int z = origin.getZ() + random.nextInt(raggio + 1) - random.nextInt(raggio + 1);
             if (!level.hasChunk(x >> 4, z >> 4)) {
                 // fuori dalla regione in generazione: non si sa che altezza
                 // abbia il terreno e non ci si puo' scrivere
                 continue;
             }
             final BlockPos pos = new BlockPos(x,
-                    level.getHeight(Heightmap.Types.WORLD_SURFACE_WG, x, z), z);
-            final BlockState sasso = config.rock().getState(random, pos);
-            if (level.isEmptyBlock(pos) && sasso.canSurvive(level, pos)) {
+                    level.getHeight(Heightmap.Types.OCEAN_FLOOR_WG, x, z), z);
+            final BlockState posto = level.getBlockState(pos);
+            final BlockState sasso = FluidHelpers.fillWithFluid(
+                    config.rock().getState(random, pos), posto.getFluidState().getType());
+            if (sasso != null && EnvironmentHelpers.isWorldgenReplaceable(posto)
+                    && sasso.canSurvive(level, pos)) {
                 setBlock(level, pos, sasso);
             }
         }
