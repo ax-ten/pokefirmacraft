@@ -398,6 +398,34 @@ funzionare, semplicemente smette di convenire. Se invece il componente diventass
 obbligatorio, l'intera eta' del ferro andrebbe buttata, e non e' quello che
 vogliamo.
 
+### 5.8 Dove si trova la tumblestone
+
+Cobblemon la mette nei suoi geodi, che sotto il generatore di TFC non nascono
+mai: la worldgen e' nostra, e segue la maniera di TFC.
+
+**Vene nella roccia, non cristalli nel vuoto.** Il geode e' basalto indurito
+fuori, quarzite dentro, e lo strato alternativo e' un minerale nostro —
+`tumblestone_quartzite` e le due varianti — sul modello `tfc:block/ore`, con la
+forma dello strato di ametista di TFC ritinta coi colori veri di Cobblemon. La
+cavita' e' vuota. Un cluster sarebbe un blocco appoggiato, e ogni grattacapo
+che abbiamo avuto coi geodi veniva da li'.
+
+**Tre varieta', due rarita'.** La tumblestone normale a `rarity_filter` 16 su
+tutta la fascia -32..48; sky e black a 40 ciascuna, sbilanciate verso il basso
+(-56..24, `very_biased_to_bottom`), percio' in profondita' i geodi sono piu'
+densi e piu' spesso delle due varianti pregiate. Dentro la fodera, il 4% dei
+blocchi di minerale e' un sito da scavare.
+
+**I sassi in superficie sono un indizio, non decorazione.** Sopra ogni geode
+che nasce, sulla sua colonna, cadono da tre a sei sassi sciolti dello stesso
+cristallo — la feature `tfcobblemon:geode_trail`, che piazza il geode di
+vanilla e poi, solo se ha attecchito, sparge i sassi chiedendo l'altezza del
+terreno uno per uno (su un pendio un'altezza sola li lascerebbe a mezz'aria).
+Lo spargimento sparso e indipendente che c'era prima e' stato **tolto**: se
+meta' dei sassi non avesse niente sotto, nessuno scaverebbe piu' sotto
+nessuno. E' lo stesso patto che TFC fa coi suoi sassi sciolti, che dicono
+sempre la verita' su che roccia hai sotto i piedi.
+
 ## 6. Trasporto, cattura e inventario
 
 Questa sezione sostituisce il vincolo "niente Pasture Block, niente lancio" della
