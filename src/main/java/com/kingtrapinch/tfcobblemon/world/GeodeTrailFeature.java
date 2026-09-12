@@ -2,7 +2,6 @@ package com.kingtrapinch.tfcobblemon.world;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.util.EnvironmentHelpers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
@@ -76,9 +75,12 @@ public class GeodeTrailFeature extends Feature<GeodeTrailFeature.Config> {
      * vena blocco per blocco: gli serve sapere fin dove e' arrivato il
      * minerale in quella colonna, e un geode di vanilla quel numero non ce
      * l'ha. Quello che si puo' riusare sono le sue regole, e sono queste:
-     * l'altezza si prende dal fondo dell'oceano e non dalla superficie, cosi'
-     * un geode sotto un lago il suo sasso ce l'ha; si scrive solo dove la
-     * worldgen puo' sovrascrivere; e il sasso si allaga se finisce in acqua.
+     * l'altezza si prende dal fondo dell'oceano e non dalla superficie, e si
+     * scrive solo dove la worldgen puo' sovrascrivere. Sott'acqua invece non
+     * si mette niente: TFC allagherebbe il sasso, ma un sasso in fondo a un
+     * lago non lo vede nessuno, e un indizio che non si vede non e' un
+     * indizio. Su un mondo di prova non ne era finito sott'acqua nemmeno uno
+     * su cinquantuno, quindi non si perde niente.
      *
      * <p>L'altezza si chiede per ogni sasso e non una volta per tutti: su un
      * pendio un'altezza sola li lascerebbe meta' a mezz'aria e meta' sepolti.
@@ -102,10 +104,11 @@ public class GeodeTrailFeature extends Feature<GeodeTrailFeature.Config> {
             final BlockPos pos = new BlockPos(x,
                     level.getHeight(Heightmap.Types.OCEAN_FLOOR_WG, x, z), z);
             final BlockState posto = level.getBlockState(pos);
-            final BlockState sasso = FluidHelpers.fillWithFluid(
-                    config.rock().getState(random, pos), posto.getFluidState().getType());
-            if (sasso != null && EnvironmentHelpers.isWorldgenReplaceable(posto)
-                    && sasso.canSurvive(level, pos)) {
+            if (!posto.getFluidState().isEmpty() || !EnvironmentHelpers.isWorldgenReplaceable(posto)) {
+                continue;
+            }
+            final BlockState sasso = config.rock().getState(random, pos);
+            if (sasso.canSurvive(level, pos)) {
                 setBlock(level, pos, sasso);
             }
         }
