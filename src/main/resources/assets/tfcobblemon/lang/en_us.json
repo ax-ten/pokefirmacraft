@@ -219,6 +219,7 @@
   "block.tfcobblemon.zone.gym": "Training Ground",
   "block.tfcobblemon.zone.spa": "Hot Spring",
   "block.tfcobblemon.zone.ranch": "Ranch",
-  "tfcobblemon.zone.senza_pascolo": "No pasture nearby.",
-  "tfcobblemon.zone.al_lavoro": "Working on %s pokémon at the pasture."
+  "tfcobblemon.zone.senza_pascolo": "Not attached to a pasture.",
+  "tfcobblemon.zone.al_lavoro": "Working on %s pokémon at the pasture.",
+  "tfcobblemon.zone.conteso": "This pasture already has a machine on it."
 }

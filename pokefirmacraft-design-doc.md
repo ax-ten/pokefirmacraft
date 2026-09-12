@@ -1083,9 +1083,11 @@ Perche' e' meglio, punto per punto:
 - **Il problema "dove abita il mio Pokemon" sparisce.** Prima erano quattro
   posti (PC, box invisibile, pascolo, zona); adesso restano quelli che c'erano
   gia'.
-- **Le specializzazioni si sommano.** Palestra da un lato e terme dall'altro
-  sullo stesso pascolo: gli stessi Pokemon prendono tutte e due, senza doverli
-  spostare. Con tre pascoli separati avresti dovuto scegliere.
+- **Una macchina per pascolo, e si vede da fuori quale.** Le specializzazioni
+  **non si sommano**: un pascolo fa una cosa alla volta, e se ce ne sono due
+  attaccate non lavora nessuna delle due — e' un conflitto, e va detto, non
+  risolto a caso scegliendone una. Cambiare mestiere e' spostare un blocco,
+  non svuotare un contenitore.
 - **La cucitura PC/ball non serve piu'.** Era un'interfaccia per decidere cosa
   si vede aprendo una zona; se i Pokemon stanno nel pascolo, quella domanda ha
   gia' una risposta sola, data una volta sul pascolo — il PC in un mondo
@@ -1094,9 +1096,11 @@ Perche' e' meglio, punto per punto:
   quello che gli hai messo intorno e' esattamente quello che un giocatore di
   GregTech si aspetta di fare.
 
-**Multiblocco, ma non rigido.** Il controllore non pretende una forma esatta
-come una macchina di Greg: legge la sua area e conta quello che trova — i
-sacchi, le bottiglie, l'arredo, le condizioni di spawn. Una forma obbligata
+**Multiblocco vuol dire solo "attaccati".** Il controllore sta su uno dei
+quattro lati del pascolo, all'altezza del pezzo basso o di quello alto — non un
+raggio: un pascolo e la sua macchina si toccano, e guardandoli si capisce quale
+serve quale. Quello che si **conta in un'area** e' invece l'arredo: i sacchi,
+le bottiglie, le condizioni di spawn. Una forma obbligata anche per quelli
 ucciderebbe la meta' bella dell'idea, che e' costruirsi una stanza che sia bella
 e che *per questo* funzioni meglio.
 
@@ -1107,9 +1111,84 @@ dieci ma i sacchi sono due, se ne allenano due. La stanza dice il limite da se',
 come doveva essere dall'inizio.
 
 **Chi trova chi.** E' il controllore a cercarsi il pascolo, non il contrario:
-cosi' il pascolo non sa niente di noi e non serve entrarci dentro. Una
-scansione ogni giro di tick nel raggio del controllore, e l'indirizzo trovato si
-tiene.
+cosi' il pascolo non sa niente di noi e non serve entrarci dentro. Guarda i
+suoi lati, e l'indirizzo trovato si tiene.
+
+### La settimana e' l'unita' di misura
+
+**In una settimana di gioco un Pokemon arriva al massimo**: 252 in una
+statistica, 255 di amicizia. Da questa regola sola si ricava tutto il resto,
+invece di scegliere numeri a mano:
+
+- un **punto** ogni `settimana / 252` tick — un EV per la palestra, un punto di
+  amicizia per le terme. Non e' scritto come costante: si calcola, cosi' se la
+  lunghezza del giorno cambia la settimana resta una settimana
+- maxare **una** statistica costa una settimana, e col tetto totale di 510 uno
+  spread completo costa **due settimane**. L'amicizia parte da 50-70 e arriva a
+  255 **entro** la settimana
+- **un sacco = una statistica maxata.** Se il sacco si logora una volta ogni 84
+  punti, i tre stadi fanno 252: un sacco consumato per intero e' esattamente
+  una statistica portata al tetto. Due cose esauribili che condividono un numero
+- le **bottiglie non aggiungono EV, dimezzano il tempo.** Cosi' restano un
+  acceleratore e il tetto resta onesto: con le bottiglie giuste intorno la
+  settimana diventa mezza
+
+**Il tempo e' quello del calendario di TFC, non i tick del blocco.** Lo fanno
+cosi' le colture e il cibo di TFC (`Calendars.SERVER.getTicks()`), e la ragione
+e' la stessa: una settimana deve passare anche mentre non sei li' a guardare,
+altrimenti l'allenamento diventa un premio a chi tiene il chunk caricato. Con
+una eccezione: **a pascolo vuoto l'orologio non corre**, o il tempo fermo si
+accumulerebbe per essere speso tutto insieme al primo Pokemon che arriva.
+
+### Il tetto lo mette il blocco
+
+La palestra dichiara **fino a quanto** puo' allenare, e quello diventa la scala
+di progressione senza inventare meccaniche nuove: una palestra rustica si ferma
+a un tetto basso, quella industriale arriva a 252. Un Pokemon che ha raggiunto
+il tetto della *sua* palestra non sale piu' finche' non gliene costruisci una
+migliore — ed e' il modo piu' diretto di dire che l'allenamento vero e' roba
+d'era avanzata.
+
+### L'interfaccia serve, e serve poco
+
+Il controllore deve far scegliere **chi si allena e con quale sacco**: senza
+quello, o si allena tutto il pascolo o si va a indovinare. Una finestra piccola
+— una riga per Pokemon, un interruttore, e la statistica scelta fra quelle di
+cui c'e' un sacco intorno — che fa anche da quadrante: si vede chi e' a che
+punto e quanto manca al tetto.
+
+### Le sei bacche che togliono EV, per disfare gli errori
+
+Maxare uno spread costa due settimane, quindi allenare la statistica sbagliata
+e' un errore che costa una settimana di gioco. Nei giochi si disfa con le
+bacche, e **Cobblemon le ha tutte e sei**, una per statistica: Pomeg per gli
+HP, Kelpsy per l'attacco, Qualot per la difesa, Hondew per l'attacco speciale,
+Grepa per la difesa speciale, Tamato per la velocita'.
+
+Da cui la palestra ha anche la marcia indietro: con quelle bacche al posto
+delle bottiglie, il punto che matura **scende** invece di salire. Non e' una
+meccanica in piu' — e' lo stesso orologio col segno cambiato — e disfare un
+errore costa il tempo che e' costato farlo.
+
+### Le terme curano, perche' sono terme
+
+Oltre all'amicizia, una sorgente calda dovrebbe rimettere in piedi: HP e
+alterazioni di stato che si sistemano col tempo, mentre il Pokemon sta li'. E'
+quello che le terme fanno nei giochi, costa poco, e da' alla stanza un secondo
+motivo di esistere anche quando l'amicizia e' al massimo.
+
+### Il pascolo cambia faccia
+
+La macchina attaccata **sostituisce il modello e le texture del pascolo**. Non
+e' vernice: il pascolo di Cobblemon e' di legno e si vede, e una palestra o un
+laboratorio non sono di legno. Cosi' un pascolo specializzato si riconosce da
+lontano, e l'estetica smette di essere quella di un recinto.
+
+Il come, tecnicamente, e' un modello dinamico lato client: si sostituisce il
+modello cotto del pascolo (`ModelEvent.ModifyBakingResult`) con uno che guarda
+se c'e' una macchina attaccata e disegna la geometria giusta. Si scrive quando
+ci saranno i modelli; finche' non ci sono, il pascolo resta di legno e la
+macchina si vede accanto.
 
 ### Le ball restano roba del pascolo
 
@@ -1151,14 +1230,11 @@ nessuna mano dentro le cose della cintura o delle ball oltre a quello che passa
 per un'interfaccia. Se domani si staccano, si deve staccare una cartella e non
 sfilare un filo da sotto tutto il resto.
 
-**Cosa resta da decidere:** i numeri — quanto grande e' l'area, quanto costa un
-tick, la probabilita' di rottura dei sacchi, quanti EV per sacco, di quanto
-sale l'amicizia, quanto rende un habitat pieno contro uno vuoto — e se i tre
-pascoli sono **tre blocchi o uno** che legge l'area e capisce da se' cosa gli
-hanno costruito attorno. Su quest'ultimo: un blocco solo e' piu' elegante da
-guardare e peggiore da giocare, perche' non si vede da fuori a cosa serve una
-stanza finche' non la si ispeziona. Tre blocchi si riconoscono a colpo
-d'occhio, e sono la stessa classe con tre letture diverse dell'area.
+**Cosa resta da fare, in ordine:** i tre effetti — i numeri ci sono, li detta
+la settimana — poi la finestrella del controllore, poi il cambio di faccia del
+pascolo quando ci saranno i modelli. L'unico numero che la regola della
+settimana non determina e' **quanto rende un habitat pieno contro uno vuoto**,
+perche' il raccolto non ha un tetto da raggiungere.
 
 ## 7. Alpha Pokémon e leggendari
 
@@ -1438,6 +1514,12 @@ valido e vive gia' nell'Habitat Block dell'era elettrica.
   E adesso contano il doppio, perche' il power item e' il cancello di un sacco
   da boxe — cambiare la sua ricetta vuol dire cambiare quando si apre la
   palestra
+- **La finestrella del controllore di zona**: una riga per Pokemon, un
+  interruttore, la statistica scelta fra quelle di cui c'e' un sacco intorno.
+  Fa anche da quadrante (sezione 6.7)
+- **I modelli dei controllori e del pascolo specializzato, in Blockbench.**
+  Quello del pascolo e' quello che sblocca il cambio di faccia: senza modelli
+  non si puo' scrivere (sezione 6.7)
 - **I modelli dei tre stadi dei sacchi, in Blockbench.** Oggi i tre stadi
   cambiano solo texture e la forma e' la stessa: la rottura si deve vedere
   nella geometria, un sacco sfondato che si sgonfia. Il colore non c'entra, ci

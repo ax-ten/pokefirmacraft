@@ -15,23 +15,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Il cervello di una zona: cerca il pascolo che ha accanto, guarda cosa gli
+ * Il cervello di una zona: sta <b>attaccato</b> a un pascolo, guarda cosa gli
  * hanno costruito intorno, e lavora su chi sta al pascolo.
  *
  * <p><b>E' il controllore a cercare il pascolo, non il contrario.</b> Cosi' il
  * pascolo non sa niente di noi: si leggono i suoi Pokemon con
  * {@code getTetheredPokemon()}, che e' pubblico, e non si entra in casa di
- * nessuno. L'indirizzo trovato si tiene, e si ricontrolla solo quando non
- * risponde piu'.
+ * nessuno.
+ *
+ * <p>Attaccato vuol dire attaccato: uno dei quattro lati, all'altezza del
+ * pascolo o del suo pezzo alto. Non un raggio — un pascolo e la sua macchina
+ * si toccano, e si vede da fuori quale macchina serve quale pascolo.
+ *
+ * <p><b>Un pascolo, una specializzazione.</b> Se ce ne sono due attaccate allo
+ * stesso pascolo non lavora nessuna delle due: e' un conflitto, e va detto,
+ * non risolto a caso scegliendone una.
  */
 public class ZoneBlockEntity extends BlockEntity {
 
-    /** Quanto lontano puo' stare il pascolo. */
-    public static final int PORTATA = 6;
-    /** Ogni quanti tick si lavora. Come il pascolo, due secondi. */
-    private static final int PASSO = 40;
+    /** Ogni quanti tick si guarda l'orologio. Il lavoro lo misura il calendario. */
+    private static final int BATTITO = 40;
 
-    private int attesa = PASSO;
+    private int attesa = BATTITO;
+    /** L'ora di calendario dell'ultimo punto maturato. */
+    private long visto;
     @Nullable
     private BlockPos pascolo;
 
@@ -43,24 +50,60 @@ public class ZoneBlockEntity extends BlockEntity {
         return getBlockState().getBlock() instanceof ZoneBlock zona ? zona.genere() : ZoneKind.GYM;
     }
 
-    /** Il pascolo accanto, se c'e'. */
+    /** I sei posti in cui puo' stare il pascolo attaccato a questo blocco. */
+    private Iterable<BlockPos> intorno() {
+        final List<BlockPos> posti = new ArrayList<>(8);
+        for (net.minecraft.core.Direction verso : net.minecraft.core.Direction.Plane.HORIZONTAL) {
+            final BlockPos lato = getBlockPos().relative(verso);
+            posti.add(lato);
+            // il pezzo con la block entity e' quello basso: se il controllore e'
+            // all'altezza di quello alto, il pascolo sta di sbieco sotto
+            posti.add(lato.below());
+        }
+        return posti;
+    }
+
+    /** Il pascolo attaccato, se c'e' e se e' solo suo. */
     @Nullable
     public PokemonPastureBlockEntity pascolo(ServerLevel level) {
         if (pascolo != null
                 && level.getBlockEntity(pascolo) instanceof PokemonPastureBlockEntity trovato) {
-            return trovato;
+            return conteso(level, pascolo) ? null : trovato;
         }
         pascolo = null;
-        for (BlockPos pos : BlockPos.betweenClosed(
-                getBlockPos().offset(-PORTATA, -PORTATA, -PORTATA),
-                getBlockPos().offset(PORTATA, PORTATA, PORTATA))) {
+        for (BlockPos pos : intorno()) {
             if (level.getBlockEntity(pos) instanceof PokemonPastureBlockEntity trovato) {
                 pascolo = pos.immutable();
                 setChanged();
-                return trovato;
+                return conteso(level, pascolo) ? null : trovato;
             }
         }
         return null;
+    }
+
+    /** Se un altro controllore e' attaccato allo stesso pascolo. */
+    public boolean conteso(ServerLevel level, BlockPos pascolo) {
+        for (net.minecraft.core.Direction verso : net.minecraft.core.Direction.Plane.HORIZONTAL) {
+            for (BlockPos pos : new BlockPos[] {pascolo.relative(verso),
+                    pascolo.relative(verso).above()}) {
+                if (!pos.equals(getBlockPos())
+                        && level.getBlockEntity(pos) instanceof ZoneBlockEntity) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /** Se c'e' un pascolo attaccato ma ha gia' un'altra macchina. */
+    public boolean inConflitto(ServerLevel level) {
+        for (BlockPos pos : intorno()) {
+            if (level.getBlockEntity(pos) instanceof PokemonPastureBlockEntity
+                    && conteso(level, pos)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /** Chi sta al pascolo accanto, in questo momento. */
@@ -79,21 +122,41 @@ public class ZoneBlockEntity extends BlockEntity {
         return dentro;
     }
 
+    /**
+     * Il giro di lavoro. Il battito serve solo a guardare l'orologio: quanti
+     * punti sono maturati lo dice il calendario, percio' una settimana passa
+     * anche mentre il chunk era scaricato.
+     */
     public void tick(ServerLevel level) {
         if (--attesa > 0) {
             return;
         }
-        attesa = PASSO;
+        attesa = BATTITO;
         final List<Pokemon> dentro = alPascolo(level);
-        if (!dentro.isEmpty()) {
-            genere().lavora(level, this, dentro);
+        if (dentro.isEmpty()) {
+            // senza nessuno da allenare l'orologio non corre: il tempo fermo
+            // non si accumula per essere speso tutto insieme dopo
+            visto = ZoneClock.adesso();
+            return;
         }
+        if (visto == 0L) {
+            visto = ZoneClock.adesso();
+            return;
+        }
+        final int punti = ZoneClock.punti(visto);
+        if (punti <= 0) {
+            return;
+        }
+        visto += (long) punti * ZoneClock.passo();
+        setChanged();
+        genere().lavora(level, this, dentro, punti);
     }
 
     @Override
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registri) {
         super.loadAdditional(tag, registri);
         pascolo = tag.contains("Pasture") ? NbtUtils.readBlockPos(tag, "Pasture").orElse(null) : null;
+        visto = tag.getLong("Seen");
     }
 
     @Override
@@ -102,5 +165,6 @@ public class ZoneBlockEntity extends BlockEntity {
         if (pascolo != null) {
             tag.put("Pasture", NbtUtils.writeBlockPos(pascolo));
         }
+        tag.putLong("Seen", visto);
     }
 }

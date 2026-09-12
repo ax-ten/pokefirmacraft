@@ -35,14 +35,16 @@ public enum ZoneKind {
      * Il lavoro di un giro: chi sta al pascolo accanto, e quello che la zona
      * trova intorno a se'.
      *
-     * <p>I tre effetti — EV, amicizia, raccolto — non sono ancora scritti:
-     * quello che manca non e' il posto dove metterli ma <b>i numeri</b>, che
-     * vanno tarati in gioco come quelli dello scavo (sezione 8.1). Lo
-     * scheletro sta in piedi e si puo' provare: la zona trova il pascolo,
-     * legge chi c'e' dentro e arriva qui.
+     * <p>{@code punti} sono i punti maturati dal giro scorso, e il loro valore
+     * viene dalla regola unica: una settimana di calendario porta un Pokemon
+     * al massimo, cioe' 252. Un punto e' un EV per la palestra e un punto di
+     * amicizia per le terme.
+     *
+     * <p>I tre effetti non sono ancora scritti: manca il come, non il dove.
      */
     public void lavora(net.minecraft.server.level.ServerLevel level, ZoneBlockEntity zona,
-                       java.util.List<com.cobblemon.mod.common.pokemon.Pokemon> dentro) {
+                       java.util.List<com.cobblemon.mod.common.pokemon.Pokemon> dentro,
+                       int punti) {
         // TODO i tre effetti, con i numeri decisi
     }
 }

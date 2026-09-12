@@ -101,11 +101,16 @@ public class ZoneBlock extends BaseEntityBlock {
                                                BlockHitResult hit) {
         if (player instanceof ServerPlayer giocatore && level instanceof ServerLevel server
                 && level.getBlockEntity(pos) instanceof ZoneBlockEntity zona) {
-            final int quanti = zona.alPascolo(server).size();
-            giocatore.displayClientMessage(zona.pascolo(server) == null
-                    ? net.minecraft.network.chat.Component.translatable("tfcobblemon.zone.senza_pascolo")
-                    : net.minecraft.network.chat.Component.translatable("tfcobblemon.zone.al_lavoro", quanti),
-                    true);
+            final net.minecraft.network.chat.Component detto;
+            if (zona.inConflitto(server)) {
+                detto = net.minecraft.network.chat.Component.translatable("tfcobblemon.zone.conteso");
+            } else if (zona.pascolo(server) == null) {
+                detto = net.minecraft.network.chat.Component.translatable("tfcobblemon.zone.senza_pascolo");
+            } else {
+                detto = net.minecraft.network.chat.Component.translatable(
+                        "tfcobblemon.zone.al_lavoro", zona.alPascolo(server).size());
+            }
+            giocatore.displayClientMessage(detto, true);
         }
         return InteractionResult.SUCCESS;
     }
