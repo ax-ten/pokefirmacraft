@@ -347,7 +347,7 @@ public class DigScreen extends AbstractContainerScreen<DigMenu> {
         final int meta = y + DigLayout.GRID_SPAN / 2;
         graphics.fill(x, meta - 12, x + DigLayout.GRID_SPAN, meta + 12, 0xC0101014);
         final Component detto = Component.translatable("tfcobblemon.dig.completed");
-        graphics.drawCenteredString(font, detto, x + DigLayout.GRID_SPAN / 2, meta - 4, 0xFFF0C060);
+        graphics.drawCenteredString(font, detto, x + DigLayout.GRID_SPAN / 2, meta - 4, 0xFFFFFF55);
     }
 
     @Override

@@ -1531,9 +1531,11 @@ andare male.
 
 ## 8.1 Scavo archeologico — numeri da tarare in gioco
 
-**La fine di uno scavo si vede.** Tirato fuori l'ultimo tesoro, la finestra
-resta aperta mezzo secondo con un **"Completed!"** in mezzo alla griglia, poi si
-chiude da se'. In quel mezzo secondo il sito e' fermo: non si scava piu', la
+**La fine di uno scavo si vede e si sente.** Tirato fuori l'ultimo tesoro, la
+finestra resta aperta mezzo secondo con un **"Completed!"** giallo in mezzo alla
+griglia e il suono del "hai fatto" di Minecraft, poi si chiude da se'. Il suono
+e' diverso da quello del tesoro che affiora — quello e' un tintinnio di
+cristallo — perche' i due momenti non vanno confusi. In quel mezzo secondo il sito e' fermo: non si scava piu', la
 finestra non risponde ai clic e nessun altro puo' aprirlo.
 
 Il pezzo non ovvio e' un altro: **il blocco si posa solo alla fine**. Posarlo

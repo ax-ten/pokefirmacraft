@@ -142,9 +142,20 @@ public class DigMenu extends AbstractContainerMenu {
         public void onTake(Player player, ItemStack stack) {
             super.onTake(player, stack);
             if (!player.level().isClientSide() && owner != null && owner.emptied()) {
-                owner.finisci();
+                festeggia(owner, player);
             }
         }
+    }
+
+    /**
+     * Scavo finito: parte il mezzo secondo di scritta, e insieme il suono.
+     * Quello del tesoro che affiora e' un tintinnio di cristallo, quindi qui ne
+     * serve un altro che si distingua — e "hai fatto" in Minecraft suona cosi'.
+     */
+    private static void festeggia(DigSiteBlockEntity sito, Player player) {
+        sito.finisci();
+        player.playNotifySound(net.minecraft.sounds.SoundEvents.PLAYER_LEVELUP,
+                net.minecraft.sounds.SoundSource.PLAYERS, 0.7F, 1.1F);
     }
 
     /**
@@ -219,7 +230,7 @@ public class DigMenu extends AbstractContainerMenu {
         // "e' rimasto qualcosa?" va rifatto anche qui
         if (index < tesori && !player.level().isClientSide()
                 && site != null && site.emptied()) {
-            site.finisci();
+            festeggia(site, player);
         }
         return copy;
     }
