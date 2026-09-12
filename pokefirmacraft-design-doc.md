@@ -437,6 +437,15 @@ mantenere **aspetto e colore della sua tumblestone**: arancione, nero,
 celeste. Un grumo di cristallo per terra si vede da lontano, ed e' l'unica cosa
 che gli si chiede.
 
+**Il minerale vuole il render type a mano, o viene nero.** Il modello di TFC
+(`tfc:block/ore`) e' due cubi sovrapposti: la roccia sotto e le vene sopra, con
+la trasparenza. Ma TFC il tipo di disegno **lo mette nel codice**, non nel
+modello — nei suoi json non c'e' — per cui un blocco registrato da noi eredita
+il modello e non l'impostazione, disegna lo strato delle vene come **solido**, e
+la trasparenza diventa nera: **un blocco nero con qualche vena arancione**. Si
+mette `"render_type": "minecraft:cutout"` nel nostro modello e torna quarzite
+venata.
+
 **E il minerale sta in `#c:ores`, alla fine.** Lo avevo tenuto fuori di
 proposito, perche' le tre tag dei crolli di TFC — `can_collapse`,
 `can_start_collapse`, `can_trigger_collapse` — contengono tutte `#c:ores`, e

@@ -1,5 +1,6 @@
 {
   "parent": "tfc:block/ore",
+  "render_type": "minecraft:cutout",
   "textures": {
     "all": "tfc:block/rock/raw/quartzite",
     "overlay": "tfcobblemon:block/ore/sky_tumblestone"
