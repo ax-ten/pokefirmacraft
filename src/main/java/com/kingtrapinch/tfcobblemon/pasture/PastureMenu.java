@@ -30,6 +30,8 @@ public class PastureMenu extends AbstractContainerMenu {
     private static final int COLONNE = 8;
 
     private final Container cesta;
+    /** Il posto del modulo: un contenitore da uno, che vive nella block entity. */
+    private final Container modulo;
     private final PokemonPastureBlockEntity pascolo;
 
     public static PastureMenu decode(int id, Inventory inventario, RegistryFriendlyByteBuf buf) {
@@ -41,6 +43,7 @@ public class PastureMenu extends AbstractContainerMenu {
         this.pascolo = inventario.player.level().getBlockEntity(pos)
                 instanceof PokemonPastureBlockEntity p ? p : null;
         this.cesta = pascolo != null ? new PastureBasket(pascolo) : new SimpleContainer(BallBasket.POSTI);
+        this.modulo = new PastureModule(pascolo);
 
         for (int i = 0; i < BallBasket.POSTI; i++) {
             addSlot(new Slot(cesta, i, 17 + (i % COLONNE) * 18, 18 + (i / COLONNE) * 18) {
@@ -62,6 +65,43 @@ public class PastureMenu extends AbstractContainerMenu {
         }
         for (int col = 0; col < 9; col++) {
             addSlot(new Slot(inventario, col, 8 + col * 18, 125));
+        }
+        addSlot(new SlotModulo(modulo, inventario.player));
+    }
+
+    /**
+     * Lo slot del modulo che collega il pascolo al PC.
+     *
+     * <p>Ci entra solo il modulo, e <b>non si tira piu' via</b>: e' una
+     * modifica al blocco, non un accessorio da scambiare. Appena entra, i
+     * Pokemon delle ball appese passano al PC e la cesta si svuota.
+     */
+    private class SlotModulo extends Slot {
+
+        private final Player chi;
+
+        SlotModulo(Container contenitore, Player chi) {
+            super(contenitore, 0, 172, 27);
+            this.chi = chi;
+        }
+
+        @Override
+        public boolean mayPlace(ItemStack cosa) {
+            return pascolo != null && !Pastures.collegato(pascolo)
+                    && cosa.is(ModPasture.PC_LINK.get());
+        }
+
+        @Override
+        public boolean mayPickup(Player player) {
+            return false;
+        }
+
+        @Override
+        public void setByPlayer(ItemStack cosa, ItemStack prima) {
+            super.setByPlayer(cosa, prima);
+            if (!cosa.isEmpty() && pascolo != null && chi instanceof ServerPlayer giocatore) {
+                Pastures.collega(giocatore, pascolo, cosa);
+            }
         }
     }
 
@@ -95,6 +135,10 @@ public class PastureMenu extends AbstractContainerMenu {
         }
         final ItemStack cosa = slot.getItem();
         final ItemStack prima = cosa.copy();
+        if (indice >= slots.size() - 1) {
+            // il modulo non si sposta: e' installato
+            return ItemStack.EMPTY;
+        }
         if (indice < BallBasket.POSTI) {
             if (!moveItemStackTo(cosa, BallBasket.POSTI, slots.size(), true)) {
                 return ItemStack.EMPTY;

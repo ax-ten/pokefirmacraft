@@ -227,5 +227,6 @@
   "tfcobblemon.zone.fermo": "Paused",
   "tfcobblemon.zone.come_viene": "Any bag",
   "tfcobblemon.zone.area_si": "Area: shown",
-  "tfcobblemon.zone.area_no": "Area: hidden"
+  "tfcobblemon.zone.area_no": "Area: hidden",
+  "item.tfcobblemon.pc_link": "PC Link Module"
 }

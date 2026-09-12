@@ -22,8 +22,12 @@ public final class PastureEvents {
 
     @SubscribeEvent
     public static void conLaBallSiApreLaCesta(PlayerInteractEvent.RightClickBlock event) {
-        if (!BallLink.filled(event.getItemStack())
-                || Pastures.pascolo(event.getLevel(), event.getPos()) == null) {
+        if (!BallLink.filled(event.getItemStack())) {
+            return;
+        }
+        final var pascolo = Pastures.pascolo(event.getLevel(), event.getPos());
+        // col modulo installato le ball non c'entrano piu' niente col pascolo
+        if (pascolo == null || Pastures.collegato(pascolo)) {
             return;
         }
         event.setCanceled(true);

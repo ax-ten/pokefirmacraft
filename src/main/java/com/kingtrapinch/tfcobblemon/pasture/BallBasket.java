@@ -15,4 +15,17 @@ public interface BallBasket {
     int POSTI = 16;
 
     NonNullList<ItemStack> tfcobblemon$balls();
+
+    /**
+     * Se il pascolo e' stato collegato al PC. Da quel momento non lavora piu'
+     * a ball: pesca dal PC come il pascolo di Cobblemon.
+     */
+    boolean tfcobblemon$collegato();
+
+    void tfcobblemon$collega(boolean si);
+
+    /** Il modulo installato, che si vede nello slot e non si tira via. */
+    ItemStack tfcobblemon$modulo();
+
+    void tfcobblemon$modulo(ItemStack cosa);
 }

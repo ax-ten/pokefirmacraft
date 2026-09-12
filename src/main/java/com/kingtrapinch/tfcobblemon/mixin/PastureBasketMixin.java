@@ -42,9 +42,35 @@ public abstract class PastureBasketMixin implements BallBasket {
     private final NonNullList<ItemStack> tfcobblemon$cesta =
             NonNullList.withSize(BallBasket.POSTI, ItemStack.EMPTY);
 
+    @Unique
+    private boolean tfcobblemon$collegato;
+
+    @Unique
+    private ItemStack tfcobblemon$modulo = ItemStack.EMPTY;
+
     @Override
     public NonNullList<ItemStack> tfcobblemon$balls() {
         return tfcobblemon$cesta;
+    }
+
+    @Override
+    public boolean tfcobblemon$collegato() {
+        return tfcobblemon$collegato;
+    }
+
+    @Override
+    public void tfcobblemon$collega(boolean si) {
+        tfcobblemon$collegato = si;
+    }
+
+    @Override
+    public ItemStack tfcobblemon$modulo() {
+        return tfcobblemon$modulo;
+    }
+
+    @Override
+    public void tfcobblemon$modulo(ItemStack cosa) {
+        tfcobblemon$modulo = cosa;
     }
 
     @Inject(method = "saveAdditional", at = @At("TAIL"))
@@ -52,12 +78,20 @@ public abstract class PastureBasketMixin implements BallBasket {
         final CompoundTag mio = new CompoundTag();
         ContainerHelper.saveAllItems(mio, tfcobblemon$cesta, true, registri);
         tag.put(CHIAVE, mio);
+        tag.putBoolean(CHIAVE + "Linked", tfcobblemon$collegato);
+        if (!tfcobblemon$modulo.isEmpty()) {
+            tag.put(CHIAVE + "Module", tfcobblemon$modulo.save(registri));
+        }
     }
 
     @Inject(method = "loadAdditional", at = @At("TAIL"))
     private void tfcobblemon$carica(CompoundTag tag, HolderLookup.Provider registri, CallbackInfo ci) {
         tfcobblemon$cesta.clear();
         ContainerHelper.loadAllItems(tag.getCompound(CHIAVE), tfcobblemon$cesta, registri);
+        tfcobblemon$collegato = tag.getBoolean(CHIAVE + "Linked");
+        tfcobblemon$modulo = tag.contains(CHIAVE + "Module")
+                ? ItemStack.parse(registri, tag.getCompound(CHIAVE + "Module")).orElse(ItemStack.EMPTY)
+                : ItemStack.EMPTY;
     }
 
     /**
@@ -107,5 +141,11 @@ public abstract class PastureBasketMixin implements BallBasket {
             }
         }
         tfcobblemon$cesta.clear();
+        // il modulo si toglie solo cosi': rompendo il blocco
+        if (!tfcobblemon$modulo.isEmpty()) {
+            Containers.dropItemStack(mondo, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5,
+                    tfcobblemon$modulo);
+            tfcobblemon$modulo = ItemStack.EMPTY;
+        }
     }
 }

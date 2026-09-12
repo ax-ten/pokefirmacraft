@@ -46,6 +46,7 @@ public class ModCreativeModTabs {
                                         .forEach(sacco -> output.accept(sacco.get()));
                                 com.kingtrapinch.tfcobblemon.zone.ModZones.tutte()
                                         .forEach(zona -> output.accept(zona.get()));
+                                output.accept(com.kingtrapinch.tfcobblemon.pasture.ModPasture.PC_LINK.get());
 
                                 com.kingtrapinch.tfcobblemon.dig.ModDig.allSites()
                                         .forEach(sito -> output.accept(sito.get()));

@@ -434,6 +434,22 @@ faccia del blocco di minerale. Ci era rimasta la texture del blocco di
 tumblestone di Cobblemon — un lingotto di cristallo per terra — che diceva la
 cosa sbagliata.
 
+**E il minerale sta in `#c:ores`, alla fine.** Lo avevo tenuto fuori di
+proposito, perche' le tre tag dei crolli di TFC — `can_collapse`,
+`can_start_collapse`, `can_trigger_collapse` — contengono tutte `#c:ores`, e
+non volevamo che il geode franasse. Poi si e' visto che **il prospector di
+GregTech non trovava la tumblestone**, e guardando come funziona il motivo era
+quello: il suo modo ORE **scandaglia il chunk blocco per blocco cercando
+`c:ores`**, non legge le vene di GT. Fuori da quella tag era cieco per
+costruzione.
+
+Quindi dentro. Quello che ne segue e' che il nostro minerale crolla come
+qualunque minerale di TFC: **cave-in si, frana no** — `can_landslide` non
+contiene `#c:ores`, e la frana era il problema vero di allora, non il crollo.
+Un minerale che fa cedere il soffitto se scavi senza puntellare e' TFC che
+funziona. E la tag `tfc:prospectable` che avevamo aggiunto era ridondante —
+vale `#c:ores` — percio' e' via.
+
 **I sassi in superficie sono un indizio, non decorazione.** Sopra ogni geode
 che nasce, sulla sua colonna, cadono da tre a sei sassi sciolti dello stesso
 cristallo — la feature `tfcobblemon:geode_trail`, che piazza il geode di
@@ -1312,8 +1328,8 @@ tetto a cui arrivare.
 ### Il grado industriale: uno slot, non un blocco
 
 Il pascolo collegato al PC non e' un secondo blocco: e' **uno slot di upgrade**
-sul pascolo stesso. Ci si mette il pezzo e il pascolo smette di lavorare a ball
-e passa al PC.
+sul pascolo stesso, e **c'e'**. Ci si mette il modulo e il pascolo smette di
+lavorare a ball e passa al PC.
 
 Come si comporta, e sono tre regole che vanno insieme:
 
@@ -1331,6 +1347,16 @@ sbagliato: un blocco in piu' vuol dire un altro contenitore, un'altra ricetta,
 un'altra cosa da spiegare, e un giocatore che deve spostare i Pokemon da un
 recinto all'altro per cambiare epoca. Uno slot dice la stessa cosa senza
 aggiungere niente.
+
+Una cosa e' venuta gratis, e vale segnarla: **il legame non ha avuto bisogno di
+niente**. Ricorda il Pokemon come `(pcId, pokemonId)` col pcId che e' l'UUID
+del giocatore — cioe' proprio la chiave del suo PC — per cui dopo il trasloco
+lo ritrova da se', senza nemmeno passare dal ripiego che avevamo messo per il
+deposito del pascolo.
+
+**Manca la ricetta**, e non per dimenticanza: il posto del modulo e' sopra il
+Pokemon Storage Component (sezione 5.7), che ancora non esiste. Per ora sta
+nella scheda creativa.
 
 ### La finestrella, e l'interruttore dell'area
 

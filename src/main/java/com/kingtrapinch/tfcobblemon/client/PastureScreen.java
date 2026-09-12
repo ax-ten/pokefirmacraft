@@ -18,7 +18,7 @@ public class PastureScreen extends AbstractContainerScreen<PastureMenu> {
 
     public PastureScreen(PastureMenu menu, Inventory inventario, Component titolo) {
         super(menu, inventario, titolo);
-        this.imageWidth = 176;
+        this.imageWidth = 194;
         this.imageHeight = 150;
         this.inventoryLabelY = this.imageHeight - 94;
     }
@@ -31,6 +31,8 @@ public class PastureScreen extends AbstractContainerScreen<PastureMenu> {
         for (int i = 0; i < BallBasket.POSTI; i++) {
             GuiFrame.well(g, x + 16 + (i % COLONNE) * 18, y + 17 + (i / COLONNE) * 18, 18, 18);
         }
+        // il posto del modulo: sta da parte perche' non e' una casella come le altre
+        GuiFrame.well(g, x + 171, y + 26, 18, 18);
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 9; col++) {
                 GuiFrame.well(g, x + 7 + col * 18, y + 66 + row * 18, 18, 18);

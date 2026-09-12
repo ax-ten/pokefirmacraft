@@ -56,6 +56,44 @@ public final class Pastures {
         return store(player.getUUID(), player.registryAccess());
     }
 
+    /** Se questo pascolo e' stato collegato al PC. */
+    public static boolean collegato(PokemonPastureBlockEntity pascolo) {
+        return ((BallBasket) (Object) pascolo).tfcobblemon$collegato();
+    }
+
+    /**
+     * Installa il modulo: i Pokemon appesi alle ball passano al <b>PC vero</b>,
+     * le ball sparirono dal blocco, e chi era al pascolo resta al pascolo.
+     *
+     * <p>Il legame non si scioglie: cambia dove abita il Pokemon, non dove
+     * sta. E funziona da se' — il legame ricorda il Pokemon come
+     * {@code (pcId, pokemonId)} col pcId che e' l'UUID del giocatore, cioe'
+     * proprio la chiave del suo PC, per cui dopo il trasloco lo trova senza
+     * nemmeno passare dal ripiego.
+     */
+    public static void collega(ServerPlayer player, PokemonPastureBlockEntity pascolo,
+                               ItemStack modulo) {
+        final BallBasket cesta = (BallBasket) (Object) pascolo;
+        if (cesta.tfcobblemon$collegato()) {
+            return;
+        }
+        final var pc = Cobblemon.INSTANCE.getStorage().getPC(player);
+        for (ItemStack ball : cesta.tfcobblemon$balls()) {
+            final BallLink legame = BallLink.read(ball);
+            if (legame == null) {
+                continue;
+            }
+            final Pokemon mon = cerca(store(player), legame.pokemon());
+            if (mon != null) {
+                trasloca(mon, pc);
+            }
+        }
+        cesta.tfcobblemon$balls().clear();
+        cesta.tfcobblemon$collega(true);
+        cesta.tfcobblemon$modulo(modulo.copyWithCount(1));
+        pascolo.setChanged();
+    }
+
     /** La cesta di un pascolo, che il mixin gli ha attaccato. */
     public static NonNullList<ItemStack> cesta(PokemonPastureBlockEntity pascolo) {
         return ((BallBasket) (Object) pascolo).tfcobblemon$balls();
