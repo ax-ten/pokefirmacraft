@@ -1046,11 +1046,77 @@ buono. Da cui, gratis, un habitat perfetto non e' costruibile per ogni specie
 nello stesso posto: chi vuole mungere un Magmar si scava una fornace, chi vuole
 un Magnemite gli fa una miniera.
 
-**Cosa resta da decidere:** i numeri di tutto — quanto grande e' l'area, quanto
-costa un tick, la probabilita' di rottura dei sacchi, quanti EV per sacco, di
-quanto sale l'amicizia e quanto rende un habitat pieno contro uno vuoto — e se
-i tre pascoli sono tre blocchi o lo stesso blocco che legge l'area e capisce da
-se' cosa gli e' stato costruito attorno.
+### Il blocco che dichiara l'area
+
+**Non si riusa il pascolo, e non e' per ordine.** Il pascolo di Cobblemon e'
+una block entity `final` il cui tick fa un cast secco a `PastureBlock`, e ci
+abbiamo gia' innestato quattro cose sopra. Appenderci anche tre
+specializzazioni — attrezzi, arredo, punteggio di habitat, bottiglie da contare
+— vorrebbe dire tenere tutto lo stato di una feature nuova attaccato con lo
+spago a una classe che non e' nostra. E le due cose non hanno nemmeno le stesse
+regole: il pascolo e' un parcheggio da sedici, una palestra e' una stanza.
+
+Quello che si riusa e' il pezzo che vale: il **legame** (`Tethering`) e' una
+classe pubblica col costruttore pubblico, e `PokemonEntity.setTethering` e'
+pubblico. Costruendolo noi, il Pokemon esce, gira **dentro i confini** — il
+limite di vagabondaggio vive nell'entita', non nel blocco — e il legame si
+salva nell'entita' da se'. Ci resta da riscrivere solo il controllo periodico,
+che sono quaranta righe. E il ripiego che fa trovare un Pokemon nel deposito
+del pascolo c'e' gia' (sezione 6.6).
+
+**Il limite e' quattro, e non e' un numero scelto a caso: e' l'arredo.** In una
+zona ci stanno **tanti Pokemon quanti sono gli attrezzi**, con un tetto di
+quattro. Non serve una regola in piu' per dire "non puoi allenarne sei con un
+sacco solo": la stanza lo dice da se'. Quattro perche' e' quanto ci sta in una
+stanza che uno costruisce davvero — quattro sacchi e le bottiglie intorno — e
+perche' il tick deve contare i blocchi dell'area, e contarli per sedici Pokemon
+quattro volte al secondo e' il principe di tutti i mali un'altra volta.
+
+### Le uova
+
+**Cobblemon 1.8 ha i ganci e non ha la feature**, e questo si misura. Ci sono
+`CollectEggEvent(uovo, padre, madre, giocatore)` e `HatchEggEvent.Pre/Post`,
+c'e' `EggGroup`, e i dati delle specie portano gia' **`eggGroups`**,
+**`eggCycles`** e **`maleRatio`** (Bulbasaur: monster e grass, 20 cicli,
+0.875). Ma cercando chi <em>lancia</em> `CollectEggEvent` si trovano soltanto
+il registro degli eventi, un handler di progressi e uno di statistiche: cioe'
+solo ascoltatori. In 1.8 nessuno lo lancia. Il progresso e la statistica per
+"hai raccolto un uovo" esistono e aspettano.
+
+Un fatto che conta per il progetto: **un uovo e' un `PokemonProperties`**, non
+un Pokemon. E' una specifica — si salva in NBT con `saveToNBT` e diventa un
+Pokemon con `create(player)` solo alla schiusa. Quindi lo slot dell'uovo e'
+leggero: non tiene una creatura, tiene una riga.
+
+**Dove nascono: nella zona dell'amicizia.** E' il posto giusto per ragioni che
+non sono di comodo: nei giochi le uova vengono dal day-care, che e' esattamente
+un posto dove due Pokemon stanno bene insieme, ed e' la stessa stanza che
+stiamo costruendo per far salire l'amicizia. La palestra e l'allevamento sono
+due posti diversi, e va bene che lo siano.
+
+**Come, senza buttare il lavoro quando arriva la 1.9.** Le 1.9 hanno le uova
+per specie, quindi qualunque cosa scriviamo adesso verra' sostituita. La via
+che non si butta e' passare **dai loro eventi invece che intorno**: la zona
+guarda le coppie (gruppi uovo compatibili, sessi opposti secondo `maleRatio`,
+entrambi presenti e contenti), **lancia `CollectEggEvent`** rispettandone
+l'annullamento, e tiene la specifica che ne esce nel suo slot; la schiusa passa
+per `HatchEggEvent`. Cosi' progressi e statistiche si accendono da se', e il
+giorno che Cobblemon implementa la cosa per davvero il nostro pezzo o si toglie
+o convive, invece di litigare. **Le texture delle uova non le disegniamo**: per
+specie sono mille, e le porta la 1.9.
+
+**Cosa resta da decidere:** i numeri — quanto grande e' l'area, quanto costa un
+tick, la probabilita' di rottura dei sacchi, quanti EV per sacco, di quanto
+sale l'amicizia, quanto rende un habitat pieno contro uno vuoto — e se i tre
+pascoli sono **tre blocchi o uno** che legge l'area e capisce da se' cosa gli
+hanno costruito attorno. Su quest'ultimo: un blocco solo e' piu' elegante da
+guardare e peggiore da giocare, perche' non si vede da fuori a cosa serve una
+stanza finche' non la si ispeziona. Tre blocchi si riconoscono a colpo
+d'occhio, e sono la stessa classe con tre letture diverse dell'area.
+
+E una sola cosa da decidere prima di scrivere una riga: **se l'allevamento lo
+facciamo adesso** passando dai ganci di Cobblemon, sapendo che la 1.9 lo
+sostituira', **o se per ora si lascia lo slot e niente dentro**.
 
 ## 7. Alpha Pokémon e leggendari
 
