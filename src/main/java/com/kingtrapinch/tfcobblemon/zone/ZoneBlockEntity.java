@@ -23,21 +23,18 @@ import java.util.List;
  * {@code getTetheredPokemon()}, che e' pubblico, e non si entra in casa di
  * nessuno.
  *
- * <p>Attaccato vuol dire attaccato: uno dei quattro lati, all'altezza del
- * pascolo o del suo pezzo alto. Non un raggio — un pascolo e la sua macchina
- * si toccano, e si vede da fuori quale macchina serve quale pascolo.
- *
- * <p><b>Un pascolo, una specializzazione.</b> Se ce ne sono due attaccate allo
- * stesso pascolo non lavora nessuna delle due: e' un conflitto, e va detto,
- * non risolto a caso scegliendone una.
+ * <p>Attaccato vuol dire <b>in cima</b>: sopra la testa del pascolo, e da
+ * nessun'altra parte. Un posto solo, che si vede da fuori, e che rende "un
+ * pascolo, una specializzazione" una conseguenza della geometria invece di una
+ * regola da far rispettare.
  */
 public class ZoneBlockEntity extends BlockEntity {
 
-    /** Ogni quanti tick si guarda l'orologio. Il lavoro lo misura il calendario. */
+    /** Ogni quanti tick si guarda l'orologio. */
     private static final int BATTITO = 40;
 
     private int attesa = BATTITO;
-    /** L'ora di calendario dell'ultimo punto maturato. */
+    /** Il tick dell'ultimo punto maturato. */
     private long visto;
     @Nullable
     private BlockPos pascolo;
@@ -50,60 +47,24 @@ public class ZoneBlockEntity extends BlockEntity {
         return getBlockState().getBlock() instanceof ZoneBlock zona ? zona.genere() : ZoneKind.GYM;
     }
 
-    /** I sei posti in cui puo' stare il pascolo attaccato a questo blocco. */
-    private Iterable<BlockPos> intorno() {
-        final List<BlockPos> posti = new ArrayList<>(8);
-        for (net.minecraft.core.Direction verso : net.minecraft.core.Direction.Plane.HORIZONTAL) {
-            final BlockPos lato = getBlockPos().relative(verso);
-            posti.add(lato);
-            // il pezzo con la block entity e' quello basso: se il controllore e'
-            // all'altezza di quello alto, il pascolo sta di sbieco sotto
-            posti.add(lato.below());
-        }
-        return posti;
-    }
-
-    /** Il pascolo attaccato, se c'e' e se e' solo suo. */
+    /**
+     * Il pascolo sotto, se c'e'.
+     *
+     * <p>Le macchine si attaccano <b>in cima</b> e da nessun'altra parte: il
+     * pascolo e' alto due e la sua block entity sta nel pezzo basso, quindi
+     * stando sopra la testa del pascolo il posto da guardare e' uno solo, due
+     * blocchi sotto. Un posto solo vuol dire anche che <b>una macchina per
+     * pascolo</b> non e' una regola da far rispettare: e' la geometria.
+     */
     @Nullable
     public PokemonPastureBlockEntity pascolo(ServerLevel level) {
-        if (pascolo != null
-                && level.getBlockEntity(pascolo) instanceof PokemonPastureBlockEntity trovato) {
-            return conteso(level, pascolo) ? null : trovato;
+        final BlockPos sotto = getBlockPos().below(2);
+        if (level.getBlockEntity(sotto) instanceof PokemonPastureBlockEntity trovato) {
+            pascolo = sotto;
+            return trovato;
         }
         pascolo = null;
-        for (BlockPos pos : intorno()) {
-            if (level.getBlockEntity(pos) instanceof PokemonPastureBlockEntity trovato) {
-                pascolo = pos.immutable();
-                setChanged();
-                return conteso(level, pascolo) ? null : trovato;
-            }
-        }
         return null;
-    }
-
-    /** Se un altro controllore e' attaccato allo stesso pascolo. */
-    public boolean conteso(ServerLevel level, BlockPos pascolo) {
-        for (net.minecraft.core.Direction verso : net.minecraft.core.Direction.Plane.HORIZONTAL) {
-            for (BlockPos pos : new BlockPos[] {pascolo.relative(verso),
-                    pascolo.relative(verso).above()}) {
-                if (!pos.equals(getBlockPos())
-                        && level.getBlockEntity(pos) instanceof ZoneBlockEntity) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    /** Se c'e' un pascolo attaccato ma ha gia' un'altra macchina. */
-    public boolean inConflitto(ServerLevel level) {
-        for (BlockPos pos : intorno()) {
-            if (level.getBlockEntity(pos) instanceof PokemonPastureBlockEntity
-                    && conteso(level, pos)) {
-                return true;
-            }
-        }
-        return false;
     }
 
     /** Chi sta al pascolo accanto, in questo momento. */
@@ -124,8 +85,7 @@ public class ZoneBlockEntity extends BlockEntity {
 
     /**
      * Il giro di lavoro. Il battito serve solo a guardare l'orologio: quanti
-     * punti sono maturati lo dice il calendario, percio' una settimana passa
-     * anche mentre il chunk era scaricato.
+     * punti sono maturati lo dicono i tick passati.
      */
     public void tick(ServerLevel level) {
         if (--attesa > 0) {
@@ -136,18 +96,21 @@ public class ZoneBlockEntity extends BlockEntity {
         if (dentro.isEmpty()) {
             // senza nessuno da allenare l'orologio non corre: il tempo fermo
             // non si accumula per essere speso tutto insieme dopo
-            visto = ZoneClock.adesso();
+            visto = level.getGameTime();
             return;
         }
+        final long adesso = level.getGameTime();
         if (visto == 0L) {
-            visto = ZoneClock.adesso();
+            visto = adesso;
             return;
         }
-        final int punti = ZoneClock.punti(visto);
+        // quante volte piu' veloce: le vitamine intorno accorciano il passo
+        final int fretta = genere().fretta(level, this);
+        final int punti = ZoneClock.punti(adesso, visto, fretta);
         if (punti <= 0) {
             return;
         }
-        visto += (long) punti * ZoneClock.passo();
+        visto += (long) punti * Math.max(1L, ZoneClock.passo() / Math.max(1, fretta));
         setChanged();
         genere().lavora(level, this, dentro, punti);
     }

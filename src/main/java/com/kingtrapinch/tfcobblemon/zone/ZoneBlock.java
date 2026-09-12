@@ -92,8 +92,8 @@ public class ZoneBlock extends BaseEntityBlock {
     }
 
     /**
-     * A mani vuote dice se ha trovato un pascolo a cui attaccarsi: e' l'unica
-     * cosa che uno ha bisogno di sapere guardandolo.
+     * A mani vuote dice se e' sopra un pascolo e su quanti sta lavorando.
+     * Finche' non c'e' la finestra, e' l'unica cosa che serve sapere.
      */
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos,
@@ -102,9 +102,7 @@ public class ZoneBlock extends BaseEntityBlock {
         if (player instanceof ServerPlayer giocatore && level instanceof ServerLevel server
                 && level.getBlockEntity(pos) instanceof ZoneBlockEntity zona) {
             final net.minecraft.network.chat.Component detto;
-            if (zona.inConflitto(server)) {
-                detto = net.minecraft.network.chat.Component.translatable("tfcobblemon.zone.conteso");
-            } else if (zona.pascolo(server) == null) {
+            if (zona.pascolo(server) == null) {
                 detto = net.minecraft.network.chat.Component.translatable("tfcobblemon.zone.senza_pascolo");
             } else {
                 detto = net.minecraft.network.chat.Component.translatable(

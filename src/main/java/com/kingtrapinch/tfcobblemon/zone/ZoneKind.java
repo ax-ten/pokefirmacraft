@@ -12,8 +12,13 @@ package com.kingtrapinch.tfcobblemon.zone;
 public enum ZoneKind {
     /** Palestra: si contano i sacchi da boxe, e salgono gli EV. */
     GYM("gym"),
-    /** Terme: si conta l'arredo, e sale l'amicizia. */
-    SPA("spa"),
+    /**
+     * Ozio: si conta l'arredo, e sale l'amicizia. Il nome guarda alla Ball
+     * Chic — la Luxury Ball, quella che nei giochi fa salire l'amicizia piu'
+     * in fretta — che e' il rimando giusto per una stanza dove i Pokemon
+     * stanno bene e non fanno niente.
+     */
+    LEISURE("leisure"),
     /**
      * Recinto: si contano le condizioni di spawn soddisfatte, e rende quello
      * che il Pokemon droppa. Non si chiama "habitat" per non confonderlo con
@@ -36,9 +41,9 @@ public enum ZoneKind {
      * trova intorno a se'.
      *
      * <p>{@code punti} sono i punti maturati dal giro scorso, e il loro valore
-     * viene dalla regola unica: una settimana di calendario porta un Pokemon
-     * al massimo, cioe' 252. Un punto e' un EV per la palestra e un punto di
-     * amicizia per le terme.
+     * viene dalla regola unica: tre giorni di gioco portano un Pokemon al
+     * massimo, cioe' 252. Un punto e' un EV per la palestra e un punto di
+     * amicizia per l'ozio.
      *
      * <p>I tre effetti non sono ancora scritti: manca il come, non il dove.
      */
@@ -46,5 +51,18 @@ public enum ZoneKind {
                        java.util.List<com.cobblemon.mod.common.pokemon.Pokemon> dentro,
                        int punti) {
         // TODO i tre effetti, con i numeri decisi
+    }
+
+    /**
+     * Di quante volte va piu' veloce questa zona, per quello che le hanno
+     * messo intorno.
+     *
+     * <p>E' l'unica leva dell'era industriale, e non alza il tetto: un tetto
+     * piu' alto non esiste, 252 e' 252. Le vitamine — che oggi in Cobblemon non
+     * si possono fabbricare, per cui sono roba d'era elettrica — <b>accorciano
+     * il tempo</b>, ed e' anche il motivo per cui ha senso sbloccarle.
+     */
+    public int fretta(net.minecraft.server.level.ServerLevel level, ZoneBlockEntity zona) {
+        return 1;
     }
 }

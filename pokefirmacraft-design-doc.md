@@ -1083,11 +1083,11 @@ Perche' e' meglio, punto per punto:
 - **Il problema "dove abita il mio Pokemon" sparisce.** Prima erano quattro
   posti (PC, box invisibile, pascolo, zona); adesso restano quelli che c'erano
   gia'.
-- **Una macchina per pascolo, e si vede da fuori quale.** Le specializzazioni
-  **non si sommano**: un pascolo fa una cosa alla volta, e se ce ne sono due
-  attaccate non lavora nessuna delle due — e' un conflitto, e va detto, non
-  risolto a caso scegliendone una. Cambiare mestiere e' spostare un blocco,
-  non svuotare un contenitore.
+- **Una macchina per pascolo, e lo dice la geometria.** Le macchine si
+  attaccano **in cima**, sopra la testa del pascolo, e da nessun'altra parte:
+  un posto solo, quindi "non si sommano" non e' una regola da far rispettare
+  ne' un conflitto da segnalare — e' che non c'e' dove mettere la seconda.
+  Cambiare mestiere e' cambiare il blocco sopra.
 - **La cucitura PC/ball non serve piu'.** Era un'interfaccia per decidere cosa
   si vede aprendo una zona; se i Pokemon stanno nel pascolo, quella domanda ha
   gia' una risposta sola, data una volta sul pascolo — il PC in un mondo
@@ -1096,13 +1096,12 @@ Perche' e' meglio, punto per punto:
   quello che gli hai messo intorno e' esattamente quello che un giocatore di
   GregTech si aspetta di fare.
 
-**Multiblocco vuol dire solo "attaccati".** Il controllore sta su uno dei
-quattro lati del pascolo, all'altezza del pezzo basso o di quello alto — non un
-raggio: un pascolo e la sua macchina si toccano, e guardandoli si capisce quale
-serve quale. Quello che si **conta in un'area** e' invece l'arredo: i sacchi,
-le bottiglie, le condizioni di spawn. Una forma obbligata anche per quelli
-ucciderebbe la meta' bella dell'idea, che e' costruirsi una stanza che sia bella
-e che *per questo* funzioni meglio.
+**Multiblocco vuol dire solo "attaccati", e attaccati vuol dire in cima.** La
+macchina va sopra la testa del pascolo: un posto solo, che si vede da lontano,
+e che fa il lavoro della regola da se'. Quello che si **conta in un'area** e'
+invece l'arredo: i sacchi, le bottiglie, le condizioni di spawn. Una forma
+obbligata anche per quelli ucciderebbe la meta' bella dell'idea, che e'
+costruirsi una stanza che sia bella e che *per questo* funzioni meglio.
 
 **Il limite non e' un numero di slot, e' l'attrezzatura.** Cadendo il
 contenitore cade anche il bisogno di dire "quattro": la palestra allena tanti
@@ -1111,43 +1110,56 @@ dieci ma i sacchi sono due, se ne allenano due. La stanza dice il limite da se',
 come doveva essere dall'inizio.
 
 **Chi trova chi.** E' il controllore a cercarsi il pascolo, non il contrario:
-cosi' il pascolo non sa niente di noi e non serve entrarci dentro. Guarda i
-suoi lati, e l'indirizzo trovato si tiene.
+cosi' il pascolo non sa niente di noi e non serve entrarci dentro. E il posto
+da guardare e' uno: due blocchi sotto.
 
-### La settimana e' l'unita' di misura
+### Il traguardo e' l'unita' di misura
 
-**In una settimana di gioco un Pokemon arriva al massimo**: 252 in una
-statistica, 255 di amicizia. Da questa regola sola si ricava tutto il resto,
-invece di scegliere numeri a mano:
+**In tre giorni di gioco un Pokemon arriva al massimo**: 252 in una statistica,
+255 di amicizia. Da questa regola sola si ricava il resto invece di scegliere
+numeri a mano — un **punto** ogni `tempo / 252`, un EV per la palestra e un
+punto di amicizia per l'ozio — e se il traguardo si sposta, tutto il resto si
+sposta con lui.
 
-- un **punto** ogni `settimana / 252` tick — un EV per la palestra, un punto di
-  amicizia per le terme. Non e' scritto come costante: si calcola, cosi' se la
-  lunghezza del giorno cambia la settimana resta una settimana
-- maxare **una** statistica costa una settimana, e col tetto totale di 510 uno
-  spread completo costa **due settimane**. L'amicizia parte da 50-70 e arriva a
-  255 **entro** la settimana
+Tre giorni e non una settimana perche' il conto va fatto in tempo vero: un
+giorno di gioco sono venti minuti, quindi **un'ora per una statistica** e due
+ore per uno spread completo, che col tetto totale di 510 e' il massimo
+possibile. Una settimana sarebbe stata due ore e venti **per statistica**, e
+sette per uno spread: troppo perche' qualcuno lo faccia davvero.
+
+Due numeri che ne derivano:
+
 - **un sacco = una statistica maxata.** Se il sacco si logora una volta ogni 84
   punti, i tre stadi fanno 252: un sacco consumato per intero e' esattamente
-  una statistica portata al tetto. Due cose esauribili che condividono un numero
-- le **bottiglie non aggiungono EV, dimezzano il tempo.** Cosi' restano un
-  acceleratore e il tetto resta onesto: con le bottiglie giuste intorno la
-  settimana diventa mezza
+  un tetto raggiunto. Due cose esauribili che condividono un numero
+- gli acceleratori **non aggiungono EV, accorciano il tempo.** Cosi' restano
+  acceleratori e il tetto resta onesto
 
-**Il tempo e' quello del calendario di TFC, non i tick del blocco.** Lo fanno
-cosi' le colture e il cibo di TFC (`Calendars.SERVER.getTicks()`), e la ragione
-e' la stessa: una settimana deve passare anche mentre non sei li' a guardare,
-altrimenti l'allenamento diventa un premio a chi tiene il chunk caricato. Con
-una eccezione: **a pascolo vuoto l'orologio non corre**, o il tempo fermo si
-accumulerebbe per essere speso tutto insieme al primo Pokemon che arriva.
+**E il tempo sono i tick del mondo, non il calendario di TFC.** Ci ero andato
+col calendario perche' cosi' una settimana passa anche mentre non guardi —
+ragionamento giusto, mod sbagliata: questa famiglia di blocchi deve poter
+vivere **anche senza TFC** (vedi sotto), e `Calendars` e' di TFC. Quindi tick,
+e il tempo scorre mentre il chunk e' caricato. Con un'eccezione che resta:
+**a pascolo vuoto l'orologio si riazzera**, o il tempo fermo si accumulerebbe
+per essere speso tutto insieme sul primo Pokemon che arriva.
 
-### Il tetto lo mette il blocco
+### Non ci sono palestre migliori: ci sono integratori
 
-La palestra dichiara **fino a quanto** puo' allenare, e quello diventa la scala
-di progressione senza inventare meccaniche nuove: una palestra rustica si ferma
-a un tetto basso, quella industriale arriva a 252. Un Pokemon che ha raggiunto
-il tetto della *sua* palestra non sale piu' finche' non gliene costruisci una
-migliore — ed e' il modo piu' diretto di dire che l'allenamento vero e' roba
-d'era avanzata.
+Avevo proposto tetti diversi per blocchi diversi — palestra rustica, palestra
+industriale — e non va: **il tetto non si tocca**, 252 e' 252, e una palestra
+che allena "fino a 100" e' una palestra rotta, non una palestra piccola. La
+palestra e' una.
+
+Quello che l'era industriale sblocca sono le **vitamine**, e quelle
+**accorciano il tempo**: e' la stessa leva delle bottiglie, piu' forte. Il che
+chiude un cerchio che avevamo gia' aperto — le vitamine in Cobblemon non hanno
+ricetta (sezione 9), per cui renderle fabbricabili in era elettrica *e* farne
+l'acceleratore della palestra sono la stessa decisione vista da due lati.
+
+E con la **polvere di bacca** — quella che fa il Berry Crush, sezione 8.2 — ci
+si fanno i **drink**: la via artigianale dello stesso acceleratore, per chi non
+ha ancora la chimica. Una palestra sola, tre livelli di integrazione: niente,
+bottiglie e drink, vitamine.
 
 ### L'interfaccia serve, e serve poco
 
@@ -1156,6 +1168,12 @@ quello, o si allena tutto il pascolo o si va a indovinare. Una finestra piccola
 — una riga per Pokemon, un interruttore, e la statistica scelta fra quelle di
 cui c'e' un sacco intorno — che fa anche da quadrante: si vede chi e' a che
 punto e quanto manca al tetto.
+
+E un **interruttore per vedere l'area**, in stile debug: acceso, la zona
+disegna fin dove arriva e cosa ci ha trovato dentro. Non e' un vezzo da
+sviluppatore — l'area la si conta in silenzio, e senza un modo di vederla il
+giocatore non ha nessun appiglio per capire perche' un sacco messo la' non
+conta e uno messo qua si'.
 
 ### Le sei bacche che togliono EV, per disfare gli errori
 
@@ -1170,12 +1188,19 @@ delle bottiglie, il punto che matura **scende** invece di salire. Non e' una
 meccanica in piu' — e' lo stesso orologio col segno cambiato — e disfare un
 errore costa il tempo che e' costato farlo.
 
-### Le terme curano, perche' sono terme
+### L'ozio, e la Ball Chic
 
-Oltre all'amicizia, una sorgente calda dovrebbe rimettere in piedi: HP e
-alterazioni di stato che si sistemano col tempo, mentre il Pokemon sta li'. E'
-quello che le terme fanno nei giochi, costa poco, e da' alla stanza un secondo
-motivo di esistere anche quando l'amicizia e' al massimo.
+La stanza dell'amicizia non si chiama "terme": si chiama **ozio** — `leisure` —
+e il rimando e' alla **Ball Chic**, che in inglese e' la Luxury Ball e nei
+giochi fa salire l'amicizia piu' in fretta. E' il riferimento giusto per una
+stanza dove i Pokemon stanno bene e non fanno niente, e apre due rimandi che
+non costano niente: la ball dentro la ricetta del blocco, e un Pokemon che sta
+in una Ball Chic che guadagna amicizia piu' in fretta — che e' la funzione che
+quella ball ha di suo, non una cosa inventata.
+
+E l'ozio **cura**: HP e alterazioni di stato che si sistemano col tempo mentre
+il Pokemon sta li'. Costa poco e da' alla stanza un motivo di esistere anche
+quando l'amicizia e' al massimo.
 
 ### Il pascolo cambia faccia
 
@@ -1225,10 +1250,12 @@ a se', con l'integrazione a TFC**, come per il catalogo dei minigiochi
 (sezione 8.2).
 
 Non e' una nota organizzativa, e' un vincolo tecnico da rispettare mentre li si
-scrive: **vanno tenuti scollegati**. Blocchi propri, deposito proprio, e
-nessuna mano dentro le cose della cintura o delle ball oltre a quello che passa
-per un'interfaccia. Se domani si staccano, si deve staccare una cartella e non
-sfilare un filo da sotto tutto il resto.
+scrive, e ha una forma precisa: **niente di TFC entra in quel pacchetto**.
+Nemmeno il calendario, che era la cosa piu' comoda del mondo da usare per far
+passare il tempo (vedi 6.7: ci ero andato, e sono tornato indietro ai tick).
+Blocchi propri, nessuna mano dentro le cose della cintura o delle ball oltre a
+quello che passa per un'interfaccia. Se domani si staccano, si deve staccare una
+cartella e non sfilare un filo da sotto tutto il resto.
 
 **Cosa resta da fare, in ordine:** i tre effetti — i numeri ci sono, li detta
 la settimana — poi la finestrella del controllore, poi il cambio di faccia del

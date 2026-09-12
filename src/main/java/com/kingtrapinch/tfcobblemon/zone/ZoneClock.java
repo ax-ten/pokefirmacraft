@@ -1,47 +1,49 @@
 package com.kingtrapinch.tfcobblemon.zone;
 
-import net.dries007.tfc.util.calendar.Calendars;
-import net.dries007.tfc.util.calendar.ICalendar;
-
 /**
  * Il tempo di una zona, e da dove vengono i suoi numeri.
  *
- * <p>La regola e' una sola, ed e' quella che detta tutto il resto: <b>in una
- * settimana di gioco un Pokemon arriva al massimo</b> — 252 in una statistica,
- * 255 di amicizia. Da cui il passo: una settimana sono sette giorni di
- * calendario, e in quel tempo devono cadere 252 punti, quindi un punto ogni
- * settimana/252. Non e' un numero scritto a mano: si ricava, cosi' se la
- * lunghezza del giorno cambia la settimana resta una settimana.
+ * <p>La regola e' una: <b>in tre giorni di gioco un Pokemon arriva al
+ * massimo</b> — 252 in una statistica, 255 di amicizia. Da qui si ricava il
+ * passo, un punto ogni {@code tempo / 252}, invece di scegliere un numero a
+ * mano: se si cambia il traguardo cambia tutto il resto da se'.
  *
- * <p>E il tempo e' quello del <b>calendario di TFC</b>, non i tick del blocco.
- * Lo fanno cosi' le colture e il cibo di TFC, e la ragione e' la stessa: una
- * settimana deve passare anche mentre non sei li' a guardare, altrimenti
- * l'allenamento diventa un premio a chi tiene il chunk caricato.
+ * <p>Tre giorni sono un'ora di gioco vero per una statistica, due ore per uno
+ * spread completo (il tetto totale e' 510). La via industriale non alza il
+ * tetto — un tetto piu' alto non esiste, 252 e' 252 — <b>accorcia il
+ * tempo</b>: e' quello che fanno le vitamine, ed e' anche il motivo per cui
+ * hanno senso solo quando si possono produrre.
+ *
+ * <p>Il tempo sono i <b>tick del mondo</b> e non il calendario di TFC, per una
+ * ragione che non e' tecnica: questa famiglia di blocchi deve poter vivere in
+ * una mod a se' che funziona <b>anche senza TFC</b>. Niente di TFC entra in
+ * questo pacchetto.
  */
 public final class ZoneClock {
     private ZoneClock() {}
 
-    /** I punti che si prendono in una settimana: il tetto di una statistica. */
-    public static final int PUNTI_A_SETTIMANA = 252;
+    /** I punti che servono per arrivare al tetto di una statistica. */
+    public static final int PUNTI_AL_TETTO = 252;
 
-    /** Quanti tick di calendario vale un punto. */
+    /** In quanti giorni di gioco si arriva al tetto. */
+    public static final int GIORNI_AL_TETTO = 3;
+
+    /** Quanto dura un giorno di Minecraft. */
+    private static final int TICK_AL_GIORNO = 24000;
+
+    /** Quanti tick vale un punto, senza acceleratori. */
     public static long passo() {
-        return Math.max(1L, (long) ICalendar.TICKS_IN_DAY * 7 / PUNTI_A_SETTIMANA);
-    }
-
-    /** Che ora e' per il calendario. */
-    public static long adesso() {
-        return Calendars.SERVER.getTicks();
+        return Math.max(1L, (long) TICK_AL_GIORNO * GIORNI_AL_TETTO / PUNTI_AL_TETTO);
     }
 
     /**
-     * Quanti punti sono maturati da un certo momento, e da quando ripartire.
-     * Il resto non si butta: si tiene indietro l'orologio di quello che non e'
-     * ancora maturato, altrimenti passi lunghi perderebbero sempre un pezzo.
+     * Quanti punti sono maturati da un certo momento. Il resto non si butta:
+     * chi chiama riporta indietro l'orologio di quello che non e' ancora
+     * maturato, altrimenti ogni giro perderebbe un pezzo di avanzamento.
      */
-    public static int punti(long da) {
-        final long passo = passo();
-        final long passato = adesso() - da;
-        return passato <= 0 ? 0 : (int) Math.min(passato / passo, PUNTI_A_SETTIMANA * 4L);
+    public static int punti(long adesso, long da, int quanteVolte) {
+        final long passo = Math.max(1L, passo() / Math.max(1, quanteVolte));
+        final long passato = adesso - da;
+        return passato <= 0 ? 0 : (int) Math.min(passato / passo, PUNTI_AL_TETTO);
     }
 }
