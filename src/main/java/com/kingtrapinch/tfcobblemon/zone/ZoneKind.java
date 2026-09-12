@@ -174,14 +174,17 @@ public enum ZoneKind {
      * attaccato al controllore se c'e', altrimenti a terra.
      *
      * <p><b>Continuo</b>: ogni Pokemon matura per conto suo e lascia cadere un
-     * pezzo appena e' pronto. Quanto in fretta lo dice {@link ZoneWorld} —
-     * di base il livello, e dove c'e' TFC anche la stagione e il clima — per
-     * cui due Pokemon nella stessa stanza non rendono uguale.
+     * pezzo appena e' pronto. Quanto in fretta lo dicono due cose: {@link
+     * ZoneWorld} — di base il livello, e dove c'e' TFC anche la stagione e il
+     * clima — e {@link RanchHabitat}, cioe' quanto il posto somiglia a dove
+     * quel Pokemon nascerebbe da solo. Per cui due Pokemon nella stessa stanza
+     * non rendono uguale, e lo stesso Pokemon in due stanze nemmeno.
      */
     private static void ranch(ServerLevel level, ZoneBlockEntity zona,
                               List<Pokemon> dentro, int punti) {
         for (Pokemon mon : dentro) {
-            final float resa = ZoneWorld.attivo().resa(level, zona.getBlockPos(), mon);
+            final float resa = ZoneWorld.attivo().resa(level, zona.getBlockPos(), mon)
+                    * RanchHabitat.punteggio(level, zona.getBlockPos(), mon);
             final int maturo = zona.matura(mon.getUuid(), (int) (punti * FINO * resa));
             for (int pezzi = 0; pezzi < maturo; pezzi++) {
                 raccogli(level, zona, mon);
