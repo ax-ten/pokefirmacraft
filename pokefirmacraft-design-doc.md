@@ -1073,6 +1073,68 @@ stanza che uno costruisce davvero — quattro sacchi e le bottiglie intorno — 
 perche' il tick deve contare i blocchi dell'area, e contarli per sedici Pokemon
 quattro volte al secondo e' il principe di tutti i mali un'altra volta.
 
+### Tre blocchi, e come si attaccano al PC
+
+**Tre blocchi, non uno.** Da fuori si deve vedere a cosa serve una stanza senza
+entrarci a ispezionare, e tre blocchi si riconoscono a colpo d'occhio. Sono la
+stessa classe con tre letture diverse dell'area.
+
+**E si attaccano al PC come fa il pascolo, cioe' ospitando la sua block
+entity.** Questa non e' una scelta di gusto, la decidono due righe del loro
+codice che ho letto:
+
+1. `PasturePokemonHandler` — il pezzo che riceve "metti questo Pokemon al
+   pascolo" dalla schermata del PC — cerca la block entity all'indirizzo del
+   link e **pretende che sia una `PokemonPastureBlockEntity`**, poi le chiama
+   `canAddPokemon` e `tether`. Con una block entity nostra quel messaggio cade
+   nel vuoto, e tutta la finestra del PC con lui.
+2. Il loro tick chiama `togglePastureOn`, che fa un **cast secco a
+   `PastureBlock`**: un blocco nostro che ospita la loro entita' esplode venti
+   volte al secondo.
+
+Quindi: i tre blocchi sono nostri e ospitano la **loro** block entity. In
+cambio
+arrivano gratis la finestra del PC in modalita' pascolo, il link, i permessi,
+il legame, il vagabondaggio nei confini, il controllo periodico e lo
+sganciamento, e tutto quello che serve per aprirla e' pubblico:
+`OpenPasturePacket`, `PastureLinkManager.createLink`,
+`PasturePermissionControllers.permit`, `CobblemonNetwork.sendPacketToPlayer`.
+
+**L'evento di NeoForge fatto per questo non si puo' usare, e vale saperlo.**
+`BlockEntityTypeAddBlocksEvent.modify` **rifiuta un blocco che non discenda da
+quelli che il tipo ha gia'** — qui `PastureBlock`, che e' final: quindi la
+strada ufficiale e' chiusa in partenza. Quel controllo e' una rete generica
+contro le block entity che castano il proprio blocco, e nel pascolo di cast ce
+n'e' **uno**, in `togglePastureOn`, chiamato solo dal loro tick. Percio' si
+scrive l'insieme dei blocchi validi a mano, con l'accessorio pubblico di
+NeoForge che l'evento usa lui stesso (`BlockEntityTypeAccessor`), e la ragione
+sta scritta sul posto. E' l'unico punto di tutto lo strato in cui si passa da
+una porta di servizio.
+
+**Per il resto non serve nessun innesto**, che era il prezzo che avevo previsto.
+Il loro tick fa tre cose: il conto alla rovescia fino al controllo dei legami,
+il metabolismo dei Pokemon al pascolo, e accendere il blocco mentre qualcuno
+guarda. Le prime due passano da metodi pubblici; solo la terza chiama
+`togglePastureOn`, ed e' l'unico posto da cui quel cast venga chiamato.
+Riscrivendo il tick — sono dieci righe — si chiamano gli stessi metodi e si
+lascia fuori quella riga. Zero mixin su Cobblemon per tutto lo strato di
+fondo.
+
+### Le ball sono uno strato sopra, e sta a noi
+
+Attaccarsi al PC e' il **fondo**: cosi' i tre blocchi funzionano in un mondo
+Cobblemon qualunque, e questa e' la parte che un giorno puo' uscire di qui
+(vedi sotto). Usare le **ball fisiche** invece del computer e' quello che
+questa mod aggiunge — e' roba di TFC e di Greg, dove il PC non e' un
+elettrodomestico che hai da sempre — e va **sopra**, non dentro.
+
+Sopra e non dentro significa una cosa precisa: non un innesto sul loro codice
+ma **una cucitura nostra, aperta di proposito**. Un'interfaccia sola — "come si
+guarda dentro una zona" — con due attuazioni: quella che apre la finestra del
+PC, e quella che apre la cesta delle ball. La prima e' il fondo, la seconda si
+installa. Chi non ha la cintura vede il PC; chi ce l'ha vede le ball, e non
+cambia una riga della zona.
+
 ### Le uova non sono roba nostra
 
 Nascono dal pascolo normale, quando nasceranno: **noi non ce ne occupiamo**, e

@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "tfcobblemon:block/zone/ranch"
+    },
+    "facing=east": {
+      "model": "tfcobblemon:block/zone/ranch",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "tfcobblemon:block/zone/ranch",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "tfcobblemon:block/zone/ranch",
+      "y": 270
+    }
+  }
+}

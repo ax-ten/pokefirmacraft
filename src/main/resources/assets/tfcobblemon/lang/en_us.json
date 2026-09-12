@@ -215,5 +215,8 @@
   "block.tfcobblemon.punching_bag.special_defence_torn": "Torn Sp. Def Punching Bag",
   "block.tfcobblemon.punching_bag.speed": "Speed Punching Bag",
   "block.tfcobblemon.punching_bag.speed_worn": "Worn Speed Punching Bag",
-  "block.tfcobblemon.punching_bag.speed_torn": "Torn Speed Punching Bag"
+  "block.tfcobblemon.punching_bag.speed_torn": "Torn Speed Punching Bag",
+  "block.tfcobblemon.zone.gym": "Training Ground",
+  "block.tfcobblemon.zone.spa": "Hot Spring",
+  "block.tfcobblemon.zone.ranch": "Ranch"
 }

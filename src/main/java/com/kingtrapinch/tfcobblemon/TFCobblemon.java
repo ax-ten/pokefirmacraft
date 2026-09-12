@@ -15,6 +15,7 @@ import com.kingtrapinch.tfcobblemon.item.ModItems;
 import com.kingtrapinch.tfcobblemon.item.custom.GolettItem;
 import com.kingtrapinch.tfcobblemon.pasture.ModPasture;
 import com.kingtrapinch.tfcobblemon.world.ModWorld;
+import com.kingtrapinch.tfcobblemon.zone.ModZones;
 import com.mojang.logging.LogUtils;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.neoforged.bus.api.IEventBus;
@@ -41,6 +42,7 @@ public class TFCobblemon {
         ModFluids.register(modEventBus);
         ModWorld.register(modEventBus);
         ModPasture.register(modEventBus);
+        ModZones.register(modEventBus);
 
         modEventBus.addListener(this::addCreative);
         modEventBus.addListener(this::setup);

@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "tfcobblemon:block/zone/gym"
+    },
+    "facing=east": {
+      "model": "tfcobblemon:block/zone/gym",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "tfcobblemon:block/zone/gym",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "tfcobblemon:block/zone/gym",
+      "y": 270
+    }
+  }
+}
