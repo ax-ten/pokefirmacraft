@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "half=upper": {
+      "model": "tfcobblemon:block/punching_bag/attack_worn_upper"
+    },
+    "half=lower": {
+      "model": "tfcobblemon:block/punching_bag/attack_worn_lower"
+    }
+  }
+}

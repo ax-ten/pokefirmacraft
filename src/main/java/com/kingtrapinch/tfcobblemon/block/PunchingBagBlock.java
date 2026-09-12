@@ -35,6 +35,9 @@ import java.util.function.Supplier;
  * <p>Si consuma con l'uso, e il consumo si vede: tre stadi come l'incudine di
  * vanilla, che passa per scheggiata e rovinata prima di rompersi. Il passaggio
  * lo decide chi lo usa chiamando {@link #logora}: qui c'e' solo la catena.
+ *
+ * <p>Ogni sacco allena <b>una</b> statistica, e la porta scritta addosso: la
+ * fascia colorata e' quella con cui i giochi disegnano quella statistica.
  */
 public class PunchingBagBlock extends Block {
 
@@ -47,11 +50,19 @@ public class PunchingBagBlock extends Block {
 
     /** Lo stadio successivo di logoramento, o {@code null} se si sfascia. */
     private final Supplier<Block> dopo;
+    /** La statistica che allena, col nome con cui la chiama Cobblemon. */
+    private final String allena;
 
-    public PunchingBagBlock(Properties properties, @Nullable Supplier<Block> dopo) {
+    public PunchingBagBlock(Properties properties, String allena, @Nullable Supplier<Block> dopo) {
         super(properties);
+        this.allena = allena;
         this.dopo = dopo;
         registerDefaultState(stateDefinition.any().setValue(HALF, DoubleBlockHalf.LOWER));
+    }
+
+    /** Che statistica allena questo sacco. */
+    public String allena() {
+        return allena;
     }
 
     @Override

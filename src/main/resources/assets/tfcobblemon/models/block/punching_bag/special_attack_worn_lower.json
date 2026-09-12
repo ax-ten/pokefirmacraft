@@ -1,0 +1,7 @@
+{
+  "parent": "tfcobblemon:block/punching_bag/lower",
+  "textures": {
+    "side": "tfcobblemon:block/punching_bag/special_attack_worn",
+    "end": "tfcobblemon:block/punching_bag/end_worn"
+  }
+}

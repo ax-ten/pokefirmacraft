@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " R ",
+    "BPB",
+    "BSB"
+  ],
+  "key": {
+    "R": {
+      "item": "tfc:rope"
+    },
+    "B": {
+      "item": "tfc:burlap_cloth"
+    },
+    "P": {
+      "item": "cobblemon:power_band"
+    },
+    "S": {
+      "tag": "minecraft:sand"
+    }
+  },
+  "result": {
+    "id": "tfcobblemon:punching_bag/special_defence",
+    "count": 1
+  }
+}

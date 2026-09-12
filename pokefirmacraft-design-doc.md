@@ -933,33 +933,46 @@ quanto va bene**. Uno scheletro solo, tre letture diverse del contenuto. Non
 tre macchine con tre interfacce: tre modi di leggere una stanza che il
 giocatore ha costruito.
 
-**Allenamento EV: i sacchi da boxe.** Sono blocchi che si piazzano nell'area e
-si **consumano con l'uso**: ad ogni tick una percentuale che si deteriorino, e
-il deterioramento si vede, a stadi, come l'incudine di vanilla che passa per
-scheggiata e rovinata prima di rompersi. Il riferimento e' il Fantallenamento,
-che pero' e' di **X e Y** e non di Bianco e Nero — e da li' viene anche l'idea
-che ogni sacco alleni una statistica sua.
+**Allenamento EV: i sacchi da boxe, sei.** Uno per statistica, e non c'e' un
+sacco generico: allenare vuol dire scegliere, e gli EV hanno un tetto che si
+spende una volta sola — **252** per statistica, **510** in totale. Ogni sacco
+porta scritta addosso la sua, con la fascia colorata che i giochi usano per
+disegnare quella statistica. Il riferimento e' il Fantallenamento, che pero' e'
+di **X e Y** e non di Bianco e Nero.
 
-Questa parte si incastra bene con un tetto che c'e' gia': gli EV si fermano a
-**252** per statistica e **510** in totale. Quindi da una parte un budget che
-si esaurisce, dall'altra attrezzi che si consumano — due cose finite che si
-guardano, che e' esattamente il contrario di una macchina che gira per sempre.
+Sono blocchi che si **consumano con l'uso**: ad ogni tick una percentuale che
+si deteriorino, e il deterioramento si vede a stadi, come l'incudine di vanilla
+che passa per scheggiata e rovinata prima di rompersi. Da una parte un budget
+che si esaurisce, dall'altra attrezzi che si consumano: due cose finite che si
+guardano, che e' il contrario di una macchina che gira per sempre.
 
-**Dei sacchi c'e' gia' il blocco.** Tre stadi — sano, logoro, sfondato — come
-blocchi distinti e non come proprieta' di usura, per la stessa ragione per cui
-l'incudine di vanilla ne ha tre: uno stadio che si porta dietro l'item giusto
-quando lo stacchi dal soffitto. Sono **alti due metri** e si piazzano **solo
-appesi**: vogliono un soffitto sopra e il vuoto sotto, e il pezzo che si piazza
-e' quello alto — dove clicchi e' dove sta l'attacco — mentre il basso lo mette
-lui e pende due pixel sopra il pavimento. Rompendo l'uno cade l'altro, e la
-tabella di loot e' solo del pezzo basso, cosi' da qualunque parte lo si rompa
-ne cade uno e uno solo. La tela e' la **juta di TFC** (`tfc:burlap_cloth`),
-riempita di sabbia e appesa a una corda; gli stadi logoro e sfondato sono la
-stessa texture con gli squarci, e dai buchi si vede la sabbia. Manca solo chi
-li usi: e' il blocco d'area che deve dire a un Pokemon di prenderli a pugni, e
-chiamare `logora` quando succede.
+**Cosa si brucia per allenare, e cosa si paga per costruire.** Ci sono tre
+famiglie di oggetti candidate, e guardando cosa sono davvero in Cobblemon si
+dispongono da se' su tre ruoli diversi invece di litigare per lo stesso:
 
-**Amicizia: la scenografia.** Non attrezzi ma arredo, da costruire: sale da te',
+| Famiglia | Cosa sono in Cobblemon | Ruolo |
+|---|---|---|
+| **Power item** — weight, bracer, belt, lens, band, anklet | **craftabili** (l'anklet: foglia di menta verde, calcestruzzo, diamanti) e sono **esattamente sei, uno per statistica** | il **cancello**: e' l'oggetto che va nella ricetta del sacco, uno per sacco. Nei giochi sono oggetti da tenere addosso che aumentano gli EV guadagnati, quindi e' anche il ruolo giusto |
+| **Succo e polvere di bacca** | `berry_juice` si fa con **due bacche e una scodella** | il **carburante ordinario**: costa poco, rende poco. La *polvere* di bacca non esiste ancora: la fa il Berry Crush, che sta nel catalogo dei minigiochi (sezione 8.2) — una dipendenza vera fra le due mod |
+| **Oggetti X** — attack, defence, special attack, special defence, speed | **craftabili nella pentola**, quattro per volta, da un fiore e una bacca | il **carburante buono**, che accelera il tick. Attenzione: sono **cinque**, per gli HP non esiste un oggetto X, quindi quel sacco va alimentato d'altro |
+
+Le **vitamine** (HP Up, Protein, Iron, Calcium, Zinc, Carbos) restano fuori, e
+per un motivo misurato: in Cobblemon **non hanno ricetta**, si trovano soltanto.
+Gatare sei sacchi dietro sei oggetti che non si possono fabbricare vorrebbe dire
+che la palestra si costruisce se si e' fortunati.
+
+**Dei sacchi ci sono gia' i blocchi**, diciotto: sei statistiche per tre stadi.
+Sono **alti due metri** e si piazzano **solo appesi** — vogliono un soffitto
+sopra e il vuoto sotto, e il pezzo che si piazza e' quello alto, dove clicchi
+e' dove sta l'attacco, mentre il basso lo mette lui e pende due pixel sopra il
+pavimento. Rompendo l'uno cade l'altro, e la tabella di loot e' solo del pezzo
+basso, cosi' da qualunque parte lo si rompa ne cade uno e uno solo. La tela e'
+la **juta di TFC** (`tfc:burlap_cloth`), riempita di sabbia e appesa a una
+corda; logoro e sfondato sono la stessa texture con gli squarci, e dai buchi si
+vede la sabbia. Manca solo chi li usi: e' il blocco d'area che deve dire a un
+Pokemon di prenderli a pugni, consumare il carburante e chiamare `logora`.
+
+**Amicizia: la scenografia.****Amicizia: la scenografia.** Non attrezzi ma arredo, da costruire: sale da te',
 terme, un giardino. Item nostri, dove contano **quantita' e posizione** dentro
 l'area, e l'amicizia sale ad ogni tick di quanto la stanza se lo merita. E' il
 modo rustico di fare quello che nei giochi si fa camminando col Pokemon
@@ -1098,6 +1111,44 @@ scavare. Rimetterli in piedi viene prima di tarare qualunque numero.
 Niente di implementato. Qui sta la lista, con quello che ho verificato esistere
 come appiglio, perche' la differenza fra un'idea e un lavoro fattibile e'
 sapere su cosa si appoggia.
+
+### Il catalogo sta in un file a parte
+
+L'elenco largo — trecentosessanta righe — e'
+`pokemon_minigiochi_mod_minecraft.md`, che raccoglie le attivita' dell'universo
+Pokemon reinterpretabili come minigiochi. **Quella non e' roba di TFCobblemon**:
+e' una mod compagna, che si appoggia su questa senza starci dentro. Qui restano
+i verdetti e gli appigli; li' sta il catalogo.
+
+Il file porta con se' anche i criteri, e sono la parte che vale piu' della
+lista: dentro gare, puzzle, precisione, tempismo, raccolta a tempo, sport,
+cucina interattiva, percorsi, arcade e multiplayer non da combattimento; fuori
+i combattimenti Pokemon, le Battle Facility, le basi segrete e tutto quello che
+non ha un vero giro da minigioco. E una regola sopra tutte: si reinterpretano
+le **meccaniche**, senza riprodurre asset originali.
+
+Quello che il catalogo aggiunge e che qui non c'era: il **Pokeathlon** coi suoi
+dieci eventi, i **Kids Club** di Stadium e i minigiochi di Stadium 2, il
+**Pokemon-Amie**, il **Dream World**, le attrazioni dei due **PokePark**, il
+**Musical/PokeStar**, il **Game Corner**, e il **Poke Transfer**.
+
+Due cose da segnare, perche' non sono minigiochi e sono piu' grosse di cosi'.
+
+**Il Poke Transfer ha una feature maggiore attaccata.** Il minigioco — bersagli
+che escono dall'erba e si catturano a tempo — e' il rito di passaggio di due
+cose molto piu' ambiziose: **importare Pokemon da un salvataggio 3DS reale**
+(moddato), copiandoli e non spostandoli, e **spostare Pokemon fra due mondi
+Minecraft** attraverso un server centrale o peer to peer. Sono progetti a se',
+e vanno valutati come tali.
+
+**Il Berry Crush fa la polvere di bacca**, che e' il carburante ordinario dei
+sacchi da boxe (sezione 6.7) e che in Cobblemon non esiste. E' l'unico punto in
+cui le due mod si toccano davvero: se la palestra vuole quella polvere, la
+polvere la fa un minigioco che sta di la'.
+
+Un solo disaccordo da tenere a mente: il catalogo elenca il **Voltorb Flip**
+sotto Game Corner, e qui sotto e' bocciato. Vale la bocciatura finche' non la
+si cambia — il catalogo raccoglie i candidati, i verdetti stanno qui.
 
 ### Quello che vogliamo
 
