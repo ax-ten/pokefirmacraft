@@ -427,12 +427,15 @@ di prova il conteggio dei minerali e' rimasto identico a prima, e di 2650
 blocchi di minerale **nessuno** aveva acqua entro due blocchi. Gia' erano
 asciutti; ora lo sono per costruzione.
 
-**E il sasso in superficie ha la faccia del minerale, non del cristallo.** Un
-sasso sciolto in TFC serve a dirti che roccia hai sotto, quindi deve
-assomigliare a quello che si trova scavando: quarzite con le vene, la stessa
-faccia del blocco di minerale. Ci era rimasta la texture del blocco di
-tumblestone di Cobblemon — un lingotto di cristallo per terra — che diceva la
-cosa sbagliata.
+**Il sasso in superficie ha la faccia del cristallo, non della roccia.** Ci
+avevo provato al contrario — quarzite venata, come il minerale — col
+ragionamento che un sasso sciolto di TFC dice che roccia hai sotto. Sbagliato,
+e si e' visto subito in gioco: **non si vedeva piu'.** Un sasso grigio con
+qualche vena arancione, in mezzo alle migliaia di sassi di roccia locale che
+TFC sparge per terra, non e' un indizio — e' mimetismo. Il sasso deve
+mantenere **aspetto e colore della sua tumblestone**: arancione, nero,
+celeste. Un grumo di cristallo per terra si vede da lontano, ed e' l'unica cosa
+che gli si chiede.
 
 **E il minerale sta in `#c:ores`, alla fine.** Lo avevo tenuto fuori di
 proposito, perche' le tre tag dei crolli di TFC — `can_collapse`,
