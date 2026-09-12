@@ -1,8 +1,11 @@
 {
   "neoforge:conditions": [
     {
-      "type": "neoforge:mod_loaded",
-      "modid": "gtceu"
+      "type": "neoforge:not",
+      "value": {
+        "type": "neoforge:mod_loaded",
+        "modid": "gtceu"
+      }
     }
   ],
   "type": "minecraft:crafting_shaped",
@@ -16,7 +19,7 @@
       "item": "tfcobblemon:wrought_iron_ball_base"
     },
     "C": {
-      "item": "gtceu:lv_machine_casing"
+      "item": "tfc:metal/block/wrought_iron"
     },
     "R": {
       "item": "cobblemon:max_revive"
