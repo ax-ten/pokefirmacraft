@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "tfcobblemon:item/ball/unfired_core_mold"
+    "layer0": "tfcobblemon:item/ball/unfired_bead_mold"
   }
 }

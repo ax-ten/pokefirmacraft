@@ -33,9 +33,9 @@ public final class ModBallParts {
             List.of("black", "blue", "green", "pink", "red", "white", "yellow");
 
 
-    /** Quello che lo stampo dei core accetta: solo il nostro fuso. */
-    public static final TagKey<Fluid> CORE_MOLD_FLUIDS = TagKey.create(Registries.FLUID,
-            ResourceLocation.fromNamespaceAndPath(TFCobblemon.MODID, "usable_in_core_mold"));
+    /** Quello che lo stampo delle perline accetta: solo il nostro fuso. */
+    public static final TagKey<Fluid> BEAD_MOLD_FLUIDS = TagKey.create(Registries.FLUID,
+            ResourceLocation.fromNamespaceAndPath(TFCobblemon.MODID, "usable_in_bead_mold"));
 
     /**
      * La ender pearl macinata, e l'impasto che ne esce con quattro tumblestone.
@@ -47,13 +47,13 @@ public final class ModBallParts {
             ITEMS.registerSimpleItem("ender_tumblestone_mix");
 
     /**
-     * Lo stampo dei core, una teglia da otto: si versa una volta e si estraggono
-     * otto core, invece di colarli uno per uno come le basi rustic.
+     * Lo stampo delle perline, una teglia da otto: si versa una volta e se ne
+     * estraggono otto, invece di colarle una per una come le basi rustic.
      */
-    public static final DeferredItem<Item> UNFIRED_CORE_MOLD =
-            ITEMS.registerSimpleItem("unfired_core_mold");
-    public static final DeferredItem<Item> CORE_MOLD =
-            ITEMS.register("core_mold", () -> new MoldItem(() -> 200, CORE_MOLD_FLUIDS,
+    public static final DeferredItem<Item> UNFIRED_BEAD_MOLD =
+            ITEMS.registerSimpleItem("unfired_bead_mold");
+    public static final DeferredItem<Item> BEAD_MOLD =
+            ITEMS.register("bead_mold", () -> new MoldItem(() -> 200, BEAD_MOLD_FLUIDS,
                     new Item.Properties()));
 
     /**

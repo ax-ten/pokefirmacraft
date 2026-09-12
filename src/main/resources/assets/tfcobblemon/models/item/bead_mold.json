@@ -1,0 +1,8 @@
+{
+  "loader": "tfc:fluid_container",
+  "parent": "neoforge:item/default",
+  "textures": {
+    "base": "tfcobblemon:item/ball/bead_mold_empty",
+    "fluid": "tfcobblemon:item/ball/bead_mold_overlay"
+  }
+}

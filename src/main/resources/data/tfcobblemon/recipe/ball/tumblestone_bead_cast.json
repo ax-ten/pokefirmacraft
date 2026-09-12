@@ -2,7 +2,7 @@
   "type": "tfc:casting",
   "break_chance": 0.1,
   "mold": {
-    "item": "tfcobblemon:core_mold"
+    "item": "tfcobblemon:bead_mold"
   },
   "fluid": {
     "amount": 200,
