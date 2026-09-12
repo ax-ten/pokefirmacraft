@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "cobblemon:sky_tumblestone"
+          "name": "tfcobblemon:raw_sky_tumblestone"
         }
       ],
       "conditions": [

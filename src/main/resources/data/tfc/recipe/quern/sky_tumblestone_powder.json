@@ -1,8 +1,13 @@
 {
   "type": "tfc:quern",
-  "ingredient": {
-    "item": "cobblemon:sky_tumblestone"
-  },
+  "ingredient": [
+    {
+      "item": "cobblemon:sky_tumblestone"
+    },
+    {
+      "item": "tfcobblemon:raw_sky_tumblestone"
+    }
+  ],
   "result": {
     "id": "tfcobblemon:sky_tumblestone_powder",
     "count": 1

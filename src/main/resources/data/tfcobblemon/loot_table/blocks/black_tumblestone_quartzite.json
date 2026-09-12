@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "cobblemon:black_tumblestone",
+          "name": "tfcobblemon:raw_black_tumblestone",
           "functions": [
             {
               "function": "minecraft:set_count",

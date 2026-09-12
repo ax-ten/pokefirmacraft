@@ -1,0 +1,15 @@
+{
+  "type": "tfc:quern",
+  "ingredient": [
+    {
+      "item": "cobblemon:tumblestone"
+    },
+    {
+      "item": "tfcobblemon:raw_tumblestone"
+    }
+  ],
+  "result": {
+    "id": "tfcobblemon:tumblestone_powder",
+    "count": 1
+  }
+}

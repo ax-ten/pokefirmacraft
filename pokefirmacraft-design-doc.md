@@ -453,6 +453,43 @@ Un minerale che fa cedere il soffitto se scavi senza puntellare e' TFC che
 funziona. E la tag `tfc:prospectable` che avevamo aggiunto era ridondante —
 vale `#c:ores` — percio' e' via.
 
+### 5.8.1 La tumblestone appena scavata non e' ancora buona
+
+**TFC mette un passo su tutte le sue gemme, e la tumblestone non aveva motivo
+di essere l'eccezione.** Dal minerale di ametista esce `tfc:ore/amethyst`, che
+e' la gemma **grezza**; per averne una usabile (`tfc:gem/amethyst`) serve la
+**carta vetrata**, con una ricetta `tfc:advanced_shapeless_crafting` in cui la
+carta e' l'ingrediente primario e **si consuma a poco a poco** invece di
+sparire (`tfc:damage_crafting_remainder`). Un cristallo strappato alla roccia e'
+opaco e scheggiato: prima di finire in una ball va lisciato.
+
+Quindi: il minerale e i sassi in superficie danno **tumblestone grezza** — tre,
+una per varieta' — e carta vetrata piu' grezza danno la tumblestone di
+Cobblemon.
+
+**E il cerchio si chiude su se stesso.** La ricetta della carta vetrata di TFC
+vuole, fra le altre cose, una polvere di gemma (`#tfc:gem_powders`); la
+tumblestone macinata alla mola e' una polvere di gemma a tutti gli effetti, e
+ci si aggiunge con **un file di tag**. E alla mola ci va anche la **grezza** —
+come per le gemme di TFC, che si macinano sia grezze sia lisciate — per cui il
+primo geode si apre da se': macini un po' di grezza, ti fai la carta vetrata,
+e con quella lisci il resto. Nessun prestito da un'altra gemma.
+
+| | |
+|---|---|
+| minerale, sasso in superficie | → **tumblestone grezza** |
+| grezza + carta vetrata | → tumblestone (quella di Cobblemon) |
+| grezza *o* tumblestone, alla mola | → **polvere di tumblestone** |
+| polvere di tumblestone | → entra nella carta vetrata di TFC |
+
+**Una cosa da decidere: la carta vetrata adesso serve due volte.** La ricetta
+del capture core era gia' carta vetrata + tumblestone, quindi con questo passo
+in mezzo si liscia due volte di fila. Io farei fare il core dalla **grezza**
+invece che dalla lisciata — un sabbiaggio per strada, non due — e la
+tumblestone lisciata resterebbe quello che serve al fluido di cattura e al
+Pokemon Storage Component. Ma e' una ricetta che esiste gia' e la lascio come
+sta finche' non lo dici.
+
 **I sassi in superficie sono un indizio, non decorazione.** Sopra ogni geode
 che nasce, sulla sua colonna, cadono da tre a sei sassi sciolti dello stesso
 cristallo — la feature `tfcobblemon:geode_trail`, che piazza il geode di

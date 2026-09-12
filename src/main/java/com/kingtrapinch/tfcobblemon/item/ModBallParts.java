@@ -126,6 +126,31 @@ public final class ModBallParts {
         }
     }
 
+    /**
+     * La tumblestone appena scavata, che non e' ancora buona a niente.
+     *
+     * <p>E' il passo che TFC mette su tutte le sue gemme: dal minerale esce
+     * {@code tfc:ore/amethyst}, e serve la carta vetrata per farne
+     * {@code tfc:gem/amethyst}. La tumblestone non aveva motivo di essere
+     * l'eccezione — un cristallo strappato alla roccia e' opaco e scheggiato,
+     * e prima di finire in una ball va lisciato.
+     *
+     * <p>Chiude un cerchio: la tumblestone grezza si macina in polvere, la
+     * polvere e' un abrasivo buono per la carta vetrata di TFC, e con quella si
+     * liscia il resto. Il primo geode si apre da se', senza chiedere niente a
+     * un'altra gemma.
+     */
+    public static final DeferredItem<Item> RAW_TUMBLESTONE =
+            ITEMS.registerSimpleItem("raw_tumblestone");
+    public static final DeferredItem<Item> RAW_SKY_TUMBLESTONE =
+            ITEMS.registerSimpleItem("raw_sky_tumblestone");
+    public static final DeferredItem<Item> RAW_BLACK_TUMBLESTONE =
+            ITEMS.registerSimpleItem("raw_black_tumblestone");
+
+    /** La tumblestone macinata alla mola: l'abrasivo. */
+    public static final DeferredItem<Item> TUMBLESTONE_POWDER =
+            ITEMS.registerSimpleItem("tumblestone_powder");
+
     /** La sky tumblestone macinata alla mola, da mescolare alla sabbia. */
     public static final DeferredItem<Item> SKY_TUMBLESTONE_POWDER =
             ITEMS.registerSimpleItem("sky_tumblestone_powder");

@@ -228,5 +228,9 @@
   "tfcobblemon.zone.come_viene": "Any bag",
   "tfcobblemon.zone.area_si": "Area: shown",
   "tfcobblemon.zone.area_no": "Area: hidden",
-  "item.tfcobblemon.pc_link": "PC Link Module"
+  "item.tfcobblemon.pc_link": "PC Link Module",
+  "item.tfcobblemon.raw_tumblestone": "Raw Tumblestone",
+  "item.tfcobblemon.raw_sky_tumblestone": "Raw Sky Tumblestone",
+  "item.tfcobblemon.raw_black_tumblestone": "Raw Black Tumblestone",
+  "item.tfcobblemon.tumblestone_powder": "Tumblestone Powder"
 }

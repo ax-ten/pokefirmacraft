@@ -25,6 +25,10 @@ public class ModCreativeModTabs {
                                 output.accept(BlankOrbItem.BLANK_ORB.get());
                                 output.accept(LifeOrbItem.LIFE_ORB_CHARGING.get());
                                 output.accept(ModItems.RAW_PROTECTOR.get());
+                                output.accept(ModBallParts.RAW_TUMBLESTONE.get());
+                                output.accept(ModBallParts.RAW_SKY_TUMBLESTONE.get());
+                                output.accept(ModBallParts.RAW_BLACK_TUMBLESTONE.get());
+                                output.accept(ModBallParts.TUMBLESTONE_POWDER.get());
 
                                 output.accept(GolettItem.GOLETT.get());
                                 output.accept(GolettItem.GOLETT_BLACK.get());
