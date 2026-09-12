@@ -482,6 +482,35 @@ e con quella lisci il resto. Nessun prestito da un'altra gemma.
 | grezza *o* tumblestone, alla mola | → **polvere di tumblestone** |
 | polvere di tumblestone | → entra nella carta vetrata di TFC |
 
+**Tutta questa catena e' pre-metallurgica, e l'ho verificata pezzo per pezzo.**
+Non serve un grammo di metallo per lavorare la tumblestone, il che e'
+esattamente quello che vogliamo: i geodi si trovano presto, e devono servire a
+qualcosa da subito.
+
+| pezzo | da dove viene | era |
+|---|---|---|
+| **mola** (quern) | pietra grezza + pietra liscia, ricetta a griglia | pietra |
+| **handstone** | pietra + bastoni | pietra |
+| **carta vetrata** | carta + polvere di flusso + colla + sabbia + polvere di gemma | pietra |
+| — carta | papiro → telaio (8 passaggi) → raschiata col coltello | pietra |
+| — polvere di flusso | fluxstone alla mola, o col martello | pietra |
+| — colla | un blocco di slime da' nove colle | pietra |
+| — polvere di gemma | **la nostra tumblestone alla mola** | pietra |
+
+Quello che invece **non** e' pre-metallurgico, e quindi resta piu' avanti:
+
+- la **sega da gemme** vuole un'asta d'**ottone** — eta' del bronzo in su. E in
+  TFC non taglia gemme: e' uno strumento da **soffiatura del vetro**
+  (`IGlassworkingTool`), e infatti l'unica ricetta che la consuma la rifonde per
+  recuperare l'ottone
+- **colorare il vetro** con la polvere (`#tfc:glass_powders`) vuole la
+  cannuccia da soffiatore, che e' di metallo
+
+Da cui una conseguenza che vale per il disegno delle ball: **il capture core e'
+roba da eta' della pietra** — e' carta vetrata piu' tumblestone, e tutte e due
+si fanno senza metallo. La catena rustica delle ball (sezione 5.5) sta in piedi
+dal primo geode.
+
 **Una cosa da decidere: la carta vetrata adesso serve due volte.** La ricetta
 del capture core era gia' carta vetrata + tumblestone, quindi con questo passo
 in mezzo si liscia due volte di fila. Io farei fare il core dalla **grezza**
