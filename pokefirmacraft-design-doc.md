@@ -916,13 +916,76 @@ acceso-con-qualcuno-dentro e' l'unico segno che il modello ha gia'.
 
 **Resta aperta la specializzazione**, che e' la cosa che rende un pascolo
 diverso da un parcheggio: allenare EV, alzare l'amicizia, raccogliere quello
-che il Pokemon droppa. Sta nei punti aperti della sezione 9, coi dati che
-servono.
+che il Pokemon droppa. Il disegno sta nella sezione 6.7.
 
 **Resta aperto il grado industriale.** Il pascolo collegato al PC — quello che
 ti fa sfogliare tutte le box invece delle sedici ball che ti porti dietro — e'
 esattamente il pascolo di Cobblemon come era: non c'e' da costruirlo, c'e' da
 rimetterlo come secondo blocco, dietro al PC.
+
+### 6.7 Pascoli specializzati — un blocco che dichiara un'area
+
+Un pascolo che tiene i Pokemon parcheggiati e' un magazzino con l'erba. Quello
+che lo rende un posto e' che li' dentro succeda qualcosa, e le tre cose che
+vogliamo far succedere — allenare, affezionare, raccogliere — hanno tutte la
+stessa forma: **un blocco dichiara un'area, e quello che c'e' nell'area decide
+quanto va bene**. Uno scheletro solo, tre letture diverse del contenuto. Non
+tre macchine con tre interfacce: tre modi di leggere una stanza che il
+giocatore ha costruito.
+
+**Allenamento EV: i sacchi da boxe.** Sono blocchi che si piazzano nell'area e
+si **consumano con l'uso**: ad ogni tick una percentuale che si deteriorino, e
+il deterioramento si vede, a stadi, come l'incudine di vanilla che passa per
+scheggiata e rovinata prima di rompersi. Il riferimento e' il Fantallenamento,
+che pero' e' di **X e Y** e non di Bianco e Nero — e da li' viene anche l'idea
+che ogni sacco alleni una statistica sua.
+
+Questa parte si incastra bene con un tetto che c'e' gia': gli EV si fermano a
+**252** per statistica e **510** in totale. Quindi da una parte un budget che
+si esaurisce, dall'altra attrezzi che si consumano — due cose finite che si
+guardano, che e' esattamente il contrario di una macchina che gira per sempre.
+
+**Amicizia: la scenografia.** Non attrezzi ma arredo, da costruire: sale da te',
+terme, un giardino. Item nostri, dove contano **quantita' e posizione** dentro
+l'area, e l'amicizia sale ad ogni tick di quanto la stanza se lo merita. E' il
+modo rustico di fare quello che nei giochi si fa camminando col Pokemon
+appresso: qui non cammini tu, gli costruisci un posto dove stare bene.
+
+**Raccolto: l'habitat.** La resa dei drop cresce con **quante condizioni di
+spawn di quel Pokemon l'area soddisfa**. Per un Magmar: che sia in un bioma
+caldo, che ci sia lava, che ci sia basalto, che ci siano dispenser di snack. E
+questa non e' una scala da inventare, perche' **Cobblemon la parla gia'**: ogni
+spawn ha `condition` e `anticondition`, e su millecinquecentoquarantaquattro
+file di spawn il vocabolario e' questo — `biomes`, `neededNearbyBlocks`,
+`neededBaseBlocks`, `fluid`, `minSkyLight`/`maxSkyLight`, `canSeeSky`,
+`minY`/`maxY`, `structures`, `timeRange`, `isRaining`, `moonPhase`,
+`isSlimeChunk`, `isPokeSnack`.
+
+Due cose da notare la' dentro. La prima: **`isPokeSnack` esiste gia'** — e
+Magnemite ha persino un `weightMultiplier` che gli raddoppia il peso quando c'e'
+uno snack in giro. Quindi il dispenser di pokemelle non e' una nostra
+invenzione, e' una condizione che Cobblemon conosce, e `weightMultiplier` e' il
+precedente di "condizione soddisfatta, resa migliore" scritto da loro.
+
+La seconda: quelle condizioni non sono tutte della stessa pasta, e vanno lette
+in tre famiglie.
+
+| Famiglia | Condizioni | Che ruolo ha nel conteggio |
+|---|---|---|
+| **Si costruiscono** | `neededNearbyBlocks`, `neededBaseBlocks`, `fluid`, luce e `canSeeSky`, `isPokeSnack` | il grosso del punteggio: e' il lavoro del giocatore |
+| **Si scelgono** | `biomes`, `minY`/`maxY`, `structures`, `isSlimeChunk` | dove metti il pascolo, deciso una volta e per sempre |
+| **Passano** | `timeRange`, `isRaining`, `isThundering`, `moonPhase` | non si costruiscono: finestre in cui la resa sale da se' |
+
+Le prime due famiglie fanno il punteggio dell'area, la terza e' il momento
+buono. Da cui, gratis, un habitat perfetto non e' costruibile per ogni specie
+nello stesso posto: chi vuole mungere un Magmar si scava una fornace, chi vuole
+un Magnemite gli fa una miniera.
+
+**Cosa resta da decidere:** i numeri di tutto — quanto grande e' l'area, quanto
+costa un tick, la probabilita' di rottura dei sacchi, quanti EV per sacco, di
+quanto sale l'amicizia e quanto rende un habitat pieno contro uno vuoto — e se
+i tre pascoli sono tre blocchi o lo stesso blocco che legge l'area e capisce da
+se' cosa gli e' stato costruito attorno.
 
 ## 7. Alpha Pokémon e leggendari
 
@@ -1140,24 +1203,13 @@ valido e vive gia' nell'Habitat Block dell'era elettrica.
   e ce lo siamo messo come gate senza sapere se il ferro lo tagga qualcuno.
   Da tenere presente che ne stiamo gia' sovrascrivendo 66
 - Ricollocazione di PC e Pasture Block secondo la sezione 4
-- **Pascoli specializzati**, che facciano qualcosa mentre i Pokemon stanno
-  fuori invece di tenerli solo parcheggiati (sezione 6.6). Tre direzioni, e i
-  dati per tutte tre ci sono gia':
-  - **allenamento EV** — `EVs.add(Stat, int)` con i tetti dei giochi,
-    **252** per statistica e **510** in totale, per cui un pascolo che allena
-    una statistica sola e' un investimento che si esaurisce e non una macchina
-    infinita. Ogni specie porta anche il suo `evYield`, che e' quanto da'
-    *da battuta*: e' la scala giusta da cui copiare i ritmi
-  - **amicizia** — sta nella specie come `baseFriendship` (50 per Bulbasaur) e
-    nel Pokemon come valore suo: un pascolo che la alza col tempo e' il modo
-    rustico di fare quello che nei giochi si fa camminando
-  - **raccolto di quello che droppano** — ogni specie ha il suo blocco
-    `drops`: un `amount` che dice quante voci si tirano e le voci con
-    `quantityRange` o `percentage` (Bulbasaur: semi di melone e, al 5%, un
-    Miracle Seed). Su **1025 specie** e' una tabella di materiali enorme che
-    oggi si apre solo uccidendo, e mungerla invece di ammazzarli e' la cosa
-    piu' TFC che ci sia. Va pero' messa a un ritmo e a un costo — cibo, tempo,
-    spazio — o sostituisce le farm di mob e basta
+- ~~Cosa fanno i pascoli specializzati~~ — **deciso, il disegno sta in sezione
+  6.7**: un blocco dichiara un'area e quello che c'e' dentro decide la resa —
+  sacchi da boxe che si consumano per gli EV, arredo da costruire per
+  l'amicizia, condizioni di spawn soddisfatte per il raccolto dei drop. Restano
+  aperti **i numeri** (dimensione dell'area, costo per tick, rottura dei
+  sacchi, EV per sacco, resa di un habitat pieno) e se sono **tre blocchi o
+  uno** che capisce da se' cosa gli hanno costruito attorno
 - Materiali delle due cinture (la capienza è decisa: 1 a mani nude, 3, 6)
 - ~~Quali categorie ha la borsa~~ — **decise.** Si rifanno a quelle di
   Cobblemon, tenendo solo le quattro che hanno senso come tasche: **ball**,
