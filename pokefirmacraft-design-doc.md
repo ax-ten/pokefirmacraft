@@ -511,13 +511,38 @@ roba da eta' della pietra** — e' carta vetrata piu' tumblestone, e tutte e due
 si fanno senza metallo. La catena rustica delle ball (sezione 5.5) sta in piedi
 dal primo geode.
 
-**Una cosa da decidere: la carta vetrata adesso serve due volte.** La ricetta
-del capture core era gia' carta vetrata + tumblestone, quindi con questo passo
-in mezzo si liscia due volte di fila. Io farei fare il core dalla **grezza**
-invece che dalla lisciata — un sabbiaggio per strada, non due — e la
-tumblestone lisciata resterebbe quello che serve al fluido di cattura e al
-Pokemon Storage Component. Ma e' una ricetta che esiste gia' e la lascio come
-sta finche' non lo dici.
+**Il nucleo si scheggia, non si liscia: il knapping.** Il knapping in TFC 4 e'
+**tutto a dati** — un registro `tfc/knapping_type` piu' ricette `tfc:knapping`
+con un disegno 5x5 — quindi ci si puo' aggiungere un tipo nostro senza una riga
+di codice: la **tumblestone**, che si scheggia col suono del cristallo di
+ametista e col sasso grezzo come icona.
+
+E il disegno e' un **tondo**:
+
+```
+ ###
+#####
+#####
+#####
+ ###
+```
+
+Cioe' si scheggia il cristallo finche' non resta una **sfera**, e quella sfera
+e' il capture core. Il che sistema anche una cosa che stonava: il core e' tondo,
+e arrivarci per via di carta vetrata non spiegava la forma. Scheggiare si'.
+
+**Cosi' i due rami si separano, ognuno col suo attrezzo:**
+
+| | attrezzo | serve a |
+|---|---|---|
+| grezza → tumblestone | **carta vetrata** | fluido di cattura, polvere, Pokemon Storage Component |
+| grezza → capture core | **knapping** | le ball |
+
+**Una cosa da decidere.** La ricetta del capture core da carta vetrata +
+tumblestone lisciata **esiste ancora**, per cui adesso al core si arriva per due
+strade e la vecchia e' piu' comoda — cioe' il knapping non lo userebbe nessuno.
+Io la toglierei e lascerei il core al solo knapping. E' un file da cancellare,
+ma e' una ricetta che c'era prima di me e aspetto un tuo si'.
 
 **I sassi in superficie sono un indizio, non decorazione.** Sopra ogni geode
 che nasce, sulla sua colonna, cadono da tre a sei sassi sciolti dello stesso
