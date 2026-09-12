@@ -1055,6 +1055,18 @@ valido e vive gia' nell'Habitat Block dell'era elettrica.
   l'era industriale — tre gradi, e le ball si fanno attorno a lui. Il disegno
   sta in **sezione 5.7**. Tier di AE2 richiesto: **quello base**, perche' il
   cancello e' il componente, non la tecnologia attorno.
+- **Rivedere le ricette degli oggetti di Cobblemon e allinearle a TFC.** Non
+  le ball — quelle hanno la loro sezione — ma tutto il resto: macchine,
+  held item, targhette, mensole, analizzatore di fossili. Sono **986 ricette**,
+  di cui **70 chiedono metalli di vanilla** (`c:ingots/iron`, `c:ingots/gold`,
+  `minecraft:iron_ingot`, il blocco di ferro, il rame). E TFC **non fornisce
+  `c:ingots/iron`**: ha `c:ingots/wrought_iron`, `cast_iron` e `pig_iron`, e
+  nient'altro. Quindi quelle ricette stanno in piedi solo se le riempie un'altra
+  mod, e va verificato in gioco quali di loro sono davvero craftabili e quali
+  sono ricette morte. Esempio vivo trovato scrivendo la healing machine:
+  l'**Electirizer** vuole 4 lingotti d'oro, 4 di ferro e un blocco di redstone,
+  e ce lo siamo messo come gate senza sapere se il ferro lo tagga qualcuno.
+  Da tenere presente che ne stiamo gia' sovrascrivendo 66
 - Ricollocazione di PC e Pasture Block secondo la sezione 4
 - Materiali delle due cinture (la capienza è decisa: 1 a mani nude, 3, 6)
 - ~~Quali categorie ha la borsa~~ — **decise.** Si rifanno a quelle di
