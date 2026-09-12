@@ -38,9 +38,21 @@ public class ZoneBlockEntity extends BlockEntity {
     private long visto;
     @Nullable
     private BlockPos pascolo;
+    /** Punti messi da parte da chi non li spende uno per volta. */
+    private int resto;
 
     public ZoneBlockEntity(BlockPos pos, BlockState state) {
         super(ModZones.ZONA_BE.get(), pos, state);
+    }
+
+    /** Il gruzzolo di chi matura piano: il recinto raccoglie una volta al giorno. */
+    public int resto() {
+        return resto;
+    }
+
+    public void resto(int quanto) {
+        resto = quanto;
+        setChanged();
     }
 
     public ZoneKind genere() {
@@ -120,6 +132,7 @@ public class ZoneBlockEntity extends BlockEntity {
         super.loadAdditional(tag, registri);
         pascolo = tag.contains("Pasture") ? NbtUtils.readBlockPos(tag, "Pasture").orElse(null) : null;
         visto = tag.getLong("Seen");
+        resto = tag.getInt("Rest");
     }
 
     @Override
@@ -129,5 +142,6 @@ public class ZoneBlockEntity extends BlockEntity {
             tag.put("Pasture", NbtUtils.writeBlockPos(pascolo));
         }
         tag.putLong("Seen", visto);
+        tag.putInt("Rest", resto);
     }
 }

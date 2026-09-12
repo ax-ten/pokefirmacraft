@@ -1136,12 +1136,20 @@ Due numeri che ne derivano:
   acceleratori e il tetto resta onesto
 
 **E il tempo sono i tick del mondo, non il calendario di TFC.** Ci ero andato
-col calendario perche' cosi' una settimana passa anche mentre non guardi —
-ragionamento giusto, mod sbagliata: questa famiglia di blocchi deve poter
-vivere **anche senza TFC** (vedi sotto), e `Calendars` e' di TFC. Quindi tick,
-e il tempo scorre mentre il chunk e' caricato. Con un'eccezione che resta:
-**a pascolo vuoto l'orologio si riazzera**, o il tempo fermo si accumulerebbe
-per essere speso tutto insieme sul primo Pokemon che arriva.
+col calendario perche' cosi' il tempo passa anche mentre non guardi —
+ragionamento giusto, posto sbagliato: questa famiglia di blocchi deve poter
+vivere **anche senza TFC**, e `Calendars` e' di TFC. Quindi tick, e il tempo
+scorre mentre il chunk e' caricato. Con un'eccezione che resta: **a pascolo
+vuoto l'orologio si riazzera**, o il tempo fermo si accumulerebbe per essere
+speso tutto insieme sul primo Pokemon che arriva.
+
+Il calendario pero' non si butta: diventa **un'integrazione**. Dove TFC c'e',
+l'orologio della zona puo' leggere `Calendars.SERVER.getTicks()` invece dei
+tick del mondo, e allora i tre giorni passano anche a chunk scaricato — che e'
+il modo in cui TFC tratta le colture e il cibo, e quindi il modo giusto di
+comportarsi in un pacchetto TFC. Vive fuori dal pacchetto delle zone, come un
+ponte: la zona chiede l'ora a qualcuno, e chi risponde dipende da cosa c'e'
+installato.
 
 ### Non ci sono palestre migliori: ci sono integratori
 
@@ -1257,11 +1265,23 @@ Blocchi propri, nessuna mano dentro le cose della cintura o delle ball oltre a
 quello che passa per un'interfaccia. Se domani si staccano, si deve staccare una
 cartella e non sfilare un filo da sotto tutto il resto.
 
-**Cosa resta da fare, in ordine:** i tre effetti — i numeri ci sono, li detta
-la settimana — poi la finestrella del controllore, poi il cambio di faccia del
-pascolo quando ci saranno i modelli. L'unico numero che la regola della
-settimana non determina e' **quanto rende un habitat pieno contro uno vuoto**,
-perche' il raccolto non ha un tetto da raggiungere.
+**I tre effetti sono scritti**, coi numeri che vengono dal traguardo:
+
+| | cosa fa | numeri |
+|---|---|---|
+| **Palestra** | un sacco allena un Pokemon, e sale la statistica del sacco | logora il sacco una volta ogni **84** punti (84 x 3 stadi = 252: un sacco per intero e' un tetto raggiunto); una bottiglia si vuota ogni **21** punti |
+| **Ozio** | sale l'amicizia fino a 255, e intanto guarisce HP; le alterazioni passano quando si e' tornati in forze | un punto di amicizia e un punto di vita per punto |
+| **Recinto** | ogni tanto raccoglie quello che quel Pokemon lascerebbe morendo, dalla **sua** tabella di drop, in un contenitore attaccato al controllore o a terra | un raccolto ogni **84** punti, cioe' uno al giorno di gioco per Pokemon |
+
+L'area e' una stanza e non una sfera: **quattro blocchi per lato**, da tre
+sotto il controllore a due sopra.
+
+**Cosa resta da fare:** la finestrella (con l'interruttore che mostra l'area),
+il cambio di faccia del pascolo quando ci saranno i modelli, la marcia indietro
+con le bacche, e **il punteggio di habitat** per il recinto — che oggi rende
+sempre uguale, mentre deve rendere di piu' quante piu' condizioni di spawn la
+stanza soddisfa. E' l'unico numero che il traguardo non determina, perche' il
+raccolto non ha un tetto a cui arrivare.
 
 ## 7. Alpha Pokémon e leggendari
 
@@ -1542,8 +1562,13 @@ valido e vive gia' nell'Habitat Block dell'era elettrica.
   da boxe — cambiare la sua ricetta vuol dire cambiare quando si apre la
   palestra
 - **La finestrella del controllore di zona**: una riga per Pokemon, un
-  interruttore, la statistica scelta fra quelle di cui c'e' un sacco intorno.
-  Fa anche da quadrante (sezione 6.7)
+  interruttore, la statistica scelta fra quelle di cui c'e' un sacco intorno,
+  e un interruttore che disegna l'area. Fa anche da quadrante (sezione 6.7)
+- **Il ponte col calendario di TFC**, come integrazione: dove TFC c'e', il tempo
+  delle zone passa anche a chunk scaricato, come per le sue colture. Vive fuori
+  dal pacchetto delle zone (sezione 6.7)
+- **Il punteggio di habitat del recinto**: quante condizioni di spawn della
+  specie la stanza soddisfa, e quanto quello moltiplica la resa (sezione 6.7)
 - **I modelli dei controllori e del pascolo specializzato, in Blockbench.**
   Quello del pascolo e' quello che sblocca il cambio di faccia: senza modelli
   non si puo' scrivere (sezione 6.7)
