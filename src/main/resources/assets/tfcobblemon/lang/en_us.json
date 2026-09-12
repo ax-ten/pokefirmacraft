@@ -197,5 +197,8 @@
   "block.tfcobblemon.tumblestone_quartzite": "Tumblestone",
   "block.tfcobblemon.sky_tumblestone_quartzite": "Sky Tumblestone",
   "block.tfcobblemon.black_tumblestone_quartzite": "Black Tumblestone",
-  "container.tfcobblemon.pasture": "Pasture"
+  "container.tfcobblemon.pasture": "Pasture",
+  "block.tfcobblemon.punching_bag": "Punching Bag",
+  "block.tfcobblemon.worn_punching_bag": "Worn Punching Bag",
+  "block.tfcobblemon.torn_punching_bag": "Torn Punching Bag"
 }

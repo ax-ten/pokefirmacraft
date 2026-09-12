@@ -42,6 +42,10 @@ public class ModCreativeModTabs {
                                 output.accept(GolettItem.GOLETT_WHITE.get());
                                 output.accept(GolettItem.GOLETT_YELLOW.get());
 
+                                output.accept(com.kingtrapinch.tfcobblemon.block.ModBags.WHOLE.get());
+                                output.accept(com.kingtrapinch.tfcobblemon.block.ModBags.WORN.get());
+                                output.accept(com.kingtrapinch.tfcobblemon.block.ModBags.TORN.get());
+
                                 com.kingtrapinch.tfcobblemon.dig.ModDig.allSites()
                                         .forEach(sito -> output.accept(sito.get()));
                             })

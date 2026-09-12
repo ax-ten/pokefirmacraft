@@ -945,6 +945,20 @@ Questa parte si incastra bene con un tetto che c'e' gia': gli EV si fermano a
 si esaurisce, dall'altra attrezzi che si consumano — due cose finite che si
 guardano, che e' esattamente il contrario di una macchina che gira per sempre.
 
+**Dei sacchi c'e' gia' il blocco.** Tre stadi — sano, logoro, sfondato — come
+blocchi distinti e non come proprieta' di usura, per la stessa ragione per cui
+l'incudine di vanilla ne ha tre: uno stadio che si porta dietro l'item giusto
+quando lo stacchi dal soffitto. Sono **alti due metri** e si piazzano **solo
+appesi**: vogliono un soffitto sopra e il vuoto sotto, e il pezzo che si piazza
+e' quello alto — dove clicchi e' dove sta l'attacco — mentre il basso lo mette
+lui e pende due pixel sopra il pavimento. Rompendo l'uno cade l'altro, e la
+tabella di loot e' solo del pezzo basso, cosi' da qualunque parte lo si rompa
+ne cade uno e uno solo. La tela e' la **juta di TFC** (`tfc:burlap_cloth`),
+riempita di sabbia e appesa a una corda; gli stadi logoro e sfondato sono la
+stessa texture con gli squarci, e dai buchi si vede la sabbia. Manca solo chi
+li usi: e' il blocco d'area che deve dire a un Pokemon di prenderli a pugni, e
+chiamare `logora` quando succede.
+
 **Amicizia: la scenografia.** Non attrezzi ma arredo, da costruire: sale da te',
 terme, un giardino. Item nostri, dove contano **quantita' e posizione** dentro
 l'area, e l'amicizia sale ad ogni tick di quanto la stanza se lo merita. E' il
