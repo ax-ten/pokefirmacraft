@@ -29,6 +29,7 @@ public class ModCreativeModTabs {
                                 output.accept(ModBallParts.RAW_SKY_TUMBLESTONE.get());
                                 output.accept(ModBallParts.RAW_BLACK_TUMBLESTONE.get());
                                 output.accept(ModBallParts.TUMBLESTONE_POWDER.get());
+                                output.accept(ModBallParts.BLACK_TUMBLESTONE_POWDER.get());
 
                                 output.accept(GolettItem.GOLETT.get());
                                 output.accept(GolettItem.GOLETT_BLACK.get());

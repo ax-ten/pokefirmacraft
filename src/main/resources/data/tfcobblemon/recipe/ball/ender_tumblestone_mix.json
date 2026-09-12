@@ -2,11 +2,21 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    { "item": "tfcobblemon:ender_powder" },
-    { "item": "cobblemon:tumblestone" },
-    { "item": "cobblemon:tumblestone" },
-    { "item": "cobblemon:tumblestone" },
-    { "item": "cobblemon:tumblestone" }
+    {
+      "item": "tfcobblemon:ender_powder"
+    },
+    {
+      "item": "tfcobblemon:tumblestone_powder"
+    },
+    {
+      "item": "tfcobblemon:tumblestone_powder"
+    },
+    {
+      "item": "tfcobblemon:tumblestone_powder"
+    },
+    {
+      "item": "tfcobblemon:tumblestone_powder"
+    }
   ],
   "result": {
     "id": "tfcobblemon:ender_tumblestone_mix",

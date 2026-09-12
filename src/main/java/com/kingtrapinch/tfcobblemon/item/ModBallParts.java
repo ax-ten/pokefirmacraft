@@ -151,6 +151,10 @@ public final class ModBallParts {
     public static final DeferredItem<Item> TUMBLESTONE_POWDER =
             ITEMS.registerSimpleItem("tumblestone_powder");
 
+    /** La black tumblestone macinata: abrasivo, e tinta scura per il vetro. */
+    public static final DeferredItem<Item> BLACK_TUMBLESTONE_POWDER =
+            ITEMS.registerSimpleItem("black_tumblestone_powder");
+
     /** La sky tumblestone macinata alla mola, da mescolare alla sabbia. */
     public static final DeferredItem<Item> SKY_TUMBLESTONE_POWDER =
             ITEMS.registerSimpleItem("sky_tumblestone_powder");
