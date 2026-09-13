@@ -84,12 +84,11 @@ La tabella di progressione per era alla sezione 4 resta valida come **roadmap pe
 - **Cobblemon**: v1.8.0 (NeoForge) — include Alpha Pokémon, Habitat Block, TM Machine aggiornata
 - **Nota storica**: Cobblemon ha abbandonato il supporto Forge dopo la v1.3.2 (solo Fabric/NeoForge da allora); TerraFirmaGreg-Modern (Forge 1.20.1) era quindi incompatibile — da qui la scelta di Gregnautics Continued
 - **Nota su Greate**: il mod Greate (ponte Create↔GregTech usato dalla TerraFirmaGreg originale) non è mai stato portato a 1.21.1/NeoForge (si ferma a 1.20.1/1.19.2). Gregnautics Continued lo sostituisce con un ponte custom scritto in KubeJS — non è un blocco, ma va tenuto presente se si cercano parti/ricette "Greate" testuali nel pack
-- **Visualizzatore ricette**: il pack monta JEI più `kubejei`, ma la scelta per
-  Pokefirmacraft è **EMI**. La mod non spedisce integrazioni per nessuno dei due, quindi
-  è indifferente; lato pack invece il passaggio costa la riscrittura di
-  `gregnautics_jei_material_hide.js`, che nasconde i duplicati dei 35 materiali
-  unificati TFC↔GregTech e parla con `KubeJEIEvents`. GTCEu ha integrazione EMI nativa
-  e EMI include JEMI per i plugin JEI; resta da verificare FTB Quests
+- **Visualizzatore ricette**: **EMI**, e il passaggio è **già fatto**. Il pacchetto
+  monta EMI e non JEI; il blocco `KubeJEIEvents` in `gregnautics_jei_material_hide.js`
+  era un aggiramento di un bug di KubeJEI e con EMI non serve più, mentre lo script
+  continua a nascondere i doppioni dei 35 materiali unificati TFC↔GregTech. La mod non
+  spedisce integrazioni per nessuno dei due, quindi le è indifferente
 - **Addon leggendari**: Myths and Legends (key item configurabili per attivare lo spawn) — scelto al posto di Legendary Monuments (rischio compatibilità worldgen con TFC) e Legendary Encounters (poco personalizzabile)
 - **Compatibilità worldgen Cobblemon↔TFC**: Cobblemon assegna gli spawn tramite tag di bioma; i biomi custom di TFC/TFG non sono taggati di default (stesso problema noto con altri mod di worldgen come Terralith) — serve un datapack dedicato che mappi i biomi alle categorie di spawn di Cobblemon, altrimenti i Pokémon non compaiono in gran parte del mondo
   - **Parzialmente risolto**: i tag di TFCobblemon coprivano 30 biomi, TFC 4 ne ha 125.
@@ -126,8 +125,15 @@ abbiamo già**.
 
 **Cosa cambia per la mod**: niente. `tfcobblemon` compila e gira contro le
 *mod* — TFC 4, Cobblemon 1.8, GregTech CEu 8, NeoForge 1.21.1 — e non contro il
-pacchetto. La coda di lavoro lato pacchetto sta in `docs/MAINTENANCE.md` dentro
-il repository del pacchetto, non qui.
+pacchetto.
+
+**I due documenti sono separati.** Questo descrive la mod; il pacchetto ha il
+suo, `docs/DESIGN.md` dentro il proprio repository, con principi, progressione,
+set di mod e convenzioni di ricetta, piu' `docs/MAINTENANCE.md` per la coda di
+lavoro. La regola della divisione e' la **dipendenza, non l'argomento**: una
+ricetta che ha bisogno di una mod che non dichiariamo — GregTech, AE2, Stellaris
+— sta di la', anche se parla di Poke Ball. Di qua sta quello che vale anche
+senza.
 
 **Le due scelte di progressione che ci riguardano direttamente:**
 
