@@ -1,6 +1,6 @@
 # Pokefirmacraft — Documento di Design
 
-Mod di integrazione di **Cobblemon** dentro **Gregnautics Continued** (porting 1:1 di TerraFirmaGreg-Modern su MC 1.21.1/NeoForge, con TFC 4 + GregTech CEu 8 + Create + Create: Aeronautics). Obiettivo: aggiungere Cobblemon alla progressione esistente senza affiancarla o stravolgerla.
+Mod di integrazione di **Cobblemon** dentro **Gregnautics Pokefied** (il nostro fork di Gregnautics Continued, porting 1:1 di TerraFirmaGreg-Modern su MC 1.21.1/NeoForge, con TFC 4 + GregTech CEu 8 + Create + Create: Aeronautics). Obiettivo: aggiungere Cobblemon alla progressione esistente senza affiancarla o stravolgerla.
 
 ## 0. Strategia: porting, non costruzione da zero
 
@@ -72,13 +72,13 @@ La tabella di progressione per era alla sezione 4 resta valida come **roadmap pe
 
 - **Minecraft**: 1.21.1
 - **Mod loader**: NeoForge
-- **Modpack di base**: Gregnautics Continued — porting artigianale 1:1 di TerraFirmaGreg-Modern, con TFC 4 + GregTech CEu 8 (build patchata) + Create + Create: Aeronautics, ~240 mod, 1.194 quest su 25 capitoli, worldgen con 89 vene minerarie/geodi
-  - ⚠️ **Il pack è stato ritirato dal suo autore**: `ascorblack/Gregnautics-Continued`
-    dà 404, e la pagina CurseForge non ha più uno slug pubblico (il progetto 1611173
-    esiste solo nella cache dell'API, ultimo file 0.1.9 del 21 luglio 2026). L'unica
-    fonte viva è il fork `drainstar/Gregnautics-Continued-Test`, 552 MB con i jar
-    committati, aggiornato all'8 settembre 2026. **Va deciso se questa resta la base
-    del progetto**: non c'è garanzia che venga mantenuta
+- **Modpack di base**: **Gregnautics Pokéfied** — il nostro fork di Gregnautics Continued, a sua volta porting artigianale 1:1 di TerraFirmaGreg-Modern, con TFC 4 + GregTech CEu 8 (build patchata) + Create + Create: Aeronautics, ~240 mod, 1.464 quest su 25 capitoli, worldgen con 89 vene minerarie/geodi
+  - ✅ **Deciso (settembre 2026): il pacchetto è nostro.** Gregnautics Continued si è
+    fermato — `ascorblack/Gregnautics-Continued` dà 404 e il progetto CurseForge è stato
+    delistato (ridotto a `project-1611173`, ultimo file 0.1.9 del 21 luglio 2026). La
+    copia in `/home/axten/Code/Gregnautics-Continued/` è ora un repository git il cui
+    commit iniziale è quella 0.1.9 intatta; si chiama **Gregnautics Pokéfied** e lo
+    manteniamo noi. Il dettaglio sta in sezione **2.1**
   - Versioni verificate nel fork: TFC **4.2.5**, GTCEu **8.0.0 patchata a mano**,
     KubeJS **2101.7.2** (cioè KubeJS 7), Firmalife 3.0.11, Patchouli 1.21.1-93
 - **Cobblemon**: v1.8.0 (NeoForge) — include Alpha Pokémon, Habitat Block, TM Machine aggiornata
@@ -97,6 +97,58 @@ La tabella di progressione per era alla sezione 4 resta valida come **roadmap pe
     popola da sé (`#c:is_ocean`, `#c:is_mountain`, `#c:is_badlands`...) più i sette
     biomi che nessun tag copre. Resta da decidere a mano in quale fascia di altitudine
     stiano i 96 biomi nuovi, e va rifatto il controllo sui biomi aggiunti dal pack
+
+### 2.1 Il pacchetto è nostro — Gregnautics Pokéfied
+
+Il pacchetto su cui poggia tutto non ha più un autore, quindi lo abbiamo preso
+in mano. Non è una perdita: è un cambio di ruolo.
+
+**Perché non siamo passati all'originale.** Gregnautics (di Atl4s_n3m0) è vivo e
+pubblica ogni settimana — 1.21.1, 244 mod, GregTech aggiornato allo snapshot del
+10 settembre 2026. Abbiamo valutato il trasloco e l'abbiamo scartato per due
+ragioni misurate sui file:
+
+| | Gregnautics 0.5.0 | Gregnautics Pokéfied |
+|---|---|---|
+| Capitoli di quest | 7 | **25** |
+| Quest | 261 | **1464** |
+| Guida oltre l'LV | no (i capitoli 07 e 08 hanno 4 e 8 quest, il 03 e il 05 non esistono) | sì, fino all'UV |
+| Capitolo su AE2 | — | **69 quest** |
+| Capitoli spaziali | — | Luna 41, Marte 26 |
+| AE2 gregtechizzata | **no**: zero ricette, meteoriti spenti e `spawnPressesInMeteorites = false`, quindi le presse non esistono e AE2 è irraggiungibile | sì, 159 ricette GregTech attive |
+
+Un pacchetto fermo è congelato, non rotto. Le 1200 quest in più invece non si
+trapiantano: sono scritte contro item e tag del mondo TFG.
+
+**Gregnautics resta l'upstream da cui pescare**, non un concorrente: ha 87
+script che noi non abbiamo, di cui **72 (5231 righe) riguardano mod che
+abbiamo già**.
+
+**Cosa cambia per la mod**: niente. `tfcobblemon` compila e gira contro le
+*mod* — TFC 4, Cobblemon 1.8, GregTech CEu 8, NeoForge 1.21.1 — e non contro il
+pacchetto. La coda di lavoro lato pacchetto sta in `docs/MAINTENANCE.md` dentro
+il repository del pacchetto, non qui.
+
+**Le due scelte di progressione che ci riguardano direttamente:**
+
+1. **Applied Energistics è contenuto di fine partita, e ci si arriva dallo
+   spazio.** I meteoriti restano spenti: le presse non si trovano scavando, si
+   prendono fuori dal pianeta e da lì si duplicano con l'acciaio inox. TFG aveva
+   già scritto **44 ricette lunari** — sulla Luna le stesse ricette costano meno
+   e rendono il doppio, col fluix criogenizzato — che vanno solo rimappate da
+   `ad_astra:moon` alle dimensioni di Stellaris. Questo mette il **Pokémon
+   Storage Component** (sezione 5.7), e quindi il PC, oltre il cancello
+   spaziale.
+2. **Mining delle meteore, alto rischio e alta resa.** Fasce dense di minerali,
+   anche rari, sfruttabili **sia a mano sia in automatico**. Stellaris ha già
+   una struttura meteorite sull'overworld con una tabella di bottino grossa e un
+   blocco `stellaris:meteorite`, e nella schermata dei pianeti mostra *Asteroid
+   Belt* e *Kuiper Belt* — che però **non sono dimensioni**: le nove di Stellaris
+   sono `earth_orbit`, `moon`, `mars`, `mars_orbit`, `mercury`, `mercury_orbit`,
+   `venus`, `venus_orbit`, `jupiter`. La fascia va costruita: la strada che regge
+   meglio l'"alto rischio" è una dimensione nuova via datapack — vuoto, niente
+   aria, asteroidi fitti di vene GregTech, e quello che estrai lo devi riportare
+   a casa.
 
 ## 3. Approccio implementativo
 
@@ -350,35 +402,107 @@ Restano da progettare:
 - **Nuclear**: master
 - **mai craftabili**: cherish e sport, che si trovano
 
-### 5.7 Il Pokemon Storage Component — la spina dorsale industriale
+### 5.7 I componenti — la spina dorsale industriale
 
 Nell'era industriale avanzata le ball non si fanno piu' un pezzo alla volta: si
 fanno attorno a un componente, e quel componente e' lo stesso che regge il PC e
 i gradi alti della cintura. E' il pezzo che dice "adesso i Pokemon si gestiscono
 su scala".
 
-**Tre gradi, e sono tre perche' AE2 ne ha gia' tre.** Non stiamo inventando una
-scala: stiamo prendendo in prestito i pioli di una che il giocatore conosce
-gia', quella delle celle — 1k, 4k, 16k — dove **ogni piolo costa quattro del
-piolo sotto** piu' un processore migliore. La progressione viene gratis dalla
-forma della ricetta, senza che serva spiegarla.
+**Due gradi, sulla forma delle celle di AE2.** Non stiamo inventando una scala:
+prendiamo in prestito i pioli di una che il giocatore conosce gia'. In AE2 ogni
+piolo costa **tre** del piolo sotto piu' un processore migliore, e la
+progressione viene gratis dalla forma della ricetta.
 
-| Grado | Forma della ricetta (verificata in AE2 19.2.17) | A cosa serve |
+| Grado | Cosa tiene | A cosa serve |
 |---|---|---|
-| **PSC-1** | come `cell_component_1k`: polvere di redstone + **tumblestone** + il nostro processore su tumblestone | ball di tier 1 e 2, **e la cintura** |
-| **PSC-2** | come `cell_component_4k`: redstone + calculation processor + **4x PSC-1** + vetro al quarzo | tutte le altre ball, **tranne la master** |
-| **PSC-3** | come `cell_component_16k`: polvere di glowstone + calculation processor + **4x PSC-2** + vetro al quarzo | **il PC e la master ball** |
+| **Entity Component** | un Pokemon | le ball, dalla prima all'ultima |
+| **Pokemon Storage Component** | tanti | il **PC**, i gradi alti della cintura, la master ball |
 
-Tre e non due: due pioli metterebbero la master ball e la cintura a due passi di
-distanza, e sono i due estremi della progressione. Se in gioco il terzo piolo
-risultasse aria, si fondono PSC-2 e PSC-3 e la master resta l'unica cosa che
-chiede quattro componenti invece di uno.
+Il nome del primo non parla di box perche' il pezzo fa due mestieri: uno sta
+dentro una ball e ci tiene un Pokemon, tanti stanno dentro un PC. "Entity" li
+copre entrambi; "box" ne raccontava meta'.
+
+**AE2 e' una dipendenza di pacchetto, e sta dietro lo spazio.** Queste ricette
+esistono solo dove ci sono sia AE2 sia GregTech, che nel nostro pacchetto e'
+garantito (sezione 2.1). E siccome i meteoriti sono spenti e le presse si
+prendono fuori dal pianeta, **il PC e' contenuto post-spaziale**: e' il
+traguardo della progressione, non un passaggio intermedio.
+
+#### Il chip su tumblestone
+
+Il pezzo che rende il componente "nostro" e' il processore, e si fa alla maniera
+di AE2 cambiando un solo ingrediente: dove loro mettono l'oro, noi mettiamo la
+tumblestone.
+
+```
+blocco di tumblestone       --[cutter GregTech]-->   4x piastra di tumblestone
+piastra + pressa logica*    --[forming press]-->     printed tumblestone processor
+printed silicon + redstone + la stampa --[inscriber]--> tumblestone processor
+                                                     (* non consumata)
+```
+
+**Quattro piastre per blocco** perche' il blocco di tumblestone di Cobblemon si
+fa 2x2, come quello di ametista: una tumblestone, una piastra, senza perdite e
+senza regali. Il taglio e' una messa in forma, non una moltiplicazione.
+
+La riga di mezzo e' parola per parola la ricetta del pacchetto per il
+`printed_logic_processor` (`#c:plates/gold` + pressa logica non consumata), con
+la nostra piastra al posto dell'oro. Riusiamo la loro pressa come stampo e
+cambiamo il metallo: nessun item nuovo da trovare, nessuna loot table da
+inventare.
+
+#### Le ricette dei due componenti
+
+Con **GregTech e AE2**, all'assembler, sulla forma che il pacchetto usa gia' per
+i suoi cell component:
+
+```
+Entity Component
+  2x  #gtceu:circuits/mv
+  4x  gtceu:cpu_chip
+  1x  #c:foils/polyethylene
+  1x  tfcobblemon:tumblestone_processor
+  288 mB tfcobblemon:molten_ender_tumblestone
+  -> 1x tfcobblemon:entity_component            200 tick, MV
+
+Pokemon Storage Component
+  2x  #gtceu:circuits/ev
+  8x  gtceu:cpu_chip
+  4x  #c:foils/polyethylene
+  4x  tfcobblemon:tumblestone_processor
+  3x  tfcobblemon:entity_component
+  288 mB tfcobblemon:molten_ender_tumblestone
+  -> 1x tfcobblemon:pokemon_storage_component   400 tick, HV, camera bianca
+```
+
+Il fluido e' il **nostro** ender tumblestone fuso, non il `tfg:fluix` del
+pacchetto: cosi' la mod non dipende da un materiale registrato da KubeJS, e il
+componente resta legato alla stessa catena della perlina.
+
+Con **AE2 senza GregTech** le stesse due cose si fanno al tavolo, sulla forma
+dell'1k e del 4k:
+
+```
+Entity Component          Pokemon Storage Component
+  a b a                     a b a        a = polvere di glowstone
+  b c b                     c d c        b = tumblestone processor
+  a b a                     a c a        c = 3x entity component
+                                         d = ae2:quartz_glass
+  a = polvere di redstone
+  b = cobblemon:tumblestone (scartavetrata)
+  c = tumblestone processor
+```
+
+Le due versioni si escludono a vicenda con le condizioni di NeoForge:
+`and(mod_loaded ae2, mod_loaded gtceu)` per l'assembler,
+`and(mod_loaded ae2, not(mod_loaded gtceu))` per il tavolo.
 
 **La tumblestone su scala industriale, con le macchine di AE2 e zero codice.**
-Il collo di bottiglia e' la tumblestone: la vuole il capture core, la vuole il
-fluido di cattura, e ora la vuole il componente. In AE2 il certus si moltiplica
-da se' e non si mina, e la stessa strada e' aperta a noi perche' i due tipi di
-ricetta che servono sono **data-driven**:
+Il collo di bottiglia e' la tumblestone: la vuole la perlina, la vuole il fluido
+di cattura, e ora la vuole il componente. In AE2 il certus si moltiplica da se'
+e non si mina, e la stessa strada e' aperta a noi perche' i due tipi di ricetta
+che servono sono **data-driven**:
 
 - `ae2:charger` — tumblestone dentro il charger diventa **tumblestone carica**,
   come `charged_certus_quartz_crystal`
@@ -387,16 +511,26 @@ ricetta che servono sono **data-driven**:
   `data/ae2/recipe/transform/certus_quartz_crystals.json`
 
 Da cui: la tumblestone raddoppia, e i growth accelerator di AE2 accelerano quello
-che cresce in acqua senza che noi tocchiamo niente. Ci manca solo la **polvere di
-tumblestone base**: oggi esiste solo `tfcobblemon:sky_tumblestone_powder`.
+che cresce in acqua senza che noi tocchiamo niente. Le tre polveri esistono tutte
+(`tumblestone_powder`, `sky_tumblestone_powder`, `black_tumblestone_powder`),
+quindi non manca piu' niente.
 
 **Cosa NON cambia, e va detto.** La catena pre-industriale resta valida per
-intero — il knapping, le tre linee rustiche, la base in stagno, i coperchi. Vale
-la convenzione del tubo a elettroni (sezione 5.5): la via industriale chiede
+intero — le tre linee rustiche, la base in stagno, i coperchi. Vale la
+convenzione del tubo a elettroni (sezione 5.5): la via industriale chiede
 **meno pezzi, migliori, e ne da' di piu'**, e quella vecchia continua a
 funzionare, semplicemente smette di convenire. Se invece il componente diventasse
 obbligatorio, l'intera eta' del ferro andrebbe buttata, e non e' quello che
 vogliamo.
+
+**Aperto, da valutare piu' avanti.** Il componente potrebbe sfornare **trenta
+ball in una volta** — trenta e' la capienza di un box, quindi il numero avrebbe
+un senso suo. Regge per le ball basse, dove il resto della ricetta e' apricorno e
+ferro; sulle ball alte moltiplicare per trenta gli altri ingredienti fa una
+ricetta che nessuno mette insieme in una volta. L'alternativa e' che il
+componente non moltiplichi ma **tolga un passaggio**: una ball completa invece di
+base + coperchio + perlina. Si decide quando le ricette delle ball avanzate
+saranno sul tavolo.
 
 ### 5.8 Dove si trova la tumblestone
 
@@ -1733,11 +1867,14 @@ valido e vive gia' nell'Habitat Block dell'era elettrica.
 
 **Decisioni di fondo**
 
-- ~~Su quale pack poggiare~~ — **deciso, e non e' un problema.** Gregnautics
-  Continued e' stato ritirato, ma noi non dipendiamo dal pacchetto: dipendiamo
-  da un elenco di mod. Quell'elenco va tenuto scritto, e con quello ci si
-  appoggia a qualunque pacchetto con la stessa filosofia — ce ne sono diversi.
-  Il pacchetto e' un posto dove giocare, non una base su cui costruire.
+- ~~Su quale pack poggiare~~ — **deciso: il pacchetto e' nostro.** Gregnautics
+  Continued e' stato ritirato, e invece di cercargli un sostituto lo abbiamo
+  preso in mano: si chiama **Gregnautics Pokefied**, sta sotto git, e la sua
+  coda di lavoro e' in `docs/MAINTENANCE.md` dentro il suo repository. Il
+  confronto con le alternative e le due scelte di progressione che ne
+  discendono — AE2 dietro lo spazio, e il mining delle meteore — stanno in
+  **sezione 2.1**. Resta vero che la mod non dipende dal pacchetto ma da un
+  elenco di mod: il pacchetto e' dove si gioca, non cio' su cui si compila.
 - ~~Separazione da TFCobblemon~~ — **deciso: resta un fork, e va bene cosi'.**
   E' stata una base grossa e diverse delle sue ricette sono ancora in uso. Nome,
   modid e licenza restano i suoi.
@@ -1759,9 +1896,11 @@ valido e vive gia' nell'Habitat Block dell'era elettrica.
 
   **Il cancello e' un pezzo nostro, fatto col vocabolario di AE2: il Pokemon
   Storage Component**, che nel frattempo e' diventato la spina dorsale di tutta
-  l'era industriale — tre gradi, e le ball si fanno attorno a lui. Il disegno
-  sta in **sezione 5.7**. Tier di AE2 richiesto: **quello base**, perche' il
-  cancello e' il componente, non la tecnologia attorno.
+  l'era industriale — due gradi, Entity Component e Pokemon Storage Component, e
+  le ball si fanno attorno al primo. Il disegno sta in **sezione 5.7**. Tier di
+  AE2 richiesto: **quello base**, perche' il cancello e' il componente, non la
+  tecnologia attorno — ma siccome nel nostro pacchetto le presse di AE2 si
+  prendono solo fuori dal pianeta, il PC finisce **dopo lo spazio**.
 - **Rivedere le ricette degli oggetti di Cobblemon e allinearle a TFC.** Non
   le ball — quelle hanno la loro sezione — ma tutto il resto: macchine,
   held item, targhette, mensole, analizzatore di fossili. Sono **986 ricette**,
